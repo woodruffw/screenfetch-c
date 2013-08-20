@@ -121,24 +121,24 @@
 
 
 //screenfetch detection function definitions
-char* detect_distro(void);
-char* detect_arch(void);
-char* detect_host(void);
-char* detect_kernel(void);
-char* detect_uptime(void);
-char* detect_pkgs(void);
-char* detect_cpu(void);
-char* detect_gpu(void);
-char* detect_disk(void);
-char* detect_mem(void);
-char* detect_shell(void);
-char* detect_shell_version(void);
-char* detect_res(void);
-char* detect_de(void);
-char* detect_wm(void);
-char* detect_wm_theme(void);
-char* detect_gtk(void);
-char* detect_android(void);
+void detect_distro(char* str);
+void detect_arch(char* str);
+void detect_host(char* str);
+void detect_kernel(char* str);
+void detect_uptime(char* str);
+void detect_pkgs(char* str);
+void detect_cpu(char* str);
+void detect_gpu(char* str);
+void detect_disk(char* str);
+void detect_mem(char* str);
+void detect_shell(char* str);
+void detect_shell_version(char* str);
+void detect_res(char* str);
+void detect_de(char* str);
+void detect_wm(char* str);
+void detect_wm_theme(char* str);
+void detect_gtk(char* str);
+void detect_android(char* str);
 
 //other function definitions
 void screenshot(void);
@@ -245,23 +245,23 @@ int main(int argc, char** argv)
 	safe_strncpy(android_str, "Unknown", MAX_STRLEN);
 
 	//each string is filled by its respective function (optional return)
-	detect_distro();
-	detect_host();
-	detect_kernel();
-	detect_uptime();
-	detect_pkgs();
-	detect_cpu();
-	detect_gpu();
-	detect_disk();
-	detect_mem();
-	detect_shell();
-	detect_shell_version();
-	detect_res();
-	detect_de();
-	detect_wm();
-	detect_wm_theme();
-	detect_gtk();
-	detect_android();
+	detect_distro(distro_str);
+	detect_host(host_str);
+	detect_kernel(kernel_str);
+	detect_uptime(uptime_str);
+	detect_pkgs(pkgs_str);
+	detect_cpu(cpu_str);
+	detect_gpu(gpu_str);
+	detect_disk(disk_str);
+	detect_mem(mem_str);
+	detect_shell(shell_str);
+	detect_shell_version(shell_version_str);
+	detect_res(res_str);
+	detect_de(de_str);
+	detect_wm(wm_str);
+	detect_wm_theme(wm_theme_str);
+	detect_gtk(gtk_str);
+	detect_android(android_str);
 
 	//main_output();
 
@@ -273,7 +273,7 @@ int main(int argc, char** argv)
 //detect_distro
 //detects the computer's distribution (really only relevant on Linux)
 //returns a string containing the distro name (may vary in format)
-char* detect_distro(void)
+void detect_distro(char* str)
 {
 	FILE* distro_file;
 
@@ -290,15 +290,15 @@ char* detect_distro(void)
 		fgets(distro_name_str, sizeof(distro_name_str), distro_file);
 		pclose(distro_file);
 
-		safe_strncpy(distro_str, distro_name_str, MAX_STRLEN);
+		safe_strncpy(str, distro_name_str, MAX_STRLEN);
 	}
 
 	else if (OS == OSX)
 	{
-		safe_strncpy(distro_str, "Mac OS X", MAX_STRLEN);
+		safe_strncpy(str, "Mac OS X", MAX_STRLEN);
 
 		distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
-		//cat version onto distro_str
+		//cat version onto str
 		pclose(distro_file);
 	}
 
@@ -340,7 +340,7 @@ char* detect_distro(void)
 					}
 					else
 					{
-						safe_strncpy(distro_str, "Linux", MAX_STRLEN);
+						safe_strncpy(str, "Linux", MAX_STRLEN);
 
 						if (error)
 						{
@@ -355,29 +355,29 @@ char* detect_distro(void)
 	else if (ISBSD())
 	{
 		distro_file = popen("uname -sr", "r");
-		fgets(distro_str, sizeof(distro_str), distro_file);
+		fgets(str, sizeof(str), distro_file);
 		pclose(distro_file);
 	}
 
 	if (verbose)
 	{
-		verbose_out("Found distro as " distro_str);
+		verbose_out("Found distro as " str);
 	}
 
-	return distro_str;
+	return;
 }
 
 //detect_arch
 //detects the computer's architecture
 //returns a string containing the arch
-char* detect_arch(void)
+void detect_arch(char* str)
 {
 	FILE* arch_file;
 
 	if (OS == CYGWIN)
 	{
 		arch_file = popen("wmic os get OSArchitecture | head -2 | tail -1 | tr -d '\\r '", "r");
-		fgets(arch_str, sizeof(arch_str), arch_file);
+		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
 		//alternative - popen "arch"
 	}
@@ -385,36 +385,36 @@ char* detect_arch(void)
 	else if (OS == OSX)
 	{
 		arch_file = popen("arch");
-		fgets(arch_str, sizeof(arch_str), arch_file);
+		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
 	}
 
 	else if (OS == LINUX || OS == DFBSD)
 	{
 		arch_file = popen("uname -m", "r");
-		fgets(arch_str, sizeof(arch_str), arch_file);
+		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
 	}
 
 	else if (ISBSD()) //doesn't work for DFBSD, but the above cond shorts this one
 	{
 		arch_file = popen("machine");
-		fgets(arch_str, sizeof(arch_str), arch_file);
+		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
 	}
 
 	if (verbose)
 	{
-		verbose("Found system arch as " arch_str);
+		verbose("Found system arch as " str);
 	}
 
-	return arch_str;
+	return;
 }
 
 //detect_host
 //detects the computer's hostname and active user and formats them
 //returns a string of format "user@hostname"
-char* detect_host(void)
+void detect_host(char* str)
 {
 	char* given_user;
 	char given_host[MAX_STRLEN];
@@ -425,42 +425,41 @@ char* detect_host(void)
 	fgets(given_host, sizeof(given_host), host_file);
 	pclose(host_file);
 
-	//format host_str
-	snprintf(host_str, sizeof(host_str), "%s%s@%s%s%s", given_user, TNRM, TLBL, given_host, TNRM);
+	//format str
+	snprintf(str, sizeof(str), "%s%s@%s%s%s", given_user, TNRM, TLBL, given_host, TNRM);
 
 	if (verbose)
 	{
-		verbose_out("Found host as " host_str);
+		verbose_out("Found host as " str);
 	}
 
-	return host_str;
+	return;
 }
 
 //detect_kernel
 //detects the computer's kernel
 //returns a string containing the kernel name, version, etc
-char* detect_kernel(void)
+void detect_kernel(char* str)
 {
 	FILE* kernel_file = popen("uname -srm", "r");
-	fgets(kernel_str, sizeof(kernel_str), kernel_file);
+	fgets(str, sizeof(str), kernel_file);
 	pclose(kernel_file);
 
 	if (verbose)
 	{
-		verbose_out("Found kenel as " kernel_str);
+		verbose_out("Found kenel as " str);
 	}
 
-	return kernel_str;
+	return;
 }
 
 //detect_uptime
 //detects the computer's uptime
 //returns a string of format "<>d <>h <>m <>s", where <> is a number
-char* detect_uptime(void)
+void detect_uptime(char* str)
 {
 	FILE* uptime_file;
 
-	char uptime_str[MAX_STRLEN];
 	long uptime;
 	long now, boottime; //may or may not be used
 	int secs;
@@ -510,20 +509,20 @@ char* detect_uptime(void)
 	}
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
-	snprintf(uptime_str, sizeof(uptime_str), "%dd %dh %dm %ds", days, hrs, mins, secs);
+	snprintf(str, sizeof(str), "%dd %dh %dm %ds", days, hrs, mins, secs);
 
 	if (verbose)
 	{
-		verbose_out("Found uptime as " uptime_str);
+		verbose_out("Found uptime as " str);
 	}
 
-	return uptime_str;
+	return;
 }
 
 //detect_pkgs
 //detects the number of packages installed on the computer
 //returns a string containing the number of packages
-char* detect_pkgs(void)
+void detect_pkgs(char* str)
 {
 	FILE* pkgs_file;
 
@@ -536,7 +535,7 @@ char* detect_pkgs(void)
 		packages -= 2;
 		pclose(pkgs_file);
 
-		snprintf(pkgs_str, sizeof(pkgs_str), "%d", packages);
+		snprintf(str, sizeof(str), "%d", packages);
 	}
 
 	else if (OS == OSX)
@@ -590,73 +589,73 @@ char* detect_pkgs(void)
 
 	if (verbose)
 	{
-		verbose_out("Found " pkgs_str " packages");
+		verbose_out("Found " str " packages");
 	}
 
-	return pkgs_str;
+	return;
 }
 
 //detect_cpu
 //detects the computer's CPU brand/name-string
 //returns a string containing the CPU string
-char* detect_cpu(void)
+void detect_cpu(char* str)
 {
 	FILE* cpu_file;
 
 	if (OS == CYGWIN)
 	{
 		cpu_file = popen("wmic cpu get name | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(cpu_str, sizeof(cpu_str), cpu_file);
+		fgets(str, sizeof(str), cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == OSX)
 	{
 		cpu_file = popen("sysctl -n machdep.cpu.brand_string", "r");
-		fgets(cpu_str, sizeof(cpu_str), cpu_file);
+		fgets(str, sizeof(str), cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == LINUX || OS == NETBSD)
 	{
 		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1", "r");
-		fgets(cpu_str, sizeof(cpu_str), cpu_file);
+		fgets(str, sizeof(str), cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == DFBSD || OS == FREEBSD || OS == OPENBSD)
 	{
 		cpu_file = popen("sysctl -n hw.model", "r");
-		fgets(cpu_str, sizeof(cpu_str), cpu_file);
+		fgets(str, sizeof(str), cpu_file);
 		pclose(cpu_file);
 	}
 
 	if (verbose)
 	{
-		verbose_out("Found CPU as " cpu_str);
+		verbose_out("Found CPU as " str);
 	}
 
-	return cpu_str;
+	return;
 }
 
 //detect_gpu
 //detects the computer's GPU brand/name-string
 //returns a string containing the GPU string
-char* detect_gpu(void)
+void detect_gpu(char* str)
 {
 	FILE* gpu_file;
 
 	if (OS == CYGWIN)
 	{
 		gpu_file = popen("wmic path Win32_VideoController get caption | tail -2", "r");
-		fgets(gpu_str, sizeof(gpu_str), gpu_file);
+		fgets(str, sizeof(str), gpu_file);
 		pclose(gpu_file);
 	}
 
 	else if (OS == OSX)
 	{
 		gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}'", "r");
-		fgets(gpu_str, sizeof(gpu_str), gpu_file);
+		fgets(str, sizeof(str), gpu_file);
 		pclose(gpu_file);
 	}
 
@@ -667,16 +666,16 @@ char* detect_gpu(void)
 
 	if (verbose)
 	{
-		verbose_out("Found GPU as " gpu_str);
+		verbose_out("Found GPU as " str);
 	}
 
-	return gpu_str;
+	return;
 }
 
 //detect_disk
 //detects the computer's total HDD/SSD capacity and usage
 //returns a string of format: "<>G / <>G (<>%)", where <> is a number
-char* detect_disk(void)
+void detect_disk(char* str)
 {
 	FILE* disk_file;
 
@@ -705,16 +704,16 @@ char* detect_disk(void)
 
 	if (verbose)
 	{
-		verbose_out("Found disk usage as " disk_str);
+		verbose_out("Found disk usage as " str);
 	}
 
-	return disk_str;
+	return;
 }
 
 //detect_mem
 //detects the computer's total and used RAM
 //returns a string of format: "<>MB / <>MB", where <> is a number
-char* detect_mem(void)
+void detect_mem(char* str)
 {
 	FILE* mem_file;
 
@@ -741,7 +740,7 @@ char* detect_mem(void)
 		free_mem_int /= (int) kb;
 		used_mem_int = total_mem_int - free_mem_int;
 
-		snprintf(mem_str, sizeof(mem_str), "%d%s / %d%s", used_mem_int, "MB", total_mem_int, "MB");
+		snprintf(str, sizeof(str), "%d%s / %d%s", used_mem_int, "MB", total_mem_int, "MB");
 	}
 
 	else if (OS == OSX)
@@ -762,7 +761,7 @@ char* detect_mem(void)
 		int free_mem_int = (int) si_mem.freeram / mb;
 		int used_mem_int = (int) total_mem_int - free_mem_int;
 
-		snprintf(mem_str, sizeof(mem_str), "%d%s / %d%s", free_mem_int, "MB", total_mem_int, "MB");
+		snprintf(str, sizeof(str), "%d%s / %d%s", free_mem_int, "MB", total_mem_int, "MB");
 	}
 
 	else if (OS == FREEBSD)
@@ -785,7 +784,7 @@ char* detect_mem(void)
 		fgets(used_mem_str, sizeof(used_mem_str), mem_file);
 		pclose(mem_file);
 
-		snprintf(mem_str, sizeof(mem_str), "%s%s / %s%s", used_mem_str, "MB", total_mem_str, "MB");
+		snprintf(str, sizeof(str), "%s%s / %s%s", used_mem_str, "MB", total_mem_str, "MB");
 	}
 
 	else if (OS == DFBSD)
@@ -795,35 +794,35 @@ char* detect_mem(void)
 
 	if (verbose)
 	{
-		verbose_out("Found memory usage as " mem_str);
+		verbose_out("Found memory usage as " str);
 	}
 
-	return mem_str;
+	return;
 }
 
 //detect_shell
 //detects the shell currently running on the computer
 //returns a string containing the name of that shell
-char* detect_shell(void)
+void detect_shell(char* str)
 {
 	FILE* shell_file;
 
 	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}'", "r");
-	fgets(shell_str, sizeof(shell_str), shell_file);
+	fgets(str, sizeof(str), shell_file);
 	pclose(shell_file);
 
 	if (verbose)
 	{
-		verbose_out("Found shell as " shell_str);
+		verbose_out("Found shell as " str);
 	}
 
-	return shell_str;
+	return;
 }
 
 //detect_shell_version
 //detects the version of the shell detected in detect_shell()
 //returns a string containing the version
-char* detect_shell_version(void)
+void detect_shell_version(char* str)
 {
 	FILE* shell_version_file;
 	
@@ -831,16 +830,16 @@ char* detect_shell_version(void)
 	
 	if (verbose)
 	{
-		verbose_out("Found shell version as " shell_version_str);
+		verbose_out("Found shell version as " str);
 	}
 
-	return shell_version_str;
+	return;
 }
 
 //detect_res
 //detects the combined resoloution of all monitors attached to the computer
 //returns a string of format: "<>x<>", where <> is a number
-char* detect_res(void)
+void detect_res(char* str)
 {
 	FILE* res_file;
 
@@ -857,33 +856,33 @@ char* detect_res(void)
 		fgets(height_str, sizeof(height_str), res_file);
 		pclose(res_file);
 
-		snprintf(res_str, sizeof(res_str), "%sx%s", width_str, height_str);
+		snprintf(str, sizeof(str), "%sx%s", width_str, height_str);
 	}
 
 	else if (OS == OSX)
 	{
 		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4\" \"}'", "r");
-		fgets(res_str, sizeof(res_str), res_file);
+		fgets(str, sizeof(str), res_file);
 		pclose(res_file);
 	}
 
 	else if (OS == LINUX)
 	{
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g'", "r");
-		fgets(res_str, sizeof(res_str), res_file);
+		fgets(str, sizeof(str), res_file);
 		pclose(res_file);
 	}
 
 	else if (ISBSD())
 	{
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
-		fgets(res_str, sizeof(res_str), res_file);
+		fgets(str, sizeof(str), res_file);
 		pclose(res_file);
 	}
 
 	else //if (OS == UNKNOWN)
 	{
-		safe_strncpy(res_str, "No X Server", MAX_STRLEN);
+		safe_strncpy(str, "No X Server", MAX_STRLEN);
 		if (error)
 		{
 			error_out("Error: Could not find an X Server on the current OS.");
@@ -892,16 +891,16 @@ char* detect_res(void)
 
 	if (verbose)
 	{
-		verbose_out("Found resolution as " res_str);
+		verbose_out("Found resolution as " str);
 	}
 
-	return res_str;
+	return;
 }
 
 //detect_de
 //detects the desktop environment currently running on top of the OS
 //returns a string containing the name of the DE
-char* detect_de(void)
+void detect_de(char* str)
 {
 	FILE* de_file;
 
@@ -915,17 +914,17 @@ char* detect_de(void)
 
 		if (version == 6 || version == 7)
 		{
-			safe_strncpy(de_str, "Aero", MAX_STRLEN);
+			safe_strncpy(str, "Aero", MAX_STRLEN);
 		}
 		else
 		{
-			safe_strncpy(de_str, "Luna", MAX_STRLEN);
+			safe_strncpy(str, "Luna", MAX_STRLEN);
 		}
 	}
 
 	else if (OS == OSX)
 	{
-		safe_strncpy(de_str, "Aqua", MAX_STRLEN);
+		safe_strncpy(str, "Aqua", MAX_STRLEN);
 	}
 
 	else if (OS == LINUX || ISBSD())
@@ -935,16 +934,16 @@ char* detect_de(void)
 
 	if (verbose)
 	{
-		verbose_out("Found DE as " de_str);
+		verbose_out("Found DE as " str);
 	}
 
-	return de_str;
+	return;
 }
 
 //detect_wm
 //detects the window manager currently running on top of the OS
 //returns a string containing the name of the WM
-char* detect_wm(void)
+void detect_wm(char* str)
 {
 	FILE* wm_file;
 
@@ -961,12 +960,12 @@ char* detect_wm(void)
 		pclose(wm_file);
 
 		//else
-		safe_strncpy(wm_str, "DWM", MAX_STRLEN);
+		safe_strncpy(str, "DWM", MAX_STRLEN);
 	}
 
 	else if (OS == OSX)
 	{
-		safe_strncpy(wm_str, "Quartz Compositor", MAX_STRLEN);
+		safe_strncpy(str, "Quartz Compositor", MAX_STRLEN);
 	}
 
 	else if (OS == LINUX || ISBSD())
@@ -976,49 +975,49 @@ char* detect_wm(void)
 
 	if (verbose)
 	{
-		verbose_out("Found WM as " wm_str);
+		verbose_out("Found WM as " str);
 	}
 
-	return wm_str;
+	return;
 }
 
 //detect_wm_theme
 //detects the theme associated with the WM detected in detect_wm()
 //returns a string containing the name of the WM theme
-char* detect_wm_theme(void)
+void detect_wm_theme(char* str)
 {
 	if (verbose)
 	{
-		verbose_out("Found WM theme as " wm_theme_str);
+		verbose_out("Found WM theme as " str);
 	}
 
-	return wm_theme_str;
+	return;
 }
 
 //detect_gtk
 //detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
 //returns a string containing the name of the gtk theme
-char* detect_gtk(void)
+void detect_gtk(char* str)
 {
 	if (verbose)
 	{
-		verbose_out("Found GTK as " gtk_str);
+		verbose_out("Found GTK as " str);
 	}
 
-	return gtk_str;
+	return;
 }
 
 //detect_android
 //detects various OS properties that could not be found on Android
 //NOTE: THIS MAY BE REMOVED
-char* detect_android(void)
+void detect_android(char* str)
 {
 	if (verbose)
 	{
 		
 	}
 
-	return android_str;
+	return;
 }
 
 /*  **  END DETECTION FUNCTIONS  **  */
