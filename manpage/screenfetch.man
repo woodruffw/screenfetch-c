@@ -1,0 +1,22 @@
+.\" Manpage for screenfetch
+.\" Contact woodrufw@bxscience.edu to report any bugs or errors
+.TH man "04 August 2013" "0.1a" "screenfetch man page"
+.SH NAME
+screenfetch \- Display computer information/statistics and an ASCII logo
+.SH SYNOPSIS
+screenfetch <options>
+.SH DESCRIPTION
+This version of screenfetch is a C port of the original screenFetch, 
+which was written in bash by Brett Bohnenkamper. Like the original, 
+it displays both an ASCII logo determined by the computer's OS 
+and a variety of statistics, including kernel type, ram, uptime, and so forth.
+.SH OPTIONS
+-v 		Enable verbose mode, which prints out detection information.
+-h		Displays help and compatibility information.
+.SH RELEASE HISTORY
+0.1 - ALPHA - INCOMPLETE
+.SH BUGS
+None are currently known.
+.SH AUTHOR
+screenfetch was originally written by Brett Bohnenkamper (kittykatt@archlinux.us)
+This port was wriiten by William Woodruff (woodrufw@bxscience.edu)
