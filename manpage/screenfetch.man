@@ -12,11 +12,17 @@ it displays both an ASCII logo determined by the computer's OS
 and a variety of statistics, including kernel type, ram, uptime, and so forth.
 .SH OPTIONS
 -v 		Enable verbose mode, which prints out detection information.
+-s		Take a screenshot after completing the output.
+-S <cmd>	Take a screenshot using custom command cmd.
+-D <distro>	Set the distro outputted by screenfetch.
+-A <distro>	Set the ASCII distro outputted by screenfetch.
+-E		Suppress error messages.
+-V		Display the version of screenfetch currently being used.
 -h		Displays help and compatibility information.
 .SH RELEASE HISTORY
 0.1 - ALPHA - INCOMPLETE
 .SH BUGS
 None are currently known.
 .SH AUTHOR
-screenfetch was originally written by Brett Bohnenkamper (kittykatt@archlinux.us)
-This port was wriiten by William Woodruff (woodrufw@bxscience.edu)
+screenFetch was originally written by Brett Bohnenkamper (kittykatt@archlinux.us)
+This rewrite was written by William Woodruff (woodrufw@bxscience.edu)
