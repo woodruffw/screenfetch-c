@@ -49,7 +49,7 @@
 #include <stdlib.h> //for getenv, etc
 #include <stdbool.h> //for the bool type
 #include <string.h> //for strcmp, strncpy, etc.
-#include <unistd.h> //for sleep, getopts
+#include <unistd.h> //for sleep, getopt
 
 //OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin
 
@@ -118,6 +118,7 @@
 #define SET_ERROR(flag) (error = flag)
 #define SET_SCREENSHOT(flag) (take_screenshot = flag)
 #define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
+#define STRCMP(x, y) (!strcmp(x, y))
 
 
 //screenfetch detection function definitions
@@ -461,7 +462,7 @@ void detect_uptime(char* str)
 	FILE* uptime_file;
 
 	long uptime;
-	long now, boottime; //may or may not be used
+	long now, boottime; //may or may not be used depending on OS
 	int secs;
 	int mins;
 	int hrs;
@@ -564,7 +565,7 @@ void detect_pkgs(char* str)
 	else if (OS == LINUX)
 	{
 		//if linux disto detection failed
-		if (strcmp(distro_str, "Linux") == 0 && error)
+		if (_STRCMP(distro_str, "Linux") && error)
 		{
 			error_out("Error: Packages cannot be detected on an unknown Linux distro.")
 		}
@@ -807,9 +808,36 @@ void detect_shell(char* str)
 {
 	FILE* shell_file;
 
+	char temp_shell_str[MAX_STRLEN];
+
 	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}'", "r");
-	fgets(str, sizeof(str), shell_file);
+	fgets(temp_shell_str, sizeof(temp_shell_str), shell_file);
 	pclose(shell_file);
+
+	if (STRCMP(temp_shell_str, "/bin/bash"))
+	{
+		safe_strncpy(str, "bash", MAX_STRLEN);
+	}
+
+	else if (STRCMP(temp_shell_str, "/bin/zsh"))
+	{
+		safe_strncpy(str, "zsh", MAX_STRLEN);
+	}
+
+	else if (STRCMP(str, "csh") || STRCMP(str, "tcsh"))
+	{
+		safe_strncpy(str, "csh", MAX_STRLEN);
+	}
+
+	else if (STRCMP(temp_shell_str, "/bin/ksh"))
+	{
+		safe_strncpy(str, "ksh", MAX_STRLEN);
+	}
+
+	else if (STRCMP(temp_shell_str, "/bin/fish"))
+	{
+		safe_strncpy(str, "fish", MAX_STRLEN);
+	}
 
 	if (verbose)
 	{
@@ -825,8 +853,43 @@ void detect_shell(char* str)
 void detect_shell_version(char* str)
 {
 	FILE* shell_version_file;
+
+	if (STRCMP(shell_str, "bash"))
+	{
+		shell_version_file = popen("bash --version | head -1", "r");
+		//evil pointer arithmetic
+		snprintf(str, sizeof(str), "%.*s", 17, str + 10);
+		pclose(shell_version_file);
+	}
+
+	else if (STRCMP(shell_str, "zsh"))
+	{
+		shell_version_file = popen("zsh --version", "r");
+		//evil pointer arithmetic
+		snprintf(str, sizeof(str), "%.*s", 5, str + 4);
+		pclose(shell_version_file);
+	}
+
+	else if (STRCMP(shell_str, "csh"))
+	{
+		shell_version_file = popen("csh --version | head -1", "r");
+		//evil pointer arithmetic
+		snprintf(str, sizeof(str), "%.*s", 7, str + 5);
+		pclose(shell_version_file);
+	}
+
+	else if (STRCMP(shell_str, "ksh"))
+	{
+		
+	}
 	
-	//bash --version maybe?
+	else if (STRCMP(shell_str, "fish"))
+	{
+		shell_version_file = popen("fish --version", "r");
+		//evil pointer arithmetic
+		snprintf(str, sizeof(str), "%.*s", 13, str + 6);
+		pclose(shell_version_file);
+	}
 	
 	if (verbose)
 	{
@@ -1009,7 +1072,7 @@ void detect_gtk(char* str)
 
 //detect_android
 //detects various OS properties that could not be found on Android
-//NOTE: THIS MAY BE REMOVED
+//NOTE: THIS MAY BE REMOVED, THE JNI IS A BITCH
 void detect_android(char* str)
 {
 	if (verbose)
