@@ -42,7 +42,7 @@
 	--
 
 	I hereby regrant this version of screenFetch under the same MIT license.
-	If you have any questions, please contact me at REDACTED.
+	If you have any questions, please contact me at woodrufw@bxscience.edu.
 */
 
 #include <stdio.h> //for a medley of I/O operations, including popen
@@ -51,7 +51,7 @@
 #include <string.h> //for strcmp, strncpy, etc.
 #include <unistd.h> //for sleep, getopt
 
-//OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin
+//OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin + BSD
 
 //a number is assigned to each OS
 #define UNKNOWN 0
@@ -314,20 +314,20 @@ void detect_distro(char* str)
 		}
 		else
 		{
-			distro_file = fopen("/etc/issue", "r");
+			distro_file = fopen("/proc/version", "r");
 
 			if (distro_file != NULL)
 			{
-				//get and parse /etc/issue
+				//get and parse /proc/version
 				fclose(distro_file);
 			}
 			else
 			{
-				distro_file = fopen("/proc/version", "r");
+				distro_file = fopen("/etc/issue", "r");
 
 				if (distro_file != NULL)
 				{
-					//get and parse /proc/version
+					//get and parse /etc/issue
 					fclose(distro_file);
 				}
 				else
@@ -406,7 +406,7 @@ void detect_arch(char* str)
 
 	if (verbose)
 	{
-		verbose("Found system arch as " str);
+		VERBOSE_OUT("Found system arch as " str);
 	}
 
 	return;
@@ -723,27 +723,31 @@ void detect_disk(char* str)
 	FILE* disk_file;
 
 	char disk_total_str[MAX_STRLEN];
+	char disk_free_str[MAX_STRLEN];
 
-	if (OS == CYGWIN) || OS == LINUX)
+	if (OS == CYGWIN) || OS == LINUX || OS == OSX)
 	{
-		disk_file = popen("df -h --total 2>/dev/null | tail -1", "r");
-		//TBI
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
+		fgets(disk_total_str, sizeof(disk_total_str), disk_file);
 		pclose(disk_file);
-	}
 
-	else if (OS == OSX)
-	{
-		disk_file = popen("df -H / 2>/dev/null | tail -1", "r");
-		//TBI
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r '", "r");
+		fgets(disk_free_str, sizeof(disk_free_str), disk_file);
 		pclose(disk_file);
 	}
 
 	else if (ISBSD())
 	{
-		disk_file = popen("df -h -c 2>/dev/null | tail -1", "r");
-		//TBI
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
+		fgets(disk_total_str, sizeof(disk_total_str), disk_file);
+		pclose(disk_file);
+
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r '", "r");
+		fgets(disk_free_str, sizeof(disk_free_str), disk_file);
 		pclose(disk_file);
 	}
+
+	snprintf(str, sizeof(str), "%s / %s", disk_free_str, disk_total_str);
 
 	if (verbose)
 	{
