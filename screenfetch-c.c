@@ -119,6 +119,8 @@
 #define SET_SCREENSHOT(flag) (take_screenshot = flag)
 #define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
+#define ERROR_OUT(str) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s\n", str))
+#define VERBOSE_OUT(str) (fprintf(stdout, TLRD ":: " TNRM "%s\n", str))
 
 
 //screenfetch detection function definitions
@@ -145,8 +147,6 @@ void detect_android(char* str);
 void screenshot(void);
 void display_version(void);
 void display_help(void);
-void verbose_out(const char* str);
-void error_out(const char* str);
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
 char* safe_strncpy(char* destination, const char* source, size_t num);
 
@@ -219,9 +219,9 @@ int main(int argc, char** argv)
 				return EXIT_SUCCESS;
 			case '?':
 				if (optopt == 'S' || optopt == 'D' || optopt == 'A')
-					error_out("Error: Option -%c requires an argument.", optopt);
+					ERROR_OUT("Error: One or more tripped flag(s) requires an argument.");
 				else
-					error_out("Error: Unknown option or option character.");
+					ERROR_OUT("Error: Unknown option or option character.");
 				return EXIT_FAILURE;
 		}
 	}
@@ -345,7 +345,7 @@ void detect_distro(char* str)
 
 						if (error)
 						{
-							error_out("Error: Failed to detect specific Linux distro.");
+							ERROR_OUT("Error: Failed to detect specific Linux distro.");
 						}
 					}
 				}
@@ -362,7 +362,7 @@ void detect_distro(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found distro as " str);
+		VERBOSE_OUT("Found distro as " str);
 	}
 
 	return;
@@ -431,7 +431,7 @@ void detect_host(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found host as " str);
+		VERBOSE_OUT("Found host as " str);
 	}
 
 	return;
@@ -448,7 +448,7 @@ void detect_kernel(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found kenel as " str);
+		VERBOSE_OUT("Found kenel as " str);
 	}
 
 	return;
@@ -514,7 +514,7 @@ void detect_uptime(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found uptime as " str);
+		VERBOSE_OUT("Found uptime as " str);
 	}
 
 	return;
@@ -567,7 +567,7 @@ void detect_pkgs(char* str)
 		//if linux disto detection failed
 		if (_STRCMP(distro_str, "Linux") && error)
 		{
-			error_out("Error: Packages cannot be detected on an unknown Linux distro.")
+			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.")
 		}
 	}
 
@@ -590,7 +590,7 @@ void detect_pkgs(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found " str " packages");
+		VERBOSE_OUT("Found " str " packages");
 	}
 
 	return;
@@ -633,7 +633,7 @@ void detect_cpu(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found CPU as " str);
+		VERBOSE_OUT("Found CPU as " str);
 	}
 
 	return;
@@ -667,7 +667,7 @@ void detect_gpu(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found GPU as " str);
+		VERBOSE_OUT("Found GPU as " str);
 	}
 
 	return;
@@ -705,7 +705,7 @@ void detect_disk(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found disk usage as " str);
+		VERBOSE_OUT("Found disk usage as " str);
 	}
 
 	return;
@@ -795,7 +795,7 @@ void detect_mem(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found memory usage as " str);
+		VERBOSE_OUT("Found memory usage as " str);
 	}
 
 	return;
@@ -841,7 +841,7 @@ void detect_shell(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found shell as " str);
+		VERBOSE_OUT("Found shell as " str);
 	}
 
 	return;
@@ -854,27 +854,32 @@ void detect_shell_version(char* str)
 {
 	FILE* shell_version_file;
 
+	char temp_vers_str[MAX_STRLEN];
+
 	if (STRCMP(shell_str, "bash"))
 	{
 		shell_version_file = popen("bash --version | head -1", "r");
+		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 17, str + 10);
+		snprintf(str, sizeof(str), "%.*s", 17, temp_vers_str + 10);
 		pclose(shell_version_file);
 	}
 
 	else if (STRCMP(shell_str, "zsh"))
 	{
 		shell_version_file = popen("zsh --version", "r");
+		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);	
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 5, str + 4);
+		snprintf(str, sizeof(str), "%.*s", 5, temp_vers_str + 4);
 		pclose(shell_version_file);
 	}
 
 	else if (STRCMP(shell_str, "csh"))
 	{
 		shell_version_file = popen("csh --version | head -1", "r");
+		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 7, str + 5);
+		snprintf(str, sizeof(str), "%.*s", 7, temp_vers_str + 5);
 		pclose(shell_version_file);
 	}
 
@@ -886,6 +891,7 @@ void detect_shell_version(char* str)
 	else if (STRCMP(shell_str, "fish"))
 	{
 		shell_version_file = popen("fish --version", "r");
+		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
 		//evil pointer arithmetic
 		snprintf(str, sizeof(str), "%.*s", 13, str + 6);
 		pclose(shell_version_file);
@@ -893,7 +899,7 @@ void detect_shell_version(char* str)
 	
 	if (verbose)
 	{
-		verbose_out("Found shell version as " str);
+		VERBOSE_OUT("Found shell version as " str);
 	}
 
 	return;
@@ -948,13 +954,13 @@ void detect_res(char* str)
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 		if (error)
 		{
-			error_out("Error: Could not find an X Server on the current OS.");
+			ERROR_OUT("Error: Could not find an X Server on the current OS.");
 		}
 	}
 
 	if (verbose)
 	{
-		verbose_out("Found resolution as " str);
+		VERBOSE_OUT("Found resolution as " str);
 	}
 
 	return;
@@ -997,7 +1003,7 @@ void detect_de(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found DE as " str);
+		VERBOSE_OUT("Found DE as " str);
 	}
 
 	return;
@@ -1038,7 +1044,7 @@ void detect_wm(char* str)
 
 	if (verbose)
 	{
-		verbose_out("Found WM as " str);
+		VERBOSE_OUT("Found WM as " str);
 	}
 
 	return;
@@ -1051,7 +1057,7 @@ void detect_wm_theme(char* str)
 {
 	if (verbose)
 	{
-		verbose_out("Found WM theme as " str);
+		VERBOSE_OUT("Found WM theme as " str);
 	}
 
 	return;
@@ -1064,7 +1070,7 @@ void detect_gtk(char* str)
 {
 	if (verbose)
 	{
-		verbose_out("Found GTK as " str);
+		VERBOSE_OUT("Found GTK as " str);
 	}
 
 	return;
@@ -1149,7 +1155,7 @@ void take_screenshot(void)
 	{
 		//cygwin does not currently have a simple screenshot solution
 		//potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X
-		error_out("Error: This program does not currently support screenshots on your OS.");
+		ERROR_OUT("Error: This program does not currently support screenshots on your OS.");
 	}
 
 	else if (OS == OSX)
@@ -1173,11 +1179,11 @@ void take_screenshot(void)
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			verbose("Screenshot successfully saved.")
+			VERBOSE_OUT("Screenshot successfully saved.")
 		}
 		else
 		{
-			error_out("Error: Problem saving screenshot.")
+			ERROR_OUT("Error: Problem saving screenshot.")
 		}
 	}
 
@@ -1201,32 +1207,13 @@ void take_screenshot(void)
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			verbose("Screenshot successfully saved.")
+			VERBOSE_OUT("Screenshot successfully saved.")
 		}
 		else
 		{
-			error_out("Error: Problem saving screenshot.")
+			ERROR_OUT("Error: Problem saving screenshot.")
 		}
 	}
-
-	return;
-}
-
-//verbose_out
-//performs verbose output (duh)
-void verbose_out(const char* str)
-{
-	fprintf(stdout, TLRD ":: " TNRM "%s\n", str);
-
-	return;
-}
-
-//error_out
-//performs error output (duh)
-//NOTE: error_out sends output to stderr, _not_ stdout
-void error_out(const char* str)
-{
-	fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s\n", str);
 
 	return;
 }
