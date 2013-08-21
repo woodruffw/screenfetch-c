@@ -559,13 +559,55 @@ void detect_pkgs(char* str)
 			packages += brew_pkgs;
 		}
 
-		//test for existence of macports here
+		//test for existence of macports, fink, etc here
 	}
 
 	else if (OS == LINUX)
 	{
+		if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre") || STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
+		{
+			pkgs_file = popen("pacman -Qq | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Frugalware"))
+		{
+			pkgs_file = popen("pacman-g2 -Q | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Mint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
+		{
+			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Slackware"))
+		{
+			pkgs_file = popen("ls -l /var/log/packages | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") || STRCMP(distro_str, "Funtoo"))
+		{
+			pkgs_file = popen("ls -d /var/db/pkg/*/* | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "openSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
+		{
+			pkgs_file = popen("rpm -qa | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
 		//if linux disto detection failed
-		if (_STRCMP(distro_str, "Linux") && error)
+		else if (STRCMP(distro_str, "Linux") && error)
 		{
 			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.")
 		}
@@ -998,7 +1040,7 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-
+		//this is going to be complicated
 	}
 
 	if (verbose)
