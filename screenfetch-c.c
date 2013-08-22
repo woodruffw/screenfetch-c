@@ -69,8 +69,8 @@
 #ifdef __CYGWIN__
 	#define OS CYGWIN
 	//popen and pclose are implicit on Cygwin, so define them here:
-	//FILE* popen(const char* command, const char* type);
-	//int pclose(FILE* stream);
+	FILE* popen(const char* command, const char* type);
+	int pclose(FILE* stream);
 #elif defined __APPLE__&&__MACH__
 	#define OS OSX
 #elif defined __linux__
@@ -112,11 +112,11 @@
 #define TLCY "\x1B[1;36m"
 #define TWHT "\x1B[1;37m"
 
-//other definitions
+//other definitions, use with caution (not type safe)
 #define MAX_STRLEN 128
 #define SET_VERBOSE(flag) (verbose = flag)
 #define SET_ERROR(flag) (error = flag)
-#define SET_SCREENSHOT(flag) (take_screenshot = flag)
+#define SET_SCREENSHOT(flag) (screenshot = flag)
 #define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
 #define ERROR_OUT(str) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s\n", str))
@@ -141,10 +141,9 @@ void detect_de(char* str);
 void detect_wm(char* str);
 void detect_wm_theme(char* str);
 void detect_gtk(char* str);
-void detect_android(char* str);
 
 //other function definitions
-void screenshot(void);
+void take_screenshot(void);
 void display_version(void);
 void display_help(void);
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
@@ -168,12 +167,11 @@ static char de_str[MAX_STRLEN];
 static char wm_str[MAX_STRLEN];
 static char wm_theme_str[MAX_STRLEN];
 static char gtk_str[MAX_STRLEN];
-static char android_str[MAX_STRLEN];
 
 //other definitions
 bool error = true;
 bool verbose = false;
-bool take_screenshot = false;
+bool screenshot = false;
 bool ascii = false;
 
 
@@ -181,7 +179,9 @@ int main(int argc, char** argv)
 {
 	char* opt_str = NULL;
 
-	while ((char c = getopt(argc, argv, "vnNsS:D:A:EVh")) != -1)
+	char c;
+
+	while ((c = getopt(argc, argv, "vnNsS:D:A:EVh")) != -1)
 	{
 		switch (c)
 		{
@@ -243,7 +243,6 @@ int main(int argc, char** argv)
 	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(android_str, "Unknown", MAX_STRLEN);
 
 	//each string is filled by its respective function (optional return)
 	detect_distro(distro_str);
@@ -262,7 +261,6 @@ int main(int argc, char** argv)
 	detect_wm(wm_str);
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
-	detect_android(android_str);
 
 	//main_output();
 
@@ -283,6 +281,8 @@ void detect_distro(char* str)
 
 	if (OS == CYGWIN)
 	{
+		//uname -o?
+
 		distro_file = popen("wmic os get name | head -2 | tail -1", "r");
 		fgets(distro_name_str_inc, sizeof(distro_name_str_inc), distro_file);
 		pclose(distro_file);
@@ -298,9 +298,9 @@ void detect_distro(char* str)
 	{
 		safe_strncpy(str, "Mac OS X", MAX_STRLEN);
 
-		distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
+		//distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
 		//cat version onto str
-		pclose(distro_file);
+		//pclose(distro_file);
 	}
 
 	else if (OS == LINUX)
@@ -380,26 +380,11 @@ void detect_arch(char* str)
 		arch_file = popen("wmic os get OSArchitecture | head -2 | tail -1 | tr -d '\\r '", "r");
 		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
-		//alternative - popen "arch"
 	}
 
-	else if (OS == OSX)
-	{
-		arch_file = popen("arch");
-		fgets(str, sizeof(str), arch_file);
-		pclose(arch_file);
-	}
-
-	else if (OS == LINUX || OS == DFBSD)
+	else if (OS == OSX || OS == LINUX || ISBSD())
 	{
 		arch_file = popen("uname -m", "r");
-		fgets(str, sizeof(str), arch_file);
-		pclose(arch_file);
-	}
-
-	else if (ISBSD()) //doesn't work for DFBSD, but the above cond shorts this one
-	{
-		arch_file = popen("machine");
 		fgets(str, sizeof(str), arch_file);
 		pclose(arch_file);
 	}
@@ -609,7 +594,7 @@ void detect_pkgs(char* str)
 		//if linux disto detection failed
 		else if (STRCMP(distro_str, "Linux") && error)
 		{
-			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.")
+			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.");
 		}
 	}
 
@@ -725,7 +710,7 @@ void detect_disk(char* str)
 	char disk_total_str[MAX_STRLEN];
 	char disk_free_str[MAX_STRLEN];
 
-	if (OS == CYGWIN) || OS == LINUX || OS == OSX)
+	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
 		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
 		fgets(disk_total_str, sizeof(disk_total_str), disk_file);
@@ -824,14 +809,14 @@ void detect_mem(char* str)
 	else if (OS == OPENBSD)
 	{
 		mem_file = popen("top -1 1 | awk '/Real:/ {k=split($3,a,\"/\");print a[k] }' | tr -d 'M'", "r");
-		fgets(total_mem_str, sizeof(total_mem_str), mem_file);
+		fscanf(mem_file, "%d", &total_mem_int);
 		pclose(mem_file);
 
 		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fgets(used_mem_str, sizeof(used_mem_str), mem_file);
+		fscanf(mem_file, "%d", &used_mem_int);
 		pclose(mem_file);
 
-		snprintf(str, sizeof(str), "%s%s / %s%s", used_mem_str, "MB", total_mem_str, "MB");
+		snprintf(str, sizeof(str), "%d%s / %d%s", used_mem_int, "MB", used_mem_int, "MB");
 	}
 
 	else if (OS == DFBSD)
@@ -1023,7 +1008,7 @@ void detect_de(char* str)
 	{
 		int version;
 
-		de_file = popen("wmic os get version | grep -o '^[0-9]'")
+		de_file = popen("wmic os get version | grep -o '^[0-9]'", "r");
 		fscanf(de_file, "%d", &version);
 		pclose(de_file);
 
@@ -1122,19 +1107,6 @@ void detect_gtk(char* str)
 	return;
 }
 
-//detect_android
-//detects various OS properties that could not be found on Android
-//NOTE: THIS MAY BE REMOVED, THE JNI IS A BITCH
-void detect_android(char* str)
-{
-	if (verbose)
-	{
-		
-	}
-
-	return;
-}
-
 /*  **  END DETECTION FUNCTIONS  **  */
 
 
@@ -1225,11 +1197,11 @@ void take_screenshot(void)
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.")
+			VERBOSE_OUT("Screenshot successfully saved.");
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.")
+			ERROR_OUT("Error: Problem saving screenshot.");
 		}
 	}
 
@@ -1246,18 +1218,18 @@ void take_screenshot(void)
 		sleep(1);
 		printf("%s\n", "0");
 
-		system("scrot -cd3 screenfetch_screenshot.png")
+		system("scrot -cd3 screenfetch_screenshot.png");
 
 		ss_file = fopen("~/screenfetch_screenshot.png", "r");
 
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.")
+			VERBOSE_OUT("Screenshot successfully saved.");
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.")
+			ERROR_OUT("Error: Problem saving screenshot.");
 		}
 	}
 
