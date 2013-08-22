@@ -177,8 +177,27 @@ bool ascii = false;
 
 int main(int argc, char** argv)
 {
-	char* opt_str = NULL;
+	//copy 'Unknown' to each string and append a null character
+	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(kernel_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(uptime_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(pkgs_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(cpu_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(gpu_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(disk_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(mem_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(shell_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(shell_version_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(res_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(de_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
 
+	//used during getopt
+	char* opt_str = NULL;
 	char c;
 
 	while ((c = getopt(argc, argv, "vnNsS:D:A:EVh")) != -1)
@@ -226,25 +245,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-	//copy 'Unknown' to each string and append a null character
-	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(kernel_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(uptime_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(pkgs_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(cpu_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(gpu_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(disk_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(mem_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(shell_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(shell_version_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(res_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(de_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
-
 	//each string is filled by its respective function (optional return)
 	detect_distro(distro_str);
 	detect_arch(arch_str);
@@ -279,90 +279,93 @@ int main(int argc, char** argv)
 //returns a string containing the distro name (may vary in format)
 void detect_distro(char* str)
 {
-	FILE* distro_file;
-
-	char distro_name_str[MAX_STRLEN];
-	char distro_name_str_inc[MAX_STRLEN];
-
-	if (OS == CYGWIN)
+	if (STRCMP(str, "Unknown")) //if distro_str was NOT set by the -D flag
 	{
-		//uname -o?
+		FILE* distro_file;
 
-		distro_file = popen("wmic os get name | head -2 | tail -1", "r");
-		fgets(distro_name_str_inc, sizeof(distro_name_str_inc), distro_file);
-		pclose(distro_file);
+		char distro_name_str[MAX_STRLEN];
+		char distro_name_str_inc[MAX_STRLEN];
 
-		//distro_file = popen("expr match " distro_name_str_inc " '\\(Microsoft Windows [A-Za-z0-9]\\+\\)'", "r");
-		//fgets(distro_name_str, sizeof(distro_name_str), distro_file);
-		//pclose(distro_file);
-
-		//safe_strncpy(str, distro_name_str, MAX_STRLEN);
-	}
-
-	else if (OS == OSX)
-	{
-		safe_strncpy(str, "Mac OS X", MAX_STRLEN);
-
-		//distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
-		//cat version onto str
-		//pclose(distro_file);
-	}
-
-	else if (OS == LINUX)
-	{
-		distro_file = fopen("/etc/lsb-release", "r");
-
-		if (distro_file != NULL)
+		if (OS == CYGWIN)
 		{
-			//get and parse /etc/lsb-release
-			fclose(distro_file);
+			//uname -o?
+
+			distro_file = popen("wmic os get name | head -2 | tail -1", "r");
+			fgets(distro_name_str_inc, sizeof(distro_name_str_inc), distro_file);
+			pclose(distro_file);
+
+			//distro_file = popen("expr match " distro_name_str_inc " '\\(Microsoft Windows [A-Za-z0-9]\\+\\)'", "r");
+			//fgets(distro_name_str, sizeof(distro_name_str), distro_file);
+			//pclose(distro_file);
+
+			//safe_strncpy(str, distro_name_str, MAX_STRLEN);
 		}
-		else
+
+		else if (OS == OSX)
 		{
-			distro_file = fopen("/proc/version", "r");
+			safe_strncpy(str, "Mac OS X", MAX_STRLEN);
+
+			//distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
+			//cat version onto str
+			//pclose(distro_file);
+		}
+
+		else if (OS == LINUX)
+		{
+			distro_file = fopen("/etc/lsb-release", "r");
 
 			if (distro_file != NULL)
 			{
-				//get and parse /proc/version
+				//get and parse /etc/lsb-release
 				fclose(distro_file);
 			}
 			else
 			{
-				distro_file = fopen("/etc/issue", "r");
+				distro_file = fopen("/proc/version", "r");
 
 				if (distro_file != NULL)
 				{
-					//get and parse /etc/issue
+					//get and parse /proc/version
 					fclose(distro_file);
 				}
 				else
 				{
-					distro_file = fopen("/etc/version", "r");
+					distro_file = fopen("/etc/issue", "r");
 
 					if (distro_file != NULL)
 					{
-						//get and parse /etc/version
+						//get and parse /etc/issue
 						fclose(distro_file);
 					}
 					else
 					{
-						safe_strncpy(str, "Linux", MAX_STRLEN);
+						distro_file = fopen("/etc/version", "r");
 
-						if (error)
+						if (distro_file != NULL)
 						{
-							ERROR_OUT("Error: Failed to detect specific Linux distro.", "");
+							//get and parse /etc/version
+							fclose(distro_file);
+						}
+						else
+						{
+							safe_strncpy(str, "Linux", MAX_STRLEN);
+
+							if (error)
+							{
+								ERROR_OUT("Error: Failed to detect specific Linux distro.", "");
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	else if (ISBSD())
-	{
-		distro_file = popen("uname -sr", "r");
-		fgets(str, sizeof(str), distro_file);
-		pclose(distro_file);
+		else if (ISBSD())
+		{
+			distro_file = popen("uname -sr", "r");
+			fgets(str, sizeof(str), distro_file);
+			pclose(distro_file);
+		}
 	}
 
 	if (verbose)
