@@ -71,7 +71,7 @@
 	//popen and pclose are implicit on Cygwin, so define them here:
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
-#elif defined __APPLE__&&__MACH__
+#elif defined __APPLE__ && __MACH__
 	#define OS OSX
 #elif defined __linux__
 	#define OS LINUX
@@ -266,6 +266,7 @@ int main(int argc, char** argv)
 
 	//ugly testing section
 	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+	//end ugly testing section
 
 	//main_output();
 
@@ -461,7 +462,7 @@ void detect_uptime(char* str)
 	int hrs;
 	int days;
 
-	if (OS == CYGWIN || NETBSD)
+	if (OS == CYGWIN || OS == NETBSD)
 	{
 		uptime_file = popen("cat /proc/uptime | cut -d ' ' -f 1", "r");
 		fscanf(uptime_file, "%ld", &uptime);
