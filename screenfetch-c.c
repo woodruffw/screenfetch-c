@@ -177,6 +177,15 @@ bool ascii = false;
 
 int main(int argc, char** argv)
 {
+	//first off, don't allow unknown OSes to run this program
+	if (OS == UNKNOWN)
+	{
+		ERROR_OUT("Error: ", "This program isn't designed for your OS.");
+		ERROR_OUT("Even if it did compile successfully, it will not execute correctly.", "");
+
+		return EXIT_FAILURE;
+	}
+
 	//copy 'Unknown' to each string and append a null character
 	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
@@ -238,9 +247,9 @@ int main(int argc, char** argv)
 				return EXIT_SUCCESS;
 			case '?':
 				if (optopt == 'S' || optopt == 'D' || optopt == 'A')
-					ERROR_OUT("Error: One or more tripped flag(s) requires an argument.", "");
+					ERROR_OUT("Error: ", "One or more tripped flag(s) requires an argument.");
 				else
-					ERROR_OUT("Error: Unknown option or option character.", "");
+					ERROR_OUT("Error: ", "Unknown option or option character.");
 				return EXIT_FAILURE;
 		}
 	}
@@ -285,30 +294,24 @@ void detect_distro(char* str)
 		FILE* distro_file;
 
 		char distro_name_str[MAX_STRLEN];
-		char distro_name_str_inc[MAX_STRLEN];
 
 		if (OS == CYGWIN)
 		{
-			//uname -o?
-
 			distro_file = popen("wmic os get name | head -2 | tail -1", "r");
-			fgets(distro_name_str_inc, sizeof(distro_name_str_inc), distro_file);
+			fgets(distro_name_str, MAX_STRLEN, distro_file);
 			pclose(distro_file);
 
-			//distro_file = popen("expr match " distro_name_str_inc " '\\(Microsoft Windows [A-Za-z0-9]\\+\\)'", "r");
-			//fgets(distro_name_str, sizeof(distro_name_str), distro_file);
-			//pclose(distro_file);
-
-			//safe_strncpy(str, distro_name_str, MAX_STRLEN);
+			//currently only works on W7, working on a solution
+			snprintf(str, MAX_STRLEN, "%.*s", 19, distro_name_str);
 		}
 
 		else if (OS == OSX)
 		{
-			safe_strncpy(str, "Mac OS X", MAX_STRLEN);
+			distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: \\t\\n'", "r");
+			fgets(distro_name_str, MAX_STRLEN, distro_file);
+			pclose(distro_file);
 
-			//distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: ", "r");
-			//cat version onto str
-			//pclose(distro_file);
+			snprintf(str, MAX_STRLEN, "%s%s", "Mac OS X ", distro_name_str);
 		}
 
 		else if (OS == LINUX)
@@ -353,7 +356,7 @@ void detect_distro(char* str)
 
 							if (error)
 							{
-								ERROR_OUT("Error: Failed to detect specific Linux distro.", "");
+								ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 							}
 						}
 					}
@@ -436,7 +439,7 @@ void detect_host(char* str)
 //returns a string containing the kernel name, version, etc
 void detect_kernel(char* str)
 {
-	FILE* kernel_file = popen("uname -srm | tr -d '\\r\\n'", "r");
+	FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
 	fgets(str, MAX_STRLEN, kernel_file);
 	pclose(kernel_file);
 
@@ -552,7 +555,7 @@ void detect_pkgs(char* str)
 			fscanf(pkgs_file, "%d", &brew_pkgs);
 			pclose(pkgs_file);
 
-			packages += brew_pkgs;
+			packages += brew_pkgs; 
 		}
 
 		//test for existence of macports, fink, etc here
@@ -605,7 +608,8 @@ void detect_pkgs(char* str)
 		//if linux disto detection failed
 		else if (STRCMP(distro_str, "Linux") && error)
 		{
-			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.", "");
+			safe_strncpy(str, "Not Found", MAX_STRLEN);
+			ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
 		}
 	}
 
@@ -616,14 +620,10 @@ void detect_pkgs(char* str)
 		pclose(pkgs_file);
 	}
 
-	else if (OS == NETBSD)
+	else if (OS == NETBSD || OS == DFBSD)
 	{
-
-	}
-
-	else if (OS == DFBSD)
-	{
-
+		safe_strncpy(str, "Not Found", MAX_STRLEN);
+		ERROR_OUT("Error: ", "Could not find packages on current OS.");
 	}
 
 	if (verbose)
@@ -963,14 +963,14 @@ void detect_res(char* str)
 		pclose(res_file);
 	}
 
-	else //if (OS == UNKNOWN)
-	{
-		safe_strncpy(str, "No X Server", MAX_STRLEN);
-		if (error)
-		{
-			ERROR_OUT("Error: Could not find an X Server on the current OS.", "");
-		}
-	}
+	//else //if (OS == UNKNOWN)
+	//{
+	//	safe_strncpy(str, "No X Server", MAX_STRLEN);
+	//	if (error)
+	//	{
+	//		ERROR_OUT("Error: Could not find an X Server on the current OS.", "");
+	//	}
+	//}
 
 	if (verbose)
 	{
@@ -1156,7 +1156,7 @@ void take_screenshot(void)
 	{
 		//cygwin does not currently have a simple screenshot solution
 		//potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X
-		ERROR_OUT("Error: This program does not currently support screenshots on your OS.", "");
+		ERROR_OUT("Error: ", "This program does not currently support screenshots on your OS.");
 	}
 
 	else if (OS == OSX)
@@ -1184,7 +1184,7 @@ void take_screenshot(void)
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.", "");
+			ERROR_OUT("Error: ", "Problem saving screenshot.");
 		}
 	}
 
@@ -1212,7 +1212,7 @@ void take_screenshot(void)
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.", "");
+			ERROR_OUT("Error: ", "Problem saving screenshot.");
 		}
 	}
 
