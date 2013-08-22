@@ -228,6 +228,7 @@ int main(int argc, char** argv)
 
 	//copy 'Unknown' to each string and append a null character
 	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
+	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(kernel_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(uptime_str, "Unknown", MAX_STRLEN);
@@ -246,6 +247,7 @@ int main(int argc, char** argv)
 
 	//each string is filled by its respective function (optional return)
 	detect_distro(distro_str);
+	detect_arch(arch_str);
 	detect_host(host_str);
 	detect_kernel(kernel_str);
 	detect_uptime(uptime_str);
@@ -261,6 +263,8 @@ int main(int argc, char** argv)
 	detect_wm(wm_str);
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
+
+	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 	//main_output();
 
@@ -287,11 +291,11 @@ void detect_distro(char* str)
 		fgets(distro_name_str_inc, sizeof(distro_name_str_inc), distro_file);
 		pclose(distro_file);
 
-		distro_file = popen("expr match " distro_name_str_inc " '\\(Microsoft Windows [A-Za-z0-9]\\+\\)'", "r");
-		fgets(distro_name_str, sizeof(distro_name_str), distro_file);
-		pclose(distro_file);
+		//distro_file = popen("expr match " distro_name_str_inc " '\\(Microsoft Windows [A-Za-z0-9]\\+\\)'", "r");
+		//fgets(distro_name_str, sizeof(distro_name_str), distro_file);
+		//pclose(distro_file);
 
-		safe_strncpy(str, distro_name_str, MAX_STRLEN);
+		//safe_strncpy(str, distro_name_str, MAX_STRLEN);
 	}
 
 	else if (OS == OSX)
@@ -377,15 +381,15 @@ void detect_arch(char* str)
 
 	if (OS == CYGWIN)
 	{
-		arch_file = popen("wmic os get OSArchitecture | head -2 | tail -1 | tr -d '\\r '", "r");
-		fgets(str, sizeof(str), arch_file);
+		arch_file = popen("wmic os get OSArchitecture | head -2 | tail -1 | tr -d '\\r\\n '", "r");
+		fgets(str, MAX_STRLEN, arch_file);
 		pclose(arch_file);
 	}
 
 	else if (OS == OSX || OS == LINUX || ISBSD())
 	{
-		arch_file = popen("uname -m", "r");
-		fgets(str, sizeof(str), arch_file);
+		arch_file = popen("uname -m | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, arch_file);
 		pclose(arch_file);
 	}
 
@@ -407,12 +411,12 @@ void detect_host(char* str)
 
 	given_user = getenv("USER");
 
-	FILE* host_file = popen("hostname", "r");
-	fgets(given_host, sizeof(given_host), host_file);
+	FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
+	fgets(given_host, MAX_STRLEN, host_file);
 	pclose(host_file);
 
 	//format str
-	snprintf(str, sizeof(str), "%s%s@%s%s%s", given_user, TNRM, TLBL, given_host, TNRM);
+	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	if (verbose)
 	{
@@ -427,8 +431,8 @@ void detect_host(char* str)
 //returns a string containing the kernel name, version, etc
 void detect_kernel(char* str)
 {
-	FILE* kernel_file = popen("uname -srm", "r");
-	fgets(str, sizeof(str), kernel_file);
+	FILE* kernel_file = popen("uname -srm | tr -d '\\r\\n'", "r");
+	fgets(str, MAX_STRLEN, kernel_file);
 	pclose(kernel_file);
 
 	if (verbose)
@@ -475,10 +479,12 @@ void detect_uptime(char* str)
 
 	else if (OS == LINUX)
 	{
+		#ifdef __linux__
 		struct sysinfo si_upt;
 		sysinfo(&si_upt);
 
 		uptime = si_upt.uptime;
+		#endif
 	}
 
 	else if (OS == OPENBSD)
@@ -495,7 +501,7 @@ void detect_uptime(char* str)
 	}
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
-	snprintf(str, sizeof(str), "%dd %dh %dm %ds", days, hrs, mins, secs);
+	snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
 
 	if (verbose)
 	{
@@ -521,7 +527,7 @@ void detect_pkgs(char* str)
 		packages -= 2;
 		pclose(pkgs_file);
 
-		snprintf(str, sizeof(str), "%d", packages);
+		snprintf(str, MAX_STRLEN, "%d", packages);
 	}
 
 	else if (OS == OSX)
@@ -632,29 +638,29 @@ void detect_cpu(char* str)
 
 	if (OS == CYGWIN)
 	{
-		cpu_file = popen("wmic cpu get name | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(str, sizeof(str), cpu_file);
+		cpu_file = popen("wmic cpu get name | tail -2 | tr -d '\\r\\n'", "r");
+		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == OSX)
 	{
-		cpu_file = popen("sysctl -n machdep.cpu.brand_string", "r");
-		fgets(str, sizeof(str), cpu_file);
+		cpu_file = popen("sysctl -n machdep.cpu.brand_string | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == LINUX || OS == NETBSD)
 	{
 		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1", "r");
-		fgets(str, sizeof(str), cpu_file);
+		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == DFBSD || OS == FREEBSD || OS == OPENBSD)
 	{
 		cpu_file = popen("sysctl -n hw.model", "r");
-		fgets(str, sizeof(str), cpu_file);
+		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
 
@@ -675,15 +681,15 @@ void detect_gpu(char* str)
 
 	if (OS == CYGWIN)
 	{
-		gpu_file = popen("wmic path Win32_VideoController get caption | tail -2", "r");
-		fgets(str, sizeof(str), gpu_file);
+		gpu_file = popen("wmic path Win32_VideoController get caption | tail -2 | tr -d '\\r\\n'", "r");
+		fgets(str, MAX_STRLEN, gpu_file);
 		pclose(gpu_file);
 	}
 
 	else if (OS == OSX)
 	{
-		gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}'", "r");
-		fgets(str, sizeof(str), gpu_file);
+		gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, gpu_file);
 		pclose(gpu_file);
 	}
 
@@ -712,27 +718,27 @@ void detect_disk(char* str)
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_total_str, sizeof(disk_total_str), disk_file);
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n '", "r");
+		fgets(disk_total_str, MAX_STRLEN, disk_file);
 		pclose(disk_file);
 
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_free_str, sizeof(disk_free_str), disk_file);
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r\\n '", "r");
+		fgets(disk_free_str, MAX_STRLEN, disk_file);
 		pclose(disk_file);
 	}
 
 	else if (ISBSD())
 	{
 		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_total_str, sizeof(disk_total_str), disk_file);
+		fgets(disk_total_str, MAX_STRLEN, disk_file);
 		pclose(disk_file);
 
 		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_free_str, sizeof(disk_free_str), disk_file);
+		fgets(disk_free_str, MAX_STRLEN, disk_file);
 		pclose(disk_file);
 	}
 
-	snprintf(str, sizeof(str), "%s / %s", disk_free_str, disk_total_str);
+	snprintf(str, MAX_STRLEN, "%s / %s", disk_free_str, disk_total_str);
 
 	if (verbose)
 	{
@@ -772,7 +778,7 @@ void detect_mem(char* str)
 		free_mem_int /= (int) kb;
 		used_mem_int = total_mem_int - free_mem_int;
 
-		snprintf(str, sizeof(str), "%d%s / %d%s", used_mem_int, "MB", total_mem_int, "MB");
+		snprintf(str, MAX_STRLEN, "%d%s / %d%s", used_mem_int, "MB", total_mem_int, "MB");
 	}
 
 	else if (OS == OSX)
@@ -786,6 +792,7 @@ void detect_mem(char* str)
 
 	else if (OS == LINUX)
 	{
+		#ifdef __linux__
 		struct sysinfo si_mem;
 		sysinfo(&si_mem);
 
@@ -793,7 +800,8 @@ void detect_mem(char* str)
 		int free_mem_int = (int) si_mem.freeram / mb;
 		int used_mem_int = (int) total_mem_int - free_mem_int;
 
-		snprintf(str, sizeof(str), "%d%s / %d%s", free_mem_int, "MB", total_mem_int, "MB");
+		snprintf(str, MAX_STRLEN, "%d%s / %d%s", free_mem_int, "MB", total_mem_int, "MB");
+		#endif
 	}
 
 	else if (OS == FREEBSD)
@@ -816,7 +824,7 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%d", &used_mem_int);
 		pclose(mem_file);
 
-		snprintf(str, sizeof(str), "%d%s / %d%s", used_mem_int, "MB", used_mem_int, "MB");
+		snprintf(str, MAX_STRLEN, "%d%s / %d%s", used_mem_int, "MB", used_mem_int, "MB");
 	}
 
 	else if (OS == DFBSD)
@@ -842,7 +850,7 @@ void detect_shell(char* str)
 	char temp_shell_str[MAX_STRLEN];
 
 	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}'", "r");
-	fgets(temp_shell_str, sizeof(temp_shell_str), shell_file);
+	fgets(temp_shell_str, MAX_STRLEN, shell_file);
 	pclose(shell_file);
 
 	if (STRCMP(temp_shell_str, "/bin/bash"))
@@ -890,7 +898,7 @@ void detect_shell_version(char* str)
 	if (STRCMP(shell_str, "bash"))
 	{
 		shell_version_file = popen("bash --version | head -1", "r");
-		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
+		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
 		snprintf(str, sizeof(str), "%.*s", 17, temp_vers_str + 10);
 		pclose(shell_version_file);
@@ -899,7 +907,7 @@ void detect_shell_version(char* str)
 	else if (STRCMP(shell_str, "zsh"))
 	{
 		shell_version_file = popen("zsh --version", "r");
-		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);	
+		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);	
 		//evil pointer arithmetic
 		snprintf(str, sizeof(str), "%.*s", 5, temp_vers_str + 4);
 		pclose(shell_version_file);
@@ -908,7 +916,7 @@ void detect_shell_version(char* str)
 	else if (STRCMP(shell_str, "csh"))
 	{
 		shell_version_file = popen("csh --version | head -1", "r");
-		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
+		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
 		snprintf(str, sizeof(str), "%.*s", 7, temp_vers_str + 5);
 		pclose(shell_version_file);
@@ -922,7 +930,7 @@ void detect_shell_version(char* str)
 	else if (STRCMP(shell_str, "fish"))
 	{
 		shell_version_file = popen("fish --version", "r");
-		fgets(temp_vers_str, sizeof(temp_vers_str), shell_version_file);
+		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
 		snprintf(str, sizeof(str), "%.*s", 13, str + 6);
 		pclose(shell_version_file);
@@ -949,34 +957,34 @@ void detect_res(char* str)
 	if (OS == CYGWIN)
 	{
 		res_file = popen("wmic desktopmonitor get screenwidth | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(width_str, sizeof(width_str), res_file);
+		fgets(width_str, MAX_STRLEN, res_file);
 		pclose(res_file);
 
 		res_file = popen("wmic desktopmonitor get screenheight | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(height_str, sizeof(height_str), res_file);
+		fgets(height_str, MAX_STRLEN, res_file);
 		pclose(res_file);
 
-		snprintf(str, sizeof(str), "%sx%s", width_str, height_str);
+		snprintf(str, MAX_STRLEN, "%sx%s", width_str, height_str);
 	}
 
 	else if (OS == OSX)
 	{
-		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4\" \"}'", "r");
-		fgets(str, sizeof(str), res_file);
+		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4\" \"}' | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
 
 	else if (OS == LINUX)
 	{
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g'", "r");
-		fgets(str, sizeof(str), res_file);
+		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
 
 	else if (ISBSD())
 	{
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
-		fgets(str, sizeof(str), res_file);
+		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
 
