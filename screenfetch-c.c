@@ -143,11 +143,11 @@ void detect_wm_theme(char* str);
 void detect_gtk(char* str);
 
 //other function definitions
-void take_screenshot(void);
+char* safe_strncpy(char* destination, const char* source, size_t num); 
+void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
 void display_version(void);
 void display_help(void);
-void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
-char* safe_strncpy(char* destination, const char* source, size_t num);
+void take_screenshot(void);
 
 //string definitions
 static char distro_str[MAX_STRLEN];
@@ -630,6 +630,8 @@ void detect_pkgs(char* str)
 	{
 		VERBOSE_OUT("Found package count as ", str);
 	}
+
+	snprintf(str, MAX_STRLEN, "%d", packages);
 
 	return;
 }
