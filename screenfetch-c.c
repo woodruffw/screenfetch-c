@@ -119,8 +119,8 @@
 #define SET_SCREENSHOT(flag) (screenshot = flag)
 #define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
-#define ERROR_OUT(str) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s\n", str))
-#define VERBOSE_OUT(str) (fprintf(stdout, TLRD ":: " TNRM "%s\n", str))
+#define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
+#define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
 
 
 //screenfetch detection function definitions
@@ -219,9 +219,9 @@ int main(int argc, char** argv)
 				return EXIT_SUCCESS;
 			case '?':
 				if (optopt == 'S' || optopt == 'D' || optopt == 'A')
-					ERROR_OUT("Error: One or more tripped flag(s) requires an argument.");
+					ERROR_OUT("Error: One or more tripped flag(s) requires an argument.", "");
 				else
-					ERROR_OUT("Error: Unknown option or option character.");
+					ERROR_OUT("Error: Unknown option or option character.", "");
 				return EXIT_FAILURE;
 		}
 	}
@@ -345,7 +345,7 @@ void detect_distro(char* str)
 
 						if (error)
 						{
-							ERROR_OUT("Error: Failed to detect specific Linux distro.");
+							ERROR_OUT("Error: Failed to detect specific Linux distro.", "");
 						}
 					}
 				}
@@ -362,7 +362,7 @@ void detect_distro(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found distro as " str);
+		VERBOSE_OUT("Found distro as ", str);
 	}
 
 	return;
@@ -391,7 +391,7 @@ void detect_arch(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found system arch as " str);
+		VERBOSE_OUT("Found system arch as ", str);
 	}
 
 	return;
@@ -416,7 +416,7 @@ void detect_host(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found host as " str);
+		VERBOSE_OUT("Found host as ", str);
 	}
 
 	return;
@@ -433,7 +433,7 @@ void detect_kernel(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found kenel as " str);
+		VERBOSE_OUT("Found kenel as ", str);
 	}
 
 	return;
@@ -499,7 +499,7 @@ void detect_uptime(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found uptime as " str);
+		VERBOSE_OUT("Found uptime as ", str);
 	}
 
 	return;
@@ -594,7 +594,7 @@ void detect_pkgs(char* str)
 		//if linux disto detection failed
 		else if (STRCMP(distro_str, "Linux") && error)
 		{
-			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.");
+			ERROR_OUT("Error: Packages cannot be detected on an unknown Linux distro.", "");
 		}
 	}
 
@@ -617,7 +617,7 @@ void detect_pkgs(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found " str " packages");
+		VERBOSE_OUT("Found package count as ", str);
 	}
 
 	return;
@@ -660,7 +660,7 @@ void detect_cpu(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found CPU as " str);
+		VERBOSE_OUT("Found CPU as ", str);
 	}
 
 	return;
@@ -694,7 +694,7 @@ void detect_gpu(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found GPU as " str);
+		VERBOSE_OUT("Found GPU as ", str);
 	}
 
 	return;
@@ -736,7 +736,7 @@ void detect_disk(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found disk usage as " str);
+		VERBOSE_OUT("Found disk usage as ", str);
 	}
 
 	return;
@@ -826,7 +826,7 @@ void detect_mem(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found memory usage as " str);
+		VERBOSE_OUT("Found memory usage as ", str);
 	}
 
 	return;
@@ -872,7 +872,7 @@ void detect_shell(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found shell as " str);
+		VERBOSE_OUT("Found shell as ", str);
 	}
 
 	return;
@@ -930,7 +930,7 @@ void detect_shell_version(char* str)
 	
 	if (verbose)
 	{
-		VERBOSE_OUT("Found shell version as " str);
+		VERBOSE_OUT("Found shell version as ", str);
 	}
 
 	return;
@@ -985,13 +985,13 @@ void detect_res(char* str)
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 		if (error)
 		{
-			ERROR_OUT("Error: Could not find an X Server on the current OS.");
+			ERROR_OUT("Error: Could not find an X Server on the current OS.", "");
 		}
 	}
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found resolution as " str);
+		VERBOSE_OUT("Found resolution as ", str);
 	}
 
 	return;
@@ -1034,7 +1034,7 @@ void detect_de(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found DE as " str);
+		VERBOSE_OUT("Found DE as ", str);
 	}
 
 	return;
@@ -1075,7 +1075,7 @@ void detect_wm(char* str)
 
 	if (verbose)
 	{
-		VERBOSE_OUT("Found WM as " str);
+		VERBOSE_OUT("Found WM as ", str);
 	}
 
 	return;
@@ -1088,7 +1088,7 @@ void detect_wm_theme(char* str)
 {
 	if (verbose)
 	{
-		VERBOSE_OUT("Found WM theme as " str);
+		VERBOSE_OUT("Found WM theme as ", str);
 	}
 
 	return;
@@ -1101,7 +1101,7 @@ void detect_gtk(char* str)
 {
 	if (verbose)
 	{
-		VERBOSE_OUT("Found GTK as " str);
+		VERBOSE_OUT("Found GTK as ", str);
 	}
 
 	return;
@@ -1173,7 +1173,7 @@ void take_screenshot(void)
 	{
 		//cygwin does not currently have a simple screenshot solution
 		//potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X
-		ERROR_OUT("Error: This program does not currently support screenshots on your OS.");
+		ERROR_OUT("Error: This program does not currently support screenshots on your OS.", "");
 	}
 
 	else if (OS == OSX)
@@ -1197,11 +1197,11 @@ void take_screenshot(void)
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.");
+			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.");
+			ERROR_OUT("Error: Problem saving screenshot.", "");
 		}
 	}
 
@@ -1225,11 +1225,11 @@ void take_screenshot(void)
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.");
+			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
 		else
 		{
-			ERROR_OUT("Error: Problem saving screenshot.");
+			ERROR_OUT("Error: Problem saving screenshot.", "");
 		}
 	}
 
