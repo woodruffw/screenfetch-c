@@ -264,6 +264,7 @@ int main(int argc, char** argv)
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
 
+	//ugly testing section
 	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 	//main_output();
@@ -847,41 +848,9 @@ void detect_shell(char* str)
 {
 	FILE* shell_file;
 
-	char temp_shell_str[MAX_STRLEN];
-
-	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}'", "r");
-	fgets(temp_shell_str, MAX_STRLEN, shell_file);
+	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
+	fgets(str, 128, shell_file);
 	pclose(shell_file);
-
-	if (STRCMP(temp_shell_str, "/bin/bash"))
-	{
-		safe_strncpy(str, "bash", MAX_STRLEN);
-	}
-
-	else if (STRCMP(temp_shell_str, "/bin/zsh"))
-	{
-		safe_strncpy(str, "zsh", MAX_STRLEN);
-	}
-
-	else if (STRCMP(str, "csh") || STRCMP(str, "tcsh"))
-	{
-		safe_strncpy(str, "csh", MAX_STRLEN);
-	}
-
-	else if (STRCMP(temp_shell_str, "/bin/ksh"))
-	{
-		safe_strncpy(str, "ksh", MAX_STRLEN);
-	}
-
-	else if (STRCMP(temp_shell_str, "/bin/fish"))
-	{
-		safe_strncpy(str, "fish", MAX_STRLEN);
-	}
-
-	if (verbose)
-	{
-		VERBOSE_OUT("Found shell as ", str);
-	}
 
 	return;
 }
@@ -900,7 +869,7 @@ void detect_shell_version(char* str)
 		shell_version_file = popen("bash --version | head -1", "r");
 		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 17, temp_vers_str + 10);
+		snprintf(str, MAX_STRLEN, "%.*s", 17, temp_vers_str + 10);
 		pclose(shell_version_file);
 	}
 
@@ -909,7 +878,7 @@ void detect_shell_version(char* str)
 		shell_version_file = popen("zsh --version", "r");
 		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);	
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 5, temp_vers_str + 4);
+		snprintf(str, MAX_STRLEN, "%.*s", 5, temp_vers_str + 4);
 		pclose(shell_version_file);
 	}
 
@@ -918,7 +887,7 @@ void detect_shell_version(char* str)
 		shell_version_file = popen("csh --version | head -1", "r");
 		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 7, temp_vers_str + 5);
+		snprintf(str, MAX_STRLEN, "%.*s", 7, temp_vers_str + 5);
 		pclose(shell_version_file);
 	}
 
@@ -932,7 +901,7 @@ void detect_shell_version(char* str)
 		shell_version_file = popen("fish --version", "r");
 		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
 		//evil pointer arithmetic
-		snprintf(str, sizeof(str), "%.*s", 13, str + 6);
+		snprintf(str, MAX_STRLEN, "%.*s", 13, str + 6);
 		pclose(shell_version_file);
 	}
 	
