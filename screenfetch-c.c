@@ -779,7 +779,6 @@ void detect_mem(char* str)
 
 	else if (OS == OSX)
 	{
-
 		mem_file = popen("sysctl -n hw.memsize", "r");
 		fscanf(mem_file, "%ld", &total_mem_int);
 		pclose(mem_file);
@@ -1066,6 +1065,17 @@ void detect_wm(char* str)
 //returns a string containing the name of the WM theme
 void detect_wm_theme(char* str)
 {
+	FILE* wm_theme_file;
+
+	if (OS == CYGWIN)
+	{
+		//nasty one-liner
+		wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes' /v 'CurrentTheme' | grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'", "r");
+		fgets(str, MAX_STRLEN, wm_theme_file);
+		pclose(wm_theme_file);
+	}
+
+
 	if (verbose)
 	{
 		VERBOSE_OUT("Found WM theme as ", str);
