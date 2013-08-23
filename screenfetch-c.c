@@ -13,7 +13,7 @@
 
 	TODO:
 	Figure out how to include ASCII output (i.e. logos)
-	Figure out shell version/DE/WM/WM theme/GTK/Android detection
+	Figure out DE/WM/WM theme/GTK/Android detection
 
 	**From the original author:**
 
@@ -320,9 +320,10 @@ void detect_distro(char* str)
 
 			if (distro_file != NULL)
 			{
-				//get and parse /etc/lsb-release
+				//fgets(distro_name_str, MAX_STRLEN, distro_file);
 				fclose(distro_file);
 			}
+
 			else
 			{
 				distro_file = fopen("/proc/version", "r");
@@ -332,32 +333,25 @@ void detect_distro(char* str)
 					//get and parse /proc/version
 					fclose(distro_file);
 				}
+
 				else
 				{
-					distro_file = fopen("/etc/issue", "r");
+					distro_file = fopen("/etc/version", "r");
 
 					if (distro_file != NULL)
 					{
-						//get and parse /etc/issue
+						//get and parse /etc/version
 						fclose(distro_file);
 					}
+
 					else
 					{
-						distro_file = fopen("/etc/version", "r");
 
-						if (distro_file != NULL)
-						{
-							//get and parse /etc/version
-							fclose(distro_file);
-						}
-						else
-						{
-							safe_strncpy(str, "Linux", MAX_STRLEN);
+						safe_strncpy(str, "Linux", MAX_STRLEN);
 
-							if (error)
-							{
-								ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
-							}
+						if (error)
+						{
+							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 						}
 					}
 				}
@@ -762,39 +756,44 @@ void detect_mem(char* str)
 {
 	FILE* mem_file;
 
-	int kb = 1024;
-	int mb = kb * kb;
-	//char total_mem_str[MAX_STRLEN];
-	//char free_mem_str[MAX_STRLEN];
-	//char used_mem_str[MAX_STRLEN]; //may or may not be used, depending on OS
-	int total_mem_int; // each of the following _may_ contain _either_ bytes, kbytes, or mbytes
-	int free_mem_int; //depending on the OS
-	int used_mem_int;
+	long kb = 1024;
+	long mb = kb * kb;
+	long total_mem_int; // each of the following _may_ contain _either_ bytes, kbytes, or mbytes
+	long free_mem_int; //depending on the OS
+	long used_mem_int;
 
 	if (OS == CYGWIN || OS == NETBSD)
 	{
 		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%d", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem_int);
 		pclose(mem_file);
 
 		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%d", &free_mem_int);
+		fscanf(mem_file, "%ld", &free_mem_int);
 		pclose(mem_file);
 
-		total_mem_int /= (int) kb;
-		free_mem_int /= (int) kb;
+		total_mem_int /= (long) kb;
+		free_mem_int /= (long) kb;
 		used_mem_int = total_mem_int - free_mem_int;
-
-		snprintf(str, MAX_STRLEN, "%d%s / %d%s", used_mem_int, "MB", total_mem_int, "MB");
 	}
 
 	else if (OS == OSX)
 	{
+
 		mem_file = popen("sysctl -n hw.memsize", "r");
-		fscanf(mem_file, "%d", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem_int);
 		pclose(mem_file);
 
-		total_mem_int /= (int) mb;
+		mem_file = popen("vm_stat | head -2 | tail -1 | tr -d \"Pages free: .\"", "r");
+		fscanf(mem_file, "%ld", &free_mem_int);
+		pclose(mem_file);
+
+		total_mem_int /= (long) mb;
+
+		free_mem_int *= 4096; //4KiB is OS X's page size
+		free_mem_int /= (long) mb;
+
+		used_mem_int = total_mem_int - free_mem_int;
 	}
 
 	else if (OS == LINUX)
@@ -803,11 +802,9 @@ void detect_mem(char* str)
 		struct sysinfo si_mem;
 		sysinfo(&si_mem);
 
-		int total_mem_int = (int) si_mem.totalram / mb;
-		int free_mem_int = (int) si_mem.freeram / mb;
-		int used_mem_int = (int) total_mem_int - free_mem_int;
-
-		snprintf(str, MAX_STRLEN, "%d%s / %d%s", free_mem_int, "MB", total_mem_int, "MB");
+		total_mem_int = (long) si_mem.totalram / mb;
+		free_mem_int = (long) si_mem.freeram / mb;
+		used_mem_int = (long) total_mem_int - free_mem_int;
 		#endif
 	}
 
@@ -824,20 +821,20 @@ void detect_mem(char* str)
 	else if (OS == OPENBSD)
 	{
 		mem_file = popen("top -1 1 | awk '/Real:/ {k=split($3,a,\"/\");print a[k] }' | tr -d 'M'", "r");
-		fscanf(mem_file, "%d", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem_int);
 		pclose(mem_file);
 
 		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fscanf(mem_file, "%d", &used_mem_int);
+		fscanf(mem_file, "%ld", &used_mem_int);
 		pclose(mem_file);
-
-		snprintf(str, MAX_STRLEN, "%d%s / %d%s", used_mem_int, "MB", used_mem_int, "MB");
 	}
 
 	else if (OS == DFBSD)
 	{
 
 	}
+
+	snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem_int, "MB", total_mem_int, "MB");
 
 	if (verbose)
 	{
