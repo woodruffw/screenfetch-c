@@ -1,4 +1,6 @@
-/* screenFetch-c
+/* 	screenfetch-c
+	-------------
+
 	A rewrite of screenFetch.sh 3.0.5 in C.
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
@@ -7,9 +9,11 @@
 	NOTES:
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
+	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
 
 	PLANNED IMPROVEMENTS:
 	Add libcpuid to decrease reliance on shell utilities.
+	Streaming code.
 
 	TODO:
 	Figure out how to include ASCII output (i.e. logos)
@@ -42,10 +46,10 @@
 	--
 
 	I hereby regrant this version of screenFetch under the same MIT license.
-	If you have any questions, please contact me at woodrufw@bxscience.edu.
+	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
 */
 
-#include <stdio.h> //for a medley of I/O operations, including popen
+#include <stdio.h> //for a medley of I/O operations, including popen/pclose
 #include <stdlib.h> //for getenv, etc
 #include <stdbool.h> //for the bool type
 #include <string.h> //for strcmp, strncpy, etc.
@@ -68,14 +72,13 @@
 
 #ifdef __CYGWIN__
 	#define OS CYGWIN
-	//popen and pclose are implicit on Cygwin, so define them here:
-	FILE* popen(const char* command, const char* type);
+	FILE* popen(const char* command, const char* type); //popen and pclose are implicit on Cygwin, so define them here:
 	int pclose(FILE* stream);
 #elif defined __APPLE__ && __MACH__
 	#define OS OSX
 #elif defined __linux__
 	#define OS LINUX
-	#include <sys/sysinfo.h>
+	#include <sys/sysinfo.h> //the sysinfo struct contains all kinds of useful info (uptime, ram stats, etc)
 #elif defined __FreeBSD__
 	#define OS FREEBSD
 #elif defined __NetBSD__
@@ -115,10 +118,12 @@
 //other definitions, use with caution (not type safe)
 #define MAX_STRLEN 128
 #define SET_VERBOSE(flag) (verbose = flag)
+#define SET_DEBUG(flag) (debug = flag)
 #define SET_ERROR(flag) (error = flag)
 #define SET_SCREENSHOT(flag) (screenshot = flag)
 #define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
+#define DEBUG_OUT(str1, str2) (fprintf(stderr, TYLW "[[ DEBUG ]] " "%s%s\n" TNRM, str1, str2))
 #define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
 #define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
 
@@ -169,6 +174,7 @@ static char wm_theme_str[MAX_STRLEN];
 static char gtk_str[MAX_STRLEN];
 
 //other definitions
+bool debug = false;
 bool error = true;
 bool verbose = false;
 bool screenshot = false;
@@ -209,10 +215,13 @@ int main(int argc, char** argv)
 	char* opt_str = NULL;
 	char c;
 
-	while ((c = getopt(argc, argv, "vnNsS:D:A:EVh")) != -1)
+	while ((c = getopt(argc, argv, "dvnNsS:D:A:EVh")) != -1)
 	{
 		switch (c)
 		{
+			case 'd':
+				SET_DEBUG(true);
+				break;
 			case 'v':
 				SET_VERBOSE(true);
 				break;
@@ -278,6 +287,102 @@ int main(int argc, char** argv)
 	//end ugly testing section
 
 	//main_output();
+
+	if (screenshot)
+	{
+		take_screenshot();
+	}
+
+	//debug section - only executed if -d flag is tripped
+	if (debug)
+	{
+		DEBUG_OUT("Beginning debug, OS: ", "");
+
+		if (STRCMP(distro_str, "Unknown"))
+		{
+			DEBUG_OUT("Distro detection failure: ", distro_str);
+		}
+
+		if (STRCMP(arch_str, "Unknown"))
+		{
+			DEBUG_OUT("Architecture detection failure: ", arch_str);
+		}
+
+		if (STRCMP(host_str, "Unknown"))
+		{
+			DEBUG_OUT("Host detection failure: ", host_str);
+		}
+
+		if (STRCMP(kernel_str, "Unknown"))
+		{
+			DEBUG_OUT("Kernel detection failure: ", kernel_str);
+		}
+
+		if (STRCMP(uptime_str, "Unknown"))
+		{
+			DEBUG_OUT("Uptime detection failure: ", uptime_str);
+		}
+
+		if (STRCMP(pkgs_str, "Unknown"))
+		{
+			DEBUG_OUT("Package detection failure: ", pkgs_str);
+		}
+
+		if (STRCMP(cpu_str, "Unknown"))
+		{
+			DEBUG_OUT("CPU detection failure: ", cpu_str);
+		}
+
+		if (STRCMP(gpu_str, "Unknown"))
+		{
+			DEBUG_OUT("GPU detection failure: ", gpu_str);
+		}
+
+		if (STRCMP(disk_str, "Unknown"))
+		{
+			DEBUG_OUT("Disk detection failure: ", disk_str);
+		}
+
+		if (STRCMP(mem_str, "Unknown"))
+		{
+			DEBUG_OUT("Memory detection failure: ", mem_str);
+		}
+
+		if (STRCMP(shell_str, "Unknown"))
+		{
+			DEBUG_OUT("Shell detection failure: ", shell_str);
+		}
+
+		if (STRCMP(shell_version_str, "Unknown"))
+		{
+			DEBUG_OUT("Shell version detection failure: ", shell_version_str);
+		}
+
+		if (STRCMP(res_str, "Unknown"))
+		{
+			DEBUG_OUT("Resolution detection failure: ", res_str);
+		}
+
+		if (STRCMP(de_str, "Unknown"))
+		{
+			DEBUG_OUT("DE detection failure: ", de_str);
+		}
+
+		if (STRCMP(wm_str, "Unknown"))
+		{
+			DEBUG_OUT("WM detection failure: ", wm_str);
+		}
+
+		if (STRCMP(wm_theme_str, "Unknown"))
+		{
+			DEBUG_OUT("WM Theme detection failure: ", wm_theme_str);
+		}
+
+		if (STRCMP(gtk_str, "Unknown"))
+		{
+			DEBUG_OUT("GTK detection failure: ", gtk_str);
+		}
+	}
 
 	return EXIT_SUCCESS;
 }
@@ -346,7 +451,6 @@ void detect_distro(char* str)
 
 					else
 					{
-
 						safe_strncpy(str, "Linux", MAX_STRLEN);
 
 						if (error)
@@ -408,7 +512,7 @@ void detect_arch(char* str)
 //returns a string of format "user@hostname"
 void detect_host(char* str)
 {
-	char* given_user;
+	char* given_user; //has to be a pointer for getenv()
 	char given_host[MAX_STRLEN];
 
 	given_user = getenv("USER");
@@ -709,7 +813,7 @@ void detect_gpu(char* str)
 
 //detect_disk
 //detects the computer's total HDD/SSD capacity and usage
-//returns a string of format: "<>G / <>G (<>%)", where <> is a number
+//returns a string of format: "<>G / <>G", where <> is a number
 void detect_disk(char* str)
 {
 	FILE* disk_file;
@@ -758,41 +862,41 @@ void detect_mem(char* str)
 
 	long kb = 1024;
 	long mb = kb * kb;
-	long total_mem_int; // each of the following _may_ contain _either_ bytes, kbytes, or mbytes
-	long free_mem_int; //depending on the OS
-	long used_mem_int;
+	long total_mem; // each of the following MAY contain EITHER bytes, kbytes, mbytes, pages
+	long free_mem; //depending on the OS
+	long used_mem;
 
 	if (OS == CYGWIN || OS == NETBSD)
 	{
 		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &free_mem_int);
+		fscanf(mem_file, "%ld", &free_mem);
 		pclose(mem_file);
 
-		total_mem_int /= (long) kb;
-		free_mem_int /= (long) kb;
-		used_mem_int = total_mem_int - free_mem_int;
+		total_mem /= (long) kb;
+		free_mem /= (long) kb;
+		used_mem = total_mem - free_mem;
 	}
 
 	else if (OS == OSX)
 	{
 		mem_file = popen("sysctl -n hw.memsize", "r");
-		fscanf(mem_file, "%ld", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("vm_stat | head -2 | tail -1 | tr -d \"Pages free: .\"", "r");
-		fscanf(mem_file, "%ld", &free_mem_int);
+		fscanf(mem_file, "%ld", &free_mem);
 		pclose(mem_file);
 
-		total_mem_int /= (long) mb;
+		total_mem /= (long) mb;
 
-		free_mem_int *= 4096; //4KiB is OS X's page size
-		free_mem_int /= (long) mb;
+		free_mem *= 4096; //4KiB is OS X's page size
+		free_mem /= (long) mb;
 
-		used_mem_int = total_mem_int - free_mem_int;
+		used_mem = total_mem - free_mem;
 	}
 
 	else if (OS == LINUX)
@@ -801,30 +905,37 @@ void detect_mem(char* str)
 		struct sysinfo si_mem;
 		sysinfo(&si_mem);
 
-		total_mem_int = (long) si_mem.totalram / mb;
-		free_mem_int = (long) si_mem.freeram / mb;
-		used_mem_int = (long) total_mem_int - free_mem_int;
+		total_mem = (long) si_mem.totalram / mb;
+		free_mem = (long) si_mem.freeram / mb;
+		used_mem = (long) total_mem - free_mem;
 		#endif
 	}
 
 	else if (OS == FREEBSD)
 	{
-		//it's unknown whether FreeBSD's /proc/meminfo is in the same format as Cygwin's
+		//it's unknown if FreeBSD's /proc/meminfo is in the same format as Cygwin's
 
-		//mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		//fgets(total_mem_str, sizeof(total_mem_str), mem_file);
-		//total_mem_int = (int) atoi(total_mem_str) / kb;
-		//pclose(mem_file);
+		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
+		fscanf(mem_file, "%ld", &total_mem);
+		pclose(mem_file);
+
+		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
+		fscanf(mem_file, "%ld", &free_mem);
+		pclose(mem_file);
+
+		total_mem /= (long) kb;
+		free_mem /= (long) kb;
+		used_mem = total_mem - free_mem;
 	}
 
 	else if (OS == OPENBSD)
 	{
 		mem_file = popen("top -1 1 | awk '/Real:/ {k=split($3,a,\"/\");print a[k] }' | tr -d 'M'", "r");
-		fscanf(mem_file, "%ld", &total_mem_int);
+		fscanf(mem_file, "%ld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fscanf(mem_file, "%ld", &used_mem_int);
+		fscanf(mem_file, "%ld", &used_mem);
 		pclose(mem_file);
 	}
 
@@ -833,7 +944,7 @@ void detect_mem(char* str)
 
 	}
 
-	snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem_int, "MB", total_mem_int, "MB");
+	snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem, "MB", total_mem, "MB");
 
 	if (verbose)
 	{
@@ -905,6 +1016,11 @@ void detect_shell_version(char* str)
 		//evil pointer arithmetic
 		snprintf(str, MAX_STRLEN, "%.*s", 13, str + 6);
 		pclose(shell_version_file);
+	}
+
+	else if (STRCMP(shell_str, "dash"))
+	{
+
 	}
 	
 	if (verbose)
@@ -1089,6 +1205,18 @@ void detect_wm_theme(char* str)
 //returns a string containing the name of the gtk theme
 void detect_gtk(char* str)
 {
+	FILE* gtk_file;
+
+	char font_str[MAX_STRLEN];
+
+	if (OS == CYGWIN)
+	{
+		//get the terminal's font
+		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$'", "r");
+		fgets(font_str, MAX_STRLEN, gtk_file);
+		pclose(gtk_file);
+	}
+
 	if (verbose)
 	{
 		VERBOSE_OUT("Found GTK as ", str);
@@ -1180,16 +1308,18 @@ void take_screenshot(void)
 		sleep(1);
 		printf("%s\n", "0");
 
-		system("screencapture -x screenfetch_screenshot.png");
+		system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");
 
-		ss_file = fopen("~/screenfetch_screenshot.png", "r");
+		char* loc = getenv("HOME");
+		strcat(loc, "/screenfetch_screenshot.png");
+		ss_file = fopen(loc, "r");
 
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
 			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
-		else
+		else if (ss_file == NULL)
 		{
 			ERROR_OUT("Error: ", "Problem saving screenshot.");
 		}
@@ -1208,16 +1338,18 @@ void take_screenshot(void)
 		sleep(1);
 		printf("%s\n", "0");
 
-		system("scrot -cd3 screenfetch_screenshot.png");
+		system("scrot -cd3 ~/screenfetch_screenshot.png 2> /dev/null");
 
-		ss_file = fopen("~/screenfetch_screenshot.png", "r");
+		char* loc = getenv("HOME");
+		strcat(loc, "/screenfetch_screenshot.png");
+		ss_file = fopen(loc, "r");
 
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);
 			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
-		else
+		else if (ss_file == NULL)
 		{
 			ERROR_OUT("Error: ", "Problem saving screenshot.");
 		}
