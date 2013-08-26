@@ -54,105 +54,7 @@
 #include <stdbool.h> //for the bool type
 #include <string.h> //for strcmp, strncpy, etc.
 #include <unistd.h> //for sleep, getopt
-
-//OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin + BSD
-
-//a number is assigned to each OS
-#define UNKNOWN 0
-#define CYGWIN 1
-#define OSX 2
-#define LINUX 3
-#define FREEBSD 4
-#define NETBSD 5
-#define OPENBSD 6
-#define DFBSD 7
-
-//quick macro for when all BSDs have the same syntax
-#define ISBSD() ((OS >= 4 && OS <= 7) ? true : false)
-
-#ifdef __CYGWIN__
-	#define OS CYGWIN
-	FILE* popen(const char* command, const char* type); //popen and pclose are implicit (but work) on Cygwin, so define them here:
-	int pclose(FILE* stream);
-#elif defined __APPLE__ && __MACH__
-	#define OS OSX
-#elif defined __linux__
-	#define OS LINUX
-	#include <sys/sysinfo.h> //the sysinfo struct contains all kinds of useful info (uptime, ram stats, etc)
-#elif defined __FreeBSD__
-	#define OS FREEBSD
-#elif defined __NetBSD__
-	#define OS NETBSD
-#elif defined __OpenBSD__
-	#define OS OPENBSD
-#elif defined __DragonFly__
-	#define OS DFBSD
-#else 
-	#define OS UNKNOWN
-#endif
-
-//end OS definitions
-
-
-//color/fmt definitions
-#define TNRM "\x1B[0m" //normal
-#define TBLD "\x1B[1m" //bold
-#define TULN "\x1B[4m" //underlined
-#define TBLK "\x1B[30m" //black
-#define TRED "\x1B[31m" //red
-#define TGRN "\x1B[32m" //green
-#define TBRN "\x1B[33m" //brown
-#define TBLU "\x1B[34m" //blue
-#define TPUR "\x1B[35m" //purple
-#define TCYN "\x1B[36m" //cyan
-#define TLGY "\x1B[37m" //light gray
-#define TDGY "\x1B[1;30m" //dark gray
-#define TLRD "\x1B[1;31m" //light red
-#define TLGN "\x1B[1;32m" //light green
-#define TYLW "\x1B[1;33m" //yellow
-#define TLBL "\x1B[1;34m" //light blue
-#define TLPR "\x1B[1;35m" //light purple
-#define TLCY "\x1B[1;36m" //light cyan
-#define TWHT "\x1B[1;37m" //white
-
-//other definitions, use with caution (not type safe)
-#define MAX_STRLEN 128
-#define SET_VERBOSE(flag) (verbose = flag)
-#define SET_DEBUG(flag) (debug = flag)
-#define SET_ERROR(flag) (error = flag)
-#define SET_SCREENSHOT(flag) (screenshot = flag)
-#define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
-#define STRCMP(x, y) (!strcmp(x, y))
-#define DEBUG_OUT(str1, str2) (fprintf(stderr, TYLW "[[ DEBUG ]] " "%s%s\n" TNRM, str1, str2))
-#define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
-#define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
-
-
-//screenfetch detection function definitions
-void detect_distro(char* str);
-void detect_arch(char* str);
-void detect_host(char* str);
-void detect_kernel(char* str);
-void detect_uptime(char* str);
-void detect_pkgs(char* str);
-void detect_cpu(char* str);
-void detect_gpu(char* str);
-void detect_disk(char* str);
-void detect_mem(char* str);
-void detect_shell(char* str);
-void detect_shell_version(char* str);
-void detect_res(char* str);
-void detect_de(char* str);
-void detect_wm(char* str);
-void detect_wm_theme(char* str);
-void detect_gtk(char* str);
-
-//other function definitions
-char* safe_strncpy(char* destination, const char* source, size_t num); 
-void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
-void display_version(void);
-void display_help(void);
-void take_screenshot(void);
+#include "screenfetch-c.h" //contains function prototypes, macros, ascii logos
 
 //string definitions
 static char distro_str[MAX_STRLEN];
@@ -179,7 +81,6 @@ bool error = true;
 bool verbose = false;
 bool screenshot = false;
 bool ascii = false;
-
 
 int main(int argc, char** argv)
 {
