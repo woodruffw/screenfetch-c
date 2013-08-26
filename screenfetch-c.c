@@ -72,7 +72,7 @@
 
 #ifdef __CYGWIN__
 	#define OS CYGWIN
-	FILE* popen(const char* command, const char* type); //popen and pclose are implicit on Cygwin, so define them here:
+	FILE* popen(const char* command, const char* type); //popen and pclose are implicit (but work) on Cygwin, so define them here:
 	int pclose(FILE* stream);
 #elif defined __APPLE__ && __MACH__
 	#define OS OSX
@@ -94,26 +94,26 @@
 //end OS definitions
 
 
-//text definitions
-#define TNRM "\x1B[0m"
-#define TBLD "\x1B[1m"
-#define TULN "\x1B[4m"
-#define TBLK "\x1B[30m"
-#define TRED "\x1B[31m"
-#define TGRN "\x1B[32m"
-#define TBRN "\x1B[33m"
-#define TBLU "\x1B[34m"
-#define TPUR "\x1B[35m"
-#define TCYN "\x1B[36m"
-#define TLGY "\x1B[37m"
-#define TDGY "\x1B[1;30m"
-#define TLRD "\x1B[1;31m"
-#define TLGN "\x1B[1;32m"
-#define TYLW "\x1B[1;33m"
-#define TLBL "\x1B[1;34m"
-#define TLPR "\x1B[1;35m"
-#define TLCY "\x1B[1;36m"
-#define TWHT "\x1B[1;37m"
+//color/fmt definitions
+#define TNRM "\x1B[0m" //normal
+#define TBLD "\x1B[1m" //bold
+#define TULN "\x1B[4m" //underlined
+#define TBLK "\x1B[30m" //black
+#define TRED "\x1B[31m" //red
+#define TGRN "\x1B[32m" //green
+#define TBRN "\x1B[33m" //brown
+#define TBLU "\x1B[34m" //blue
+#define TPUR "\x1B[35m" //purple
+#define TCYN "\x1B[36m" //cyan
+#define TLGY "\x1B[37m" //light gray
+#define TDGY "\x1B[1;30m" //dark gray
+#define TLRD "\x1B[1;31m" //light red
+#define TLGN "\x1B[1;32m" //light green
+#define TYLW "\x1B[1;33m" //yellow
+#define TLBL "\x1B[1;34m" //light blue
+#define TLPR "\x1B[1;35m" //light purple
+#define TLCY "\x1B[1;36m" //light cyan
+#define TWHT "\x1B[1;37m" //white
 
 //other definitions, use with caution (not type safe)
 #define MAX_STRLEN 128
@@ -862,8 +862,8 @@ void detect_mem(char* str)
 
 	long kb = 1024;
 	long mb = kb * kb;
-	long total_mem; // each of the following MAY contain EITHER bytes, kbytes, mbytes, pages
-	long free_mem; //depending on the OS
+	long total_mem; // each of the following MAY contain bytes/kbytes/mbytes/pages
+	long free_mem; 
 	long used_mem;
 
 	if (OS == CYGWIN || OS == NETBSD)
@@ -1075,15 +1075,6 @@ void detect_res(char* str)
 		pclose(res_file);
 	}
 
-	//else //if (OS == UNKNOWN)
-	//{
-	//	safe_strncpy(str, "No X Server", MAX_STRLEN);
-	//	if (error)
-	//	{
-	//		ERROR_OUT("Error: Could not find an X Server on the current OS.", "");
-	//	}
-	//}
-
 	if (verbose)
 	{
 		VERBOSE_OUT("Found resolution as ", str);
@@ -1262,7 +1253,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 //called if the -v flag is tripped, outputs the current version of screenfetch-c
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 0.1 ALPHA");
+	printf("%s\n", TBLU "screenfetch-c - Version 0.5 ALPHA");
 	printf("%s\n", "Warning: This version of screenfetch is not yet finished");
 	printf("%s\n", "and as such may contain bugs and security holes. Use with caution." TNRM);
 }
@@ -1276,7 +1267,7 @@ void display_help(void)
 	printf("%s\n", "Operating Systems currently supported:");
 	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, and OS X.");
 	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all.");
-	printf("%s\n", "Please access 'man screenfetch' for in-depth information on flags and usage." TNRM);
+	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage." TNRM);
 	return;
 }
 
@@ -1292,67 +1283,43 @@ void take_screenshot(void)
 		//cygwin does not currently have a simple screenshot solution
 		//potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X
 		ERROR_OUT("Error: ", "This program does not currently support screenshots on your OS.");
+		return;
 	}
 
-	else if (OS == OSX)
+	printf("%s", "Taking shot in 3..");
+	fflush(stdout);
+	sleep(1);
+	printf("%s", "2..");
+	fflush(stdout);
+	sleep(1);
+	printf("%s", "1..");
+	fflush(stdout);
+	sleep(1);
+	printf("%s\n", "0");
+
+	if (OS == OSX)
 	{
-		//this is really ugly
-		printf("%s", "Taking shot in 3..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s", "2..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s", "1..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s\n", "0");
-
-		system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");
-
-		char* loc = getenv("HOME");
-		strcat(loc, "/screenfetch_screenshot.png");
-		ss_file = fopen(loc, "r");
-
-		if (ss_file != NULL && verbose)
-		{
-			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.", "");
-		}
-		else if (ss_file == NULL)
-		{
-			ERROR_OUT("Error: ", "Problem saving screenshot.");
-		}
+		system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");	
 	}
 
 	else if (OS == LINUX || ISBSD())
 	{
-		printf("%s", "Taking shot in 3..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s", "2..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s", "1..");
-		fflush(stdout);
-		sleep(1);
-		printf("%s\n", "0");
-
 		system("scrot -cd3 ~/screenfetch_screenshot.png 2> /dev/null");
+	}
 
-		char* loc = getenv("HOME");
-		strcat(loc, "/screenfetch_screenshot.png");
-		ss_file = fopen(loc, "r");
+	char* loc = getenv("HOME");
+	strcat(loc, "/screenfetch_screenshot.png");
+	ss_file = fopen(loc, "r");
 
-		if (ss_file != NULL && verbose)
-		{
-			fclose(ss_file);
-			VERBOSE_OUT("Screenshot successfully saved.", "");
-		}
-		else if (ss_file == NULL)
-		{
-			ERROR_OUT("Error: ", "Problem saving screenshot.");
-		}
+	if (ss_file != NULL && verbose)
+	{
+		fclose(ss_file);
+		VERBOSE_OUT("Screenshot successfully saved.", "");
+	}
+	
+	else if (ss_file == NULL)
+	{
+		ERROR_OUT("Error: ", "Problem saving screenshot.");
 	}
 
 	return;
