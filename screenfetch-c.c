@@ -13,10 +13,9 @@
 
 	PLANNED IMPROVEMENTS:
 	Add libcpuid to decrease reliance on shell utilities.
-	Streaming code.
+	Streamline code.
 
 	TODO:
-	Figure out how to include ASCII output (i.e. logos)
 	Figure out DE/WM/WM theme/GTK/Android detection
 
 	**From the original author:**
@@ -74,6 +73,8 @@ static char de_str[MAX_STRLEN];
 static char wm_str[MAX_STRLEN];
 static char wm_theme_str[MAX_STRLEN];
 static char gtk_str[MAX_STRLEN];
+static char* detected_arr[16];
+static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
 //other definitions
 bool debug = false;
@@ -183,11 +184,8 @@ int main(int argc, char** argv)
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
 
-	//ugly testing section
-	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
-	//end ugly testing section
-
-	//main_output();
+	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+	main_output();
 
 	if (screenshot)
 	{
@@ -197,7 +195,10 @@ int main(int argc, char** argv)
 	//debug section - only executed if -d flag is tripped
 	if (debug)
 	{
-		DEBUG_OUT("Beginning debug, OS: ", "");
+
+		//ugly testing section
+		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+		//end ugly testing section
 
 		if (STRCMP(distro_str, "Unknown"))
 		{
@@ -1117,6 +1118,31 @@ void detect_gtk(char* str)
 	return;
 }
 
+//fill_detected_arr
+//fills an array of 15 strings with the data gathered from the detect functions
+//WARNING: the order of the parameters is NOT the order of the array
+void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* shell_vers, char* res, char* de, char* wm, char* wm_theme, char* gtk)
+{
+	arr[0] = host;
+	arr[1] = distro;
+	arr[2] = kernel;
+	arr[3] = arch;
+	arr[4] = cpu;
+	arr[5] = gpu;
+	arr[6] = shell;
+	arr[7] = pkgs;
+	arr[8] = disk;
+	arr[9] = mem;
+	arr[10] = uptime;
+	arr[11] = res;
+	arr[12] = de;
+	arr[13] = wm;
+	arr[14] = wm_theme;
+	arr[15] = gtk;
+
+	return;
+}
+
 /*  **  END DETECTION FUNCTIONS  **  */
 
 
@@ -1149,6 +1175,52 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 
 
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
+
+//main_output
+//the primary output for screenfetch-c - all info and ascii art is printed here
+void main_output(void)
+{
+	if (OS == CYGWIN)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			printf("%s %s%s\n", windows_logo[i], detected_arr_names[i], detected_arr[i]);
+		}
+	}
+
+	else if (OS == OSX)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			printf("%s %s%s\n", macosx_logo[i], detected_arr_names[i], detected_arr[i]);
+		}
+	}
+
+	else if (OS == LINUX)
+	{
+		//for each distro
+	}
+
+	else if (OS == FREEBSD)
+	{
+
+	}
+
+	else if (OS == OPENBSD)
+	{
+
+	}
+
+	else if (OS == NETBSD)
+	{
+
+	}
+
+	else if (OS == DFBSD)
+	{
+
+	}
+}
 
 //display_version
 //called if the -v flag is tripped, outputs the current version of screenfetch-c
