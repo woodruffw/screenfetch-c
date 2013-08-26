@@ -18,7 +18,18 @@ environment.
 screenfetch-c has been successfully compiled and run on Cygwin and OS X, 
 with most information being displayed correctly.
 However, more testing needs to be done.
-Note: Very little testing has been done on ascii_logos.h, and
-screenfetch-c.c does not currently rely on it at all. If you wish to compile screenfetch-c, please do so _without_ ascii_logos.h.
 
 The next big step will be the inclusion of ASCII logos.
+
+### Compiling screenfetch-c:
+Because screenfetch-c has no dependencies outside of the standard library/POSIX API, 
+it is very easy to compile and run:
+
+```
+gcc screenfetch-c.c -o screenfetch -std=c99
+./screenfetch [options]
+```
+
+Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
+screenfetch-c.c's prototypes and macros.
+
