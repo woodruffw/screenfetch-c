@@ -1,8 +1,8 @@
 screenfetch-c
 =============
 
-![alt tag] (http://puu.sh/4bx4Z.png)
-![alt tag] (http://puu.sh/4bx6y.png)
+![alt tag] (http://puu.sh/4bxE9.png)
+![alt tag] (http://puu.sh/4bxFQ.png)
 
 ### Current Version: 0.5 Alpha (compiled, not complete)
 
