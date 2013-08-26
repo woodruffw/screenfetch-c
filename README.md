@@ -1,6 +1,9 @@
 screenfetch-c
 =============
 
+![alt tag] (http://puu.sh/4bx4Z.png)
+![alt tag] (http://puu.sh/4bx6y.png)
+
 ### Current Version: 0.5 Alpha (compiled, not complete)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
