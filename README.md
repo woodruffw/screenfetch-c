@@ -21,8 +21,7 @@ environment.
 screenfetch-c has been successfully compiled and run on Cygwin and OS X, 
 with most information being displayed correctly.
 However, more testing needs to be done.
-
-The next big step will be the inclusion of ASCII logos.
+Current phase: completion of BSD/Linux sections, as well as addition of colors to outputted stats.
 
 ### Compiling screenfetch-c:
 Because screenfetch-c has no dependencies outside of the standard library/POSIX API, 
