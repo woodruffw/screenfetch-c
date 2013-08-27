@@ -577,7 +577,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Mint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Linux Mint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -1129,7 +1129,7 @@ void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char
 	arr[3] = arch;
 	arr[4] = cpu;
 	arr[5] = gpu;
-	arr[6] = shell;
+	arr[6] = shell; //figure out how to include shell_vers in here
 	arr[7] = pkgs;
 	arr[8] = disk;
 	arr[9] = mem;
@@ -1198,12 +1198,165 @@ void main_output(void)
 
 	else if (OS == LINUX)
 	{
-		//for each distro
+		if (STRCMP(distro_str, "Arch Linux - Old"))
+		{
+			
+		}
+
+		else if (STRCMP(distro_str, "Arch Linux"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Linux Mint"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "LMDE"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Ubuntu"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Debian"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "CrunchBang"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Gentoo"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Funtoo"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Fedora"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "OpenSUSE"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Slackware"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Red Hat Linux"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Frugalware"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Peppermint"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "SolusOS"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Mageia"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "ParabolaGNU/Linux-libre"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Viperr"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "LinuxDeepin"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Chakra"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Fuduntu"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Trisquel"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Manjaro"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Elementary OS"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Scientific Linux"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Backtrack Linux"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Sabayon"))
+		{
+
+		}
+
+		else if (STRCMP(distro_str, "Linux"))
+		{
+
+		}
 	}
 
 	else if (OS == FREEBSD)
 	{
-
+		for (int i = 0; i < 16; i++)
+		{
+			printf("%s %s%s\n", freebsd_logo[i], detected_arr_names[i], detected_arr[i]);
+		}
+		//ugly fix
+		printf("%s\n%s\n", freebsd_logo[16], freebsd_logo[17]);
 	}
 
 	else if (OS == OPENBSD)
