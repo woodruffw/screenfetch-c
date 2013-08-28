@@ -1216,7 +1216,12 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "LMDE"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", lmde_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", lmde_logo[16], lmde_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Ubuntu"))

@@ -32,6 +32,23 @@ gcc screenfetch-c.c -o screenfetch -std=c99
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
 screenfetch-c.c's prototypes and macros.
 
+### Current Compatibility:
+- [x] OS X
+- [x] Windows (via Cygwin)
+- [x] Fedora
+- [x] Linux Mint
+- [x] LMDE (must be invoked manually with the flag '-d LMDE')
+- [x] Ubuntu (tested with Lubuntu)
+- [ ] Debian
+- [ ] CrunchBang
+- [ ] Gentoo
+- [ ] Funtoo
+- [ ] FreeBSD
+- [ ] OpenBSD
+- [ ] NetBSD
+- [ ] DragonFlyBSD
+- [ ] OpenSUSE
+
 ### Examples:
 
 ![alt tag] (http://puu.sh/4bxE9.png)
@@ -39,4 +56,5 @@ screenfetch-c.c's prototypes and macros.
 ![alt tag] (http://puu.sh/4cGCt.png)
 ![alt tag] (http://puu.sh/4cK61.png)
 ![alt tag] (http://puu.sh/4d8VL.png)
+![alt tag] (http://puu.sh/4dc1x.png)
 
