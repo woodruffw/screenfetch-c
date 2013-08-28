@@ -1,11 +1,6 @@
 screenfetch-c
 =============
 
-![alt tag] (http://puu.sh/4bxE9.png)
-![alt tag] (http://puu.sh/4bxFQ.png)
-![alt tag] (http://puu.sh/4cGCt.png)
-![alt tag] (http://puu.sh/4cK61.png)
-
 ### Current Version: 0.5 Alpha (compiled, not complete)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
@@ -36,4 +31,11 @@ gcc screenfetch-c.c -o screenfetch -std=c99
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
 screenfetch-c.c's prototypes and macros.
+
+### Examples:
+
+![alt tag] (http://puu.sh/4bxE9.png)
+![alt tag] (http://puu.sh/4bxFQ.png)
+![alt tag] (http://puu.sh/4cGCt.png)
+![alt tag] (http://puu.sh/4cK61.png)
 
