@@ -39,6 +39,7 @@ screenfetch-c.c's prototypes and macros.
 - [x] Linux Mint
 - [x] LMDE (must be invoked manually with the flag '-d LMDE')
 - [x] Ubuntu (tested with Lubuntu)
+- [x] Fedora
 - [ ] Debian
 - [ ] CrunchBang
 - [ ] Gentoo
@@ -48,6 +49,25 @@ screenfetch-c.c's prototypes and macros.
 - [ ] NetBSD
 - [ ] DragonFlyBSD
 - [ ] OpenSUSE
+- [ ] Mandriva/Mandrake
+- [ ] Slackware
+- [ ] Red Hat (RHEL)
+- [ ] Frugalware
+- [ ] Peppermint
+- [ ] SolusOS
+- [ ] Mageia
+- [ ] ParabolaGNU/Linux-libre
+- [ ] Viperr
+- [ ] LinuxDeepin
+- [ ] Chakra
+- [ ] Fuduntu
+- [ ] Trisquel
+- [ ] Manjaro
+- [ ] ElementaryOS
+- [ ] Scientific Linux
+- [ ] Backtrack Linux
+- [ ] Sabayon
+- [ ] Linux (upon failure to detect a specific distro)
 
 ### Examples:
 

@@ -487,6 +487,7 @@ char* opensuse_logo[] =
 };
 
 //tested, working
+//NOTE: has 21 lines, not 18
 char* slackware_logo[] =
 {
 	""TLBL"                   :::::::",
@@ -951,7 +952,7 @@ char* linux_logo[] =
 	"                            " TNRM,
 	"                            " TNRM,
 	"                            " TNRM,
-	""TDGY"         #####$c0           " TNRM,
+	""TDGY"         #####              " TNRM,
 	""TDGY"        #######             " TNRM,
 	""TDGY"        ##"TWHT"O"TDGY"#"TWHT"O"TDGY"##             " TNRM,
 	""TDGY"        #"TYLW"#####"TDGY"#             " TNRM,

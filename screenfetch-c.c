@@ -1386,7 +1386,12 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "Linux"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", linux_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", linux_logo[16], linux_logo[17]);
 		}
 	}
 
