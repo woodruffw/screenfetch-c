@@ -1,4 +1,5 @@
-/* 	screenfetch-c
+/* 	screenfetch-c.c
+	Author: William Woodruff
 	-------------
 
 	A rewrite of screenFetch.sh 3.0.5 in C.
@@ -165,7 +166,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	//each string is filled by its respective function (optional return)
+	//each string is filled by its respective function
 	detect_distro(distro_str);
 	detect_arch(arch_str);
 	detect_host(host_str);
@@ -184,7 +185,10 @@ int main(int argc, char** argv)
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
 
+	//detected_arr is filled with the gathered from the detection functions
 	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+
+	//actual output
 	main_output();
 
 	if (screenshot)
@@ -195,11 +199,6 @@ int main(int argc, char** argv)
 	//debug section - only executed if -d flag is tripped
 	if (debug)
 	{
-
-		//ugly testing section
-		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
-		//end ugly testing section
-
 		if (STRCMP(distro_str, "Unknown"))
 		{
 			DEBUG_OUT("Distro detection failure: ", distro_str);
@@ -509,7 +508,11 @@ void detect_uptime(char* str)
 	}
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
-	snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+
+	if (days > 0)
+		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+	else
+		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
 
 	if (verbose)
 	{
@@ -1200,7 +1203,7 @@ void main_output(void)
 	{
 		if (STRCMP(distro_str, "Arch Linux - Old"))
 		{
-			
+
 		}
 
 		else if (STRCMP(distro_str, "Arch Linux"))
@@ -1373,6 +1376,8 @@ void main_output(void)
 	{
 
 	}
+
+	return;
 }
 
 //display_version
@@ -1382,6 +1387,8 @@ void display_version(void)
 	printf("%s\n", TBLU "screenfetch-c - Version 0.5 ALPHA");
 	printf("%s\n", "Warning: This version of screenfetch is not yet finished");
 	printf("%s\n", "and as such may contain bugs and security holes. Use with caution." TNRM);
+
+	return;
 }
 
 //display_help
