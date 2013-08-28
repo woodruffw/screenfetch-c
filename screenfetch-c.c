@@ -113,10 +113,14 @@ int main(int argc, char** argv)
 	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
+	
+	//for some reason my tests on lubuntu required manual definition of optarg and optopt for getopt()
+	#ifdef __linux__
+		extern char* optarg;
+		extern char optopt;
+	#endif 
 
-	//used during getopt
-	char* opt_str = NULL;
-	char c;
+	char c; 
 
 	while ((c = getopt(argc, argv, "dvnNsS:D:A:EVh")) != -1)
 	{
@@ -139,8 +143,7 @@ int main(int argc, char** argv)
 				break;
 			case 'S':
 				SET_SCREENSHOT(true);
-				opt_str = optarg;
-				//do something with opt_str
+				//do something with optarg
 				break;
 			case 'D':
 				SET_DISTRO(optarg);
@@ -199,6 +202,8 @@ int main(int argc, char** argv)
 	//debug section - only executed if -d flag is tripped
 	if (debug)
 	{
+		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+
 		if (STRCMP(distro_str, "Unknown"))
 		{
 			DEBUG_OUT("Distro detection failure: ", distro_str);
@@ -487,10 +492,10 @@ void detect_uptime(char* str)
 	else if (OS == LINUX)
 	{
 		#ifdef __linux__
-		struct sysinfo si_upt;
-		sysinfo(&si_upt);
+			struct sysinfo si_upt;
+			sysinfo(&si_upt);
 
-		uptime = si_upt.uptime;
+			uptime = si_upt.uptime;
 		#endif
 	}
 
