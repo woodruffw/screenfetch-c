@@ -1236,22 +1236,42 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "Debian"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", debian_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", debian_logo[16], debian_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "CrunchBang"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", crunchbang_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", crunchbang_logo[16], crunchbang_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Gentoo"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", gentoo_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", gentoo_logo[16], gentoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Funtoo"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", funtoo_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", funtoo_logo[16], funtoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Fedora"))
@@ -1271,7 +1291,12 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "OpenSUSE"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", opensuse_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", opensuse_logo[16], opensuse_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Slackware"))
