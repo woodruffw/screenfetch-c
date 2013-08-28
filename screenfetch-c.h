@@ -72,7 +72,7 @@
 #define SET_DEBUG(flag) (debug = flag)
 #define SET_ERROR(flag) (error = flag)
 #define SET_SCREENSHOT(flag) (screenshot = flag)
-#define SET_DISTRO(distro) (safe_strncpy(distro_str, distro, MAX_STRLEN))
+#define SET_DISTRO(str) (safe_strncpy(distro_str, str, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
 #define DEBUG_OUT(str1, str2) (fprintf(stderr, TYLW "[[ DEBUG ]] " "%s%s\n" TNRM, str1, str2))
 #define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
@@ -213,10 +213,10 @@ char* ubuntu_logo[] =
 	""TYLW"       .:+o:+o/."TWHT"          `+sssoo+/   " TNRM,
 	""TWHT"  .++/+:"TYLW"+oo+o:`"TWHT"             /sssooo.  " TNRM,
 	""TWHT" /+++//+:"TYLW"`oo+o"TWHT"               /::--:.  " TNRM,
-	""TWHT" +/+o+++"TYLW"`o++o"TLRD"               ++////.  " TNRM,
+	""TWHT" +/+o+++"TYLW"`o++o"TLRD"               ++////.   " TNRM,
 	""TWHT"  .++.o+"TYLW"++oo+:`"TLRD"             /dddhhh.  " TNRM,
 	""TYLW"       .+.o+oo:."TLRD"          `oddhhhh+   " TNRM,
-	""TYLW"        +.++o+o``-``"TLRD"``.:ohdhhhhh+    " TNRM,
+	""TYLW"        +.++o+o``-``"TLRD"``.:ohdhhhhh+     " TNRM,
 	""TYLW"         `:o+++ "TLRD"`ohhhhhhhhyo++os:     " TNRM,
 	""TYLW"           .o:"TLRD"`.syhhhhhhh/"TYLW".oo++o`     " TNRM,
 	""TLRD"               /osyyyyyyo"TYLW"++ooo+++/    " TNRM,
@@ -850,16 +850,16 @@ char* manjaro_logo[] =
 char* elementaryos_logo[] =
 {
 	"                                  ",
-	""TWHT"           \\$?77777\\$\\$\\$IO          " TNRM,
-	""TWHT"        \\$III777ZZZZ\\$\\$\\$ZZ\\$8       " TNRM,
-	""TWHT"      ZI777           OZZZ\\$      " TNRM,
+	""TWHT"           $?77777$$$IO          " TNRM,
+	""TWHT"        $III777ZZZZ$$$ZZ$8       " TNRM,
+	""TWHT"      ZI777           OZZZ$      " TNRM,
 	""TWHT"     Z777             O7ZZO8     " TNRM,
-	""TWHT"    Z777            O\\$ZZZ8       " TNRM,
-	""TWHT"    I\\$\\$           O\\$ZZZD         " TNRM,
-	""TWHT"   0\\$\\$O         O\\$\\$ZZ            " TNRM,
-	""TWHT"   0\\$\\$O       8\\$\\$\\$\\$              " TNRM,
-	""TWHT"   0\\$\\$O     8\\$\\$\\$\\$                " TNRM,
-	""TWHT"    \\$ZZ   O\\$\\$ZZ           D      " TNRM,
+	""TWHT"    Z777            O$ZZZ8       " TNRM,
+	""TWHT"    I$$           O$ZZZD         " TNRM,
+	""TWHT"   0$$O         O$$ZZ            " TNRM,
+	""TWHT"   0$$O       8$$$$              " TNRM,
+	""TWHT"   0$$O     8$$$$                " TNRM,
+	""TWHT"    $ZZ   O$$ZZ           D      " TNRM,
 	""TWHT"     ZZZ8ZZZZ             O88    " TNRM,
 	""TWHT"     DZZZZ8             D888     " TNRM,
 	""TWHT"       ZZZZDMMMMMMMMMMDO888      " TNRM,
@@ -884,7 +884,7 @@ char* scientificlinux_logo[] =
 	""TLBL"    ,+/.    ,;@+,        ,#H;,    ,/+,      " TNRM,
 	""TLBL"       ;+;;/= @.  "TLRD".H"TWHT"#"TLRD"#X   "TLBL"-X :///+;         " TNRM,
 	""TLBL"       ;+=;;;.@,  "TWHT".X"TLRD"M"TWHT"@$.  "TLBL"=X.//;=#/.        " TNRM,
-	""TLBL"    ,;:      :@#=        =\\$H:     .+#-      " TNRM,
+	""TLBL"    ,;:      :@#=        =$H:     .+#-      " TNRM,
 	""TLBL"  ,#=         #;-///==///-//         =#,    " TNRM,
 	""TLBL" ;+           :#-;;;:;;;;-X-           +:   " TNRM,
 	""TLBL" @-      .-;;;;M-        =M/;;;-.      -X   " TNRM,
