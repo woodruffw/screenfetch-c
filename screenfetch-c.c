@@ -338,36 +338,26 @@ void detect_distro(char* str)
 				pclose(distro_file);
 			}
 
-			else
+			else //begin the tedious task of checking each /etc/*-release
 			{
-				distro_file = fopen("/proc/version", "r");
+				distro_file = fopen("/etc/fedora-release", "r");
 
 				if (distro_file != NULL)
 				{
-					//get and parse /proc/version
 					fclose(distro_file);
+					safe_strncpy(str, "Fedora", MAX_STRLEN);
 				}
-
+		
 				else
 				{
-					distro_file = fopen("/etc/version", "r");
+					safe_strncpy(str, "Linux", MAX_STRLEN);
 
-					if (distro_file != NULL)
+					if (error)
 					{
-						//get and parse /etc/version
-						fclose(distro_file);
-					}
-
-					else
-					{
-						safe_strncpy(str, "Linux", MAX_STRLEN);
-
-						if (error)
-						{
-							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
-						}
+						ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 					}
 				}
+								
 			}
 		}
 
@@ -1261,7 +1251,12 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "Fedora"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", fedora_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", fedora_logo[16], fedora_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake"))
