@@ -573,7 +573,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Linux Mint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -1204,9 +1204,14 @@ void main_output(void)
 
 		}
 
-		else if (STRCMP(distro_str, "Linux Mint"))
+		else if (STRCMP(distro_str, "LinuxMint"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", mint_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", mint_logo[16], mint_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "LMDE"))
