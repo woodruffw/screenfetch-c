@@ -1,5 +1,13 @@
-//OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin + BSD
+/*  screenfetch-c.h
+	Author: William Woodruff
+	-------------
+	
+	The functions, macros, and ascii logos used in screenfetch-c.c are defined/prototyped here.
+	Like screenfetch-c.c, this file is licensed under the MIT license.
+	You should have received a copy of it with this code.
+*/
 
+//OS definitions - allows linux machines to use sysinfo while maintaining compatability w/ OSX + Cygwin + BSD
 //a number is assigned to each OS
 #define UNKNOWN 0
 #define CYGWIN 1
@@ -239,30 +247,28 @@ char* debian_logo[] =
 	"                                " TNRM
 };
 
-/*
-//not sure what to do with this one
+//tested, working
 char* crunchbang_logo[] =
 {
-	"                                       %s"
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2  "$c1"████████████████████████████"$c2"   "$c1"███"$c2"  %s",
-	"$c2  "$c1"████████████████████████████"$c2"   "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2  "$c1"████████████████████████████"$c2"   "$c1"███"$c2"  %s",
-	"$c2  "$c1"████████████████████████████"$c2"   "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"               %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"               %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s",
-	"$c2         "$c1"███"$c2"        "$c1"███"$c2"          "$c1"███"$c2"  %s"
-	"$c2                                      %s"
+	"                                       "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"  "TWHT"████████████████████████████   "TWHT"███  "TNRM"",
+	"  "TWHT"████████████████████████████   "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"  "TWHT"████████████████████████████   "TWHT"███  "TNRM"",
+	"  "TWHT"████████████████████████████   "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███               "TNRM"",
+	"         "TWHT"███        "TWHT"███               "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"         "TWHT"███        "TWHT"███          "TWHT"███  "TNRM"",
+	"                                      "TNRM""
 };
-*/
 
 //tested, working
 char* gentoo_logo[] =
@@ -287,30 +293,28 @@ char* gentoo_logo[] =
 	""TLPR"  `-//////:--.                       " TNRM
 };
 
-/*
-//not working, will diagnose
+//tested, working
 char* funtoo_logo[] =
 {
-	"                                                     %s",
-	"                                                    %s",
-	"                                                    %s",
-	"                                                    %s",
-	""TWHT"     _______               ____                     %s",
-	""TWHT"    /MMMMMMM/             /MMMM| _____  _____       %s",
-	""TWHT" __/M"TLPL".MMM."TWHT"M/_____________|M"TLPL".M"TWHT"MM|/MMMMM\\/MMMMM\\      %s",
-	""TWHT"|MMMM"TLPL"MM'"TWHT"MMMMMMMMMMMMMMMMMMM"TLPL"MM"TWHT"MMMM"TLPL".MMMM..MMMM."TWHT"MM\\    %s",
-	""TWHT"|MM"TLPL"MMMMMMM"TWHT"/m"TLPL"MMMMMMMMMMMMMMMMMMMMMM"TWHT"MMMM"TLPL"MM"TWHT"MMMM"TLPL"MM"TWHT"MM|   %s",
-	""TWHT"|MMMM"TLPL"MM"TWHT"MMM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MMMMM"TLPL"\\MMM"TWHT"MMM"TLPL"MM"TWHT"MMMM"TLPL"MM"TWHT"MMMM"TLPL"MM"TWHT"MM|   %s",
-	""TWHT"  |MM"TLPL"MM"TWHT"MMM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MMM"TWHT"MMMM"TLPL"'MMMM''MMMM'"TWHT"MM/    %s",
-	""TWHT"  |MM"TLPL"MM"TWHT"MMM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MMM"TWHT"MMM\\MMMMM/\\MMMMM/      %s",
-	""TWHT"  |MM"TLPL"MM"TWHT"MMM"TLPL"MM"TWHT"MMMMMM"TLPL"MM"TWHT"MM"TLPL"MM"TWHT"MM"TLPL"MMMMM'"TWHT"M|                  %s",
-	""TWHT"  |MM"TLPL"MM"TWHT"MMM"TLPL"MMMMMMMMMMMMMMMMM MM'"TWHT"M/                   %s",
-	""TWHT"  |MMMMMMMMMMMMMMMMMMMMMMMMMMMM/                    %s",
-	"                                                    %s",
-	"                                                    %s",
-	"                                                    %s"
+	"                                                     " TNRM,
+	"                                                    " TNRM,
+	"                                                    " TNRM,
+	"                                                    " TNRM,
+	TWHT "     _______               ____                     " TNRM,
+	TWHT "    /MMMMMMM/             /MMMM| _____  _____       " TNRM,
+	TWHT " __/M"TLPR".MMM."TWHT"M/_____________|M"TLPR".M"TWHT"MM|/MMMMM\\/MMMMM\\      " TNRM,
+	TWHT "|MMMM"TLPR"MM'"TWHT"MMMMMMMMMMMMMMMMMMM"TLPR"MM"TWHT"MMMM"TLPR".MMMM..MMMM."TWHT"MM\\    " TNRM,
+	TWHT "|MM"TLPR"MMMMMMM"TWHT"/m"TLPR"MMMMMMMMMMMMMMMMMMMMMM"TWHT"MMMM"TLPR"MM"TWHT"MMMM"TLPR"MM"TWHT"MM|   " TNRM,
+	TWHT "|MMMM"TLPR"MM"TWHT"MMM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MMMMM"TLPR"\\MMM"TWHT"MMM"TLPR"MM"TWHT"MMMM"TLPR"MM"TWHT"MMMM"TLPR"MM"TWHT"MM|   " TNRM,
+	TWHT "  |MM"TLPR"MM"TWHT"MMM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MMM"TWHT"MMMM"TLPR"'MMMM''MMMM'"TWHT"MM/    " TNRM,
+	TWHT "  |MM"TLPR"MM"TWHT"MMM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MMM"TWHT"MMM\\MMMMM/\\MMMMM/      " TNRM,
+	TWHT "  |MM"TLPR"MM"TWHT"MMM"TLPR"MM"TWHT"MMMMMM"TLPR"MM"TWHT"MM"TLPR"MM"TWHT"MM"TLPR"MMMMM'"TWHT"M|                  " TNRM,
+	TWHT "  |MM"TLPR"MM"TWHT"MMM"TLPR"MMMMMMMMMMMMMMMMM MM'"TWHT"M/                   " TNRM,
+	TWHT "  |MMMMMMMMMMMMMMMMMMMMMMMMMMMM/                    " TNRM,
+	"                                                    " TNRM,
+	"                                                    " TNRM,
+	"                                                    " TNRM
 };
-*/
 
 //tested, working
 char* fedora_logo[] =
