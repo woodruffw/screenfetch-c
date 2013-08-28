@@ -32,10 +32,6 @@ gcc screenfetch-c.c -o screenfetch -std=c99
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
 screenfetch-c.c's prototypes and macros.
 
-_Note:_ For some reason, compiling screenfetch-c on Lubuntu results in a bunch of implicit warnings,
-despite unistd.h and all required functions being present.
-If this occurs for you, just add the '-w' flag to your compilation command to suppress the warnings.
-
 ### Examples:
 
 ![alt tag] (http://puu.sh/4bxE9.png)

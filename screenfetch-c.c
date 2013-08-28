@@ -48,6 +48,7 @@
 	I hereby regrant this version of screenFetch under the same MIT license.
 	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
 */
+#define _XOPEN_SOURCE 700
 
 #include <stdio.h> //for a medley of I/O operations, including popen/pclose
 #include <stdlib.h> //for getenv, etc
@@ -113,12 +114,6 @@ int main(int argc, char** argv)
 	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
-	
-	//for some reason my tests on lubuntu required manual definition of optarg and optopt for getopt()
-	#ifdef __linux__
-		extern char* optarg;
-		extern char optopt;
-	#endif 
 
 	char c; 
 
