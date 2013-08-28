@@ -331,8 +331,11 @@ void detect_distro(char* str)
 
 			if (distro_file != NULL)
 			{
-				//fgets(distro_name_str, MAX_STRLEN, distro_file);
 				fclose(distro_file);
+
+				distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"DISTRIB_ID=\\n\"", "r");
+				fgets(str, MAX_STRLEN, distro_file);
+				pclose(distro_file);
 			}
 
 			else
@@ -667,7 +670,7 @@ void detect_cpu(char* str)
 
 	else if (OS == LINUX || OS == NETBSD)
 	{
-		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1", "r");
+		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1 | tr -d \"\\n\"", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
@@ -973,7 +976,7 @@ void detect_res(char* str)
 
 	else if (OS == LINUX)
 	{
-		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g'", "r");
+		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
@@ -1228,7 +1231,12 @@ void main_output(void)
 
 		else if (STRCMP(distro_str, "Ubuntu"))
 		{
-
+			for (int i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", ubuntu_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			//ugly fix
+			printf("%s\n%s\n", ubuntu_logo[16], ubuntu_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Debian"))
@@ -1442,7 +1450,7 @@ void take_screenshot(void)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		system("scrot -cd3 ~/screenfetch_screenshot.png 2> /dev/null");
+		system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
 	}
 
 	char* loc = getenv("HOME");
