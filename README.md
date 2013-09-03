@@ -15,10 +15,10 @@ Right now, the majority of detection functions are complete.
 However, some of the larger ones (detect_distro(), detect_wm(), 
 detect_pkgs()) are lacking Linux/BSD sections due to a lack of a testing 
 environment.
-screenfetch-c has been successfully compiled and run on Cygwin and OS X, 
+screenfetch-c has been successfully compiled and run on Cygwin, OS X, and a select few Linux distros (see below), 
 with most information being displayed correctly.
 However, more testing needs to be done.
-Current phase: completion of BSD/Linux sections, as well as addition of colors to outputted stats.
+Current phase: completion of BSD/Linux sections, bug squashing, general testing.
 
 ### Installing screenfetch-c:
 
@@ -84,11 +84,16 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 - [ ] Linux (upon failure to detect a specific distro)
 
 ### Examples:
-
+Windows:
 ![alt tag] (http://puu.sh/4bxE9.png)
+OS X:
 ![alt tag] (http://puu.sh/4bxFQ.png)
+Ubuntu based:
 ![alt tag] (http://puu.sh/4cGCt.png)
+Fedora:
 ![alt tag] (http://puu.sh/4cK61.png)
+Linux Mint:
 ![alt tag] (http://puu.sh/4d8VL.png)
+Linux Mint Debian (LMDE):
 ![alt tag] (http://puu.sh/4dc1x.png)
 

@@ -91,16 +91,15 @@ void detect_gpu(char* str);
 void detect_disk(char* str);
 void detect_mem(char* str);
 void detect_shell(char* str);
-void detect_shell_version(char* str);
 void detect_res(char* str);
 void detect_de(char* str);
 void detect_wm(char* str);
 void detect_wm_theme(char* str);
 void detect_gtk(char* str);
-void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* shell_vers, char* res, char* de, char* wm, char* wm_theme, char* gtk);
+void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk);
 
 //other function definitions
-void main_output(void);
+void main_output(char* data[], char* data_names[]);
 char* safe_strncpy(char* destination, const char* source, size_t num); 
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
 void display_version(void);

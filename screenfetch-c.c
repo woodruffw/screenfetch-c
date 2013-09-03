@@ -69,7 +69,6 @@ static char gpu_str[MAX_STRLEN];
 static char disk_str[MAX_STRLEN];
 static char mem_str[MAX_STRLEN];
 static char shell_str[MAX_STRLEN];
-static char shell_version_str[MAX_STRLEN];
 static char res_str[MAX_STRLEN];
 static char de_str[MAX_STRLEN];
 static char wm_str[MAX_STRLEN];
@@ -108,7 +107,6 @@ int main(int argc, char** argv)
 	safe_strncpy(disk_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(mem_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(shell_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(shell_version_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(res_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(de_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
@@ -176,7 +174,6 @@ int main(int argc, char** argv)
 	detect_disk(disk_str);
 	detect_mem(mem_str);
 	detect_shell(shell_str);
-	detect_shell_version(shell_version_str);
 	detect_res(res_str);
 	detect_de(de_str);
 	detect_wm(wm_str);
@@ -184,10 +181,10 @@ int main(int argc, char** argv)
 	detect_gtk(gtk_str);
 
 	//detected_arr is filled with the gathered from the detection functions
-	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 	//actual output
-	main_output();
+	main_output(detected_arr, detected_arr_names);
 
 	if (screenshot)
 	{
@@ -197,7 +194,7 @@ int main(int argc, char** argv)
 	//debug section - only executed if -d flag is tripped
 	if (debug)
 	{
-		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, shell_version_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 		if (STRCMP(distro_str, "Unknown"))
 		{
@@ -254,11 +251,6 @@ int main(int argc, char** argv)
 			DEBUG_OUT("Shell detection failure: ", shell_str);
 		}
 
-		if (STRCMP(shell_version_str, "Unknown"))
-		{
-			DEBUG_OUT("Shell version detection failure: ", shell_version_str);
-		}
-
 		if (STRCMP(res_str, "Unknown"))
 		{
 			DEBUG_OUT("Resolution detection failure: ", res_str);
@@ -283,6 +275,9 @@ int main(int argc, char** argv)
 		{
 			DEBUG_OUT("GTK detection failure: ", gtk_str);
 		}
+
+		printf("%s\n", "Enter any character to end the program.");
+		getchar();
 	}
 
 	return EXIT_SUCCESS;
@@ -536,7 +531,7 @@ void detect_pkgs(char* str)
 
 	else if (OS == OSX)
 	{
-		pkgs_file = popen("ls /usr/local/bin | wc -w", "r");
+		pkgs_file = popen("ls /usr/local/bin 2> /dev/null | wc -w", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 
@@ -859,71 +854,57 @@ void detect_shell(char* str)
 {
 	FILE* shell_file;
 
-	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
-	fgets(str, 128, shell_file);
-	pclose(shell_file);
-
-	return;
-}
-
-//detect_shell_version
-//detects the version of the shell detected in detect_shell()
-//returns a string containing the version
-void detect_shell_version(char* str)
-{
-	FILE* shell_version_file;
-
+	char shell_name[MAX_STRLEN];
 	char temp_vers_str[MAX_STRLEN];
 
-	if (STRCMP(shell_str, "bash"))
+	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
+	fgets(shell_name, 128, shell_file);
+	pclose(shell_file);
+
+	if (STRCMP(shell_name, "bash"))
 	{
-		shell_version_file = popen("bash --version | head -1", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
+		shell_file = popen("bash --version | head -1", "r");
+		fgets(temp_vers_str, MAX_STRLEN, shell_file);
 		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%.*s", 17, temp_vers_str + 10);
-		pclose(shell_version_file);
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 17, temp_vers_str + 10);
+		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_str, "zsh"))
+	else if (STRCMP(shell_name, "zsh"))
 	{
-		shell_version_file = popen("zsh --version", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);	
+		shell_file = popen("zsh --version", "r");
+		fgets(temp_vers_str, MAX_STRLEN, shell_file);	
 		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%.*s", 5, temp_vers_str + 4);
-		pclose(shell_version_file);
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 5, temp_vers_str + 4);
+		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_str, "csh"))
+	else if (STRCMP(shell_name, "csh"))
 	{
-		shell_version_file = popen("csh --version | head -1", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
+		shell_file = popen("csh --version | head -1", "r");
+		fgets(temp_vers_str, MAX_STRLEN, shell_file);
 		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%.*s", 7, temp_vers_str + 5);
-		pclose(shell_version_file);
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, temp_vers_str + 5);
+		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_str, "ksh"))
+	else if (STRCMP(shell_name, "ksh"))
 	{
 		
 	}
 	
-	else if (STRCMP(shell_str, "fish"))
+	else if (STRCMP(shell_name, "fish"))
 	{
-		shell_version_file = popen("fish --version", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_version_file);
+		shell_file = popen("fish --version", "r");
+		fgets(temp_vers_str, MAX_STRLEN, shell_file);
 		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%.*s", 13, str + 6);
-		pclose(shell_version_file);
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 13, str + 6);
+		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_str, "dash"))
+	else if (STRCMP(shell_name, "dash"))
 	{
 
-	}
-	
-	if (verbose)
-	{
-		VERBOSE_OUT("Found shell version as ", str);
 	}
 
 	return;
@@ -1117,7 +1098,7 @@ void detect_gtk(char* str)
 //fill_detected_arr
 //fills an array of 15 strings with the data gathered from the detect functions
 //WARNING: the order of the parameters is NOT the order of the array
-void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* shell_vers, char* res, char* de, char* wm, char* wm_theme, char* gtk)
+void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk)
 {
 	arr[0] = host;
 	arr[1] = distro;
@@ -1125,7 +1106,7 @@ void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char
 	arr[3] = arch;
 	arr[4] = cpu;
 	arr[5] = gpu;
-	arr[6] = shell; //figure out how to include shell_vers in here
+	arr[6] = shell;
 	arr[7] = pkgs;
 	arr[8] = disk;
 	arr[9] = mem;
@@ -1174,7 +1155,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 
 //main_output
 //the primary output for screenfetch-c - all info and ascii art is printed here
-void main_output(void)
+void main_output(char* data[], char* data_names[])
 {
 	if (OS == CYGWIN)
 	{
