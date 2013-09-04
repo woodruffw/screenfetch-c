@@ -39,7 +39,6 @@ screenfetch-c has no dependencies outside of the standard/POSIX libraries.
 
 ```
 gcc screenfetch-c.c -o screenfetch -std=c99
-./screenfetch [options]
 ```
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
@@ -85,15 +84,21 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 
 ### Examples:
 Windows:
+
 ![alt tag] (http://puu.sh/4bxE9.png)
 OS X:
+
 ![alt tag] (http://puu.sh/4bxFQ.png)
 Ubuntu based:
+
 ![alt tag] (http://puu.sh/4cGCt.png)
 Fedora:
+
 ![alt tag] (http://puu.sh/4cK61.png)
 Linux Mint:
+
 ![alt tag] (http://puu.sh/4d8VL.png)
 Linux Mint Debian (LMDE):
+
 ![alt tag] (http://puu.sh/4dc1x.png)
 
