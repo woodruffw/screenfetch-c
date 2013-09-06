@@ -11,13 +11,17 @@
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
 	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
+	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
 
 	PLANNED IMPROVEMENTS:
 	Add libcpuid to decrease reliance on shell utilities.
-	Streamline code.
+	Streamline code, make C89 (ANSI) compatible.
 
 	TODO:
-	Figure out DE/WM/WM theme/GTK/Android detection
+	Figure out DE/WM/WM theme/GTK detection
+	Fully implement detect_distro() on Linux.
+	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
+
 
 	**From the original author:**
 
@@ -48,16 +52,17 @@
 	I hereby regrant this version of screenFetch under the same MIT license.
 	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
 */
+
 #define _XOPEN_SOURCE 700
 
-#include <stdio.h> //for a medley of I/O operations, including popen/pclose
-#include <stdlib.h> //for getenv, etc
-#include <stdbool.h> //for the bool type
-#include <string.h> //for strcmp, strncpy, etc.
-#include <unistd.h> //for sleep, getopt
-#include "screenfetch-c.h" //contains function prototypes, macros, ascii logos
+#include <stdio.h> /* for a medley of I/O operations, including popen/pclose */
+#include <stdlib.h> /* for getenv, etc */
+#include <stdbool.h> /* for the bool type */
+#include <string.h> /* for strcmp, strncpy, etc. */
+#include <unistd.h> /* for sleep, getopt */
+#include "screenfetch-c.h" /* contains function prototypes, macros, ascii logos */
 
-//string definitions
+/* string definitions */
 static char distro_str[MAX_STRLEN];
 static char arch_str[MAX_STRLEN];
 static char host_str[MAX_STRLEN];
@@ -77,7 +82,7 @@ static char gtk_str[MAX_STRLEN];
 static char* detected_arr[16];
 static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
-//other definitions
+/* other definitions */
 bool debug = false;
 bool error = true;
 bool verbose = false;
@@ -86,7 +91,7 @@ bool ascii = false;
 
 int main(int argc, char** argv)
 {
-	//first off, don't allow unknown OSes to run this program
+	/* first off, don't allow unknown OSes to run this program */
 	if (OS == UNKNOWN)
 	{
 		ERROR_OUT("Error: ", "This program isn't designed for your OS.");
@@ -95,7 +100,7 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	//copy 'Unknown' to each string and append a null character
+	/* copy 'Unknown' to each string and append a null character */
 	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
@@ -126,23 +131,23 @@ int main(int argc, char** argv)
 				SET_VERBOSE(true);
 				break;
 			case 'n':
-				//something like SET_LOGO(false);
+				/* something like SET_LOGO(false); */
 				break;
 			case 'N':
-				//something like SET_COLOR(false);
+				/* something like SET_COLOR(false); */
 				break;
 			case 's':
 				SET_SCREENSHOT(true);
 				break;
 			case 'S':
 				SET_SCREENSHOT(true);
-				//do something with optarg
+				/* do something with optarg */
 				break;
 			case 'D':
 				SET_DISTRO(optarg);
 				break;
 			case 'A':
-				//something like SET_DISTRO_ART(optarg);
+				/* something like SET_DISTRO_ART(optarg); */
 				break;
 			case 'E':
 				SET_ERROR(false);
@@ -162,7 +167,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	//each string is filled by its respective function
+	/* each string is filled by its respective function */
 	detect_distro(distro_str);
 	detect_arch(arch_str);
 	detect_host(host_str);
@@ -180,10 +185,10 @@ int main(int argc, char** argv)
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
 
-	//detected_arr is filled with the gathered from the detection functions
+	/* detected_arr is filled with the gathered from the detection functions */
 	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
-	//actual output
+	/* actual output */
 	main_output(detected_arr, detected_arr_names);
 
 	if (screenshot)
@@ -191,7 +196,7 @@ int main(int argc, char** argv)
 		take_screenshot();
 	}
 
-	//debug section - only executed if -d flag is tripped
+	/* debug section - only executed if -d flag is tripped */
 	if (debug)
 	{
 		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
@@ -285,9 +290,10 @@ int main(int argc, char** argv)
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
 
-//detect_distro
-//detects the computer's distribution (really only relevant on Linux)
-//returns a string containing the distro name (may vary in format)
+/*  detect_distro
+    detects the computer's distribution (really only relevant on Linux)
+    returns a string containing the distro name (may vary in format)
+*/
 void detect_distro(char* str)
 {
 	if (STRCMP(str, "Unknown")) //if distro_str was NOT set by the -D flag
@@ -302,7 +308,7 @@ void detect_distro(char* str)
 			fgets(distro_name_str, MAX_STRLEN, distro_file);
 			pclose(distro_file);
 
-			//currently only works on W7, working on a solution
+			/* currently only works on W7, working on a solution */
 			snprintf(str, MAX_STRLEN, "%.*s", 19, distro_name_str);
 		}
 
@@ -328,7 +334,7 @@ void detect_distro(char* str)
 				pclose(distro_file);
 			}
 
-			else //begin the tedious task of checking each /etc/*-release
+			else /* begin the tedious task of checking each /etc/*-release */
 			{
 				distro_file = fopen("/etc/fedora-release", "r");
 
@@ -367,9 +373,10 @@ void detect_distro(char* str)
 	return;
 }
 
-//detect_arch
-//detects the computer's architecture
-//returns a string containing the arch
+/*  detect_arch
+    detects the computer's architecture
+    returns a string containing the arch
+*/
 void detect_arch(char* str)
 {
 	FILE* arch_file;
@@ -396,12 +403,13 @@ void detect_arch(char* str)
 	return;
 }
 
-//detect_host
-//detects the computer's hostname and active user and formats them
-//returns a string of format "user@hostname"
+/*  detect_host
+    detects the computer's hostname and active user and formats them
+    returns a string of format "user@hostname"
+*/
 void detect_host(char* str)
 {
-	char* given_user; //has to be a pointer for getenv()
+	char* given_user; /* has to be a pointer for getenv(), god knows why */
 	char given_host[MAX_STRLEN];
 
 	given_user = getenv("USER");
@@ -410,7 +418,7 @@ void detect_host(char* str)
 	fgets(given_host, MAX_STRLEN, host_file);
 	pclose(host_file);
 
-	//format str
+	/* format str */
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	if (verbose)
@@ -421,9 +429,10 @@ void detect_host(char* str)
 	return;
 }
 
-//detect_kernel
-//detects the computer's kernel
-//returns a string containing the kernel name, version, etc
+/*  detect_kernel
+    detects the computer's kernel
+    returns a string containing the kernel name, version, etc
+*/
 void detect_kernel(char* str)
 {
 	FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
@@ -438,15 +447,16 @@ void detect_kernel(char* str)
 	return;
 }
 
-//detect_uptime
-//detects the computer's uptime
-//returns a string of format "<>d <>h <>m <>s", where <> is a number
+/*  detect_uptime
+    detects the computer's uptime
+    returns a string of format "<>d <>h <>m <>s", where <> is a number
+*/
 void detect_uptime(char* str)
 {
 	FILE* uptime_file;
 
 	long uptime;
-	long now, boottime; //may or may not be used depending on OS
+	long now, boottime; /* may or may not be used depending on OS */
 	int secs;
 	int mins;
 	int hrs;
@@ -462,11 +472,11 @@ void detect_uptime(char* str)
 	else if (OS == OSX || OS == FREEBSD || OS == DFBSD)
 	{
 		uptime_file = popen("sysctl -n kern.boottime | cut -d \"=\" -f 2 | cut -d \",\" -f 1", "r");
-		fscanf(uptime_file, "%ld", &boottime); //get boottime in secs
+		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 		pclose(uptime_file);
 
 		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &now); //get current time in secs
+		fscanf(uptime_file, "%ld", &now); /* get current time in secs */
 		pclose(uptime_file);
 
 		uptime = now - boottime;
@@ -485,11 +495,11 @@ void detect_uptime(char* str)
 	else if (OS == OPENBSD)
 	{
 		uptime_file = popen("sysctl -n kern.boottime", "r");
-		fscanf(uptime_file, "%ld", &boottime); //get current boottime in secs
+		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 		pclose(uptime_file);
 
 		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &now); //get current time in secs
+		fscanf(uptime_file, "%ld", &now); /* get current time in secs */
 		pclose(uptime_file);
 
 		uptime = now - boottime;
@@ -503,16 +513,15 @@ void detect_uptime(char* str)
 		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found uptime as ", str);
-	}
 
 	return;
 }
 
-//detect_pkgs
-//detects the number of packages installed on the computer
-//returns a string containing the number of packages
+/*  detect_pkgs
+    detects the number of packages installed on the computer
+    returns a string containing the number of packages
+*/
 void detect_pkgs(char* str)
 {
 	FILE* pkgs_file;
@@ -535,7 +544,7 @@ void detect_pkgs(char* str)
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 
-		pkgs_file = fopen("/usr/local/bin/brew", "r"); //test for existence of homebrew
+		pkgs_file = fopen("/usr/local/bin/brew", "r"); /* test for existence of homebrew */
 
 		if (pkgs_file != NULL)
 		{
@@ -549,7 +558,7 @@ void detect_pkgs(char* str)
 			packages += brew_pkgs; 
 		}
 
-		//test for existence of macports, fink, etc here
+		/* test for existence of macports, fink, etc here */
 	}
 
 	else if (OS == LINUX)
@@ -596,11 +605,12 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		//if linux disto detection failed
-		else if (STRCMP(distro_str, "Linux") && error)
+		/* if linux disto detection failed */
+		else if (STRCMP(distro_str, "Linux"))
 		{
 			safe_strncpy(str, "Not Found", MAX_STRLEN);
-			ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
+			if (error)
+				ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
 		}
 	}
 
@@ -627,9 +637,10 @@ void detect_pkgs(char* str)
 	return;
 }
 
-//detect_cpu
-//detects the computer's CPU brand/name-string
-//returns a string containing the CPU string
+/*  detect_cpu
+    detects the computer's CPU brand/name-string
+    returns a string containing the CPU string
+*/
 void detect_cpu(char* str)
 {
 	FILE* cpu_file;
@@ -670,9 +681,10 @@ void detect_cpu(char* str)
 	return;
 }
 
-//detect_gpu
-//detects the computer's GPU brand/name-string
-//returns a string containing the GPU string
+/*  detect_gpu
+    detects the computer's GPU brand/name-string
+    returns a string containing the GPU string
+*/
 void detect_gpu(char* str)
 {
 	FILE* gpu_file;
@@ -704,39 +716,44 @@ void detect_gpu(char* str)
 	return;
 }
 
-//detect_disk
-//detects the computer's total HDD/SSD capacity and usage
-//returns a string of format: "<>G / <>G", where <> is a number
+/*  detect_disk
+    detects the computer's total HDD/SSD capacity and usage
+    returns a string of format: "<>G / <>G", where <> is a number
+*/
 void detect_disk(char* str)
 {
 	FILE* disk_file;
 
-	char disk_total_str[MAX_STRLEN];
-	char disk_free_str[MAX_STRLEN];
+	int disk_total;
+	int disk_used;
+	int disk_percentage;
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n '", "r");
-		fgets(disk_total_str, MAX_STRLEN, disk_file);
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r\\n '", "r");
-		fgets(disk_free_str, MAX_STRLEN, disk_file);
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
 
 	else if (ISBSD())
 	{
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_total_str, MAX_STRLEN, disk_file);
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r G'", "r");
+		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r '", "r");
-		fgets(disk_free_str, MAX_STRLEN, disk_file);
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r G'", "r");
+		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
 
-	snprintf(str, MAX_STRLEN, "%s / %s", disk_free_str, disk_total_str);
+	/* ugly casting */
+	disk_percentage = (int) ((float) disk_used / disk_total) * 100;
+
+	snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 
 	if (verbose)
 	{
@@ -746,16 +763,17 @@ void detect_disk(char* str)
 	return;
 }
 
-//detect_mem
-//detects the computer's total and used RAM
-//returns a string of format: "<>MB / <>MB", where <> is a number
+/*  detect_mem
+    detects the computer's total and used RAM
+    returns a string of format: "<>MB / <>MB", where <> is a number
+*/
 void detect_mem(char* str)
 {
 	FILE* mem_file;
 
 	long kb = 1024;
 	long mb = kb * kb;
-	long total_mem; // each of the following MAY contain bytes/kbytes/mbytes/pages
+	long total_mem; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
 	long free_mem; 
 	long used_mem;
 
@@ -786,7 +804,7 @@ void detect_mem(char* str)
 
 		total_mem /= (long) mb;
 
-		free_mem *= 4096; //4KiB is OS X's page size
+		free_mem *= 4096; /* 4KiB is OS X's page size */
 		free_mem /= (long) mb;
 
 		used_mem = total_mem - free_mem;
@@ -806,7 +824,7 @@ void detect_mem(char* str)
 
 	else if (OS == FREEBSD)
 	{
-		//it's unknown if FreeBSD's /proc/meminfo is in the same format as Cygwin's
+		/* it's unknown if FreeBSD's /proc/meminfo is in the same format as Cygwin's */
 
 		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
 		fscanf(mem_file, "%ld", &total_mem);
@@ -847,15 +865,19 @@ void detect_mem(char* str)
 	return;
 }
 
-//detect_shell
-//detects the shell currently running on the computer
-//returns a string containing the name of that shell
+/*  detect_shell
+    detects the shell currently running on the computer
+    returns a string containing the name of that shell
+    CAVEAT: shell version detection relies on the standard versioning format for 
+    each shell. If any shell's older (or newer versions) suddenly begin to use a new
+    scheme, the version may be displayed incorrectly.
+*/
 void detect_shell(char* str)
 {
 	FILE* shell_file;
 
 	char shell_name[MAX_STRLEN];
-	char temp_vers_str[MAX_STRLEN];
+	char vers_str[MAX_STRLEN];
 
 	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
 	fgets(shell_name, 128, shell_file);
@@ -864,27 +886,27 @@ void detect_shell(char* str)
 	if (STRCMP(shell_name, "bash"))
 	{
 		shell_file = popen("bash --version | head -1", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_file);
-		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 17, temp_vers_str + 10);
+		fgets(vers_str, MAX_STRLEN, shell_file);
+		/* evil pointer arithmetic */
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 17, vers_str + 10);
 		pclose(shell_file);
 	}
 
 	else if (STRCMP(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_file);	
-		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 5, temp_vers_str + 4);
+		fgets(vers_str, MAX_STRLEN, shell_file);	
+		/* evil pointer arithmetic */
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 5, vers_str + 4);
 		pclose(shell_file);
 	}
 
 	else if (STRCMP(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_file);
-		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, temp_vers_str + 5);
+		fgets(vers_str, MAX_STRLEN, shell_file);
+		/* evil pointer arithmetic */
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, vers_str + 5);
 		pclose(shell_file);
 	}
 
@@ -896,9 +918,9 @@ void detect_shell(char* str)
 	else if (STRCMP(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
-		fgets(temp_vers_str, MAX_STRLEN, shell_file);
-		//evil pointer arithmetic
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 13, str + 6);
+		fgets(vers_str, MAX_STRLEN, shell_file);
+		/* evil pointer arithmetic */
+		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 13, vers_str + 6);
 		pclose(shell_file);
 	}
 
@@ -910,9 +932,10 @@ void detect_shell(char* str)
 	return;
 }
 
-//detect_res
-//detects the combined resoloution of all monitors attached to the computer
-//returns a string of format: "<>x<>", where <> is a number
+/*  detect_res
+    detects the combined resoloution of all monitors attached to the computer
+    returns a string of format: "<>x<>", where <> is a number
+*/
 void detect_res(char* str)
 {
 	FILE* res_file;
@@ -962,9 +985,10 @@ void detect_res(char* str)
 	return;
 }
 
-//detect_de
-//detects the desktop environment currently running on top of the OS
-//returns a string containing the name of the DE
+/*  detect_de
+    detects the desktop environment currently running on top of the OS
+    returns a string containing the name of the DE
+*/
 void detect_de(char* str)
 {
 	FILE* de_file;
@@ -994,7 +1018,7 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		//this is going to be complicated
+		/* this is going to be complicated */
 	}
 
 	if (verbose)
@@ -1005,9 +1029,10 @@ void detect_de(char* str)
 	return;
 }
 
-//detect_wm
-//detects the window manager currently running on top of the OS
-//returns a string containing the name of the WM
+/* detect_wm
+   detects the window manager currently running on top of the OS
+   returns a string containing the name of the WM
+*/
 void detect_wm(char* str)
 {
 	FILE* wm_file;
@@ -1017,14 +1042,14 @@ void detect_wm(char* str)
 	if (OS == CYGWIN)
 	{
 		wm_file = popen("tasklist | grep -o 'bugn' | tr -d '\\r\\n'", "r");
-		//test for bugn
+		/* test for bugn */
 		pclose(wm_file);
 
 		wm_file = popen("tasklist | grep -o 'Windawesome' | tr -d '\\r \\n'", "r");
-		//test for Windawesome
+		/* test for Windawesome */
 		pclose(wm_file);
 
-		//else
+		/* else */
 		safe_strncpy(str, "DWM", MAX_STRLEN);
 	}
 
@@ -1046,16 +1071,17 @@ void detect_wm(char* str)
 	return;
 }
 
-//detect_wm_theme
-//detects the theme associated with the WM detected in detect_wm()
-//returns a string containing the name of the WM theme
+/*  detect_wm_theme
+    detects the theme associated with the WM detected in detect_wm()
+    returns a string containing the name of the WM theme
+*/
 void detect_wm_theme(char* str)
 {
 	FILE* wm_theme_file;
 
 	if (OS == CYGWIN)
 	{
-		//nasty one-liner
+		/* nasty one-liner */
 		wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes' /v 'CurrentTheme' | grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'", "r");
 		fgets(str, MAX_STRLEN, wm_theme_file);
 		pclose(wm_theme_file);
@@ -1070,9 +1096,10 @@ void detect_wm_theme(char* str)
 	return;
 }
 
-//detect_gtk
-//detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-//returns a string containing the name of the gtk theme
+/*  detect_gtk
+    detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
+    returns a string containing the name of the gtk theme
+*/
 void detect_gtk(char* str)
 {
 	FILE* gtk_file;
@@ -1081,7 +1108,7 @@ void detect_gtk(char* str)
 
 	if (OS == CYGWIN)
 	{
-		//get the terminal's font
+		/* get the terminal's font */
 		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$'", "r");
 		fgets(font_str, MAX_STRLEN, gtk_file);
 		pclose(gtk_file);
@@ -1095,9 +1122,10 @@ void detect_gtk(char* str)
 	return;
 }
 
-//fill_detected_arr
-//fills an array of 15 strings with the data gathered from the detect functions
-//WARNING: the order of the parameters is NOT the order of the array
+/*  fill_detected_arr
+    fills an array of 15 strings with the data gathered from the detect functions
+    WARNING: the order of the parameters is NOT the order of the array
+*/
 void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk)
 {
 	arr[0] = host;
@@ -1125,9 +1153,10 @@ void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char
 
 /*  **  BEGIN AUXILIARY FUNCTIONS  **  */
 
-//safe_strncpy
-//calls strncpy with the given params, then inserts a null char at the last position
-//returns a string containing the copied data
+/*  safe_strncpy
+    calls strncpy with the given params, then inserts a null char at the last position
+    returns a pointer to a string containing the copied data (same as destination)
+*/
 char* safe_strncpy(char* destination, const char* source, size_t num)
 {
 	char* ret = strncpy(destination, source, num);
@@ -1135,9 +1164,10 @@ char* safe_strncpy(char* destination, const char* source, size_t num)
 	return ret;
 }
 
-//split_uptime
-//splits param uptime into individual time-units
-//PREREQ: uptime _must_ be in seconds
+/*  split_uptime
+    splits param uptime into individual time-units
+    PREREQ: uptime _must_ be in seconds
+*/
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 {
 	*secs = (int) uptime % 60;
@@ -1153,13 +1183,16 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
 
-//main_output
-//the primary output for screenfetch-c - all info and ascii art is printed here
+/*  main_output
+    the primary output for screenfetch-c - all info and ascii art is printed here
+*/
 void main_output(char* data[], char* data_names[])
 {
+	int i;
+
 	if (OS == CYGWIN)
 	{
-		for (int i = 0; i < 16; i++)
+		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s\n", windows_logo[i], detected_arr_names[i], detected_arr[i]);
 		}
@@ -1167,7 +1200,7 @@ void main_output(char* data[], char* data_names[])
 
 	else if (OS == OSX)
 	{
-		for (int i = 0; i < 16; i++)
+		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s\n", macosx_logo[i], detected_arr_names[i], detected_arr[i]);
 		}
@@ -1187,81 +1220,81 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "LinuxMint"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", mint_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", mint_logo[16], mint_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "LMDE"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", lmde_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", lmde_logo[16], lmde_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Ubuntu"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", ubuntu_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", ubuntu_logo[16], ubuntu_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Debian"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", debian_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", debian_logo[16], debian_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "CrunchBang"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", crunchbang_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", crunchbang_logo[16], crunchbang_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Gentoo"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", gentoo_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", gentoo_logo[16], gentoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Funtoo"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", funtoo_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", funtoo_logo[16], funtoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Fedora"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", fedora_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", fedora_logo[16], fedora_logo[17]);
 		}
 
@@ -1272,11 +1305,11 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "OpenSUSE"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", opensuse_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", opensuse_logo[16], opensuse_logo[17]);
 		}
 
@@ -1367,22 +1400,22 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "Linux"))
 		{
-			for (int i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++)
 			{
 				printf("%s %s%s\n", linux_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
-			//ugly fix
+			/* ugly fix */
 			printf("%s\n%s\n", linux_logo[16], linux_logo[17]);
 		}
 	}
 
 	else if (OS == FREEBSD)
 	{
-		for (int i = 0; i < 16; i++)
+		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s\n", freebsd_logo[i], detected_arr_names[i], detected_arr[i]);
 		}
-		//ugly fix
+		/* ugly fix */
 		printf("%s\n%s\n", freebsd_logo[16], freebsd_logo[17]);
 	}
 
@@ -1404,8 +1437,9 @@ void main_output(char* data[], char* data_names[])
 	return;
 }
 
-//display_version
-//called if the -v flag is tripped, outputs the current version of screenfetch-c
+/*  display_version
+    called if the -v flag is tripped, outputs the current version of screenfetch-c
+*/
 void display_version(void)
 {
 	printf("%s\n", TBLU "screenfetch-c - Version 0.5 ALPHA");
@@ -1415,30 +1449,32 @@ void display_version(void)
 	return;
 }
 
-//display_help
-//called if the -h flag is tripped, tells the user where to find the manpage
+/*  display_help
+    called if the -h flag is tripped, tells the user where to find the manpage
+*/
 void display_help(void)
 {
 	printf("%s\n", TBLU "screenfetch-c");
 	printf("%s\n", "A rewrite of screenFetch, the popular shell script, in C.");
 	printf("%s\n", "Operating Systems currently supported:");
 	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, and OS X.");
-	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all.");
+	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all (and is disabled by default).");
 	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage." TNRM);
 	return;
 }
 
-//take_screenshot
-//takes a screenshot and saves it to $HOME 
-//SECURITY WARNING: THIS FUNCTION MAKES SYSTEM CALLS
+/*  take_screenshot
+    takes a screenshot and saves it to $HOME 
+    CAVEAT: THIS FUNCTION MAKES SYSTEM CALLS
+*/
 void take_screenshot(void)
 {
 	FILE* ss_file;
 
 	if (OS == CYGWIN || OS == UNKNOWN)
 	{
-		//cygwin does not currently have a simple screenshot solution
-		//potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X
+		/* cygwin does not currently have a simple screenshot solution */
+		/* potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X */
 		ERROR_OUT("Error: ", "This program does not currently support screenshots on your OS.");
 		return;
 	}
@@ -1483,3 +1519,6 @@ void take_screenshot(void)
 }
 
 /*  **  END FLAG/OUTPUT/MISC FUNCTIONS  **  */
+
+
+/* ** EOF ** */
