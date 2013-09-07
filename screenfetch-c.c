@@ -327,17 +327,22 @@ void detect_distro(char* str)
 
 			if (distro_file != NULL)
 			{
-				fscanf(distro_file, "%9s", distro_name_str);
+				fscanf(distro_file, "%4s", distro_name_str);
 				fclose(distro_file);
 
-				if (STRCMP(distro_name_str, "BackTrack"))
+				if (STRCMP(distro_name_str, "Back"))
 				{
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
 					return;
 				}
-				else if (STRCMP(distro_name_str, "CrunchBan"))
+				else if (STRCMP(distro_name_str, "Crun"))
 				{
 					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
+					return;
+				}
+				else if (STRCMP(distro_name_str, "LMDE"))
+				{
+					safe_strncpy(str, "LMDE", MAX_STRLEN);
 					return;
 				}
 			}
