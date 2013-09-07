@@ -53,7 +53,7 @@
 	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
 */
 
-#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are explicit in C99 */
 
 #include <stdio.h> /* for a medley of I/O operations, including popen/pclose */
 #include <stdlib.h> /* for getenv, etc */
@@ -323,10 +323,12 @@ void detect_distro(char* str)
 
 		else if (OS == LINUX)
 		{
+			/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
 			distro_file = fopen("/etc/issue", "r");
 
 			if (distro_file != NULL)
 			{
+				/* get the first 4 chars, that's all we need */
 				fscanf(distro_file, "%4s", distro_name_str);
 				fclose(distro_file);
 
@@ -343,6 +345,11 @@ void detect_distro(char* str)
 				else if (STRCMP(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
+					return;
+				}
+				else if (STRCMP(distro_name_str, "Debi"))
+				{
+					safe_strncpy(str, "Debian", MAX_STRLEN);
 					return;
 				}
 			}
@@ -915,7 +922,7 @@ void detect_shell(char* str)
 	char vers_str[MAX_STRLEN];
 
 	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
-	fgets(shell_name, 128, shell_file);
+	fgets(shell_name, MAX_STRLEN, shell_file);
 	pclose(shell_file);
 
 	if (STRCMP(shell_name, "bash"))
@@ -960,6 +967,11 @@ void detect_shell(char* str)
 	}
 
 	else if (STRCMP(shell_name, "dash"))
+	{
+		safe_strncpy(str, shell_name, MAX_STRLEN);
+	}
+
+	else if (STRCMP(shell_name, "ash"))
 	{
 
 	}
@@ -1229,7 +1241,7 @@ void main_output(char* data[], char* data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s\n", windows_logo[i], detected_arr_names[i], detected_arr[i]);
+			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, detected_arr_names[i], TWHT, detected_arr[i], TNRM);
 		}
 	}
 
@@ -1237,7 +1249,7 @@ void main_output(char* data[], char* data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s\n", macosx_logo[i], detected_arr_names[i], detected_arr[i]);
+			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
 		}
 	}
 
@@ -1267,7 +1279,7 @@ void main_output(char* data[], char* data_names[])
 		{
 			for (i = 0; i < 16; i++)
 			{
-				printf("%s %s%s\n", lmde_logo[i], detected_arr_names[i], detected_arr[i]);
+				printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
 			}
 			/* ugly fix */
 			printf("%s\n%s\n", lmde_logo[16], lmde_logo[17]);
@@ -1287,7 +1299,7 @@ void main_output(char* data[], char* data_names[])
 		{
 			for (i = 0; i < 16; i++)
 			{
-				printf("%s %s%s\n", debian_logo[i], detected_arr_names[i], detected_arr[i]);
+				printf("%s %s%s%s%s\n", debian_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
 			}
 			/* ugly fix */
 			printf("%s\n%s\n", debian_logo[16], debian_logo[17]);

@@ -22,6 +22,7 @@
 
 #ifdef __CYGWIN__
 	#define OS CYGWIN
+	/* this is a very bad solution */
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
 #elif defined __APPLE__ && __MACH__
@@ -103,6 +104,7 @@ void display_version(void);
 void display_help(void);
 void take_screenshot(void);
 
+/* ** ASCII LOGOS ** */
 
 /* tested, working */
 char* oldarch_logo[] = 
@@ -231,7 +233,7 @@ char* debian_logo[] =
 	"  "TWHT"`d$$'     ,$P\"\'   "TLRD"."TWHT"    $$$    " TNRM,
 	"  "TWHT" $$P      d$\'     "TLRD","TWHT"    $$P    " TNRM,
 	"  "TWHT" $$:      $$.   "TLRD"-"TWHT"    ,d$$'    " TNRM,
-	"  "TWHT" $$;      Y$b._   _,d$P'     " TNRM,
+	"  "TWHT" $$;      Y$b._   _,d$P'      " TNRM,
 	"  "TWHT" Y$$.    "TLRD"`."TWHT"`\"Y$$$$P\"'         " TNRM,
 	"  "TWHT" `$$b      "TLRD"\"-.__              " TNRM,
 	"  "TWHT"  `Y$$                        " TNRM,
