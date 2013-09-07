@@ -112,7 +112,7 @@ Linux Mint:
 Linux Mint Debian (LMDE):
 
 
-![alt tag] (http://puu.sh/4dc1x.png)
+![alt tag] (http://puu.sh/4lbM0.png)
 
 Elementary OS:
 
