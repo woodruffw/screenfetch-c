@@ -67,15 +67,15 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 - [ ] Slackware
 - [ ] Red Hat (RHEL)
 - [ ] Frugalware
-- [ ] Peppermint
+- [x] Peppermint
 - [ ] SolusOS
 - [ ] Mageia
 - [ ] ParabolaGNU/Linux-libre
 - [ ] Viperr
-- [ ] LinuxDeepin
+- [x] LinuxDeepin
 - [ ] Chakra
-- [ ] Fuduntu
-- [ ] Trisquel
+- [x] Fuduntu
+- [x] Trisquel
 - [ ] Manjaro
 - [x] ElementaryOS (styled as 'elementary OS')
 - [ ] Scientific Linux
@@ -133,3 +133,23 @@ Debian:
 
 
 ![alt tag] (http://puu.sh/4lhab.png)
+
+Peppermint:
+
+
+![alt tag] (http://puu.sh/4lik0.png)
+
+Trisquel:
+
+
+![alt tag] (http://puu.sh/4loQB.png)
+
+Fuduntu:
+
+
+![alt tag] (http://puu.sh/4lqfn.png)
+
+LinuxDeepin:
+
+
+![alt tag] (http://puu.sh/4lqOK.png)
