@@ -48,13 +48,13 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 
 ### Current Compatibility:
 - [x] OS X
-- [x] Windows (via Cygwin)
+- [x] Windows (requires Cygwin)
 - [x] Fedora
 - [x] Linux Mint
 - [x] LMDE
 - [x] Ubuntu (tested with Lubuntu)
 - [x] Fedora
-- [ ] Debian
+- [x] Debian
 - [x] CrunchBang
 - [ ] Gentoo
 - [ ] Funtoo
@@ -128,3 +128,8 @@ CrunchBang:
 
 
 ![alt tag] (http://puu.sh/4lbqY.png)
+
+Debian:
+
+
+![alt tag] (http://puu.sh/4lhab.png)
