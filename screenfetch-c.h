@@ -896,8 +896,8 @@ char* scientificlinux_logo[] =
 /* NOTE: has 20 lines, not 18 */
 char* backtracklinux_logo[] =
 {
-	""TWHT".............."
-	""TWHT"            ..,;:ccc,.                      	   " TNRM,
+	""TWHT"..............					" TNRM,
+	""TWHT"            ..,;:ccc,.                          " TNRM,
 	""TWHT"          ......''';lxO.                        " TNRM,
 	""TWHT".....''''..........,:ld;                        " TNRM,
 	""TWHT"           .';;;:::;,,.x,                       " TNRM,

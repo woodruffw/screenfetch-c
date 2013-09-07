@@ -323,6 +323,25 @@ void detect_distro(char* str)
 
 		else if (OS == LINUX)
 		{
+			distro_file = fopen("/etc/issue", "r");
+
+			if (distro_file != NULL)
+			{
+				fscanf(distro_file, "%9s", distro_name_str);
+				fclose(distro_file);
+
+				if (STRCMP(distro_name_str, "BackTrack"))
+				{
+					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
+					return;
+				}
+				else if (STRCMP(distro_name_str, "CrunchBan"))
+				{
+					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
+					return;
+				}
+			}
+
 			distro_file = fopen("/etc/lsb-release", "r");
 
 			if (distro_file != NULL)
@@ -579,7 +598,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS"))
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -656,14 +675,14 @@ void detect_cpu(char* str)
 
 	else if (OS == OSX)
 	{
-		cpu_file = popen("sysctl -n machdep.cpu.brand_string | tr -d '\\n'", "r");
+		cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
 
 	else if (OS == LINUX || OS == NETBSD)
 	{
-		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1 | tr -d \"\\n\"", "r");
+		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1 | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
@@ -736,9 +755,18 @@ void detect_disk(char* str)
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-		fscanf(disk_file, "%d", &disk_used);
-		pclose(disk_file);
+		if (OS != CYGWIN)
+		{
+			disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+			fscanf(disk_file, "%d", &disk_used);
+			pclose(disk_file);
+		}
+		else
+		{
+			disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r\\n G'", "r");
+			fscanf(disk_file, "%d", &disk_used);
+			pclose(disk_file);
+		}
 	}
 
 	else if (ISBSD())
@@ -967,7 +995,7 @@ void detect_res(char* str)
 
 	else if (OS == LINUX)
 	{
-		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n'", "r");
+		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n' 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
@@ -1397,7 +1425,12 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "Backtrack Linux"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", backtracklinux_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n%s\n%s\n%s\n", backtracklinux_logo[16], backtracklinux_logo[17], backtracklinux_logo[18], backtracklinux_logo[19], backtracklinux_logo[20]);
 		}
 
 		else if (STRCMP(distro_str, "Sabayon"))
