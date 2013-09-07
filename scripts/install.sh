@@ -1,5 +1,5 @@
 #!/bin/bash
-#  build-install-screenfetch.sh
+#  install.sh
 #  Author: William Woodruff
 #  ---
 #  Function:
@@ -13,7 +13,7 @@
 #  Requires gcc to compile screenfetch-c.
 
 printf "Warning: This script will install screenfetch-c as \'screenfetch\'.\n"
-printf "Are you sure you want to continue? (y/n) "
+printf "Are you ABSOLUTELY sure you want to continue? (y/n) "
 read ans
 
 if [ "$ans" = "y" ] ; then
