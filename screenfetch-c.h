@@ -581,7 +581,7 @@ char* peppermint_logo[] =
 	""TLRD"   .ZZZZZZZZZZZ"TWHT"MMM"TLRD"7ZZ"TWHT"MM"TLRD"ZZZZZZZZZZ7"TWHT"M    " TNRM,
 	""TLRD"    ZZZZZZZZZ"TWHT"MMMM"TLRD"ZZZZ"TWHT"MMMM"TLRD"ZZZZZZZ77     " TNRM,
 	""TWHT"     MMMMMMMMMMMM"TLRD"ZZZZZ"TWHT"MMMM"TLRD"ZZZZZ77      " TNRM,
-	""TWHT"     MMMMMMMMMM"TLRD"7ZZZZZZ"TWHT"MMMMM"TLRD"ZZ77       " TNRM,
+	""TWHT"     MMMMMMMMMM"TLRD"7ZZZZZZ"TWHT"MMMMM"TLRD"ZZ77        " TNRM,
 	""TWHT"       .MMMMMMM"TLRD"ZZZZZZZZ"TWHT"MMMMM"TLRD"Z7Z        " TNRM,
 	""TWHT"         MMMMM"TLRD"ZZZZZZZZZ"TWHT"MMMMMMM         " TNRM,
 	""TLRD"           NZZZZZZZZZZZ"TWHT"MMMMM           " TNRM,
@@ -732,8 +732,8 @@ char* chakra_logo[] =
 /* NOTE: has 21 lines, not 18 */
 char* fuduntu_logo[] =
 {
-	""TDGY"       `dwoapfjsod`"TYLW"           `dwoapfjsod`",
-	""TDGY"    `xdwdsfasdfjaapz`"TYLW"       `dwdsfasdfjaapzx`     " TNRM,
+	""TDGY"       `dwoapfjsod`"TYLW"           `dwoapfjsod`       " TNRM,
+	""TDGY"    `xdwdsfasdfjaapz`"TYLW"       `dwdsfasdfjaapzx`    " TNRM,
 	""TDGY"  `wadladfladlafsozmm`"TYLW"     `wadladfladlafsozmm`  " TNRM,
 	""TDGY" `aodowpwafjwodisosoaas`"TYLW" `odowpwafjwodisosoaaso` " TNRM,
 	""TDGY" `adowofaowiefawodpmmxs`"TYLW" `dowofaowiefawodpmmxso` " TNRM,

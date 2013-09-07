@@ -610,7 +610,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
+		else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -631,7 +631,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "openSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "openSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
 		{
 			pkgs_file = popen("rpm -qa | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -1377,7 +1377,12 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "Peppermint"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n", peppermint_logo[16], peppermint_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "SolusOS"))
@@ -1402,7 +1407,12 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "LinuxDeepin"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n", linuxdeepin_logo[16], linuxdeepin_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Chakra"))
@@ -1412,12 +1422,22 @@ void main_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "Fuduntu"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", fuduntu_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n%s\n%s\n%s\n", fuduntu_logo[16], fuduntu_logo[17], fuduntu_logo[18], fuduntu_logo[19], fuduntu_logo[20]);
 		}
 
 		else if (STRCMP(distro_str, "Trisquel"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n", trisquel_logo[16], trisquel_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Manjaro"))
@@ -1447,7 +1467,7 @@ void main_output(char* data[], char* data_names[])
 				printf("%s %s%s\n", backtracklinux_logo[i], detected_arr_names[i], detected_arr[i]);
 			}
 			/* ugly fix */
-			printf("%s\n%s\n%s\n%s\n%s\n", backtracklinux_logo[16], backtracklinux_logo[17], backtracklinux_logo[18], backtracklinux_logo[19], backtracklinux_logo[20]);
+			printf("%s\n%s\n%s\n%s\n", backtracklinux_logo[16], backtracklinux_logo[17], backtracklinux_logo[18], backtracklinux_logo[19]);
 		}
 
 		else if (STRCMP(distro_str, "Sabayon"))
