@@ -27,7 +27,7 @@ screenfetch-c can be installed very easily via the install script provided in th
 
 Simply download the script and run it:
 ```
-./install.sh
+sudo ./install.sh
 ```
 
 It will fetch all source code (and manpages) required, build the program, move it to /usr/bin/screenfetch, and clean up after itself.
@@ -38,7 +38,7 @@ Alternatively, you could always compile screenfetch-c yourself. It's very easy t
 screenfetch-c has no dependencies outside of the standard/POSIX libraries.
 
 ```
-gcc screenfetch-c.c -o screenfetch -std=c99
+gcc screenfetch-c.c -o screenfetch
 ```
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
@@ -76,7 +76,7 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 - [ ] Fuduntu
 - [ ] Trisquel
 - [ ] Manjaro
-- [ ] ElementaryOS
+- [x] ElementaryOS (styled as 'elementary OS')
 - [ ] Scientific Linux
 - [ ] Backtrack Linux
 - [ ] Sabayon
@@ -113,3 +113,7 @@ Linux Mint Debian (LMDE):
 
 ![alt tag] (http://puu.sh/4dc1x.png)
 
+Elementary OS:
+
+
+![alt tag] (http://puu.sh/4kQZu.jpg)
