@@ -329,9 +329,11 @@ void detect_distro(char* str)
 			{
 				fclose(distro_file);
 
-				distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"DISTRIB_ID=\\n\"", "r");
-				fgets(str, MAX_STRLEN, distro_file);
+				distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
+				fgets(distro_name_str, MAX_STRLEN, distro_file);
 				pclose(distro_file);
+
+				snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 			}
 
 			else /* begin the tedious task of checking each /etc/*-release */
@@ -577,7 +579,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "Elementary OS"))
+		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -751,7 +753,7 @@ void detect_disk(char* str)
 	}
 
 	/* ugly casting */
-	disk_percentage = (int) ((float) disk_used / disk_total) * 100;
+	disk_percentage = (int) (((float) disk_used / disk_total) * 100);
 
 	snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 
@@ -1378,9 +1380,14 @@ void main_output(char* data[], char* data_names[])
 
 		}
 
-		else if (STRCMP(distro_str, "Elementary OS"))
+		else if (STRCMP(distro_str, "elementary OS"))
 		{
-
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", elementaryos_logo[i], detected_arr_names[i], detected_arr[i]);
+			}
+			/* ugly fix */
+			printf("%s\n%s\n", elementaryos_logo[16], elementaryos_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Scientific Linux"))
