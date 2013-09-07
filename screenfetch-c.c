@@ -335,67 +335,69 @@ void detect_distro(char* str)
 				if (STRCMP(distro_name_str, "Back"))
 				{
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
+					return;
 				}
 				else if (STRCMP(distro_name_str, "Crun"))
 				{
 					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
+					return;
 				}
 				else if (STRCMP(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
+					return;
 				}
 				else if (STRCMP(distro_name_str, "Debi"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
+					return;
 				}
 			}
 
-			else
+			distro_file = fopen("/etc/lsb-release", "r");
+
+			if (distro_file != NULL)
 			{
-				distro_file = fopen("/etc/lsb-release", "r");
+				fclose(distro_file);
+
+				distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
+				fgets(distro_name_str, MAX_STRLEN, distro_file);
+				pclose(distro_file);
+
+				snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
+			}
+
+			else /* begin the tedious task of checking each /etc/*-release */
+			{
+				distro_file = fopen("/etc/fedora-release", "r");
 
 				if (distro_file != NULL)
 				{
 					fclose(distro_file);
-
-					distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
-					fgets(distro_name_str, MAX_STRLEN, distro_file);
-					pclose(distro_file);
-
-					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
+					safe_strncpy(str, "Fedora", MAX_STRLEN);
 				}
-
-				else /* begin the tedious task of checking each /etc/*-release */
+		
+				else
 				{
-					distro_file = fopen("/etc/fedora-release", "r");
+					distro_file = fopen("/etc/SuSE-release", "r");
 
 					if (distro_file != NULL)
 					{
 						fclose(distro_file);
-						safe_strncpy(str, "Fedora", MAX_STRLEN);
+						safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
 					}
-			
+
 					else
 					{
-						distro_file = fopen("/etc/SuSE-release", "r");
+						safe_strncpy(str, "Linux", MAX_STRLEN);
 
-						if (distro_file != NULL)
+						if (error)
 						{
-							fclose(distro_file);
-							safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 						}
-
-						else
-						{
-							safe_strncpy(str, "Linux", MAX_STRLEN);
-
-							if (error)
-							{
-								ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
-							}
-						}
-					}				
+					}
 				}
+								
 			}
 		}
 
