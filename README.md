@@ -32,6 +32,7 @@ sudo ./install.sh
 
 It will fetch all source code (and manpages) required, build the program, move it to /usr/bin/screenfetch, and clean up after itself.
 If you ever need to remove screenfetch-c for any reason, remove.sh is also provided.
+_Note:_ Make sure to run both with sudo, or the installation will be incomplete!
 
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
@@ -50,11 +51,11 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 - [x] Windows (via Cygwin)
 - [x] Fedora
 - [x] Linux Mint
-- [x] LMDE (must be invoked manually with the flag '-d LMDE')
+- [x] LMDE
 - [x] Ubuntu (tested with Lubuntu)
 - [x] Fedora
 - [ ] Debian
-- [ ] CrunchBang
+- [x] CrunchBang
 - [ ] Gentoo
 - [ ] Funtoo
 - [ ] FreeBSD
@@ -78,7 +79,7 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 - [ ] Manjaro
 - [x] ElementaryOS (styled as 'elementary OS')
 - [ ] Scientific Linux
-- [ ] Backtrack Linux
+- [x] Backtrack Linux
 - [ ] Sabayon
 - [ ] Linux (upon failure to detect a specific distro)
 
@@ -117,3 +118,13 @@ Elementary OS:
 
 
 ![alt tag] (http://puu.sh/4kQZu.jpg)
+
+Backtrack Linux:
+
+
+![alt tag] (http://puu.sh/4lbwk.jpg)
+
+CrunchBang:
+
+
+![alt tag] (http://puu.sh/4lbqY.png)
