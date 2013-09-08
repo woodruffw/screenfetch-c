@@ -6,7 +6,7 @@
 #  fetches the most recent stable version of screenfetch-c, builds it,
 #  and moves it to /usr/bin/screenfetch.
 #  Also fetches the most recent manpage and installs it.
-#  NOTE: Requires a superuser's password.
+#  NOTE: Requires sudo
 #  ---
 #  Dependencies:
 #  Requires wget to fetch the files. 
@@ -18,8 +18,12 @@ read ans
 
 if [ "$ans" = "y" ] ; then
 	printf "Fetching files..."
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/screenfetch-c.h --no-check-certificate -O ~/screenfetch-c.h 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.h --no-check-certificate -O ~/screenfetch-c.h 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwm.sh --no-check-certificate -O ~/detectwm.sh 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwmtheme.sh --no-check-certificate -O ~/detectwmtheme.sh 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectde.sh --no-check-certificate -O ~/detectde.sh 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectgtk.sh --no-check-certificate -O ~/detectgtk.sh 2> /dev/null
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/manpage/screenfetch.man --no-check-certificate -O ~/screenfetch.man 2> /dev/null
 	printf "done\n"
 
@@ -34,7 +38,8 @@ if [ "$ans" = "y" ] ; then
 	printf "done\n"
 
 	printf "Cleaning up..."
-	rm ~/screenfetch-c.c ~/screenfetch-c.h
+	rm -f ~/screenfetch*
+	rm -f ~/detect*
 	printf "done\n"
 
 	printf "Installation complete.\n"
