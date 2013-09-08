@@ -25,7 +25,7 @@
 
 	**From the original author:**
 
-	--
+	------
 
 	Copyright (c) 2010-2012 Brett Bohnenkamper < kittykatt AT archlinux DOT us >
 
@@ -47,13 +47,13 @@
 	could also drop in on my IRC network, SilverIRC, at irc://kittykatt.silverirc.com:6667/screenFetch
 	to put forth suggestions/ideas. Thank you.
 
-	--
+	------
 
 	I hereby regrant this version of screenFetch under the same MIT license.
 	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
 */
 
-#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are explicit in C99 */
+#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
 
 #include <stdio.h> /* for a medley of I/O operations, including popen/pclose */
 #include <stdlib.h> /* for getenv, etc */
@@ -292,7 +292,7 @@ int main(int argc, char** argv)
 
 /*  detect_distro
     detects the computer's distribution (really only relevant on Linux)
-    returns a string containing the distro name (may vary in format)
+    argument char* str: the char array to be filled with the distro name
 */
 void detect_distro(char* str)
 {
@@ -419,7 +419,7 @@ void detect_distro(char* str)
 
 /*  detect_arch
     detects the computer's architecture
-    returns a string containing the arch
+    argument char* str: the char array to be filled with the architecture
 */
 void detect_arch(char* str)
 {
@@ -449,7 +449,10 @@ void detect_arch(char* str)
 
 /*  detect_host
     detects the computer's hostname and active user and formats them
-    returns a string of format "user@hostname"
+    argument char* str: the char array to be filled with the user and hostname in format 'user@host'
+    --
+    CAVEAT: acceses an environment variable
+    --
 */
 void detect_host(char* str)
 {
@@ -475,7 +478,7 @@ void detect_host(char* str)
 
 /*  detect_kernel
     detects the computer's kernel
-    returns a string containing the kernel name, version, etc
+    argument char* str: the char array to be filled with the kernel name
 */
 void detect_kernel(char* str)
 {
@@ -493,7 +496,7 @@ void detect_kernel(char* str)
 
 /*  detect_uptime
     detects the computer's uptime
-    returns a string of format "<>d <>h <>m <>s", where <> is a number
+    argument char* str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
 */
 void detect_uptime(char* str)
 {
@@ -564,7 +567,7 @@ void detect_uptime(char* str)
 
 /*  detect_pkgs
     detects the number of packages installed on the computer
-    returns a string containing the number of packages
+    argument char* str: the char array to be filled with the number of packages
 */
 void detect_pkgs(char* str)
 {
@@ -683,7 +686,7 @@ void detect_pkgs(char* str)
 
 /*  detect_cpu
     detects the computer's CPU brand/name-string
-    returns a string containing the CPU string
+    argument char* str: the char array to be filled with the CPU name
 */
 void detect_cpu(char* str)
 {
@@ -727,7 +730,7 @@ void detect_cpu(char* str)
 
 /*  detect_gpu
     detects the computer's GPU brand/name-string
-    returns a string containing the GPU string
+    argument char* str: the char array to be filled with the GPU name
 */
 void detect_gpu(char* str)
 {
@@ -762,7 +765,7 @@ void detect_gpu(char* str)
 
 /*  detect_disk
     detects the computer's total HDD/SSD capacity and usage
-    returns a string of format: "<>G / <>G", where <> is a number
+    argument char* str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
 void detect_disk(char* str)
 {
@@ -818,7 +821,7 @@ void detect_disk(char* str)
 
 /*  detect_mem
     detects the computer's total and used RAM
-    returns a string of format: "<>MB / <>MB", where <> is a number
+    argument char* str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
 */
 void detect_mem(char* str)
 {
@@ -920,10 +923,12 @@ void detect_mem(char* str)
 
 /*  detect_shell
     detects the shell currently running on the computer
-    returns a string containing the name of that shell
+    argument char* str: the char array to be filled with the shell name and version
+    --
     CAVEAT: shell version detection relies on the standard versioning format for 
     each shell. If any shell's older (or newer versions) suddenly begin to use a new
     scheme, the version may be displayed incorrectly.
+    --
 */
 void detect_shell(char* str)
 {
@@ -992,7 +997,7 @@ void detect_shell(char* str)
 
 /*  detect_res
     detects the combined resoloution of all monitors attached to the computer
-    returns a string of format: "<>x<>", where <> is a number
+    argument char* str: the char array to be filled with the resolution in format '$x$', where $ is a number
 */
 void detect_res(char* str)
 {
@@ -1045,7 +1050,7 @@ void detect_res(char* str)
 
 /*  detect_de
     detects the desktop environment currently running on top of the OS
-    returns a string containing the name of the DE
+    argument char* str: the char array to be filled with the DE name
 */
 void detect_de(char* str)
 {
@@ -1089,7 +1094,7 @@ void detect_de(char* str)
 
 /* detect_wm
    detects the window manager currently running on top of the OS
-   returns a string containing the name of the WM
+   argument char* str: the char array to be filled with the WM name
 */
 void detect_wm(char* str)
 {
@@ -1131,7 +1136,7 @@ void detect_wm(char* str)
 
 /*  detect_wm_theme
     detects the theme associated with the WM detected in detect_wm()
-    returns a string containing the name of the WM theme
+    argument char* str: the char array to be filled with the WM Theme name
 */
 void detect_wm_theme(char* str)
 {
@@ -1156,7 +1161,7 @@ void detect_wm_theme(char* str)
 
 /*  detect_gtk
     detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-    returns a string containing the name of the gtk theme
+    argument char* str: the char array to be filled with the GTK name
 */
 void detect_gtk(char* str)
 {
@@ -1182,9 +1187,13 @@ void detect_gtk(char* str)
 
 /*  fill_detected_arr
     fills an array of 15 strings with the data gathered from the detect functions
-    WARNING: the order of the parameters is NOT the order of the array
+    argument char* arr[]: the array of strings to be filled
+    arguments char* distro...gtk: the strings to be placed in arr[]
+    --
+    CAVEAT: the order of the parameters is NOT the order of the array
+    --
 */
-void fill_detected_arr(char* arr[15], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk)
+void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk)
 {
 	arr[0] = host;
 	arr[1] = distro;
@@ -1224,7 +1233,11 @@ char* safe_strncpy(char* destination, const char* source, size_t num)
 
 /*  split_uptime
     splits param uptime into individual time-units
-    PREREQ: uptime _must_ be in seconds
+    argument float uptime: the uptime, in seconds, to be split
+    arguments int* secs...days: pointers to ints where the split uptime will be stored
+    --
+    CAVEAT: uptime MUST be in seconds
+    --
 */
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 {
@@ -1243,6 +1256,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 
 /*  main_output
     the primary output for screenfetch-c - all info and ascii art is printed here
+    arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
 void main_output(char* data[], char* data_names[])
 {
@@ -1610,17 +1624,17 @@ void main_output(char* data[], char* data_names[])
 
 	else if (OS == OPENBSD)
 	{
-
+		/* i'm going to add these later */
 	}
 
 	else if (OS == NETBSD)
 	{
-
+		/* i'm going to add these later */
 	}
 
 	else if (OS == DFBSD)
 	{
-
+		/* i'm going to add these later */
 	}
 
 	return;
@@ -1654,7 +1668,9 @@ void display_help(void)
 
 /*  take_screenshot
     takes a screenshot and saves it to $HOME 
+    --
     CAVEAT: THIS FUNCTION MAKES SYSTEM CALLS
+    --
 */
 void take_screenshot(void)
 {
