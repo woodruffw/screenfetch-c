@@ -11,69 +11,69 @@ Please keep in mind the fact that some of these images may not reflect the most 
 Windows:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Windows.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Windows.png?raw=true)
 
 OS X:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/OSX.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/OSX.png?raw=true)
 
 Ubuntu based:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Ubuntu.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Ubuntu.png?raw=true)
 
 Fedora:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Fedora.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Fedora.png?raw=true)
 
 Linux Mint:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Mint.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Mint.png?raw=true)
 
 Linux Mint Debian (LMDE):
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/LMDE.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/LMDE.png?raw=true)
 
 Elementary OS:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/eOS.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/eOS.png?raw=true)
 
 Backtrack Linux:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/BackTrack.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/BackTrack.png?raw=true)
 
 CrunchBang:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/CrunchBang.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/CrunchBang.png?raw=true)
 
 Debian:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Debian.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Debian.png?raw=true)
 
 Peppermint:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Peppermint.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Peppermint.png?raw=true)
 
 Trisquel:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Trisquel.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Trisquel.png?raw=true)
 
 Fuduntu:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Fuduntu.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/Fuduntu.png?raw=true)
 
 LinuxDeepin:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/LinuxDeepin.png)
+![alt tag] (https://github.com/woodrufw/screenfetch-c/blob/master/examples/LinuxDeepin.png?raw=true)
