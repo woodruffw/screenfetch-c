@@ -31,49 +31,49 @@ Fedora:
 Linux Mint:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Mint.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Mint.png?raw=true)
 
 Linux Mint Debian (LMDE):
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/LMDE.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/LMDE.png?raw=true)
 
 Elementary OS:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/eOS.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/eOS.png?raw=true)
 
 Backtrack Linux:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/BackTrack.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/BackTrack.png?raw=true)
 
 CrunchBang:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/CrunchBang.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/CrunchBang.png?raw=true)
 
 Debian:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Debian.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Debian.png?raw=true)
 
 Peppermint:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Peppermint.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Peppermint.png?raw=true)
 
 Trisquel:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Trisquel.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Trisquel.png?raw=true)
 
 Fuduntu:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Fuduntu.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Fuduntu.png?raw=true)
 
 LinuxDeepin:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/LinuxDeepin.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/LinuxDeepin.png?raw=true)
