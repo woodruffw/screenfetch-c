@@ -304,6 +304,9 @@ void detect_distro(char* str)
 
 		if (OS == CYGWIN)
 		{
+			/* alternative solution (3.5s execution time! uh oh!):
+			   systeminfo | grep 'OS Name:' | cut -d ':' -f 2 | sed 's/^ * //g
+			*/
 			distro_file = popen("wmic os get name | head -2 | tail -1", "r");
 			fgets(distro_name_str, MAX_STRLEN, distro_file);
 			pclose(distro_file);
@@ -708,7 +711,7 @@ void detect_cpu(char* str)
 
 	else if (OS == LINUX || OS == NETBSD)
 	{
-		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed 's/ @/\\n/' | head -1 | tr -d '\\n'", "r");
+		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
@@ -967,11 +970,6 @@ void detect_shell(char* str)
 		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, vers_str + 5);
 		pclose(shell_file);
 	}
-
-	else if (STRCMP(shell_name, "ksh"))
-	{
-		
-	}
 	
 	else if (STRCMP(shell_name, "fish"))
 	{
@@ -982,14 +980,10 @@ void detect_shell(char* str)
 		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_name, "dash"))
+	else if (STRCMP(shell_name, "dash") || STRCMP(shell_name, "ash") || STRCMP(shell_name, "ksh"))
 	{
+		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
-	}
-
-	else if (STRCMP(shell_name, "ash"))
-	{
-
 	}
 
 	return;
@@ -1100,8 +1094,6 @@ void detect_wm(char* str)
 {
 	FILE* wm_file;
 
-	char test_str[MAX_STRLEN];
-
 	if (OS == CYGWIN)
 	{
 		wm_file = popen("tasklist | grep -o 'bugn' | tr -d '\\r\\n'", "r");
@@ -1123,7 +1115,7 @@ void detect_wm(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-
+		/* potential solution: use a bundled shell script */
 	}
 
 	if (verbose)
