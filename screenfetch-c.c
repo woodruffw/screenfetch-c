@@ -1268,243 +1268,344 @@ void main_output(char* data[], char* data_names[])
 	{
 		if (STRCMP(distro_str, "Arch Linux - Old"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+				else
+					printf("%s\n", oldarch_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Arch Linux"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+				else
+					printf("%s\n", arch_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "LinuxMint"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", mint_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+				else
+					printf("%s\n", mint_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", mint_logo[16], mint_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "LMDE"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", lmde_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", lmde_logo[16], lmde_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Ubuntu"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", ubuntu_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+				else
+					printf("%s\n", ubuntu_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", ubuntu_logo[16], ubuntu_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Debian"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s%s%s\n", debian_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", debian_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", debian_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", debian_logo[16], debian_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "CrunchBang"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", crunchbang_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", crunchbang_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", crunchbang_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", crunchbang_logo[16], crunchbang_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Gentoo"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", gentoo_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", gentoo_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", gentoo_logo[16], gentoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Funtoo"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", funtoo_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", funtoo_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", funtoo_logo[16], funtoo_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Fedora"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", fedora_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", fedora_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", fedora_logo[16], fedora_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", mandriva_mandrake_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "OpenSUSE"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", opensuse_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", opensuse_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", opensuse_logo[16], opensuse_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Slackware"))
 		{
-
+			for (i = 0; i < 21; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", slackware_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Red Hat Linux"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", redhat_logo[i], TRED, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", redhat_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Frugalware"))
 		{
-
+			for (i = 0; i < 23; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", frugalware_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Peppermint"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", peppermint_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", peppermint_logo[16], peppermint_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "SolusOS"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", solusos_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Mageia"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", mageia_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "ParabolaGNU/Linux-libre"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", parabolagnu_linuxlibre_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Viperr"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", viperr_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "LinuxDeepin"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", linuxdeepin_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", linuxdeepin_logo[16], linuxdeepin_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Chakra"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", chakra_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Fuduntu"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 21; i++)
 			{
-				printf("%s %s%s\n", fuduntu_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", fuduntu_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n%s\n%s\n%s\n", fuduntu_logo[16], fuduntu_logo[17], fuduntu_logo[18], fuduntu_logo[19], fuduntu_logo[20]);
 		}
 
 		else if (STRCMP(distro_str, "Trisquel"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", trisquel_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", trisquel_logo[16], trisquel_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Manjaro"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s\n", manjaro_logo[i], detected_arr_names[i], detected_arr[i]);
+				else
+					printf("%s\n", manjaro_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "elementary OS"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", elementaryos_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", elementaryos_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", elementaryos_logo[16], elementaryos_logo[17]);
 		}
 
 		else if (STRCMP(distro_str, "Scientific Linux"))
 		{
-
+			for (i = 0; i < 20; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", scientificlinux_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Backtrack Linux"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 20; i++)
 			{
-				printf("%s %s%s\n", backtracklinux_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", backtracklinux_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n%s\n%s\n", backtracklinux_logo[16], backtracklinux_logo[17], backtracklinux_logo[18], backtracklinux_logo[19]);
 		}
 
 		else if (STRCMP(distro_str, "Sabayon"))
 		{
-
+			for (i = 0; i < 18; i++)
+			{
+				if (i < 16)
+					printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", sabayon_logo[i]);
+			}
 		}
 
 		else if (STRCMP(distro_str, "Linux"))
 		{
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 18; i++)
 			{
-				printf("%s %s%s\n", linux_logo[i], detected_arr_names[i], detected_arr[i]);
+				if (i < 16)
+					printf("%s %s%s%s%s\n", linux_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+				else
+					printf("%s\n", linux_logo[i]);
 			}
-			/* ugly fix */
-			printf("%s\n%s\n", linux_logo[16], linux_logo[17]);
 		}
 	}
 
 	else if (OS == FREEBSD)
 	{
-		for (i = 0; i < 16; i++)
+		for (i = 0; i < 18; i++)
 		{
-			printf("%s %s%s\n", freebsd_logo[i], detected_arr_names[i], detected_arr[i]);
+			if (i < 16)
+				printf("%s %s%s%s%s\n", freebsd_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+			else
+				printf("%s\n", freebsd_logo[i]);
 		}
-		/* ugly fix */
-		printf("%s\n%s\n", freebsd_logo[16], freebsd_logo[17]);
 	}
 
 	else if (OS == OPENBSD)
