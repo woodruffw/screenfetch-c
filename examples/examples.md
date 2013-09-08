@@ -11,22 +11,22 @@ Please keep in mind the fact that some of these images may not reflect the most 
 Windows:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Windows.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Windows.png?raw=true)
 
 OS X:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/OSX.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/OSX.png?raw=true)
 
 Ubuntu based:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Ubuntu.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Ubuntu.png?raw=true)
 
 Fedora:
 
 
-![alt tag] (https://github.com/woodrufw/screenfetch-c/master/examples/Fedora.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Fedora.png?raw=true)
 
 Linux Mint:
 
