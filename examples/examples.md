@@ -41,12 +41,12 @@ Linux Mint Debian (LMDE):
 Elementary OS:
 
 
-![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/eOS.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/eOS.jpg?raw=true)
 
 Backtrack Linux:
 
 
-![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/BackTrack.png?raw=true)
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/BackTrack.jpg?raw=true)
 
 CrunchBang:
 
