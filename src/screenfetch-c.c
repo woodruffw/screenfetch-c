@@ -6,10 +6,16 @@
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
 	Hopefully this port will execute faster, although it's more for self education than anything else.
+	
+	------
 
 	NOTES:
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
+
+	The shell scripts detectwm.sh, detectwmtheme.sh, and detectde.sh are all partially or completely based upon
+	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE within C would be a pain in the ass.
+
 	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
 
@@ -22,6 +28,7 @@
 	Fully implement detect_distro() on Linux.
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
 
+	------
 
 	**From the original author:**
 
@@ -1075,7 +1082,7 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* this is going to be complicated */
+		/* find a way to self contain and execute detectde.sh */
 	}
 
 	if (verbose)
@@ -1115,7 +1122,7 @@ void detect_wm(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* potential solution: use a bundled shell script */
+		/* find a way to self contain and execute detectwm.sh */
 	}
 
 	if (verbose)
@@ -1142,6 +1149,15 @@ void detect_wm_theme(char* str)
 		pclose(wm_theme_file);
 	}
 
+	else if (OS == OSX)
+	{
+		safe_strncpy(str, "Aqua");
+	}
+
+	else if (OS == LINUX || ISBSD())
+	{
+		/* find a way to self contain and execute detectwmtheme.sh */
+	}
 
 	if (verbose)
 	{
@@ -1153,7 +1169,7 @@ void detect_wm_theme(char* str)
 
 /*  detect_gtk
     detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-    argument char* str: the char array to be filled with the GTK name
+    argument char* str: the char array to be filled with the GTK info
 */
 void detect_gtk(char* str)
 {
@@ -1167,6 +1183,16 @@ void detect_gtk(char* str)
 		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$'", "r");
 		fgets(font_str, MAX_STRLEN, gtk_file);
 		pclose(gtk_file);
+	}
+
+	else if (OS == OSX)
+	{
+
+	}
+
+	else if (OS == LINUX || ISBSD())
+	{
+		/* find a way to self contain and execute detectgtk.sh */
 	}
 
 	if (verbose)
