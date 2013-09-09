@@ -192,17 +192,6 @@ int main(int argc, char** argv)
 	detect_wm_theme(wm_theme_str);
 	detect_gtk(gtk_str);
 
-	/* detected_arr is filled with the gathered from the detection functions */
-	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
-
-	/* actual output */
-	main_output(detected_arr, detected_arr_names);
-
-	if (screenshot)
-	{
-		take_screenshot();
-	}
-
 	/* debug section - only executed if -d flag is tripped */
 	if (debug)
 	{
@@ -290,6 +279,19 @@ int main(int argc, char** argv)
 
 		printf("%s\n", "Enter any character to end the program.");
 		getchar();
+
+		return EXIT_SUCCESS;
+	}
+
+	/* detected_arr is filled with the gathered from the detection functions */
+	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+
+	/* actual output */
+	main_output(detected_arr, detected_arr_names);
+
+	if (screenshot)
+	{
+		take_screenshot();
 	}
 
 	return EXIT_SUCCESS;
@@ -879,12 +881,12 @@ void detect_mem(char* str)
 	else if (OS == LINUX)
 	{
 		#ifdef __linux__
-		struct sysinfo si_mem;
-		sysinfo(&si_mem);
+			struct sysinfo si_mem;
+			sysinfo(&si_mem);
 
-		total_mem = (long) si_mem.totalram / mb;
-		free_mem = (long) si_mem.freeram / mb;
-		used_mem = (long) total_mem - free_mem;
+			total_mem = (long) si_mem.totalram / mb;
+			free_mem = (long) si_mem.freeram / mb;
+			used_mem = (long) total_mem - free_mem;
 		#endif
 	}
 
@@ -1151,7 +1153,7 @@ void detect_wm_theme(char* str)
 
 	else if (OS == OSX)
 	{
-		safe_strncpy(str, "Aqua");
+		safe_strncpy(str, "Aqua", MAX_STRLEN);
 	}
 
 	else if (OS == LINUX || ISBSD())
