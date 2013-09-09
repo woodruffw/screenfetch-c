@@ -1084,23 +1084,7 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		de_file = fopen("/usr/local/bin/screenfetch/detectde.sh", "r");
-
-		if (de_file != NULL)
-		{
-			fclose(de_file);
-
-			de_file = popen("/usr/local/bin/screenfetch/detectde.sh", "r");
-			fscanf(de_file, "%s", str);
-			pclose(de_file);
-		}
-		else
-		{
-			ERROR_OUT("Error:", " screenfetch-c cannot supply DE information due to a missing file");
-			ERROR_OUT("Error:", " This was likely caused by a botched manual installation of screenfetch-c.");
-			ERROR_OUT("Error:", " To fix it, please remove the current installation and either use install.sh");
-			ERROR_OUT("Error:", " or follow the installation instructions on github/woodrufw/screenfetch-c more carefully.");
-		}
+		/* find a way to self contain and execute detectde.sh */
 	}
 
 	if (verbose)
@@ -1140,23 +1124,7 @@ void detect_wm(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		wm_file = fopen("/usr/local/bin/screenfetch/detectwm.sh", "r");
-
-		if (wm_file != NULL)
-		{
-			fclose(wm_file);
-
-			wm_file = popen("/usr/local/bin/screenfetch/detectwm.sh", "r");
-			fscanf(wm_file, "%s", str);
-			pclose(wm_file);
-		}
-		else
-		{
-			ERROR_OUT("Error:", " screenfetch-c cannot supply WM information due to a missing file");
-			ERROR_OUT("Error:", " This was likely caused by a botched manual installation of screenfetch-c.");
-			ERROR_OUT("Error:", " To fix it, please remove the current installation and either use install.sh");
-			ERROR_OUT("Error:", " or follow the installation instructions on github/woodrufw/screenfetch-c more carefully.");
-		}
+		/* find a way to self contain and execute detectwm.sh */
 	}
 
 	if (verbose)
@@ -1190,23 +1158,7 @@ void detect_wm_theme(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		wm_theme_file = fopen("/usr/local/bin/screenfetch/detectwmtheme.sh", "r");
-
-		if (wm_theme_file != NULL)
-		{
-			fclose(wm_theme_file);
-
-			wm_theme_file = popen("/usr/local/bin/screenfetch/detectwmtheme.sh", "r");
-			fscanf(wm_theme_file, "%s", str);
-			pclose(wm_theme_file);
-		}
-		else
-		{
-			ERROR_OUT("Error:", " screenfetch-c cannot supply WM Theme information due to a missing file");
-			ERROR_OUT("Error:", " This was likely caused by a botched manual installation of screenfetch-c.");
-			ERROR_OUT("Error:", " To fix it, please remove the current installation and either use install.sh");
-			ERROR_OUT("Error:", " or follow the installation instructions on github/woodrufw/screenfetch-c more carefully.");
-		}
+		/* find a way to self contain and execute detectwmtheme.sh */
 	}
 
 	if (verbose)
@@ -1242,23 +1194,7 @@ void detect_gtk(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		gtk_file = fopen("/usr/local/bin/screenfetch/detectgtk.sh", "r");
-
-		if (gtk_file != NULL)
-		{
-			fclose(gtk_file);
-
-			gtk_file = popen("/usr/local/bin/screenfetch/detectgtk.sh", "r");
-			fscanf(gtk_file, "%s", str);
-			pclose(gtk_file);
-		}
-		else
-		{
-			ERROR_OUT("Error:", " screenfetch-c cannot supply GTK information due to a missing file");
-			ERROR_OUT("Error:", " This was likely caused by a botched manual installation of screenfetch-c.");
-			ERROR_OUT("Error:", " To fix it, please remove the current installation and either use install.sh");
-			ERROR_OUT("Error:", " or follow the installation instructions on github/woodrufw/screenfetch-c more carefully.");
-		}
+		/* find a way to self contain and execute detectgtk.sh */
 	}
 
 	if (verbose)
