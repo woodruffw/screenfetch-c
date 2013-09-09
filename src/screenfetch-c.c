@@ -90,6 +90,7 @@ static char* detected_arr[16];
 static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
 /* other definitions */
+bool logo = true;
 bool debug = false;
 bool error = true;
 bool verbose = false;
@@ -138,7 +139,7 @@ int main(int argc, char** argv)
 				SET_VERBOSE(true);
 				break;
 			case 'n':
-				/* something like SET_LOGO(false); */
+				SET_LOGO(false);
 				break;
 			case 'N':
 				/* something like SET_COLOR(false); */
@@ -195,87 +196,53 @@ int main(int argc, char** argv)
 	/* debug section - only executed if -d flag is tripped */
 	if (debug)
 	{
-		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
-
 		if (STRCMP(distro_str, "Unknown"))
-		{
 			DEBUG_OUT("Distro detection failure: ", distro_str);
-		}
 
 		if (STRCMP(arch_str, "Unknown"))
-		{
 			DEBUG_OUT("Architecture detection failure: ", arch_str);
-		}
 
 		if (STRCMP(host_str, "Unknown"))
-		{
 			DEBUG_OUT("Host detection failure: ", host_str);
-		}
 
 		if (STRCMP(kernel_str, "Unknown"))
-		{
 			DEBUG_OUT("Kernel detection failure: ", kernel_str);
-		}
 
 		if (STRCMP(uptime_str, "Unknown"))
-		{
 			DEBUG_OUT("Uptime detection failure: ", uptime_str);
-		}
 
 		if (STRCMP(pkgs_str, "Unknown"))
-		{
 			DEBUG_OUT("Package detection failure: ", pkgs_str);
-		}
 
 		if (STRCMP(cpu_str, "Unknown"))
-		{
 			DEBUG_OUT("CPU detection failure: ", cpu_str);
-		}
 
 		if (STRCMP(gpu_str, "Unknown"))
-		{
 			DEBUG_OUT("GPU detection failure: ", gpu_str);
-		}
 
 		if (STRCMP(disk_str, "Unknown"))
-		{
 			DEBUG_OUT("Disk detection failure: ", disk_str);
-		}
 
 		if (STRCMP(mem_str, "Unknown"))
-		{
 			DEBUG_OUT("Memory detection failure: ", mem_str);
-		}
 
 		if (STRCMP(shell_str, "Unknown"))
-		{
 			DEBUG_OUT("Shell detection failure: ", shell_str);
-		}
 
 		if (STRCMP(res_str, "Unknown"))
-		{
 			DEBUG_OUT("Resolution detection failure: ", res_str);
-		}
 
 		if (STRCMP(de_str, "Unknown"))
-		{
 			DEBUG_OUT("DE detection failure: ", de_str);
-		}
 
 		if (STRCMP(wm_str, "Unknown"))
-		{
 			DEBUG_OUT("WM detection failure: ", wm_str);
-		}
 
 		if (STRCMP(wm_theme_str, "Unknown"))
-		{
 			DEBUG_OUT("WM Theme detection failure: ", wm_theme_str);
-		}
 
 		if (STRCMP(gtk_str, "Unknown"))
-		{
 			DEBUG_OUT("GTK detection failure: ", gtk_str);
-		}
 
 		printf("%s\n", "Enter any character to end the program.");
 		getchar();
@@ -286,13 +253,13 @@ int main(int argc, char** argv)
 	/* detected_arr is filled with the gathered from the detection functions */
 	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
-	/* actual output */
-	main_output(detected_arr, detected_arr_names);
+	if (logo)
+		main_ascii_output(detected_arr, detected_arr_names);
+	else
+		main_text_output(detected_arr, detected_arr_names);
 
 	if (screenshot)
-	{
 		take_screenshot();
-	}
 
 	return EXIT_SUCCESS;
 }
@@ -1278,7 +1245,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
     the primary output for screenfetch-c - all info and ascii art is printed here
     arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
-void main_output(char* data[], char* data_names[])
+void main_ascii_output(char* data[], char* data_names[])
 {
 	int i;
 
@@ -1286,7 +1253,7 @@ void main_output(char* data[], char* data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, detected_arr_names[i], TWHT, detected_arr[i], TNRM);
+			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, data_names[i], TWHT, data[i], TNRM);
 		}
 	}
 
@@ -1294,7 +1261,7 @@ void main_output(char* data[], char* data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, data_names[i], TNRM, data[i]);
 		}
 	}
 
@@ -1305,7 +1272,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, data_names[i], TNRM, data[i], TNRM);
 				else
 					printf("%s\n", oldarch_logo[i]);
 			}
@@ -1316,7 +1283,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
 				else
 					printf("%s\n", arch_logo[i]);
 			}
@@ -1327,7 +1294,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+					printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, data_names[i], TNRM, data[i], TNRM);
 				else
 					printf("%s\n", mint_logo[i]);
 			}
@@ -1338,7 +1305,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", lmde_logo[i]);
 			}
@@ -1349,7 +1316,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i], TNRM);
+					printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, data_names[i], TNRM, data[i], TNRM);
 				else
 					printf("%s\n", ubuntu_logo[i]);
 			}
@@ -1360,7 +1327,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", debian_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", debian_logo[i], TLRD, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", debian_logo[i]);
 			}
@@ -1371,7 +1338,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", crunchbang_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", crunchbang_logo[i], TLGY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", crunchbang_logo[i]);
 			}
@@ -1382,7 +1349,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", gentoo_logo[i]);
 			}
@@ -1393,7 +1360,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", funtoo_logo[i]);
 			}
@@ -1404,7 +1371,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", fedora_logo[i]);
 			}
@@ -1415,7 +1382,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", mandriva_mandrake_logo[i]);
 			}
@@ -1426,7 +1393,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", opensuse_logo[i]);
 			}
@@ -1437,7 +1404,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 21; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", slackware_logo[i]);
 			}
@@ -1448,7 +1415,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", redhat_logo[i], TRED, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", redhat_logo[i], TRED, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", redhat_logo[i]);
 			}
@@ -1459,7 +1426,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 23; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", frugalware_logo[i]);
 			}
@@ -1470,7 +1437,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", peppermint_logo[i]);
 			}
@@ -1481,7 +1448,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", solusos_logo[i]);
 			}
@@ -1492,7 +1459,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", mageia_logo[i]);
 			}
@@ -1503,7 +1470,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", parabolagnu_linuxlibre_logo[i]);
 			}
@@ -1514,7 +1481,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", viperr_logo[i]);
 			}
@@ -1525,7 +1492,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", linuxdeepin_logo[i]);
 			}
@@ -1536,7 +1503,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", chakra_logo[i]);
 			}
@@ -1547,7 +1514,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 21; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", fuduntu_logo[i]);
 			}
@@ -1558,7 +1525,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", trisquel_logo[i]);
 			}
@@ -1569,7 +1536,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s\n", manjaro_logo[i], detected_arr_names[i], detected_arr[i]);
+					printf("%s %s%s\n", manjaro_logo[i], data_names[i], data[i]);
 				else
 					printf("%s\n", manjaro_logo[i]);
 			}
@@ -1580,7 +1547,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", elementaryos_logo[i]);
 			}
@@ -1591,7 +1558,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 20; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", scientificlinux_logo[i]);
 			}
@@ -1602,7 +1569,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 20; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", backtracklinux_logo[i]);
 			}
@@ -1613,7 +1580,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", sabayon_logo[i]);
 			}
@@ -1624,7 +1591,7 @@ void main_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", linux_logo[i], TLGY, detected_arr_names[i], TNRM, detected_arr[i]);
+					printf("%s %s%s%s%s\n", linux_logo[i], TLGY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", linux_logo[i]);
 			}
@@ -1636,7 +1603,7 @@ void main_output(char* data[], char* data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", freebsd_logo[i], TLRD, detected_arr_names[i], TNRM, detected_arr[i]);
+				printf("%s %s%s%s%s\n", freebsd_logo[i], TLRD, data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", freebsd_logo[i]);
 		}
@@ -1656,6 +1623,16 @@ void main_output(char* data[], char* data_names[])
 	{
 		/* i'm going to add these later */
 	}
+
+	return;
+}
+
+void main_text_output(char* data[], char* data_names[])
+{
+	int i;
+
+	for (i = 0; i < 16; i++)
+		printf("%s %s\n", data_names[i], data[i]);
 
 	return;
 }

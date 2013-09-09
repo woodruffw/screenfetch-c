@@ -66,6 +66,7 @@
 
 /* other definitions, use with caution (not type safe) */
 #define MAX_STRLEN 128
+#define SET_LOGO(flag) (logo = flag)
 #define SET_VERBOSE(flag) (verbose = flag)
 #define SET_DEBUG(flag) (debug = flag)
 #define SET_ERROR(flag) (error = flag)
@@ -97,7 +98,8 @@ void detect_gtk(char* str);
 void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk);
 
 /* other function definitions */
-void main_output(char* data[], char* data_names[]);
+void main_ascii_output(char* data[], char* data_names[]);
+void main_text_output(char* data[], char* data_names[]);
 char* safe_strncpy(char* destination, const char* source, size_t num); 
 void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
 void display_version(void);
