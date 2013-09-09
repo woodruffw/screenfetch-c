@@ -46,7 +46,10 @@ Just be sure that screenfetch-c.h is in the same directory, as it contains all o
 screenfetch-c.c's prototypes and macros.
 You can also choose the install screenfetch-c's manpage, if you wish.
 
-### Current Compatibility:
+### Current Known Compatibility:
+
+_Note:_ These are only the ones that have actually been tested (so far). screenfetch-c may very well work on many of the untested distros, so feel free to try it.
+
 - [x] OS X
 - [x] Windows (requires Cygwin)
 - [x] Fedora
