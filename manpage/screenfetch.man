@@ -34,6 +34,8 @@ fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awes
 
 -s		Take a screenshot after completing the output.
 
+-n 		Strip output of ASCII logo - print information only.
+
 -S <cmd>	Take a screenshot using custom command cmd. Use if -s fails.
 
 -D <distro>	Set the distro outputted by screenfetch.
