@@ -1,5 +1,6 @@
 /* 	screenfetch-c.c
 	Author: William Woodruff
+	Source Version: 1.O BETA
 	-------------
 
 	A rewrite of screenFetch.sh 3.0.5 in C.
@@ -86,6 +87,8 @@ static char de_str[MAX_STRLEN];
 static char wm_str[MAX_STRLEN];
 static char wm_theme_str[MAX_STRLEN];
 static char gtk_str[MAX_STRLEN];
+
+/* output string definitions */
 static char* detected_arr[16];
 static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
@@ -148,8 +151,7 @@ int main(int argc, char** argv)
 				SET_SCREENSHOT(true);
 				break;
 			case 'S':
-				SET_SCREENSHOT(true);
-				/* do something with optarg */
+				/*SET_SCREENSHOT(true);*/
 				break;
 			case 'D':
 				SET_DISTRO(optarg);
@@ -389,9 +391,7 @@ void detect_distro(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found distro as ", str);
-	}
 
 	return;
 }
@@ -419,9 +419,7 @@ void detect_arch(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found system arch as ", str);
-	}
 
 	return;
 }
@@ -448,9 +446,7 @@ void detect_host(char* str)
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found host as ", str);
-	}
 
 	return;
 }
@@ -466,9 +462,7 @@ void detect_kernel(char* str)
 	pclose(kernel_file);
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found kenel as ", str);
-	}
 
 	return;
 }
@@ -654,9 +648,7 @@ void detect_pkgs(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found package count as ", str);
-	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
 
@@ -700,9 +692,7 @@ void detect_cpu(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found CPU as ", str);
-	}
 
 	return;
 }
@@ -735,9 +725,7 @@ void detect_gpu(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found GPU as ", str);
-	}
 
 	return;
 }
@@ -791,9 +779,7 @@ void detect_disk(char* str)
 	snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found disk usage as ", str);
-	}
 
 	return;
 }
@@ -887,15 +873,22 @@ void detect_mem(char* str)
 
 	else if (OS == DFBSD)
 	{
+		/* i currently don't know of any way to detected used memory in DFBSD */
 
+		mem_file = popen("sysctl -n hw.physmem", "r");
+		fscanf(mem_file, "%ld", &total_mem);
+		pclose(mem_file);
+
+		total_mem /= (long) mb;
 	}
 
-	snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem, "MB", total_mem, "MB");
+	if (OS != DFBSD)
+		snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem, "MB", total_mem, "MB");
+	else
+		snprintf(str, MAX_STRLEN, "%ld%s", total_mem, "MB");
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found memory usage as ", str);
-	}
 
 	return;
 }
@@ -962,6 +955,9 @@ void detect_shell(char* str)
 		safe_strncpy(str, shell_name, MAX_STRLEN);
 	}
 
+	if (verbose)
+		VERBOSE_OUT("Found shell as ", str);
+
 	return;
 }
 
@@ -1011,9 +1007,7 @@ void detect_res(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found resolution as ", str);
-	}
 
 	return;
 }
@@ -1055,9 +1049,7 @@ void detect_de(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found DE as ", str);
-	}
 
 	return;
 }
@@ -1095,9 +1087,7 @@ void detect_wm(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found WM as ", str);
-	}
 
 	return;
 }
@@ -1129,9 +1119,7 @@ void detect_wm_theme(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found WM theme as ", str);
-	}
 
 	return;
 }
@@ -1156,7 +1144,7 @@ void detect_gtk(char* str)
 
 	else if (OS == OSX)
 	{
-
+		/* OSX doesn't use GTK, so maybe detect Fonts here? */
 	}
 
 	else if (OS == LINUX || ISBSD())
@@ -1165,9 +1153,7 @@ void detect_gtk(char* str)
 	}
 
 	if (verbose)
-	{
 		VERBOSE_OUT("Found GTK as ", str);
-	}
 
 	return;
 }
@@ -1642,9 +1628,9 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 0.5 ALPHA");
-	printf("%s\n", "Warning: This version of screenfetch is not yet finished");
-	printf("%s\n", "and as such may contain bugs and security holes. Use with caution." TNRM);
+	printf("%s\n", TBLU "screenfetch-c - Version 1.0 BETA");
+	printf("%s\n", "Warning: This version of screenfetch is not yet finished.");
+	printf("%s\n", "It may be lacking support for certain Linux/BSD distros." TNRM);
 
 	return;
 }
@@ -1672,7 +1658,6 @@ void display_help(void)
 void take_screenshot(void)
 {
 	FILE* ss_file;
-
 	if (OS == CYGWIN || OS == UNKNOWN)
 	{
 		/* cygwin does not currently have a simple screenshot solution */
@@ -1705,13 +1690,12 @@ void take_screenshot(void)
 	char* loc = getenv("HOME");
 	strcat(loc, "/screenfetch_screenshot.png");
 	ss_file = fopen(loc, "r");
-
 	if (ss_file != NULL && verbose)
 	{
 		fclose(ss_file);
 		VERBOSE_OUT("Screenshot successfully saved.", "");
 	}
-	
+		
 	else if (ss_file == NULL)
 	{
 		ERROR_OUT("Error: ", "Problem saving screenshot.");
