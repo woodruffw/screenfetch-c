@@ -304,6 +304,8 @@ void detect_distro(char* str)
 
 		else if (OS == LINUX)
 		{
+			bool detected = false;
+
 			/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
 			distro_file = fopen("/etc/issue", "r");
 
@@ -316,69 +318,72 @@ void detect_distro(char* str)
 				if (STRCMP(distro_name_str, "Back"))
 				{
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
-					return;
+					detected = true;
 				}
 				else if (STRCMP(distro_name_str, "Crun"))
 				{
 					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
-					return;
+					detected = true;
 				}
 				else if (STRCMP(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
-					return;
+					detected = true;
 				}
 				else if (STRCMP(distro_name_str, "Debi"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
-					return;
+					detected = true;
 				}
 			}
 
-			distro_file = fopen("/etc/lsb-release", "r");
-
-			if (distro_file != NULL)
+			if (!detected)
 			{
-				fclose(distro_file);
 
-				distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
-				fgets(distro_name_str, MAX_STRLEN, distro_file);
-				pclose(distro_file);
-
-				snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
-			}
-
-			else /* begin the tedious task of checking each /etc/*-release */
-			{
-				distro_file = fopen("/etc/fedora-release", "r");
+				distro_file = fopen("/etc/lsb-release", "r");
 
 				if (distro_file != NULL)
 				{
 					fclose(distro_file);
-					safe_strncpy(str, "Fedora", MAX_STRLEN);
+
+					distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
+					fgets(distro_name_str, MAX_STRLEN, distro_file);
+					pclose(distro_file);
+
+					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 				}
-		
-				else
+
+				else /* begin the tedious task of checking each /etc/*-release */
 				{
-					distro_file = fopen("/etc/SuSE-release", "r");
+					distro_file = fopen("/etc/fedora-release", "r");
 
 					if (distro_file != NULL)
 					{
 						fclose(distro_file);
-						safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+						safe_strncpy(str, "Fedora", MAX_STRLEN);
 					}
-
+			
 					else
 					{
-						safe_strncpy(str, "Linux", MAX_STRLEN);
+						distro_file = fopen("/etc/SuSE-release", "r");
 
-						if (error)
+						if (distro_file != NULL)
 						{
-							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+							fclose(distro_file);
+							safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+						}
+
+						else
+						{
+							safe_strncpy(str, "Linux", MAX_STRLEN);
+
+							if (error)
+							{
+								ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+							}
 						}
 					}
-				}
-								
+				}				
 			}
 		}
 
