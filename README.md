@@ -1,7 +1,7 @@
 screenfetch-c
 =============
 
-### Current Version: 0.5 Alpha (compiled, not complete)
+### Current Version: 1.0 Beta (compiled, mostly complete)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 
@@ -11,28 +11,28 @@ compiling and running on Windows (via Cygwin), all Linux distros, the
 four major *BSD distros, and OS X.
 
 ### Current Status:
-Right now, the majority of detection functions are complete.
-However, some of the larger ones (detect_distro(), detect_wm(), 
-detect_pkgs()) are lacking Linux/BSD sections due to a lack of a testing 
-environment.
-screenfetch-c has been successfully compiled and run on Cygwin, OS X, and a select few Linux distros (see below), 
-with most information being displayed correctly.
-However, more testing needs to be done.
-Current phase: completion of BSD/Linux sections, bug squashing, general testing.
+screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environment), OS X (10.6 and 10.8), and Linux (see list below).
+It has not yet been tested on any BSD distro. Therefore, I currently advise against using screenfetch-c on *BSD, even if it does compile successfully. However, it is up to you.
+
+There are only a few select sections that still require work. They are listed here:
+- DE/WM/WM Theme/GTK detection is not complete on *BSD or Linux. As a result, they will appear as 'Unknown' in output.
+- Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
+- Package detection requires more in-depth testing.
+- Certain argument flags are currently unimplemented. These include -N, -A, and -S.
 
 ### Installing screenfetch-c:
 
 #### Using the provided script (install.sh):
-screenfetch-c can be installed very easily via the install script provided in the /scripts directory.
+screenfetch-c can be installed very easily via the install.sh script provided in the /scripts directory.
 
 Simply download the script and run it:
 ```
 sudo ./install.sh
 ```
 
-It will fetch all source code (and manpages) required, build the program, move it to /usr/bin/screenfetch, and clean up after itself.
-If you ever need to remove screenfetch-c for any reason, remove.sh is also provided.
-_Note:_ Make sure to run both with sudo, or the installation will be incomplete!
+It will fetch all source code (and manpages) required, compile screenfetch, install the manpage, and leave a tidy binary in $HOME. You can then move that binary whereever you please.
+
+_Note_: install.sh requires sudo to install the manpage!
 
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
@@ -45,6 +45,11 @@ gcc screenfetch-c.c -o screenfetch
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
 screenfetch-c.c's prototypes and macros.
 You can also choose the install screenfetch-c's manpage, if you wish.
+
+##### Removal:
+Removing screenfetch-c is just as easy as installing it.
+Simply delete the binary and the manpage, which is stored in /usr/share/man/man1/screenfetch.1.gz
+If you compiled screenfetch-c manually, the second step may not be required.
 
 ### Current Known Compatibility:
 
