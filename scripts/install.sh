@@ -20,10 +20,6 @@ if [ "$ans" = "y" ] ; then
 	printf "Fetching files..."
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.h --no-check-certificate -O ~/screenfetch-c.h 2> /dev/null
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwm.sh --no-check-certificate -O ~/detectwm.sh 2> /dev/null
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwmtheme.sh --no-check-certificate -O ~/detectwmtheme.sh 2> /dev/null
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectde.sh --no-check-certificate -O ~/detectde.sh 2> /dev/null
-	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectgtk.sh --no-check-certificate -O ~/detectgtk.sh 2> /dev/null
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/manpage/screenfetch.man --no-check-certificate -O ~/screenfetch.man 2> /dev/null
 	printf "done\n"
 
@@ -31,15 +27,14 @@ if [ "$ans" = "y" ] ; then
 	gcc ~/screenfetch-c.c -o ~/screenfetch -std=c99
 	printf "done\n"
 
-	printf "Moving files into place..."
-	mv ~/screenfetch /usr/bin/
+	printf "Moving manpage into place..."
 	mv ~/screenfetch.man /usr/share/man/man1/screenfetch.1
 	gzip /usr/share/man/man1/screenfetch.1
 	printf "done\n"
 
 	printf "Cleaning up..."
-	rm -f ~/screenfetch*
-	rm -f ~/detect*
+	rm -f ~/screenfetch-c.*
+	rm -f ~/screenfetch.man
 	printf "done\n"
 
 	printf "Installation complete.\n"
