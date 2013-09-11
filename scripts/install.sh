@@ -38,7 +38,6 @@ if [ "$ans" = "y" ] ; then
 	printf "done\n"
 
 	printf "Installation complete.\n"
-	printf "In order to invoke screenfetch, make sure that /usr/bin is in your PATH\n"
 	exit 1
 else
 	printf "Installation terminated.\n"
