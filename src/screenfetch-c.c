@@ -1228,7 +1228,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
 
 /*  main_output
-    the primary output for screenfetch-c - all info and ascii art is printed here
+    the primary output for screenfetch-c - all info and ASCII art is printed here
     arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
 void main_ascii_output(char* data[], char* data_names[])
@@ -1613,6 +1613,10 @@ void main_ascii_output(char* data[], char* data_names[])
 	return;
 }
 
+/*  main_text_output
+	the secondary output for screenfetch-c - all info WITHOUT ASCII art is printed here
+	arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
+*/
 void main_text_output(char* data[], char* data_names[])
 {
 	int i;
