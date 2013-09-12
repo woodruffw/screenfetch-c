@@ -320,16 +320,19 @@ void detect_distro(char* str)
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
 				}
+
 				else if (STRCMP(distro_name_str, "Crun"))
 				{
 					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
 					detected = true;
 				}
+
 				else if (STRCMP(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
 					detected = true;
 				}
+
 				else if (STRCMP(distro_name_str, "Debi"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
@@ -339,7 +342,6 @@ void detect_distro(char* str)
 
 			if (!detected)
 			{
-
 				distro_file = fopen("/etc/lsb-release", "r");
 
 				if (distro_file != NULL)
@@ -353,7 +355,7 @@ void detect_distro(char* str)
 					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 				}
 
-				else /* begin the tedious task of checking each /etc/*-release */
+				else /* begin the tedious task of checking each /etc/<distro>-release */
 				{
 					distro_file = fopen("/etc/fedora-release", "r");
 
@@ -769,11 +771,11 @@ void detect_disk(char* str)
 
 	else if (ISBSD())
 	{
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r G'", "r");
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r G'", "r");
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
