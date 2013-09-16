@@ -22,12 +22,14 @@ Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD,
 and most Linux-kernel based distributions. 
 
 Supported shells:
-GNU bash, csh, zsh, ksh, fish, dash.
+GNU bash, csh, zsh, ksh, fish, dash, ash.
 
 Supported WMs:
 fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awesome, wmaker, stumpwm, musca, i3, xmonad, ratpoison, scrotwm, spectrwm, wmfs, wmii, beryl, subtle, e16, enlightenment, sawfish, emerald, monsterwm, dminiwm, compiz, Finder, herbstluftwm.
 
 .SH OPTIONS
+-m 		Begin manual mode, which allows the user to enter specific values for devices/statistics.
+
 -d 		Enable debug mode, which prints out detection failures.
 
 -v 		Enable verbose mode, which prints out detection information.
@@ -60,7 +62,9 @@ Distro detection on Windows XP and Vista is spotty and may appear incorrect.
 
 Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its version scheme.
 
-DragonFlyBSD systems with more than 2GiB of RAM may have their RAM stats displayed incorrectly.
+DragonFlyBSD systems with more than 2GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
+
+Manual mode on Windows seems the result in a variety of weird bugs concerning uptime, packages, disk stats, and memory stats. For the time being, I recommend NOT using it on Windows.
 
 Found a bug/issue? Please tell me about it:
 http://github.com/woodrufw/screenfetch-c
