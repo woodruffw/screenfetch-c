@@ -21,6 +21,9 @@ Supported OSes:
 Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD, 
 and most Linux-kernel based distributions. 
 
+NOTE: If you are using manual mode to provide screenfetch-c with system information, you will need to enter the distribution name EXACTLY as written below:
+Arch Linux, ParabolaGNU/Linux-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Linux.
+
 Supported shells:
 GNU bash, csh, zsh, ksh, fish, dash, ash.
 
@@ -55,7 +58,7 @@ fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awes
 
 0.5 - ALPHA - INCOMPLETE, TEST COMPILED
 
-1.0 - BETA 	- LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
+1.0 - BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
 .SH BUGS
 Distro detection on Windows XP and Vista is spotty and may appear incorrect.
