@@ -1210,10 +1210,10 @@ int manual_input(void)
 		printf("%s\n", "This appears to be your first time running screenfetch-c in manual mode.");
 		printf("%s", "Would you like to continue? (y/n) ");
 
-		char choice;
-		scanf("%c", &choice);
+		char choice[3];
+		fgets(choice, 3, stdin);
 
-		if (choice == 'y' || choice == 'Y')
+		if (STRCMP(choice, "y\n") || STRCMP(choice, "Y\n"))
 		{
 			config_file = fopen(config_file_loc, "w");
 
@@ -1222,57 +1222,71 @@ int manual_input(void)
 			printf("%s\n", "If you are unsure about the case/format of a category, please consult the manpage.");
 
 			printf("%s", "Please enter the name of your distribution/OS: ");
-			scanf("%s", distro_str);
-			fprintf(config_file, "%s\n", distro_str);
+			fgets(distro_str, MAX_STRLEN, stdin);
+			fputs(distro_str, config_file);
 
 			printf("%s", "Please enter your architecture: ");
-			scanf("%s", arch_str);
-			fprintf(config_file, "%s\n", arch_str);
+			fgets(arch_str, MAX_STRLEN, stdin);
+			fputs(arch_str, config_file);
 
 			printf("%s", "Please enter your username@hostname: ");
-			scanf("%s", host_str);
-			fprintf(config_file, "%s\n", host_str);
+			fgets(host_str, MAX_STRLEN, stdin);
+			fputs(host_str, config_file);
 
 			printf("%s", "Please enter your kernel: ");
-			scanf("%s", kernel_str);
-			fprintf(config_file, "%s\n", kernel_str);
+			fgets(kernel_str, MAX_STRLEN, stdin);
+			fputs(kernel_str, config_file);
 
 			printf("%s", "Please enter your CPU name: ");
-			scanf("%s", cpu_str);
-			fprintf(config_file, "%s\n", cpu_str);
+			fgets(cpu_str, MAX_STRLEN, stdin);
+			fputs(cpu_str, config_file);
 
 			printf("%s", "Please enter your GPU name: ");
-			scanf("%s", gpu_str);
-			fprintf(config_file, "%s\n", gpu_str);
+			fgets(gpu_str, MAX_STRLEN, stdin);
+			fputs(gpu_str, config_file);
 
 			printf("%s", "Please enter your shell name and version: ");
-			scanf("%s", shell_str);
-			fprintf(config_file, "%s\n", shell_str);
+			fgets(shell_str, MAX_STRLEN, stdin);
+			fputs(shell_str, config_file);
 
 			printf("%s", "Please enter your monitor resolution: ");
-			scanf("%s", res_str);
-			fprintf(config_file, "%s\n", res_str);
+			fgets(res_str, MAX_STRLEN, stdin);
+			fputs(res_str, config_file);
 
 			printf("%s", "Please enter your DE name: ");
-			scanf("%s", de_str);
-			fprintf(config_file, "%s\n", de_str);
+			fgets(de_str, MAX_STRLEN, stdin);
+			fputs(de_str, config_file);
 
 			printf("%s", "Please enter your WM name: ");
-			scanf("%s", wm_str);
-			fprintf(config_file, "%s\n", wm_str);
+			fgets(wm_str, MAX_STRLEN, stdin);
+			fputs(wm_str, config_file);
 
 			printf("%s", "Please enter your WM Theme name: ");
-			scanf("%s", wm_theme_str);
-			fprintf(config_file, "%s\n", wm_theme_str);
+			fgets(wm_theme_str, MAX_STRLEN, stdin);
+			fputs(wm_theme_str, config_file);
 
 			printf("%s", "Please enter any GTK info: ");
-			scanf("%s", gtk_str);
-			fprintf(config_file, "%s\n", gtk_str);
+			fgets(gtk_str, MAX_STRLEN, stdin);
+			fputs(gtk_str, config_file);
 
 			printf("%s\n", "That concludes the manual input.");
 			printf("%s\n", "From now on, screenfetch-c will use this information when called with -m.");
 
 			fclose(config_file);
+
+			/* i am deeply ashamed of this solution */
+			distro_str[strlen(distro_str) - 1] = '\0';
+			arch_str[strlen(arch_str) - 1] = '\0';
+			host_str[strlen(host_str) - 1] = '\0';
+			kernel_str[strlen(kernel_str) - 1] = '\0';
+			cpu_str[strlen(cpu_str) - 1] = '\0';
+			gpu_str[strlen(gpu_str) - 1] = '\0';
+			shell_str[strlen(shell_str) - 1] = '\0';
+			res_str[strlen(res_str) - 1] = '\0';
+			de_str[strlen(de_str) - 1] = '\0';
+			wm_str[strlen(wm_str) - 1] = '\0';
+			wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
+			gtk_str[strlen(gtk_str) - 1] = '\0';
 
 			return 1;
 		}
@@ -1290,21 +1304,35 @@ int manual_input(void)
 	{
 		VERBOSE_OUT("Found config file. Reading...", "");
 
-		fscanf(config_file, "%s", distro_str);
-		fscanf(config_file, "%s", arch_str);
-		fscanf(config_file, "%s", host_str);
-		fscanf(config_file, "%s", kernel_str);
-		fscanf(config_file, "%s", cpu_str);
-		fscanf(config_file, "%s", gpu_str);
-		fscanf(config_file, "%s", shell_str);
-		fscanf(config_file, "%s", res_str);
-		fscanf(config_file, "%s", de_str);
-		fscanf(config_file, "%s", wm_str);
-		fscanf(config_file, "%s", wm_theme_str);
-		fscanf(config_file, "%s", gtk_str);
+		fgets(distro_str, MAX_STRLEN, config_file);
+		fgets(arch_str, MAX_STRLEN, config_file);
+		fgets(host_str, MAX_STRLEN, config_file);
+		fgets(kernel_str, MAX_STRLEN, config_file);
+		fgets(cpu_str, MAX_STRLEN, config_file);
+		fgets(gpu_str, MAX_STRLEN, config_file);
+		fgets(shell_str, MAX_STRLEN, config_file);
+		fgets(res_str, MAX_STRLEN, config_file);
+		fgets(de_str, MAX_STRLEN, config_file);
+		fgets(wm_str, MAX_STRLEN, config_file);
+		fgets(wm_theme_str, MAX_STRLEN, config_file);
+		fgets(gtk_str, MAX_STRLEN, config_file);
 
 		fclose(config_file);
 
+		/* i am deeply ashamed of this solution */
+		distro_str[strlen(distro_str) - 1] = '\0';
+		arch_str[strlen(arch_str) - 1] = '\0';
+		host_str[strlen(host_str) - 1] = '\0';
+		kernel_str[strlen(kernel_str) - 1] = '\0';
+		cpu_str[strlen(cpu_str) - 1] = '\0';
+		gpu_str[strlen(gpu_str) - 1] = '\0';
+		shell_str[strlen(shell_str) - 1] = '\0';
+		res_str[strlen(res_str) - 1] = '\0';
+		de_str[strlen(de_str) - 1] = '\0';
+		wm_str[strlen(wm_str) - 1] = '\0';
+		wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
+		gtk_str[strlen(gtk_str) - 1] = '\0';
+		
 		return 1;
 	}
 }
