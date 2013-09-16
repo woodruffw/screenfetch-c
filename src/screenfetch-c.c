@@ -93,12 +93,12 @@ static char* detected_arr[16];
 static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
 /* other definitions */
+bool manual = false;
 bool logo = true;
 bool debug = false;
 bool error = true;
 bool verbose = false;
 bool screenshot = false;
-bool ascii = false;
 
 int main(int argc, char** argv)
 {
@@ -131,10 +131,13 @@ int main(int argc, char** argv)
 
 	char c; 
 
-	while ((c = getopt(argc, argv, "dvnNsS:D:A:EVh")) != -1)
+	while ((c = getopt(argc, argv, "mdvnNsS:D:A:EVh")) != -1)
 	{
 		switch (c)
 		{
+			case 'm':
+				SET_MANUAL(true);
+				break;
 			case 'd':
 				SET_DEBUG(true);
 				break;
@@ -177,23 +180,44 @@ int main(int argc, char** argv)
 		}
 	}
 
-	/* each string is filled by its respective function */
-	detect_distro(distro_str);
-	detect_arch(arch_str);
-	detect_host(host_str);
-	detect_kernel(kernel_str);
-	detect_uptime(uptime_str);
-	detect_pkgs(pkgs_str);
-	detect_cpu(cpu_str);
-	detect_gpu(gpu_str);
-	detect_disk(disk_str);
-	detect_mem(mem_str);
-	detect_shell(shell_str);
-	detect_res(res_str);
-	detect_de(de_str);
-	detect_wm(wm_str);
-	detect_wm_theme(wm_theme_str);
-	detect_gtk(gtk_str);
+	if (manual)
+	{
+		int stat = manual_input();
+
+		if (stat == 1)
+		{
+			detect_uptime(uptime_str);
+			detect_pkgs(pkgs_str);
+			detect_disk(disk_str);
+			detect_mem(mem_str);
+		}
+
+		else /* if the user decided to leave manual mode without input */
+		{
+			return EXIT_SUCCESS;
+		}
+	}
+
+	else
+	{
+		/* each string is filled by its respective function */
+		detect_distro(distro_str);
+		detect_arch(arch_str);
+		detect_host(host_str);
+		detect_kernel(kernel_str);
+		detect_uptime(uptime_str);
+		detect_pkgs(pkgs_str);
+		detect_cpu(cpu_str);
+		detect_gpu(gpu_str);
+		detect_disk(disk_str);
+		detect_mem(mem_str);
+		detect_shell(shell_str);
+		detect_res(res_str);
+		detect_de(de_str);
+		detect_wm(wm_str);
+		detect_wm_theme(wm_theme_str);
+		detect_gtk(gtk_str);
+	}
 
 	/* debug section - only executed if -d flag is tripped */
 	if (debug)
@@ -969,7 +993,7 @@ void detect_shell(char* str)
 }
 
 /*  detect_res
-    detects the combined resoloution of all monitors attached to the computer
+    detects the combined resolution of all monitors attached to the computer
     argument char* str: the char array to be filled with the resolution in format '$x$', where $ is a number
 */
 void detect_res(char* str)
@@ -1163,6 +1187,126 @@ void detect_gtk(char* str)
 		VERBOSE_OUT("Found GTK as ", str);
 
 	return;
+}
+
+int manual_input(void)
+{
+	FILE* config_file;
+	char* config_file_loc;
+
+	config_file_loc = getenv("HOME");
+	strncat(config_file_loc, "/.screenfetchc", MAX_STRLEN);
+
+	config_file = fopen(config_file_loc, "r");
+
+	if (config_file == NULL)
+	{
+		if (OS == CYGWIN)
+		{
+			printf("%s\n", TBLU "WARNING: There is currenly a bug involving manual mode on Windows." TNRM);
+			printf("%s\n", TBLU "Only continue if you are ABSOLUTELY sure." TNRM);
+		}
+
+		printf("%s\n", "This appears to be your first time running screenfetch-c in manual mode.");
+		printf("%s", "Would you like to continue? (y/n) ");
+
+		char choice;
+		scanf("%c", &choice);
+
+		if (choice == 'y' || choice == 'Y')
+		{
+			config_file = fopen(config_file_loc, "w");
+
+			printf("%s\n", "We are now going to begin the manual mode input process.");
+			printf("%s\n", "Please enter exactly what is asked for.");
+			printf("%s\n", "If you are unsure about the case/format of a category, please consult the manpage.");
+
+			printf("%s", "Please enter the name of your distribution/OS: ");
+			scanf("%s", distro_str);
+			fprintf(config_file, "%s\n", distro_str);
+
+			printf("%s", "Please enter your architecture: ");
+			scanf("%s", arch_str);
+			fprintf(config_file, "%s\n", arch_str);
+
+			printf("%s", "Please enter your username@hostname: ");
+			scanf("%s", host_str);
+			fprintf(config_file, "%s\n", host_str);
+
+			printf("%s", "Please enter your kernel: ");
+			scanf("%s", kernel_str);
+			fprintf(config_file, "%s\n", kernel_str);
+
+			printf("%s", "Please enter your CPU name: ");
+			scanf("%s", cpu_str);
+			fprintf(config_file, "%s\n", cpu_str);
+
+			printf("%s", "Please enter your GPU name: ");
+			scanf("%s", gpu_str);
+			fprintf(config_file, "%s\n", gpu_str);
+
+			printf("%s", "Please enter your shell name and version: ");
+			scanf("%s", shell_str);
+			fprintf(config_file, "%s\n", shell_str);
+
+			printf("%s", "Please enter your monitor resolution: ");
+			scanf("%s", res_str);
+			fprintf(config_file, "%s\n", res_str);
+
+			printf("%s", "Please enter your DE name: ");
+			scanf("%s", de_str);
+			fprintf(config_file, "%s\n", de_str);
+
+			printf("%s", "Please enter your WM name: ");
+			scanf("%s", wm_str);
+			fprintf(config_file, "%s\n", wm_str);
+
+			printf("%s", "Please enter your WM Theme name: ");
+			scanf("%s", wm_theme_str);
+			fprintf(config_file, "%s\n", wm_theme_str);
+
+			printf("%s", "Please enter any GTK info: ");
+			scanf("%s", gtk_str);
+			fprintf(config_file, "%s\n", gtk_str);
+
+			printf("%s\n", "That concludes the manual input.");
+			printf("%s\n", "From now on, screenfetch-c will use this information when called with -m.");
+
+			fclose(config_file);
+
+			return 1;
+		}
+
+		else
+		{
+			printf("%s\n", "Exiting manual mode and screenfetch-c.");
+			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m flag next time.");
+
+			return 2;
+		}
+	}
+
+	else
+	{
+		VERBOSE_OUT("Found config file. Reading...", "");
+
+		fscanf(config_file, "%s", distro_str);
+		fscanf(config_file, "%s", arch_str);
+		fscanf(config_file, "%s", host_str);
+		fscanf(config_file, "%s", kernel_str);
+		fscanf(config_file, "%s", cpu_str);
+		fscanf(config_file, "%s", gpu_str);
+		fscanf(config_file, "%s", shell_str);
+		fscanf(config_file, "%s", res_str);
+		fscanf(config_file, "%s", de_str);
+		fscanf(config_file, "%s", wm_str);
+		fscanf(config_file, "%s", wm_theme_str);
+		fscanf(config_file, "%s", gtk_str);
+
+		fclose(config_file);
+
+		return 1;
+	}
 }
 
 /*  fill_detected_arr
