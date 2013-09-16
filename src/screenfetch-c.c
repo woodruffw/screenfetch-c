@@ -28,6 +28,7 @@
 	Figure out DE/WM/WM theme/GTK detection
 	Fully implement detect_distro() on Linux.
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
+	Fix strange bug on Windows in manual mode
 
 	------
 
@@ -180,7 +181,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	if (manual)
+	if (manual) /* if the user has decided to enter manual mode */
 	{
 		int stat = manual_input();
 
@@ -193,14 +194,11 @@ int main(int argc, char** argv)
 		}
 
 		else /* if the user decided to leave manual mode without input */
-		{
 			return EXIT_SUCCESS;
-		}
 	}
 
-	else
+	else /* each string is filled by its respective function */
 	{
-		/* each string is filled by its respective function */
 		detect_distro(distro_str);
 		detect_arch(arch_str);
 		detect_host(host_str);
@@ -219,8 +217,7 @@ int main(int argc, char** argv)
 		detect_gtk(gtk_str);
 	}
 
-	/* debug section - only executed if -d flag is tripped */
-	if (debug)
+	if (debug) /* debug section - only executed if -d flag is tripped */
 	{
 		if (STRCMP(distro_str, "Unknown"))
 			DEBUG_OUT("Distro detection failure: ", distro_str);
@@ -489,7 +486,13 @@ void detect_host(char* str)
 void detect_kernel(char* str)
 {
 	FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
-	fgets(str, MAX_STRLEN, kernel_file);
+
+	if (OS != CYGWIN)
+		fgets(str, MAX_STRLEN, kernel_file);
+
+	else
+		fscanf(kernel_file, "%13s", str);
+
 	pclose(kernel_file);
 
 	if (verbose)
@@ -668,7 +671,7 @@ void detect_pkgs(char* str)
 	else if (OS == FREEBSD || OS == OPENBSD)
 	{
 		pkgs_file = popen("pkg_info | wc -l | awk '{sub(\" \", \"\");print $1}'", "r");
-
+		/* haven't checked the format yet */
 		pclose(pkgs_file);
 	}
 
@@ -678,10 +681,10 @@ void detect_pkgs(char* str)
 		ERROR_OUT("Error: ", "Could not find packages on current OS.");
 	}
 
+	snprintf(str, MAX_STRLEN, "%d", packages);
+
 	if (verbose)
 		VERBOSE_OUT("Found package count as ", str);
-
-	snprintf(str, MAX_STRLEN, "%d", packages);
 
 	return;
 }
@@ -1213,13 +1216,13 @@ int manual_input(void)
 		char choice[3];
 		fgets(choice, 3, stdin);
 
-		if (STRCMP(choice, "y\n") || STRCMP(choice, "Y\n"))
+		if (choice[0] == 'y' || choice[0] == 'Y')
 		{
 			config_file = fopen(config_file_loc, "w");
 
 			printf("%s\n", "We are now going to begin the manual mode input process.");
 			printf("%s\n", "Please enter exactly what is asked for.");
-			printf("%s\n", "If you are unsure about the case/format of a category, please consult the manpage.");
+			printf("%s\n", "If you are unsure about format, please consult the manpage.");
 
 			printf("%s", "Please enter the name of your distribution/OS: ");
 			fgets(distro_str, MAX_STRLEN, stdin);
@@ -1833,7 +1836,7 @@ void display_help(void)
 }
 
 /*  take_screenshot
-    takes a screenshot and saves it to $HOME 
+    takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
     --
     CAVEAT: THIS FUNCTION MAKES SYSTEM CALLS
     --
@@ -1891,3 +1894,4 @@ void take_screenshot(void)
 
 
 /* ** EOF ** */
+/* EOF */
