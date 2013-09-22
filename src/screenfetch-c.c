@@ -1440,7 +1440,7 @@ void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
 */
 void main_ascii_output(char* data[], char* data_names[])
 {
-	int i;
+	int i = 0;
 
 	if (OS == CYGWIN)
 	{
@@ -1804,17 +1804,35 @@ void main_ascii_output(char* data[], char* data_names[])
 
 	else if (OS == OPENBSD)
 	{
-		/* i'm going to add these later */
+		for (i = 0; i < 23; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s\n", openbsd_logo[i], data_names[i], data[i]);
+			else
+				printf("%s\n", openbsd_logo[i]);
+		}
 	}
 
 	else if (OS == NETBSD)
 	{
-		/* i'm going to add these later */
+		for (i = 0; i < 23; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s\n", netbsd_logo[i], data_names[i], data[i]);
+			else
+				printf("%s\n", netbsd_logo[i]);
+		}
 	}
 
 	else if (OS == DFBSD)
 	{
-		/* i'm going to add these later */
+		for (i = 0; i < 23; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s\n", dragonflybsd_logo[i], data_names[i], data[i]);
+			else
+				printf("%s\n", dragonflybsd_logo[i]);
+		}
 	}
 
 	return;
@@ -1899,7 +1917,7 @@ void take_screenshot(void)
 	}
 
 	char* loc = getenv("HOME");
-	strcat(loc, "/screenfetch_screenshot.png");
+	strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
 	ss_file = fopen(loc, "r");
 	if (ss_file != NULL && verbose)
 	{
