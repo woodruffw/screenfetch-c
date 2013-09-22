@@ -21,7 +21,7 @@ Supported OSes:
 Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD, 
 and most Linux-kernel based distributions. 
 
-NOTE: If you are using manual mode to provide screenfetch-c with system information, you will need to enter the distribution name EXACTLY as written below:
+Note: If you are using manual mode to provide screenfetch-c with system information, you will need to enter the distribution name EXACTLY as written below:
 Arch Linux, ParabolaGNU/Linux-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Linux.
 
 Supported shells:
@@ -31,7 +31,7 @@ Supported WMs:
 fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awesome, wmaker, stumpwm, musca, i3, xmonad, ratpoison, scrotwm, spectrwm, wmfs, wmii, beryl, subtle, e16, enlightenment, sawfish, emerald, monsterwm, dminiwm, compiz, Finder, herbstluftwm.
 
 .SH OPTIONS
--m 		Begin manual mode, which allows the user to enter specific values for devices/statistics.
+-m 		Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
 
 -d 		Enable debug mode, which prints out detection failures.
 
@@ -52,6 +52,16 @@ fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awes
 -V		Display the version of screenfetch currently being used.
 
 -h		Displays help and compatibility information.
+
+.SH CONFIGURATION
+When screenfetch-c is invoked with the '-m' flag for the first time, it enters manual mode.
+Manual mode prompts the user to enter specific information about the computer, storing that information in ~/.screenfetchc for the next invocation with the '-m' flag.
+
+By default, you must enter all fields asked for in manual mode. However, if you want screenfetch-c to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force screenfetch-c to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
+
+To remove your existing manual configuration, simply delete the .screenfetchc file located in your $HOME. 
+
+Note: .screenfetchc's format isn't exactly human-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete .screenfetchc and start from the beginning.
 
 .SH RELEASE HISTORY
 0.1 - ALPHA - INCOMPLETE, UNCOMPILED
