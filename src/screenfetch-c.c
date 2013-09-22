@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
 
-	char c; 
+	char c;
 
 	while ((c = getopt(argc, argv, "mdvnNsS:D:A:EVh")) != -1)
 	{
@@ -185,12 +185,37 @@ int main(int argc, char** argv)
 	{
 		int stat = manual_input();
 
-		if (stat == 1)
+		if (stat == EXIT_SUCCESS)
 		{
 			detect_uptime(uptime_str);
 			detect_pkgs(pkgs_str);
 			detect_disk(disk_str);
 			detect_mem(mem_str);
+
+			if (STRCMP(distro_str, "*"))
+				detect_distro(distro_str);
+			if (STRCMP(arch_str, "*"))
+				detect_arch(arch_str);
+			if (STRCMP(host_str, "*"))
+				detect_host(host_str);
+			if (STRCMP(kernel_str, "*"))
+				detect_kernel(kernel_str);
+			if (STRCMP(cpu_str, "*"))
+				detect_cpu(cpu_str);
+			if (STRCMP(gpu_str, "*"))
+				detect_gpu(gpu_str);
+			if (STRCMP(shell_str, "*"))
+				detect_shell(shell_str);
+			if (STRCMP(res_str, "*"))
+				detect_res(res_str);
+			if (STRCMP(de_str, "*"))
+				detect_de(de_str);
+			if (STRCMP(wm_str, "*"))
+				detect_wm(wm_str);
+			if (STRCMP(wm_theme_str, "*"))
+				detect_wm_theme(wm_theme_str);
+			if (STRCMP(gtk_str, "*"))
+				detect_gtk(gtk_str);
 		}
 
 		else /* if the user decided to leave manual mode without input */
@@ -216,6 +241,17 @@ int main(int argc, char** argv)
 		detect_wm_theme(wm_theme_str);
 		detect_gtk(gtk_str);
 	}
+
+	/* detected_arr is filled with the gathered from the detection functions */
+	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+
+	if (logo)
+		main_ascii_output(detected_arr, detected_arr_names);
+	else
+		main_text_output(detected_arr, detected_arr_names);
+
+	if (screenshot)
+		take_screenshot();
 
 	if (debug) /* debug section - only executed if -d flag is tripped */
 	{
@@ -269,20 +305,7 @@ int main(int argc, char** argv)
 
 		printf("%s\n", "Enter any character to end the program.");
 		getchar();
-
-		return EXIT_SUCCESS;
 	}
-
-	/* detected_arr is filled with the gathered from the detection functions */
-	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
-
-	if (logo)
-		main_ascii_output(detected_arr, detected_arr_names);
-	else
-		main_text_output(detected_arr, detected_arr_names);
-
-	if (screenshot)
-		take_screenshot();
 
 	return EXIT_SUCCESS;
 }
@@ -369,7 +392,7 @@ void detect_distro(char* str)
 				{
 					fclose(distro_file);
 
-					distro_file = popen("cat /etc/lsb-release | head -1 | tr -d \"\\\"\\n\"", "r");
+					distro_file = popen("cat /etc/lsb-release | head -1 | tr -d '\\\"\\n'", "r");
 					fgets(distro_name_str, MAX_STRLEN, distro_file);
 					pclose(distro_file);
 
@@ -385,7 +408,7 @@ void detect_distro(char* str)
 						fclose(distro_file);
 						safe_strncpy(str, "Fedora", MAX_STRLEN);
 					}
-			
+
 					else
 					{
 						distro_file = fopen("/etc/SuSE-release", "r");
@@ -406,14 +429,14 @@ void detect_distro(char* str)
 							}
 						}
 					}
-				}				
+				}
 			}
 		}
 
 		else if (ISBSD())
 		{
 			distro_file = popen("uname -sr", "r");
-			fgets(str, sizeof(str), distro_file);
+			fgets(str, MAX_STRLEN, distro_file);
 			pclose(distro_file);
 		}
 	}
@@ -464,6 +487,7 @@ void detect_host(char* str)
 	char* given_user; /* has to be a pointer for getenv(), god knows why */
 	char given_host[MAX_STRLEN];
 
+	/* alternatives: id -un and whoami */
 	given_user = getenv("USER");
 
 	FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
@@ -525,7 +549,7 @@ void detect_uptime(char* str)
 
 	else if (OS == OSX || OS == FREEBSD || OS == DFBSD)
 	{
-		uptime_file = popen("sysctl -n kern.boottime | cut -d \"=\" -f 2 | cut -d \",\" -f 1", "r");
+		uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
 		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 		pclose(uptime_file);
 
@@ -609,7 +633,7 @@ void detect_pkgs(char* str)
 			fscanf(pkgs_file, "%d", &brew_pkgs);
 			pclose(pkgs_file);
 
-			packages += brew_pkgs; 
+			packages += brew_pkgs;
 		}
 
 		/* test for existence of macports, fink, etc here */
@@ -788,6 +812,7 @@ void detect_disk(char* str)
 			fscanf(disk_file, "%d", &disk_used);
 			pclose(disk_file);
 		}
+
 		else
 		{
 			disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r\\n G'", "r");
@@ -829,7 +854,7 @@ void detect_mem(char* str)
 	long kb = 1024;
 	long mb = kb * kb;
 	long total_mem; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
-	long free_mem; 
+	long free_mem;
 	long used_mem;
 
 	if (OS == CYGWIN || OS == NETBSD)
@@ -853,7 +878,7 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%ld", &total_mem);
 		pclose(mem_file);
 
-		mem_file = popen("vm_stat | head -2 | tail -1 | tr -d \"Pages free: .\"", "r");
+		mem_file = popen("vm_stat | head -2 | tail -1 | tr -d 'Pages free: .'", "r");
 		fscanf(mem_file, "%ld", &free_mem);
 		pclose(mem_file);
 
@@ -973,7 +998,7 @@ void detect_shell(char* str)
 		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, vers_str + 5);
 		pclose(shell_file);
 	}
-	
+
 	else if (STRCMP(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
@@ -1003,25 +1028,25 @@ void detect_res(char* str)
 {
 	FILE* res_file;
 
-	char width_str[MAX_STRLEN];
-	char height_str[MAX_STRLEN];
+	int width = 0;
+	int height = 0;
 
 	if (OS == CYGWIN)
 	{
 		res_file = popen("wmic desktopmonitor get screenwidth | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(width_str, MAX_STRLEN, res_file);
+		fscanf(res_file, "%d", &width);
 		pclose(res_file);
 
 		res_file = popen("wmic desktopmonitor get screenheight | tail -2 | tr -d '\\r\\n '", "r");
-		fgets(height_str, MAX_STRLEN, res_file);
+		fscanf(res_file, "%d", &height);
 		pclose(res_file);
 
-		snprintf(str, MAX_STRLEN, "%sx%s", width_str, height_str);
+		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
 
 	else if (OS == OSX)
 	{
-		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4\" \"}' | tr -d '\\n'", "r");
+		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
@@ -1291,7 +1316,7 @@ int manual_input(void)
 			wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
 			gtk_str[strlen(gtk_str) - 1] = '\0';
 
-			return 1;
+			return EXIT_SUCCESS;
 		}
 
 		else
@@ -1299,7 +1324,7 @@ int manual_input(void)
 			printf("%s\n", "Exiting manual mode and screenfetch-c.");
 			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m flag next time.");
 
-			return 2;
+			return EXIT_FAILURE;
 		}
 	}
 
@@ -1479,7 +1504,7 @@ void main_ascii_output(char* data[], char* data_names[])
 			}
 		}
 
-		else if (STRCMP(distro_str, "Ubuntu"))
+		else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu") || STRCMP(distro_str, "Xubuntu"))
 		{
 			for (i = 0; i < 18; i++)
 			{
@@ -1892,6 +1917,4 @@ void take_screenshot(void)
 
 /*  **  END FLAG/OUTPUT/MISC FUNCTIONS  **  */
 
-
-/* ** EOF ** */
 /* EOF */
