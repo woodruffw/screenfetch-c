@@ -102,7 +102,7 @@ int manual_input(void);
 void main_ascii_output(char* data[], char* data_names[]);
 void main_text_output(char* data[], char* data_names[]);
 char* safe_strncpy(char* destination, const char* source, size_t num); 
-void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days);
+void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days);
 void display_version(void);
 void display_help(void);
 void take_screenshot(void);

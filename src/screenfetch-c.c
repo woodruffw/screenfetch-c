@@ -103,16 +103,15 @@ bool screenshot = false;
 
 int main(int argc, char** argv)
 {
-	/* first off, don't allow unknown OSes to run this program */
+	/* warn unknown OSes about using this program */
 	if (OS == UNKNOWN)
 	{
-		ERROR_OUT("Error: ", "This program isn't designed for your OS.");
+		ERROR_OUT("Warning: ", "This program isn't designed for your OS.");
 		ERROR_OUT("Even if it did compile successfully, it will not execute correctly.", "");
-
-		return EXIT_FAILURE;
+		ERROR_OUT("It is HIGHLY recommended, therefore, that you use manual mode.", "");
 	}
 
-	/* copy 'Unknown' to each string and append a null character */
+	/* copy 'Unknown' to each string */
 	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
@@ -187,11 +186,13 @@ int main(int argc, char** argv)
 
 		if (stat == EXIT_SUCCESS)
 		{
+			/* these sections are ALWAYS detected */
 			detect_uptime(uptime_str);
 			detect_pkgs(pkgs_str);
 			detect_disk(disk_str);
 			detect_mem(mem_str);
 
+			/* if the user specifies an asterisk, fill the data in for them */
 			if (STRCMP(distro_str, "*"))
 				detect_distro(distro_str);
 			if (STRCMP(arch_str, "*"))
@@ -1413,13 +1414,13 @@ char* safe_strncpy(char* destination, const char* source, size_t num)
 
 /*  split_uptime
     splits param uptime into individual time-units
-    argument float uptime: the uptime, in seconds, to be split
+    argument long uptime: the uptime, in seconds, to be split
     arguments int* secs...days: pointers to ints where the split uptime will be stored
     --
     CAVEAT: uptime MUST be in seconds
     --
 */
-void split_uptime(float uptime, int* secs, int* mins, int* hrs, int* days)
+void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 {
 	*secs = (int) uptime % 60;
 	*mins = (int) (uptime / 60) % 60;
