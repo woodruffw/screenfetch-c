@@ -319,7 +319,7 @@ int main(int argc, char** argv)
 */
 void detect_distro(char* str)
 {
-	if (STRCMP(str, "Unknown")) //if distro_str was NOT set by the -D flag
+	if (STRCMP(str, "Unknown")) /* if distro_str was NOT set by the -D flag */
 	{
 		FILE* distro_file;
 
@@ -854,18 +854,30 @@ void detect_mem(char* str)
 
 	long kb = 1024;
 	long mb = kb * kb;
-	long total_mem; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
-	long free_mem;
-	long used_mem;
+	long long total_mem; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+	long long free_mem;
+	long long used_mem;
 
-	if (OS == CYGWIN || OS == NETBSD)
+	if (OS == CYGWIN)
+	{
+		#ifdef __CYGWIN__
+			MEMORYSTATUSEX mem_stat;
+			mem_stat.dwLength = sizeof(mem_stat);
+			GlobalMemoryStatusEx(&mem_stat);
+
+			total_mem = (unsigned long long) mem_stat.ullTotalPhys / mb;
+			used_mem = total_mem - ((unsigned long long) mem_stat.ullAvailPhys / mb);
+		#endif
+	}
+
+	else if (OS == NETBSD)
 	{
 		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &total_mem);
+		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &free_mem);
+		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
 		total_mem /= (long) kb;
@@ -875,12 +887,24 @@ void detect_mem(char* str)
 
 	else if (OS == OSX)
 	{
+		/* christ, what a mess. */
+		/*
+		int mib[2];
+		mib[0] = CTL_HW;
+		mib[1] = HW_MEMSIZE;
+		int64_t size = 0;
+		size_t len = sizeof(size);
+		sysctl(mib, 2, &size, &len, NULL, 0);
+
+		total_mem = (long long) size;
+		*/
+
 		mem_file = popen("sysctl -n hw.memsize", "r");
-		fscanf(mem_file, "%ld", &total_mem);
+		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("vm_stat | head -2 | tail -1 | tr -d 'Pages free: .'", "r");
-		fscanf(mem_file, "%ld", &free_mem);
+		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
 		total_mem /= (long) mb;
@@ -893,13 +917,17 @@ void detect_mem(char* str)
 
 	else if (OS == LINUX)
 	{
+		/* known problem: because linux utilizes free ram extensively in caches/buffers,
+		   the amount of memory sysinfo reports as free is very small.
+		*/
+
 		#ifdef __linux__
 			struct sysinfo si_mem;
 			sysinfo(&si_mem);
 
-			total_mem = (long) si_mem.totalram / mb;
-			free_mem = (long) si_mem.freeram / mb;
-			used_mem = (long) total_mem - free_mem;
+			total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / mb;
+			free_mem = (long long) (si_mem.freeram * si_mem.mem_unit) / mb;
+			used_mem = (long long) total_mem - free_mem;
 		#endif
 	}
 
@@ -908,11 +936,11 @@ void detect_mem(char* str)
 		/* it's unknown if FreeBSD's /proc/meminfo is in the same format as Cygwin's */
 
 		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &total_mem);
+		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%ld", &free_mem);
+		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
 		total_mem /= (long) kb;
@@ -923,11 +951,11 @@ void detect_mem(char* str)
 	else if (OS == OPENBSD)
 	{
 		mem_file = popen("top -1 1 | awk '/Real:/ {k=split($3,a,\"/\");print a[k] }' | tr -d 'M'", "r");
-		fscanf(mem_file, "%ld", &total_mem);
+		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
 		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fscanf(mem_file, "%ld", &used_mem);
+		fscanf(mem_file, "%lld", &used_mem);
 		pclose(mem_file);
 	}
 
@@ -936,16 +964,16 @@ void detect_mem(char* str)
 		/* i currently don't know of any way to detected used memory in DFBSD */
 
 		mem_file = popen("sysctl -n hw.physmem", "r");
-		fscanf(mem_file, "%ld", &total_mem);
+		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
 		total_mem /= (long) mb;
 	}
 
 	if (OS != DFBSD)
-		snprintf(str, MAX_STRLEN, "%ld%s / %ld%s", used_mem, "MB", total_mem, "MB");
+		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
 	else
-		snprintf(str, MAX_STRLEN, "%ld%s", total_mem, "MB");
+		snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");
 
 	if (verbose)
 		VERBOSE_OUT("Found memory usage as ", str);

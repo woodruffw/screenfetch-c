@@ -26,6 +26,7 @@
 	/* this is a very bad solution */
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
+	#include <Windows.h>
 #elif defined __APPLE__ && __MACH__
 	#define OS OSX
 #elif defined __linux__
