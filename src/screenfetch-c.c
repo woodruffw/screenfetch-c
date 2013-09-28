@@ -1915,15 +1915,6 @@ void display_help(void)
 */
 void take_screenshot(void)
 {
-	FILE* ss_file;
-	if (OS == CYGWIN || OS == UNKNOWN)
-	{
-		/* cygwin does not currently have a simple screenshot solution */
-		/* potential solutions: "import -window root screenfetch_screenshot.jpg" - requires X */
-		ERROR_OUT("Error: ", "This program does not currently support screenshots on your OS.");
-		return;
-	}
-
 	printf("%s", "Taking shot in 3..");
 	fflush(stdout);
 	sleep(1);
@@ -1935,28 +1926,42 @@ void take_screenshot(void)
 	sleep(1);
 	printf("%s\n", "0");
 
-	if (OS == OSX)
+	if (OS == CYGWIN)
 	{
-		system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");	
+		#ifdef __CYGWIN__
+			/* terrible hack, the printscreen key is simulated */
+			keybd_event(VK_SNAPSHOT, 0, 0, 0);
+			VERBOSE_OUT("Screenshot has been saved to the clipboard.", "");
+		#endif
 	}
 
-	else if (OS == LINUX || ISBSD())
+	else
 	{
-		system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
-	}
+		FILE* ss_file;
 
-	char* loc = getenv("HOME");
-	strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
-	ss_file = fopen(loc, "r");
-	if (ss_file != NULL && verbose)
-	{
-		fclose(ss_file);
-		VERBOSE_OUT("Screenshot successfully saved.", "");
-	}
-		
-	else if (ss_file == NULL)
-	{
-		ERROR_OUT("Error: ", "Problem saving screenshot.");
+		if (OS == OSX)
+		{
+			system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");	
+		}
+
+		else if (OS == LINUX || ISBSD())
+		{
+			system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
+		}
+
+		char* loc = getenv("HOME");
+		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+		ss_file = fopen(loc, "r");
+		if (ss_file != NULL && verbose)
+		{
+			fclose(ss_file);
+			VERBOSE_OUT("Screenshot successfully saved.", "");
+		}
+			
+		else if (ss_file == NULL)
+		{
+			ERROR_OUT("Error: ", "Problem saving screenshot.");
+		}
 	}
 
 	return;
