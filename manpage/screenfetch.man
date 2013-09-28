@@ -31,27 +31,49 @@ Supported WMs:
 fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awesome, wmaker, stumpwm, musca, i3, xmonad, ratpoison, scrotwm, spectrwm, wmfs, wmii, beryl, subtle, e16, enlightenment, sawfish, emerald, monsterwm, dminiwm, compiz, Finder, herbstluftwm.
 
 .SH OPTIONS
--m 		Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
+-m
 
--d 		Enable debug mode, which prints out detection failures.
+Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
 
--v 		Enable verbose mode, which prints out detection information.
+-d
 
--s		Take a screenshot after completing the output.
+Enable debug mode, which prints out detection failures.
 
--n 		Strip output of ASCII logo - print information only.
+-v
 
--S <cmd>	Take a screenshot using custom command cmd. Use if -s fails.
+Enable verbose mode, which prints out detection information.
 
--D <distro>	Set the distro outputted by screenfetch.
+-s
 
--A <distro>	Set the ASCII logo outputted by screenfetch.
+Take a screenshot after completing the output. On non-Windows systems, this will save a file called 'screenfetch_screenshot.png' in $HOME. On Windows, this will save the screenshot in the system clipboard.
 
--E		Suppress error messages (does not suppress debug mode).
+-n
 
--V		Display the version of screenfetch currently being used.
+Strip output of ASCII logo - print information only.
 
--h		Displays help and compatibility information.
+-S <cmd>
+
+Take a screenshot using custom command cmd. Use if -s fails.
+
+-D <distro>
+
+Set the distro outputted by screenfetch.
+
+-A <distro>
+
+Set the ASCII logo outputted by screenfetch.
+
+-E
+
+Suppress error messages (does not suppress debug mode).
+
+-V
+
+Display the version of screenfetch currently being used.
+
+-h
+
+Displays help and compatibility information.
 
 .SH CONFIGURATION
 When screenfetch-c is invoked with the '-m' flag for the first time, it enters manual mode.
@@ -70,7 +92,7 @@ Note: .screenfetchc's format isn't exactly human-friendly, so editing it manuall
 
 1.0 - BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
-.SH BUGS
+.SH BUGS AND ERRATIC BEHAVIOR
 Distro detection on Windows XP and Vista is spotty and may appear incorrect.
 
 Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its version scheme.
@@ -78,6 +100,8 @@ Shell version detection relies of very specific naming schemes and may appear in
 DragonFlyBSD systems with more than 2GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
 
 Manual mode on Windows seems the result in a variety of weird bugs concerning uptime, packages, disk stats, and memory stats. For the time being, I recommend NOT using it on Windows.
+
+Memory detection on Linux systems includes swap/buffer RAM in used RAM, not free RAM. While this is not a bug per se, it may contradict figures from other utilities (which factor out swap/buffer RAM).
 
 Found a bug/issue? Please tell me about it:
 http://github.com/woodrufw/screenfetch-c
