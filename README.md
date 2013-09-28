@@ -15,7 +15,7 @@ screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environmen
 It has not yet been tested on any BSD distro. Therefore, I currently advise against using screenfetch-c on *BSD, even if it does compile successfully. However, it is up to you.
 
 There are only a few select sections that still require work. They are listed here:
-- DE/WM/WM Theme/GTK detection is not complete on *BSD or Linux. As a result, they will appear as 'Unknown' in output.
+- DE/WM/WM Theme/GTK detection is not complete on *BSD or Linux. As a result, they will appear as 'Unknown' in output (unless specified in manual mode).
 - Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
 - Package detection requires more in-depth testing.
 - Certain argument flags are currently unimplemented. These include -N, -A, and -S.
@@ -36,7 +36,7 @@ _Note_: install.sh requires sudo to install the manpage!
 
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
-screenfetch-c has no dependencies outside of the standard/POSIX libraries.
+screenfetch-c has no dependencies outside of the standard libraries of each OS.
 
 ```
 gcc screenfetch-c.c -o screenfetch
@@ -49,6 +49,7 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 ##### Removal:
 Removing screenfetch-c is just as easy as installing it.
 Simply delete the binary and the manpage, which is stored in /usr/share/man/man1/screenfetch.1.gz
+
 If you compiled screenfetch-c manually, the second step may not be required.
 
 ### Current Known Compatibility:
@@ -89,4 +90,4 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [ ] Scientific Linux
 - [x] Backtrack Linux
 - [ ] Sabayon
-- [ ] Linux (upon failure to detect a specific distro)
+- [x] Linux (upon failure to detect a specific distro)
