@@ -15,7 +15,7 @@
 	although some were modified to change/improve the output.
 
 	The shell scripts detectwm.sh, detectwmtheme.sh, and detectde.sh are all partially or completely based upon
-	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE within C would be a pain in the ass.
+	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE/GTK within C would be a pain in the ass.
 
 	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
@@ -327,15 +327,17 @@ void detect_distro(char* str)
 
 		if (OS == CYGWIN)
 		{
-			/* alternative solution (3.5s execution time! uh oh!):
-			   systeminfo | grep 'OS Name:' | cut -d ':' -f 2 | sed 's/^ * //g
-			*/
-			distro_file = popen("wmic os get name | head -2 | tail -1", "r");
-			fgets(distro_name_str, MAX_STRLEN, distro_file);
-			pclose(distro_file);
-
-			/* currently only works on W7, working on a solution */
-			snprintf(str, MAX_STRLEN, "%.*s", 19, distro_name_str);
+			#ifdef NTDDI_WIN7
+				safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
+			#elif defined NTDDI_WIN8
+				safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
+			#elif defined NTDDI_VISTA || NTDDI_VISTASP1
+				safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
+			#elif defined NTDDI_WINXP || NTDDI_WINXPSP1 || NTDDI_WINXPSP2 || NTDDI_WINXPSP3
+				safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
+			#else /* might add Server 03/08 conditions later */
+				safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
+			#endif
 		}
 
 		else if (OS == OSX)
@@ -534,12 +536,12 @@ void detect_uptime(char* str)
 {
 	FILE* uptime_file;
 
-	long uptime;
-	long now, boottime; /* may or may not be used depending on OS */
-	int secs;
-	int mins;
-	int hrs;
-	int days;
+	long uptime = 0;
+	long now = 0, boottime = 0; /* may or may not be used depending on OS */
+	int secs = 0;
+	int mins = 0;
+	int hrs = 0;
+	int days = 0;
 
 	if (OS == CYGWIN || OS == NETBSD)
 	{
@@ -797,9 +799,9 @@ void detect_disk(char* str)
 {
 	FILE* disk_file;
 
-	int disk_total;
-	int disk_used;
-	int disk_percentage;
+	int disk_total = 0;
+	int disk_used = 0;
+	int disk_percentage = 0;
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
@@ -852,11 +854,9 @@ void detect_mem(char* str)
 {
 	FILE* mem_file;
 
-	long kb = 1024;
-	long mb = kb * kb;
-	long long total_mem; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
-	long long free_mem;
-	long long used_mem;
+	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+	long long free_mem = 0;
+	long long used_mem = 0;
 
 	if (OS == CYGWIN)
 	{
@@ -865,8 +865,8 @@ void detect_mem(char* str)
 			mem_stat.dwLength = sizeof(mem_stat);
 			GlobalMemoryStatusEx(&mem_stat);
 
-			total_mem = (unsigned long long) mem_stat.ullTotalPhys / mb;
-			used_mem = total_mem - ((unsigned long long) mem_stat.ullAvailPhys / mb);
+			total_mem = (unsigned long long) mem_stat.ullTotalPhys / MB;
+			used_mem = total_mem - ((unsigned long long) mem_stat.ullAvailPhys / MB);
 		#endif
 	}
 
@@ -880,8 +880,8 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
-		total_mem /= (long) kb;
-		free_mem /= (long) kb;
+		total_mem /= (long) KB;
+		free_mem /= (long) KB;
 		used_mem = total_mem - free_mem;
 	}
 
@@ -907,10 +907,10 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
-		total_mem /= (long) mb;
+		total_mem /= (long) MB;
 
 		free_mem *= 4096; /* 4KiB is OS X's page size */
-		free_mem /= (long) mb;
+		free_mem /= (long) MB;
 
 		used_mem = total_mem - free_mem;
 	}
@@ -925,8 +925,8 @@ void detect_mem(char* str)
 			struct sysinfo si_mem;
 			sysinfo(&si_mem);
 
-			total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / mb;
-			free_mem = (long long) (si_mem.freeram * si_mem.mem_unit) / mb;
+			total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / MB;
+			free_mem = (long long) (si_mem.freeram * si_mem.mem_unit) / MB;
 			used_mem = (long long) total_mem - free_mem;
 		#endif
 	}
@@ -943,8 +943,8 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%lld", &free_mem);
 		pclose(mem_file);
 
-		total_mem /= (long) kb;
-		free_mem /= (long) kb;
+		total_mem /= (long) KB;
+		free_mem /= (long) KB;
 		used_mem = total_mem - free_mem;
 	}
 
@@ -967,7 +967,7 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
-		total_mem /= (long) mb;
+		total_mem /= (long) MB;
 	}
 
 	if (OS != DFBSD)
@@ -1142,9 +1142,9 @@ void detect_de(char* str)
 	return;
 }
 
-/* detect_wm
-   detects the window manager currently running on top of the OS
-   argument char* str: the char array to be filled with the WM name
+/*  detect_wm
+    detects the window manager currently running on top of the OS
+    argument char* str: the char array to be filled with the WM name
 */
 void detect_wm(char* str)
 {
@@ -1246,6 +1246,10 @@ void detect_gtk(char* str)
 	return;
 }
 
+/*  manual_input
+	generates (or reads) the ~/.screenfetchc file based upon user input
+	returns an int indicating status (SUCCESS or FAILURE)
+*/
 int manual_input(void)
 {
 	FILE* config_file;
@@ -1359,7 +1363,8 @@ int manual_input(void)
 
 	else
 	{
-		VERBOSE_OUT("Found config file. Reading...", "");
+		if (verbose)
+			VERBOSE_OUT("Found config file. Reading...", "");
 
 		fgets(distro_str, MAX_STRLEN, config_file);
 		fgets(arch_str, MAX_STRLEN, config_file);
@@ -1390,7 +1395,7 @@ int manual_input(void)
 		wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
 		gtk_str[strlen(gtk_str) - 1] = '\0';
 		
-		return 1;
+		return EXIT_SUCCESS;
 	}
 }
 
@@ -1560,7 +1565,7 @@ void main_ascii_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s\n", crunchbang_logo[i], TLGY, data_names[i], TNRM, data[i]);
+					printf("%s %s%s%s%s\n", crunchbang_logo[i], TDGY, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", crunchbang_logo[i]);
 			}
@@ -1808,7 +1813,7 @@ void main_ascii_output(char* data[], char* data_names[])
 			}
 		}
 
-		else if (STRCMP(distro_str, "Linux"))
+		else /* if (STRCMP(distro_str, "Linux")) */
 		{
 			for (i = 0; i < 18; i++)
 			{
@@ -1931,7 +1936,9 @@ void take_screenshot(void)
 		#ifdef __CYGWIN__
 			/* terrible hack, the printscreen key is simulated */
 			keybd_event(VK_SNAPSHOT, 0, 0, 0);
-			VERBOSE_OUT("Screenshot has been saved to the clipboard.", "");
+			
+			if (verbose)
+				VERBOSE_OUT("Screenshot has been saved to the clipboard.", "");
 		#endif
 	}
 
@@ -1951,7 +1958,9 @@ void take_screenshot(void)
 
 		char* loc = getenv("HOME");
 		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+
 		ss_file = fopen(loc, "r");
+
 		if (ss_file != NULL && verbose)
 		{
 			fclose(ss_file);

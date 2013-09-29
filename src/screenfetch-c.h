@@ -66,6 +66,8 @@
 #define TWHT "\x1B[1;37m" /* white */
 
 /* other definitions, use with caution (not type safe) */
+#define KB 1024
+#define MB 1048576
 #define MAX_STRLEN 128
 #define SET_MANUAL(flag) (manual = flag)
 #define SET_LOGO(flag) (logo = flag)

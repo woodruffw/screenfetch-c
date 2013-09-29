@@ -37,9 +37,11 @@ _Note_: install.sh requires sudo to install the manpage!
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
 screenfetch-c has no dependencies outside of the standard libraries of each OS.
+screenfetch-c is designed to be C99 compliant, although compiling with C90 should work provided
+you have the snprintf() function.
 
 ```
-gcc screenfetch-c.c -o screenfetch
+gcc -std=c99 screenfetch-c.c -o screenfetch
 ```
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
@@ -48,9 +50,9 @@ You can also choose the install screenfetch-c's manpage, if you wish.
 
 ##### Removal:
 Removing screenfetch-c is just as easy as installing it.
-Simply delete the binary and the manpage, which is stored in /usr/share/man/man1/screenfetch.1.gz
+Simply delete the binary, ~/.screenfetchc (if you used manual mode), and the manpage, which is stored in /usr/share/man/man1/screenfetch.1.gz
 
-If you compiled screenfetch-c manually, the second step may not be required.
+If you compiled screenfetch-c manually, the final step may not be required.
 
 ### Current Known Compatibility:
 
