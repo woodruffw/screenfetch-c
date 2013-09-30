@@ -438,7 +438,7 @@ void detect_distro(char* str)
 
 		else if (ISBSD())
 		{
-			distro_file = popen("uname -sr", "r");
+			distro_file = popen("uname -sr | tr -d '\\n'", "r");
 			fgets(str, MAX_STRLEN, distro_file);
 			pclose(distro_file);
 		}
@@ -697,8 +697,8 @@ void detect_pkgs(char* str)
 
 	else if (OS == FREEBSD || OS == OPENBSD)
 	{
-		pkgs_file = popen("pkg_info | wc -l | awk '{sub(\" \", \"\");print $1}'", "r");
-		/* haven't checked the format yet */
+		pkgs_file = popen("pkg_info | wc -l", "r");
+		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
@@ -747,7 +747,7 @@ void detect_cpu(char* str)
 
 	else if (OS == DFBSD || OS == FREEBSD || OS == OPENBSD)
 	{
-		cpu_file = popen("sysctl -n hw.model", "r");
+		cpu_file = popen("sysctl -n hw.model | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
