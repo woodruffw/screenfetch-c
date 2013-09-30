@@ -1133,7 +1133,9 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* find a way to self contain and execute detectde.sh */
+		de_file = popen("./detectde 2> /dev/null", "r");
+		fgets(str, MAX_STRLEN, de_file);
+		pclose(de_file);
 	}
 
 	if (verbose)
@@ -1171,7 +1173,9 @@ void detect_wm(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* find a way to self contain and execute detectwm.sh */
+		wm_file = popen("./detectwm 2> /dev/null", "r");
+		fgets(str, MAX_STRLEN, wm_file);
+		pclose(wm_file);
 	}
 
 	if (verbose)
@@ -1203,7 +1207,9 @@ void detect_wm_theme(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* find a way to self contain and execute detectwmtheme.sh */
+		wm_theme_file = popen("./detectwmtheme 2> /dev/null", "r");
+		fgets(str, MAX_STRLEN, wm_theme_file);
+		pclose(wm_theme_file);
 	}
 
 	if (verbose)
