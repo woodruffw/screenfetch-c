@@ -77,3 +77,7 @@ LinuxDeepin:
 
 
 ![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/LinuxDeepin.png?raw=true)
+
+OpenBSD:
+
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/OpenBSD.png?raw=true)
