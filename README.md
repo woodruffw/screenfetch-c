@@ -70,7 +70,7 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [ ] Gentoo
 - [ ] Funtoo
 - [ ] FreeBSD
-- [ ] OpenBSD
+- [x] OpenBSD
 - [ ] NetBSD
 - [ ] DragonFlyBSD
 - [ ] OpenSUSE
