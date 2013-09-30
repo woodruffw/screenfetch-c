@@ -2,12 +2,12 @@
 #  detectwmtheme.sh
 #  detect and output the name of the theme used in the Window Manager, if present
 #  only meant to be run on Linux/*BSD
-#  DEPENDS UPON: detectwm.sh for the name of the WM
+#  DEPENDS UPON: detectwm for the name of the WM
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
 #  Modified to stand alone by William Woodruff (woodrufw)
 
 Win_theme="Not Found"
-WM=`./detectwm.sh`
+WM=`./detectwm`
 case $WM in
 	'Awesome') if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua ]; then Win_theme="$(grep -e '^[^-].*\(theme\|beautiful\).*lua' ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua | grep '[a-zA-Z0-9]\+/[a-zA-Z0-9]\+.lua' -o | cut -d'/' -f1 | head -n1)"; fi;;
 	'BlackBox') if [ -f $HOME/.blackboxrc ]; then Win_theme="$(awk -F"/" '/styleFile/ {print $NF}' $HOME/.blackboxrc)"; fi;;
@@ -102,4 +102,4 @@ case $WM in
 	'XMonad') Win_theme="Not Present";;
 esac
 
-echo $Win_theme
+printf $Win_theme

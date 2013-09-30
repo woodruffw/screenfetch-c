@@ -2,7 +2,7 @@
 #  detectgtk.sh
 #  detect and output any GTK information, if present
 #  only meant to be run on Linux/*BSD
-#  DEPENDS UPON: detectde.sh for the name of the DE
+#  DEPENDS UPON: detectde for the name of the DE
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
 #  Modified to stand alone by William Woodruff (woodrufw)
 
@@ -11,7 +11,7 @@ gtk3Theme="Not Found"
 gtkIcons="Not Found"
 gtkFont="Not Found"
 
-DE=`./detectde.sh`
+DE=`./detectde`
 
 case $DE in
 	'KDE'*) # Desktop Environment found as "KDE"
@@ -213,7 +213,7 @@ case $DE in
 	;;
 esac
 
-echo $gtk2Theme
-echo $gtk3Theme
-echo $gtkIcons
-echo $gtkFont
+printf $gtk2Theme
+printf $gtk3Theme
+printf $gtkIcons
+printf $gtkFont

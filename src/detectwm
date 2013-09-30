@@ -114,4 +114,4 @@ if [[ -n ${DISPLAY} ]]; then
 	fi
 fi
 
-echo $WM
+printf $WM

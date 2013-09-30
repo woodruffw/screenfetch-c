@@ -121,5 +121,5 @@ if [[ -n ${DISPLAY} ]]; then
 		fi
 	fi
 
-	echo $DE
+	printf $DE
 fi
