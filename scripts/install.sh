@@ -20,11 +20,19 @@ if [ "$ans" = "y" ] ; then
 	printf "Fetching files..."
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.h --no-check-certificate -O ~/screenfetch-c.h 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectde --no-check-certificate -O ~/detectde 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwm --no-check-certificate -O ~/detectwm 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwmtheme --no-check-certificate -O ~/detectwmtheme 2> /dev/null
+	wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectgtk --no-check-certificate -O ~/detectgtk 2> /dev/null
 	wget https://raw.github.com/woodrufw/screenfetch-c/master/manpage/screenfetch.man --no-check-certificate -O ~/screenfetch.man 2> /dev/null
 	printf "done\n"
 
 	printf "Compiling screenfetch-c..."
 	gcc ~/screenfetch-c.c -o ~/screenfetch -std=c99
+	chmod +x ~/detectde
+	chmod +x ~/detectwm
+	chmod +x ~/detectwmtheme
+	chmod +x ~/detectgtk
 	printf "done\n"
 
 	printf "Moving manpage into place..."
