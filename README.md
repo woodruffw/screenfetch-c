@@ -45,7 +45,7 @@ gcc -std=c99 screenfetch-c.c -o screenfetch
 ```
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
-screenfetch-c.c's prototypes and macros.
+screenfetch-c.c's prototypes and macros. If you want to be able to detect DE/WM/WM Theme/GTK information without manual mode, you will also need the scripts (chmoded to executable, of course). They _must_ be stored in the same directory as the screenfetch executable, or it will not be able to utilize them.
 You can also choose the install screenfetch-c's manpage, if you wish.
 
 ##### Removal:
