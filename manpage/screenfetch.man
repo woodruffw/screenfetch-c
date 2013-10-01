@@ -1,7 +1,7 @@
 .\" Manpage for screenfetch
-.\" Contact woodrufw@bxscience.edu to report any bugs or errors
+.\" Contact woodrufw on GitHub or at woodrufwsoftware@gmail.com to report any bugs or errors
 
-.TH screenfetch(1) "1.0b" "screenfetch man page" "04 August 2013"
+.TH screenfetch(1) "1.1b" "screenfetch man page" "04 August 2013"
 .SH NAME
 
 screenfetch \- Display computer information/statistics and an ASCII logo
@@ -51,17 +51,9 @@ Take a screenshot after completing the output. On non-Windows systems, this will
 
 Strip output of ASCII logo - print information only.
 
--S <cmd>
-
-Take a screenshot using custom command cmd. Use if -s fails.
-
 -D <distro>
 
 Set the distro outputted by screenfetch.
-
--A <distro>
-
-Set the ASCII logo outputted by screenfetch.
 
 -E
 
@@ -92,6 +84,8 @@ Note: .screenfetchc's format isn't exactly human-friendly, so editing it manuall
 
 1.0 - BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
+1.1 - BETA - NEARLY COMPLETE, MINOR BUGS AND GTK NOT FINISHED
+
 .SH BUGS AND ERRATIC BEHAVIOR
 Distro detection on Windows XP and Vista is spotty and may appear incorrect.
 
@@ -116,5 +110,5 @@ screenfetch-c returns EXIT_SUCCESS or EXIT_FAILURE, depending on the conditions 
 .SH AUTHOR
 screenFetch was originally written by Brett Bohnenkamper (kittykatt@archlinux.us)
 
-This rewrite was written by William Woodruff (woodrufw@bxscience.edu).
+This rewrite was written by William Woodruff (woodrufwsoftware@gmail.com).
 It is licensed under an MIT-style open source license, which you should have received with a copy of the source code.
