@@ -3,8 +3,7 @@
 #  Author: William Woodruff
 #  ---
 #  Function:
-#  fetches the most recent stable version of screenfetch-c, builds it,
-#  and moves it to /usr/bin/screenfetch.
+#  fetches the most recent stable version of screenfetch-c and builds it as 'screenfetch'
 #  Also fetches the most recent manpage and installs it.
 #  NOTE: Requires sudo
 #  ---
