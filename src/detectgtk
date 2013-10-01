@@ -4,7 +4,7 @@
 #  only meant to be run on Linux/*BSD
 #  DEPENDS UPON: detectde for the name of the DE
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
-#  Modified to stand alone by William Woodruff (woodrufw)
+#  Modified to stand alone by William Woodruff (woodrufw) in screenfetch-c
 
 gtk2Theme="Unknown"
 gtk3Theme="Unknown"

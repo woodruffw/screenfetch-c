@@ -1,6 +1,6 @@
 /*  screenfetch-c.h
 	Author: William Woodruff
-	Source Version: 1.0 Beta
+	Source Version: 1.1 - BETA
 	-------------
 	
 	The functions, macros, and ascii logos used in screenfetch-c.c are defined/prototyped here.

@@ -1,6 +1,6 @@
 /* 	screenfetch-c.c
 	Author: William Woodruff
-	Source Version: 1.O BETA
+	Source Version: 1.1 - BETA
 	-------------
 
 	A rewrite of screenFetch.sh 3.0.5 in C.
@@ -25,8 +25,6 @@
 	Streamline code, make C89 (ANSI) compatible.
 
 	TODO:
-	Figure out DE/WM/WM theme/GTK detection
-	Fully implement detect_distro() on Linux.
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
 	Fix strange bug on Windows in manual mode
 
@@ -59,7 +57,7 @@
 	------
 
 	I hereby regrant this version of screenFetch under the same MIT license.
-	If you have any questions, please contact me at woodrufw@bxscience.edu or on github (http://www.github.com/woodrufw/screenfetch-c)
+	If you have any questions, please contact me on github (http://www.github.com/woodrufw/screenfetch-c) or at woodrufwsoftware@gmail.com
 */
 
 #define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
@@ -131,7 +129,7 @@ int main(int argc, char** argv)
 
 	char c;
 
-	while ((c = getopt(argc, argv, "mdvnNsS:D:A:EVh")) != -1)
+	while ((c = getopt(argc, argv, "mdvnsD:EVh")) != -1)
 	{
 		switch (c)
 		{
@@ -147,20 +145,11 @@ int main(int argc, char** argv)
 			case 'n':
 				SET_LOGO(false);
 				break;
-			case 'N':
-				/* something like SET_COLOR(false); */
-				break;
 			case 's':
 				SET_SCREENSHOT(true);
 				break;
-			case 'S':
-				/*SET_SCREENSHOT(true);*/
-				break;
 			case 'D':
 				SET_DISTRO(optarg);
-				break;
-			case 'A':
-				/* something like SET_DISTRO_ART(optarg); */
 				break;
 			case 'E':
 				SET_ERROR(false);
@@ -172,8 +161,8 @@ int main(int argc, char** argv)
 				display_help();
 				return EXIT_SUCCESS;
 			case '?':
-				if (optopt == 'S' || optopt == 'D' || optopt == 'A')
-					ERROR_OUT("Error: ", "One or more tripped flag(s) requires an argument.");
+				if (optopt == 'D')
+					ERROR_OUT("Error: ", "The -D flag requires an argument.");
 				else
 					ERROR_OUT("Error: ", "Unknown option or option character.");
 				return EXIT_FAILURE;
@@ -1103,6 +1092,10 @@ void detect_res(char* str)
 /*  detect_de
     detects the desktop environment currently running on top of the OS
     argument char* str: the char array to be filled with the DE name
+    --
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
+    --
 */
 void detect_de(char* str)
 {
@@ -1147,6 +1140,10 @@ void detect_de(char* str)
 /*  detect_wm
     detects the window manager currently running on top of the OS
     argument char* str: the char array to be filled with the WM name
+    --
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
+    --
 */
 void detect_wm(char* str)
 {
@@ -1187,6 +1184,10 @@ void detect_wm(char* str)
 /*  detect_wm_theme
     detects the theme associated with the WM detected in detect_wm()
     argument char* str: the char array to be filled with the WM Theme name
+    --
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
+    --
 */
 void detect_wm_theme(char* str)
 {
@@ -1221,6 +1222,10 @@ void detect_wm_theme(char* str)
 /*  detect_gtk
     detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
     argument char* str: the char array to be filled with the GTK info
+    --
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
+    --
 */
 void detect_gtk(char* str)
 {
@@ -1243,7 +1248,7 @@ void detect_gtk(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* find a way to self contain and execute detectgtk.sh */
+		/* i'm going to add this once i decide how to format it */
 	}
 
 	if (verbose)
@@ -1897,10 +1902,8 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 1.0 BETA");
-	printf("%s\n", "Warning: This version of screenfetch is not yet finished.");
-	printf("%s\n", "It may be lacking support for certain Linux/BSD distros." TNRM);
-
+	printf("%s\n", TBLU "screenfetch-c - Version 1.1 BETA");
+	printf("%s\n", "Warning: This version of screenfetch may be lacking support for certain Linux/BSD distros.");
 	return;
 }
 

@@ -3,7 +3,7 @@
 #  detect and output the name of the Desktop Environment, if present
 #  only meant to be run on Linux/*BSD
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
-#  Modified to stand alone by William Woodruff (woodrufw)
+#  Modified to stand alone by William Woodruff (woodrufw) in screenfetch-c
 
 
 DE="Unknown"
