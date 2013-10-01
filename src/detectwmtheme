@@ -11,7 +11,7 @@ WM=`./detectwm`
 case $WM in
 	'Awesome') if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua ]; then Win_theme="$(grep -e '^[^-].*\(theme\|beautiful\).*lua' ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua | grep '[a-zA-Z0-9]\+/[a-zA-Z0-9]\+.lua' -o | cut -d'/' -f1 | head -n1)"; fi;;
 	'BlackBox') if [ -f $HOME/.blackboxrc ]; then Win_theme="$(awk -F"/" '/styleFile/ {print $NF}' $HOME/.blackboxrc)"; fi;;
-	'Beryl') Win_theme="Not Present";;
+	'Beryl') Win_theme="Unknown";;
 	'Cinnamon') Win_theme="$(gsettings get org.cinnamon.theme name)";;
 	'Compiz'|'Mutter'*|'GNOME Shell')
 		if type -p gsettings >/dev/null 2>&1; then
@@ -21,8 +21,8 @@ case $WM in
 			Win_theme=$(gconftool-2 -g /apps/metacity/general/theme)
 		fi
 	;;
-	'dminiwm') Win_theme="Not Present";;
-	'DWM') Win_theme="Not Present";;
+	'dminiwm') Win_theme="Unknown";;
+	'DWM') Win_theme="Unknown";;
 	'E16') Win_theme="$(awk -F"= " '/theme.name/ {print $2}' $HOME/.e16/e_config--0.0.cfg)";;
 	'E17'|'Enlightenment') 
 		if [ "$(which eet 2>/dev/null)" ]; then
@@ -35,10 +35,10 @@ case $WM in
 	#TODO: Find a way to extract and read E17 .cfg files ( google seems to have nothing ). atyoung
 	'E17') Win_theme=${E_CONF_PROFILE};;
 	'Emerald') if [ -f $HOME/.emerald/theme/theme.ini ]; then Win_theme="$(for a in /usr/share/emerald/themes/* $HOME/.emerald/themes/*; do cmp "$HOME/.emerald/theme/theme.ini" "$a/theme.ini" &>/dev/null && basename "$a"; done)"; fi;;
-	'Finder') Win_theme="Not Present";;
+	'Finder') Win_theme="Unknown";;
 	'FluxBox'|'Fluxbox') if [ -f $HOME/.fluxbox/init ]; then Win_theme="$(awk -F"/" '/styleFile/ {print $NF}' $HOME/.fluxbox/init)"; fi;;
-	'FVWM') Win_theme="Not Present";;
-	'i3') Win_theme="Not Present";;
+	'FVWM') Win_theme="Unknown";;
+	'i3') Win_theme="Unknown";;
 	'IceWM') if [ -f $HOME/.icewm/theme ]; then Win_theme="$(awk -F"[\",/]" '!/#/ {print $2}' $HOME/.icewm/theme)"; fi;;
 	'KWin'*)
 		if [[ -z $KDE_CONFIG_DIR ]]; then
@@ -80,8 +80,8 @@ case $WM in
 		Win_theme=${Win_theme//"'"}
 	;;
 	'Metacity') if [ "`gconftool-2 -g /apps/metacity/general/theme`" ]; then Win_theme="$(gconftool-2 -g /apps/metacity/general/theme)"; fi ;;
-	'monsterwm') Win_theme="Not Present";;
-	'Musca') Win_theme="Not Present";;
+	'monsterwm') Win_theme="Unknown";;
+	'Musca') Win_theme="Unknown";;
 	'OpenBox'|'Openbox')
 		if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/openbox/rc.xml ]; then
 			Win_theme="$(awk -F"[<,>]" '/<theme/ { getline; print $3 }' ${XDG_CONFIG_HOME:-${HOME}/.config}/openbox/rc.xml)";
@@ -90,16 +90,16 @@ case $WM in
 		fi
 	;;
 	'PekWM') if [ -f $HOME/.pekwm/config ]; then Win_theme="$(awk -F"/" '/Theme/ {gsub(/\"/,""); print $NF}' $HOME/.pekwm/config)"; fi;;
-	'Ratpoison') Win_theme="Not Present";;
+	'Ratpoison') Win_theme="Unknown";;
 	'Sawfish') Win_theme="$(awk -F")" '/\(quote default-frame-style/{print $2}' $HOME/.sawfish/custom | sed 's/ (quote //')";;
-	'ScrotWM') Win_theme="Not Present";;
-	'SpectrWM') Win_theme="Not Present";;
-	'subtle') Win_theme="Not Present";;
-	'WindowMaker') Win_theme="Not Present";;
-	'WMFS') Win_theme="Not Present";;
-	'wmii') Win_theme="Not Present";;
+	'ScrotWM') Win_theme="Unknown";;
+	'SpectrWM') Win_theme="Unknown";;
+	'subtle') Win_theme="Unknown";;
+	'WindowMaker') Win_theme="Unknown";;
+	'WMFS') Win_theme="Unknown";;
+	'wmii') Win_theme="Unknown";;
 	'Xfwm4') if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml ]; then Win_theme="$(xfconf-query -c xfwm4 -p /general/theme)"; fi;;
-	'XMonad') Win_theme="Not Present";;
+	'XMonad') Win_theme="Unknown";;
 esac
 
 printf $Win_theme

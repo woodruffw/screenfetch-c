@@ -12,7 +12,7 @@ if [[ -n ${DISPLAY} ]]; then
 		xprop_root="$(xprop -root 2>/dev/null)"
 		if [[ -n ${xprop_root} ]]; then
 			DE=$(echo "${xprop_root}" | awk 'BEGIN {
-				de = "Not Present"
+				de = "Unknown"
 			}
 			{
 				if ($1 ~ /^_DT_SAVE_MODE/) {
@@ -46,7 +46,7 @@ if [[ -n ${DISPLAY} ]]; then
 			}')
 		fi
 	fi
-	if [[ ${DE} == "Not Present" ]]; then
+	if [[ ${DE} == "Unknown" ]]; then
 		if [[ -n ${GNOME_DESKTOP_SESSION_ID} ]]; then
 			DE="Gnome"
 			if type -p xprop >/dev/null 2>&1; then
@@ -73,7 +73,7 @@ if [[ -n ${DISPLAY} ]]; then
 			fi
 		fi
 	fi
-	if [[ ${DE} != "Not Present" ]]; then
+	if [[ ${DE} != "Unknown" ]]; then
 		if [[ ${DE} == "Cinnamon" ]]; then
 			if type -p >/dev/null 2>&1; then
 				DEver=$(cinnamon --version)
@@ -109,7 +109,7 @@ if [[ -n ${DISPLAY} ]]; then
 			fi
 		fi
 	fi
-	if [[ "${DE}" == "Not Present" ]]; then
+	if [[ "${DE}" == "Unknown" ]]; then
 		if pgrep -U ${UID} lxsession >/dev/null 2>&1; then
 			DE="LXDE"
 			if type -p lxpanel >/dev/null 2>&1; then
