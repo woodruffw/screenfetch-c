@@ -6,7 +6,7 @@
 #  Modified to stand alone by William Woodruff (woodrufw)
 
 wmnames=( fluxbox openbox blackbox xfwm4 metacity kwin icewm pekwm fvwm dwm awesome wmaker stumpwm musca i3 xmonad ratpoison scrotwm spectrwm wmfs wmii beryl subtle e16 enlightenment sawfish emerald monsterwm dminiwm compiz Finder herbstluftwm )
-WM="Not Found"
+WM="Unknown"
 if [[ -n ${DISPLAY} ]]; then
 	if type -p xprop >/dev/null 2>&1; then
 		WM=$(xprop -root _NET_SUPPORTING_WM_CHECK)

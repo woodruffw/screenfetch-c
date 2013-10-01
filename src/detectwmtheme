@@ -6,7 +6,7 @@
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
 #  Modified to stand alone by William Woodruff (woodrufw)
 
-Win_theme="Not Found"
+Win_theme="Unknown"
 WM=`./detectwm`
 case $WM in
 	'Awesome') if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua ]; then Win_theme="$(grep -e '^[^-].*\(theme\|beautiful\).*lua' ${XDG_CONFIG_HOME:-${HOME}/.config}/awesome/rc.lua | grep '[a-zA-Z0-9]\+/[a-zA-Z0-9]\+.lua' -o | cut -d'/' -f1 | head -n1)"; fi;;

@@ -6,10 +6,10 @@
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
 #  Modified to stand alone by William Woodruff (woodrufw)
 
-gtk2Theme="Not Found"
-gtk3Theme="Not Found"
-gtkIcons="Not Found"
-gtkFont="Not Found"
+gtk2Theme="Unknown"
+gtk3Theme="Unknown"
+gtkIcons="Unknown"
+gtkFont="Unknown"
 
 DE=`./detectde`
 

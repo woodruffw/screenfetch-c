@@ -6,7 +6,7 @@
 #  Modified to stand alone by William Woodruff (woodrufw)
 
 
-DE="Not Present"
+DE="Unknown"
 if [[ -n ${DISPLAY} ]]; then
 	if type -p xprop >/dev/null 2>&1;then
 		xprop_root="$(xprop -root 2>/dev/null)"
