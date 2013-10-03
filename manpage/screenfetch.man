@@ -3,11 +3,12 @@
 
 .TH screenfetch(1) "1.1b" "screenfetch man page" "04 August 2013"
 .SH NAME
-
 screenfetch \- Display computer information/statistics and an ASCII logo
 
 .SH SYNOPSIS
-screenfetch <options>
+screenfetch [-m | -d | -v | -s | -n | -E | -V | -h]
+
+		  [-D DISTRO]
 
 .SH DESCRIPTION
 This version of screenfetch is a C rewrite of the original screenFetch, 
@@ -51,7 +52,7 @@ Take a screenshot after completing the output. On non-Windows systems, this will
 
 Strip output of ASCII logo - print information only.
 
--D <distro>
+-D DISTRO
 
 Set the distro outputted by screenfetch.
 
@@ -87,9 +88,7 @@ Note: .screenfetchc's format isn't exactly human-friendly, so editing it manuall
 1.1 - BETA - NEARLY COMPLETE, MINOR BUGS AND GTK NOT FINISHED
 
 .SH BUGS AND ERRATIC BEHAVIOR
-Distro detection on Windows XP and Vista is spotty and may appear incorrect.
-
-Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its version scheme.
+Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its versioning scheme.
 
 DragonFlyBSD systems with more than 2GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
 
