@@ -798,19 +798,9 @@ void detect_disk(char* str)
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		if (OS != CYGWIN)
-		{
-			disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-			fscanf(disk_file, "%d", &disk_used);
-			pclose(disk_file);
-		}
-
-		else
-		{
-			disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $4 }' | head -1 | tr -d '\\r\\n G'", "r");
-			fscanf(disk_file, "%d", &disk_used);
-			pclose(disk_file);
-		}
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+		fscanf(disk_file, "%d", &disk_used);
+		pclose(disk_file);
 	}
 
 	else if (ISBSD())
