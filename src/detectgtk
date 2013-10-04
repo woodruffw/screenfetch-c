@@ -213,7 +213,9 @@ case $DE in
 	;;
 esac
 
-printf $gtk2Theme
-printf $gtk3Theme
-printf $gtkIcons
-printf $gtkFont
+echo $gtk2Theme
+echo $gtk3Theme
+echo $gtkIcons 
+echo $gtkFont
+
+

@@ -1051,13 +1051,10 @@ void detect_res(char* str)
 
 	if (OS == CYGWIN)
 	{
-		res_file = popen("wmic desktopmonitor get screenwidth | tail -2 | tr -d '\\r\\n '", "r");
-		fscanf(res_file, "%d", &width);
-		pclose(res_file);
-
-		res_file = popen("wmic desktopmonitor get screenheight | tail -2 | tr -d '\\r\\n '", "r");
-		fscanf(res_file, "%d", &height);
-		pclose(res_file);
+		#ifdef __CYGWIN__
+			width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+			height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+		#endif
 
 		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
@@ -1151,13 +1148,13 @@ void detect_wm(char* str)
 
 	if (OS == CYGWIN)
 	{
-		wm_file = popen("tasklist | grep -o 'bugn' | tr -d '\\r\\n'", "r");
+		/* wm_file = popen("tasklist | grep -o 'bugn' | tr -d '\\r\\n'", "r"); */
 		/* test for bugn */
-		pclose(wm_file);
+		/* pclose(wm_file); */
 
-		wm_file = popen("tasklist | grep -o 'Windawesome' | tr -d '\\r \\n'", "r");
+		/* wm_file = popen("tasklist | grep -o 'Windawesome' | tr -d '\\r \\n'", "r"); */
 		/* test for Windawesome */
-		pclose(wm_file);
+		/* pclose(wm_file); */
 
 		/* else */
 		safe_strncpy(str, "DWM", MAX_STRLEN);
@@ -1231,24 +1228,38 @@ void detect_gtk(char* str)
 {
 	FILE* gtk_file;
 
-	char font_str[MAX_STRLEN];
+	char gtk2_str[MAX_STRLEN] = "Unknown";
+	char gtk3_str[MAX_STRLEN] = "Unknown";
+	char gtk_icons_str[MAX_STRLEN] = "Unknown";
+	char font_str[MAX_STRLEN] = "Unknown";
 
 	if (OS == CYGWIN)
 	{
 		/* get the terminal's font */
-		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$'", "r");
+		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
 		fgets(font_str, MAX_STRLEN, gtk_file);
 		pclose(gtk_file);
+
+		snprintf(str, MAX_STRLEN, "%s (Font)", font_str);
 	}
 
 	else if (OS == OSX)
 	{
-		/* OSX doesn't use GTK, so maybe detect Fonts here? */
+		safe_strncpy(str, "Not Applicable", MAX_STRLEN);
 	}
 
 	else if (OS == LINUX || ISBSD())
 	{
-		/* i'm going to add this once i decide how to format it */
+		gtk_file = popen("./detectgtk 2> /dev/null", "r");
+		fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
+		pclose(gtk_file);
+
+		if (STRCMP(gtk3_str, "Unknown"))
+			snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str, gtk_icons_str);
+		else if (STRCMP(gtk2_str, "Unknown"))
+			snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str, gtk_icons_str);
+		else
+			snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 	}
 
 	if (verbose)
