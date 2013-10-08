@@ -722,7 +722,7 @@ void detect_cpu(char* str)
 
 	else if (OS == OSX)
 	{
-		cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n'", "r");
+		cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n' | tr -s ' '", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
