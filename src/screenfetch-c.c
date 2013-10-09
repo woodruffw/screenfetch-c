@@ -391,7 +391,7 @@ void detect_distro(char* str)
 					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 				}
 
-				else /* begin the tedious task of checking each /etc/<distro>-release */
+				else
 				{
 					distro_file = fopen("/etc/fedora-release", "r");
 
@@ -815,7 +815,7 @@ void detect_disk(char* str)
 	}
 
 	/* ugly casting */
-	disk_percentage = (int) (((float) disk_used / disk_total) * 100);
+	disk_percentage = (((float) disk_used / disk_total) * 100);
 
 	snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 
@@ -866,18 +866,6 @@ void detect_mem(char* str)
 
 	else if (OS == OSX)
 	{
-		/* christ, what a mess. */
-		/*
-		int mib[2];
-		mib[0] = CTL_HW;
-		mib[1] = HW_MEMSIZE;
-		int64_t size = 0;
-		size_t len = sizeof(size);
-		sysctl(mib, 2, &size, &len, NULL, 0);
-
-		total_mem = (long long) size;
-		*/
-
 		mem_file = popen("sysctl -n hw.memsize", "r");
 		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
@@ -1378,34 +1366,8 @@ int manual_input(void)
 		if (verbose)
 			VERBOSE_OUT("Found config file. Reading...", "");
 
-		fgets(distro_str, MAX_STRLEN, config_file);
-		fgets(arch_str, MAX_STRLEN, config_file);
-		fgets(host_str, MAX_STRLEN, config_file);
-		fgets(kernel_str, MAX_STRLEN, config_file);
-		fgets(cpu_str, MAX_STRLEN, config_file);
-		fgets(gpu_str, MAX_STRLEN, config_file);
-		fgets(shell_str, MAX_STRLEN, config_file);
-		fgets(res_str, MAX_STRLEN, config_file);
-		fgets(de_str, MAX_STRLEN, config_file);
-		fgets(wm_str, MAX_STRLEN, config_file);
-		fgets(wm_theme_str, MAX_STRLEN, config_file);
-		fgets(gtk_str, MAX_STRLEN, config_file);
-
+		fscanf(config_file, "%s%s%s%s%s%s%s%s%s%s%s%s", distro_str, arch_str, host_str, kernel_str, cpu_str, gpu_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 		fclose(config_file);
-
-		/* i am deeply ashamed of this solution */
-		distro_str[strlen(distro_str) - 1] = '\0';
-		arch_str[strlen(arch_str) - 1] = '\0';
-		host_str[strlen(host_str) - 1] = '\0';
-		kernel_str[strlen(kernel_str) - 1] = '\0';
-		cpu_str[strlen(cpu_str) - 1] = '\0';
-		gpu_str[strlen(gpu_str) - 1] = '\0';
-		shell_str[strlen(shell_str) - 1] = '\0';
-		res_str[strlen(res_str) - 1] = '\0';
-		de_str[strlen(de_str) - 1] = '\0';
-		wm_str[strlen(wm_str) - 1] = '\0';
-		wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
-		gtk_str[strlen(gtk_str) - 1] = '\0';
 		
 		return EXIT_SUCCESS;
 	}

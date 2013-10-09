@@ -21,7 +21,7 @@
 /* quick macro for when all BSDs have the same function syntax */
 #define ISBSD() ((OS >= 4 && OS <= 7) ? true : false)
 
-#ifdef __CYGWIN__
+#if defined __CYGWIN__
 	#define OS CYGWIN
 	/* this is a very bad solution */
 	FILE* popen(const char* command, const char* type);
