@@ -369,7 +369,7 @@ void detect_distro(char* str)
 					detected = true;
 				}
 
-				else if (STRCMP(distro_name_str, "Debi"))
+				else if (STRCMP(distro_name_str, "Debi") || STRCMP(distro_name_str, "Rasp"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
 					detected = true;
