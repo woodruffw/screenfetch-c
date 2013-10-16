@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 	/* bugfix: ARM Linux defaults 'char' to unsigned, so signedness needs to be explicit. Many thanks to diantahoc. */
 	signed char c;
 
-	while ((c = getopt(argc, argv, "mdvnsD:EVh")) != -1)
+	while ((c = getopt(argc, argv, "mdvnsD:EVhL:")) != -1)
 	{
 		switch (c)
 		{
@@ -161,9 +161,14 @@ int main(int argc, char** argv)
 			case 'h':
 				display_help();
 				return EXIT_SUCCESS;
+			case 'L':
+				output_logo_only(optarg);
+				return EXIT_SUCCESS;
 			case '?':
 				if (optopt == 'D')
 					ERROR_OUT("Error: ", "The -D flag requires an argument.");
+				else if (optopt == 'L')
+					ERROR_OUT("Error: ", "The -L flag requires an argument.");
 				else
 					ERROR_OUT("Error: ", "Unknown option or option character.");
 				return EXIT_FAILURE;
@@ -1450,6 +1455,303 @@ void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 
 /*  **  END AUXILIARY FUNCTIONS  **  */
 
+
+/*  output_logo_only
+	outputs an ASCII logo based upon the distro name passed to it
+	argument char* distro the name of the distro to output
+*/
+void output_logo_only(char* distro)
+{
+	int i = 0;
+
+	if (STRCMP(distro, "Windows"))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			printf("%s\n", windows_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "OS X"))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			printf("%s\n", macosx_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Arch Linux - Old"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", oldarch_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Arch Linux"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", arch_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "LinuxMint"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", mint_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "LMDE"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", lmde_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Ubuntu") || STRCMP(distro, "Lubuntu") || STRCMP(distro, "Xubuntu"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", ubuntu_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Debian"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", debian_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "CrunchBang"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", crunchbang_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Gentoo"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", gentoo_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Funtoo"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", funtoo_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Fedora"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", fedora_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Mandriva") || STRCMP(distro, "Mandrake"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", mandriva_mandrake_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "OpenSUSE"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", opensuse_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Slackware"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			printf("%s\n", slackware_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Red Hat Linux"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", redhat_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Frugalware"))
+	{
+		for (i = 0; i < 23; i++)
+		{
+			printf("%s\n", frugalware_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Peppermint"))
+	{
+		for (i = 0; i < 19; i++)
+		{
+			printf("%s\n", peppermint_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "SolusOS"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", solusos_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Mageia"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", mageia_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "ParabolaGNU/Linux-libre"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", parabolagnu_linuxlibre_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Viperr"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", viperr_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "LinuxDeepin"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", linuxdeepin_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Chakra"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", chakra_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Fuduntu"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			printf("%s\n", fuduntu_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Trisquel"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", trisquel_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Manjaro"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", manjaro_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "elementary OS"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", elementaryos_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Scientific Linux"))
+	{
+		for (i = 0; i < 20; i++)
+		{
+			printf("%s\n", scientificlinux_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Backtrack Linux"))
+	{
+		for (i = 0; i < 20; i++)
+		{
+			printf("%s\n", backtracklinux_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "Sabayon"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", sabayon_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "FreeBSD"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", freebsd_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "OpenBSD"))
+	{
+		for (i = 0; i < 23; i++)
+		{
+			printf("%s\n", openbsd_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "NetBSD"))
+	{
+		for (i = 0; i < 20; i++)
+		{
+			printf("%s\n", netbsd_logo[i]);
+		}
+	}
+
+	else if (STRCMP(distro, "DragonFly BSD"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", dragonflybsd_logo[i]);
+		}
+	}
+
+	else
+	{
+		for (i = 0; i < 18; i++)
+		{
+			printf("%s\n", linux_logo[i]);
+		}
+	}
+}
 
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
 

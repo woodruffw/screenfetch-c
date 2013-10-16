@@ -103,6 +103,7 @@ void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* 
 
 /* other function definitions */
 int manual_input(void);
+void output_logo_only(char* distro);
 void main_ascii_output(char* data[], char* data_names[]);
 void main_text_output(char* data[], char* data_names[]);
 char* safe_strncpy(char* destination, const char* source, size_t num); 
