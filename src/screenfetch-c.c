@@ -1053,7 +1053,7 @@ void detect_res(char* str)
 
 	else if (ISBSD())
 	{
-		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
+		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' ' 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 	}
@@ -1442,7 +1442,7 @@ void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
 
-/*  main_output
+/*  main_ascii_output
     the primary output for screenfetch-c - all info and ASCII art is printed here
     arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
