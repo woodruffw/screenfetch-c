@@ -1,14 +1,12 @@
 screenfetch-c
 =============
 
-### Current Version: 1.1 Beta (compiled, mostly complete)
+### Current Version: 1.1 Beta (compiled, 99% complete)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 
 language.
-Like the original screenFetch, screenfetch-c will be capable of 
-compiling and running on Windows (via Cygwin), all Linux distros, the 
-four major *BSD distros, and OS X.
+Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, GNU/Linux, OS X, and Windows (via the Cygwin environment).
 
 ### Current Status:
 screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environment), OS X (10.6 and 10.8), and Linux (see list below).
@@ -18,7 +16,6 @@ There are only a few select sections that still require work. They are listed he
 - DE/WM/WM Theme/GTK detection is not complete on *BSD or Linux. As a result, they will appear as 'Unknown' in output (unless specified in manual mode).
 - Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
 - Package detection requires more in-depth testing.
-- Certain argument flags are currently unimplemented. These include -N, -A, and -S.
 
 ### Installing screenfetch-c:
 
@@ -32,7 +29,7 @@ sudo ./install.sh
 
 It will fetch all source code (and manpages) required, compile screenfetch, install the manpage, and leave a tidy binary in $HOME. You can then move that binary whereever you please.
 
-_Note_: install.sh requires sudo to install the manpage!
+_Note_: install.sh requires sudo to install the manpage! That is, unless you're on Cygwin. In that case, you're fine.
 
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
