@@ -1051,7 +1051,6 @@ void detect_res(char* str)
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 
-		/* if the string is still unknown, the OS is running without an X Server */
 		if (STRCMP(str, "Unknown"))
 		{
 			safe_strncpy(str, "No X Server", MAX_STRLEN);
@@ -1063,6 +1062,11 @@ void detect_res(char* str)
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' ' 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
+
+		if (STRCMP(str, "Unknown"))
+		{
+			safe_strncpy(str, "No X Server", MAX_STRLEN);
+		}
 	}
 
 	if (verbose)
