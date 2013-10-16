@@ -10,6 +10,9 @@ screenfetch [-m | -d | -v | -s | -n | -E | -V | -h]
 
 		  [-D DISTRO]
 
+
+		  [-L LOGO]
+
 .SH DESCRIPTION
 This version of screenfetch is a C rewrite of the original screenFetch, 
 which was written in bash by Brett Bohnenkamper. Like the original, 
@@ -67,6 +70,10 @@ Display the version of screenfetch currently being used.
 -h
 
 Displays help and compatibility information.
+
+-L LOGO
+
+Output only the ASCII logo associated with that distro. Follows the general naming conventions of the -D flag, but with "OS X" and "Windows" as possibilities as well.
 
 .SH CONFIGURATION
 When screenfetch-c is invoked with the '-m' flag for the first time, it enters manual mode.
