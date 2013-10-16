@@ -127,7 +127,8 @@ int main(int argc, char** argv)
 	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
 	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
 
-	char c;
+	/* bugfix: ARM Linux defaults 'char' to unsigned, so signedness needs to be explicit. Many thanks to diantahoc. */
+	signed char c;
 
 	while ((c = getopt(argc, argv, "mdvnsD:EVh")) != -1)
 	{
@@ -1049,6 +1050,12 @@ void detect_res(char* str)
 		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n' 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
+
+		/* if the string is still unknown, the OS is running without an X Server */
+		if (STRCMP(str, "Unknown"))
+		{
+			safe_strncpy(str, "No X Server", MAX_STRLEN);
+		}
 	}
 
 	else if (ISBSD())
@@ -1866,7 +1873,7 @@ void main_text_output(char* data[], char* data_names[])
 void display_version(void)
 {
 	printf("%s\n", TBLU "screenfetch-c - Version 1.1 BETA");
-	printf("%s\n", "Warning: This version of screenfetch may be lacking support for certain Linux/BSD distros.");
+	printf("%s\n", "Warning: This version of screenfetch may be lacking support for certain Linux/BSD distros." TNRM);
 	return;
 }
 
