@@ -322,13 +322,13 @@ void detect_distro(char* str)
 
 		if (OS == CYGWIN)
 		{
-			#ifdef NTDDI_WIN7
+			#if defined(NTDDI_WIN7)
 				safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
-			#elif defined NTDDI_WIN8
+			#elif defined(NTDDI_WIN8)
 				safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
-			#elif defined NTDDI_VISTA || NTDDI_VISTASP1
+			#elif defined(NTDDI_VISTA) || NTDDI_VISTASP1
 				safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
-			#elif defined NTDDI_WINXP || NTDDI_WINXPSP1 || NTDDI_WINXPSP2 || NTDDI_WINXPSP3
+			#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
 				safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
 			#else /* might add Server 03/08 conditions later */
 				safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
@@ -469,7 +469,7 @@ void detect_arch(char* str)
 
 	else
 	{
-		#if defined __linux__
+		#if defined(__linux__)
 			struct utsname arch_info;
 			uname(&arch_info);
 			safe_strncpy(str, arch_info.machine, MAX_STRLEN);
@@ -496,7 +496,7 @@ void detect_host(char* str)
 
 	if (OS == CYGWIN)
 	{
-		#if defined __CYGWIN__
+		#if defined(__CYGWIN__)
 			/* why does the winapi require a pointer to a long? */
 			long len = MAX_STRLEN;
 			GetUserName(given_user, &len);
@@ -552,7 +552,7 @@ void detect_kernel(char* str)
 
 	else
 	{
-		#if defined __linux__
+		#if defined(__linux__)
 			struct utsname kern_info;
 			uname(&kern_info);
 
@@ -603,7 +603,7 @@ void detect_uptime(char* str)
 
 	else if (OS == LINUX)
 	{
-		#ifdef __linux__
+		#if defined(__linux__)
 			struct sysinfo si_upt;
 			sysinfo(&si_upt);
 
@@ -888,7 +888,7 @@ void detect_mem(char* str)
 
 	if (OS == CYGWIN)
 	{
-		#ifdef __CYGWIN__
+		#if defined(__CYGWIN__)
 			MEMORYSTATUSEX mem_stat;
 			mem_stat.dwLength = sizeof(mem_stat);
 			GlobalMemoryStatusEx(&mem_stat);
@@ -937,7 +937,7 @@ void detect_mem(char* str)
 		   the amount of memory sysinfo reports as free is very small.
 		*/
 
-		#ifdef __linux__
+		#if defined(__linux__)
 			struct sysinfo si_mem;
 			sysinfo(&si_mem);
 
@@ -1078,7 +1078,7 @@ void detect_res(char* str)
 
 	if (OS == CYGWIN)
 	{
-		#ifdef __CYGWIN__
+		#if defined(__CYGWIN__)
 			width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 			height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 		#endif
