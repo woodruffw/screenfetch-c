@@ -8,6 +8,15 @@
 	You should have received a copy of it with this code.
 */
 
+#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
+
+/* includes, all from the standard library */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
+
 /* a number is assigned to each OS or OS family */
 #define UNKNOWN 0
 #define CYGWIN 1
@@ -21,26 +30,28 @@
 /* quick macro for when all BSDs have the same function syntax */
 #define ISBSD() ((OS >= 4 && OS <= 7) ? true : false)
 
-#if defined __CYGWIN__
+#if defined(__CYGWIN__)
 	#define OS CYGWIN
 	/* this is a very bad solution */
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
 	#define WIN32_LEAN_AND_MEAN
-	#include <Windows.h> /* all that nice stuff that the winapi provides */
+	#include <Windows.h>
+	#include <sys/utsname.h>
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define OS OSX
-#elif defined __linux__
+	#include <sys/utsname.h>
+#elif defined(__linux__)
 	#define OS LINUX
-	#include <sys/sysinfo.h> /* the sysinfo struct contains all kinds of useful info (uptime, ram stats, etc) */
-	#include <sys/utsname.h> /* for uname() */
-#elif defined __FreeBSD__
+	#include <sys/sysinfo.h>
+	#include <sys/utsname.h> 
+#elif defined(__FreeBSD__)
 	#define OS FREEBSD
-#elif defined __NetBSD__
+#elif defined(__NetBSD__)
 	#define OS NETBSD
-#elif defined __OpenBSD__
+#elif defined(__OpenBSD__)
 	#define OS OPENBSD
-#elif defined __DragonFly__
+#elif defined(__DragonFly__)
 	#define OS DFBSD
 #else 
 	#define OS UNKNOWN

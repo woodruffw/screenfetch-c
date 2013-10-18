@@ -60,14 +60,7 @@
 	If you have any questions, please contact me on github (http://www.github.com/woodrufw/screenfetch-c) or at woodrufwsoftware@gmail.com
 */
 
-#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
-
-#include <stdio.h> /* for a medley of I/O operations, including popen/pclose */
-#include <stdlib.h> /* for getenv, etc */
-#include <stdbool.h> /* for the bool type */
-#include <string.h> /* for strcmp, strncpy, etc. */
-#include <unistd.h> /* for sleep, getopt */
-#include "screenfetch-c.h" /* contains function prototypes, macros, ascii logos */
+#include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
 
 /* string definitions */
 static char distro_str[MAX_STRLEN];
@@ -460,20 +453,20 @@ void detect_arch(char* str)
 		pclose(arch_file);
 	}
 
-	else if (OS == OSX || ISBSD())
+	else if (OS == OSX || OS == LINUX)
 	{
-		arch_file = popen("uname -m | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, arch_file);
-		pclose(arch_file);
-	}
-
-	else
-	{
-		#if defined(__linux__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
 			struct utsname arch_info;
 			uname(&arch_info);
 			safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 		#endif
+	}
+
+	else if (ISBSD())
+	{
+		arch_file = popen("uname -m | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, arch_file);
+		pclose(arch_file);
 	}
 
 	if (verbose)
@@ -506,13 +499,13 @@ void detect_host(char* str)
 
 	else if (OS == OSX || OS == LINUX)
 	{
-		#if defined(__APPLE__) || defined(__linux__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
 			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
 			gethostname(given_host, MAX_STRLEN);
 		#endif
 	}
 
-	else
+	else if (ISBSD())
 	{
 		given_user = getenv("USER");
 
@@ -537,7 +530,7 @@ void detect_host(char* str)
 */
 void detect_kernel(char* str)
 {
-	if (OS == CYGWIN || OS == OSX || ISBSD())
+	if (ISBSD())
 	{
 		FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
 
@@ -545,18 +538,21 @@ void detect_kernel(char* str)
 			fgets(str, MAX_STRLEN, kernel_file);
 
 		else
-			fscanf(kernel_file, "%13s", str);
+			fscanf(kernel_file, "%s", str);
 
 		pclose(kernel_file);
 	}
 
-	else
+	else if (OS == CYGWIN || OS == OSX || OS == LINUX)
 	{
-		#if defined(__linux__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
 			struct utsname kern_info;
 			uname(&kern_info);
 
-			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+			if (OS != CYGWIN)
+				snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+			else
+				snprintf(str, MAX_STRLEN, "%s", kern_info.sysname);
 		#endif
 	}
 
@@ -893,8 +889,8 @@ void detect_mem(char* str)
 			mem_stat.dwLength = sizeof(mem_stat);
 			GlobalMemoryStatusEx(&mem_stat);
 
-			total_mem = (unsigned long long) mem_stat.ullTotalPhys / MB;
-			used_mem = total_mem - ((unsigned long long) mem_stat.ullAvailPhys / MB);
+			total_mem = (long long) mem_stat.ullTotalPhys / MB;
+			used_mem = total_mem - ((long long) mem_stat.ullAvailPhys / MB);
 		#endif
 	}
 
