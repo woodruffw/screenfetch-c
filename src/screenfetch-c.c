@@ -460,11 +460,20 @@ void detect_arch(char* str)
 		pclose(arch_file);
 	}
 
-	else if (OS == OSX || OS == LINUX || ISBSD())
+	else if (OS == OSX || ISBSD())
 	{
 		arch_file = popen("uname -m | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, arch_file);
 		pclose(arch_file);
+	}
+
+	else
+	{
+		#if defined __linux__
+			struct utsname arch_info;
+			uname(&arch_info);
+			safe_strncpy(str, arch_info.machine, MAX_STRLEN);
+		#endif
 	}
 
 	if (verbose)
@@ -482,17 +491,38 @@ void detect_arch(char* str)
 */
 void detect_host(char* str)
 {
-	char* given_user; /* has to be a pointer for getenv(), god knows why */
-	char given_host[MAX_STRLEN];
+	char* given_user = "Unknown"; /* has to be a pointer for getenv()/GetUserName(), god knows why */
+	char given_host[MAX_STRLEN] = "Unknown";
 
-	/* alternatives: id -un and whoami */
-	given_user = getenv("USER");
+	if (OS == CYGWIN)
+	{
+		#if defined __CYGWIN__
+			/* why does the winapi require a pointer to a long? */
+			long len = MAX_STRLEN;
+			GetUserName(given_user, &len);
+			gethostname(given_host, MAX_STRLEN);
+		#endif
+	}
 
-	FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
-	fgets(given_host, MAX_STRLEN, host_file);
-	pclose(host_file);
+	else if (OS == OSX || OS == LINUX)
+	{
+		#if defined(__APPLE__) || defined(__linux__)
+			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
+			gethostname(given_host, MAX_STRLEN);
+		#endif
+	}
 
-	/* format str */
+	else
+	{
+		given_user = getenv("USER");
+
+		FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
+		fgets(given_host, MAX_STRLEN, host_file);
+		pclose(host_file);
+
+		/* format str */
+	}
+
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	if (verbose)
@@ -507,15 +537,28 @@ void detect_host(char* str)
 */
 void detect_kernel(char* str)
 {
-	FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
+	if (OS == CYGWIN || OS == OSX || ISBSD())
+	{
+		FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
 
-	if (OS != CYGWIN)
-		fgets(str, MAX_STRLEN, kernel_file);
+		if (OS != CYGWIN)
+			fgets(str, MAX_STRLEN, kernel_file);
+
+		else
+			fscanf(kernel_file, "%13s", str);
+
+		pclose(kernel_file);
+	}
 
 	else
-		fscanf(kernel_file, "%13s", str);
+	{
+		#if defined __linux__
+			struct utsname kern_info;
+			uname(&kern_info);
 
-	pclose(kernel_file);
+			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+		#endif
+	}
 
 	if (verbose)
 		VERBOSE_OUT("Found kenel as ", str);

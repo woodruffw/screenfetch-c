@@ -27,12 +27,13 @@
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
 	#define WIN32_LEAN_AND_MEAN
-	#include <Windows.h>
-#elif defined __APPLE__ && __MACH__
+	#include <Windows.h> /* all that nice stuff that the winapi provides */
+#elif defined(__APPLE__) && defined(__MACH__)
 	#define OS OSX
 #elif defined __linux__
 	#define OS LINUX
 	#include <sys/sysinfo.h> /* the sysinfo struct contains all kinds of useful info (uptime, ram stats, etc) */
+	#include <sys/utsname.h> /* for uname() */
 #elif defined __FreeBSD__
 	#define OS FREEBSD
 #elif defined __NetBSD__
@@ -114,7 +115,7 @@ void take_screenshot(void);
 
 /* ** ASCII LOGOS ** */
 
-/* tested, working */
+/* 18 */
 char* oldarch_logo[] = 
 {
 	""TWHT"              __                     " TNRM,
@@ -137,7 +138,7 @@ char* oldarch_logo[] =
 	"                                     " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* arch_logo[] =
 {
 	""TLCY"                   -`",
@@ -161,7 +162,7 @@ char* arch_logo[] =
 	""TCYN" .`                                 `/" TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* mint_logo[] =
 {
 	"                                       " TNRM,
@@ -184,7 +185,7 @@ char* mint_logo[] =
 	"                                      " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* lmde_logo[] =
 {
 	"          "TWHT"`.-::---..            " TNRM,
@@ -207,7 +208,7 @@ char* lmde_logo[] =
 	"                               " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* ubuntu_logo[] =
 {
 	""TLRD"                          ./+o+-       " TNRM,
@@ -230,7 +231,7 @@ char* ubuntu_logo[] =
 	""TYLW"                          `oo++.      " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* debian_logo[] =
 {
 	"  "TWHT"       _,met$$$$$gg.           " TNRM,
@@ -253,7 +254,7 @@ char* debian_logo[] =
 	"                                " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* crunchbang_logo[] =
 {
 	"                                       "TNRM"",
@@ -276,7 +277,7 @@ char* crunchbang_logo[] =
 	"                                      "TNRM""
 };
 
-/* tested, working */
+/* 18 */
 char* gentoo_logo[] =
 {
 	""TLPR"         -/oyddmdhs+:.                " TNRM,
@@ -299,7 +300,7 @@ char* gentoo_logo[] =
 	""TLPR"  `-//////:--.                       " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* funtoo_logo[] =
 {
 	"                                                     " TNRM,
@@ -322,7 +323,7 @@ char* funtoo_logo[] =
 	"                                                    " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* fedora_logo[] =
 {
 	""TLBL"           :/------------://          " TNRM,
@@ -345,7 +346,7 @@ char* fedora_logo[] =
 	"                                     " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* freebsd_logo[] =
 {
 	"                                      " TNRM,
@@ -368,8 +369,7 @@ char* freebsd_logo[] =
 	"                                     " TNRM 
 };
 
-/* tested, working */
-/* NOTE: has 23 lines, not 18 */
+/* 23 */
 char* openbsd_logo[] = 
 {
 	"                                       "TLCY" _  "TNRM"",
@@ -397,7 +397,7 @@ char* openbsd_logo[] =
 	""TYLW"       \\`.\\                                  "TNRM""
 };
 
-/* tested, working */
+/* 18 */
 char* dragonflybsd_logo[] =
 {
 	"                     "TLRD" |                     " TNRM,
@@ -420,8 +420,7 @@ char* dragonflybsd_logo[] =
 	"                   "TLRD"   ^                    " TNRM
 };
 
-/* tested, working */
-/* NOTE: has 20 lines, not 18 */
+/* 20 */
 char* netbsd_logo[] =
 {
 	"                                  "TLRD"__,gnnnOCCCCCOObaau,_      " TNRM,
@@ -446,7 +445,7 @@ char* netbsd_logo[] =
 	"                   "TWHT"\\\\NNNA" TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* mandriva_mandrake_logo[] =
 {
 	"                                          " TNRM,
@@ -492,8 +491,7 @@ char* opensuse_logo[] =
 	""TWHT"              .':ldxkkkkxdl:'.              " TNRM
 };
 
-/* tested, working */
-/* NOTE: has 21 lines, not 18 */
+/* 21 */
 char* slackware_logo[] =
 {
 	""TLBL"                   :::::::",
@@ -519,7 +517,7 @@ char* slackware_logo[] =
 	""TLBL"                 ::::::::::::"
 };
 
-/* tested, working */
+/* 18 */
 char* redhat_logo[] =
 {
 	"                                           " TNRM,
@@ -542,8 +540,7 @@ char* redhat_logo[] =
 	"                                          " TNRM
 };
 
-/* tested, working */
-/* NOTE: has 23 lines, not 18 */
+/* 23 */
 char* frugalware_logo[] =
 {
 	""TLBL"          `++/::-.`",
@@ -571,8 +568,7 @@ char* frugalware_logo[] =
 	""TLBL"                                .-:+++`" TNRM
 };
 
-/* tested, working */
-/* NOTE: has 19 lines, not 18 */
+/* 19 */
 char* peppermint_logo[] =
 {
 	""TLRD"             8ZZZZZZ"TWHT"MMMMM               " TNRM,
@@ -596,7 +592,7 @@ char* peppermint_logo[] =
 	""TLRD"              ZZZZZZZZZ"TWHT"MM" TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* solusos_logo[] =
 {
 	""TWHT"               e         e      " TNRM,
@@ -619,7 +615,7 @@ char* solusos_logo[] =
 	""TDGY"         ww                    " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* mageia_logo[] = 
 {
 	""TLCY"               .°°.               " TNRM,
@@ -643,7 +639,7 @@ char* mageia_logo[] =
 	""TWHT"               .,KKKK,.            " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* parabolagnu_linuxlibre_logo[] = 
 {
 	"                                  " TNRM,
@@ -666,7 +662,7 @@ char* parabolagnu_linuxlibre_logo[] =
 	""TLPR"          e                      " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* viperr_logo[] =
 {
 	""TWHT"    wwzapd         dlzazw       " TNRM,
@@ -689,7 +685,7 @@ char* viperr_logo[] =
 	"                               " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* linuxdeepin_logo[] =
 {
 	""TLGN"  eeeeeeeeeeeeeeeeeeeeeeeeeeee    " TNRM,
@@ -713,7 +709,7 @@ char* linuxdeepin_logo[] =
 	"                                 " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* chakra_logo[] =
 {
 	""TLBL"      _ _ _        \"kkkkkkkk.          " TNRM,
@@ -736,8 +732,7 @@ char* chakra_logo[] =
 	""TLBL"                   \"\'\'\"               " TNRM
 };
 
-/* tested, working */
-/* NOTE: has 21 lines, not 18 */
+/* 21 */
 char* fuduntu_logo[] =
 {
 	""TDGY"       `dwoapfjsod`"TYLW"           `dwoapfjsod`       " TNRM,
@@ -763,8 +758,7 @@ char* fuduntu_logo[] =
 	""TLRD"        `woapfjsod`"TWHT"             `woapfjsod`" TNRM
 };
 
-/* tested, working */
-/* NOTE: has 16 lines, not 18 */
+/* 16 */
 char* macosx_logo[] =
 {
 	"\n"TGRN"                 -/+:.          " TNRM,
@@ -785,8 +779,7 @@ char* macosx_logo[] =
 	""TBLU"      `:+oo+/:-..-:/+o+/-      "TNRM"",
 };
 
-/* tested, working */
-/* NOTE: has 16 lines, not 18 */
+/* 16 */
 char* windows_logo[] =
 {
 	""TLRD"        ,.=:!!t3Z3z.,                 " TNRM,
@@ -807,7 +800,7 @@ char* windows_logo[] =
 	""TYLW"                 \"VEzjt:;;z>*`       " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* trisquel_logo[] =
 {
 	""TLBL"                          ▄▄▄▄▄▄       " TNRM,
@@ -830,7 +823,7 @@ char* trisquel_logo[] =
 	""TLCY"                      ▀▀█████▀▀       " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* manjaro_logo[] =
 {
 	""TLGN" ██████████████████  ████████    " TNRM,
@@ -853,7 +846,7 @@ char* manjaro_logo[] =
 	"                                 " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* elementaryos_logo[] =
 {
 	"                                  ",
@@ -876,8 +869,7 @@ char* elementaryos_logo[] =
 	"                                 " TNRM
 };
 
-/* tested, working */
-/* NOTE: has 20 lines, not 18 */
+/* 20 */
 char* scientificlinux_logo[] =
 {
 	""TLBL"                  =/;;/-" TNRM,
@@ -902,8 +894,7 @@ char* scientificlinux_logo[] =
 	""TLBL"                  '////'" TNRM
 };
 
-/* tested, working */
-/* NOTE: has 20 lines, not 18 */
+/* 20 */
 char* backtracklinux_logo[] =
 {
 	""TWHT"..............					" TNRM,
@@ -929,7 +920,7 @@ char* backtracklinux_logo[] =
 	""TWHT"                                             ." TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* sabayon_logo[] =
 {
 	""TLBL"            ...........                " TNRM,
@@ -952,7 +943,7 @@ char* sabayon_logo[] =
 	""TLBL"          ...............             " TNRM
 };
 
-/* tested, working */
+/* 18 */
 char* linux_logo[] =
 {
 	"                            " TNRM,
