@@ -4,7 +4,7 @@
 	-------------
 	
 	The functions, macros, and ascii logos used in screenfetch-c.c are defined/prototyped here.
-	Like screenfetch-c.c, this file is licensed under the MIT license.
+	Like the rest of screenfetch-c.c, this file is licensed under the MIT license.
 	You should have received a copy of it with this code.
 */
 
