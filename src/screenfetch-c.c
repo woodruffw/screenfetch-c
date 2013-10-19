@@ -452,21 +452,15 @@ void detect_distro(char* str)
 
 				else
 				{
-					distro_file = fopen("/etc/fedora-release", "r");
-
-					if (distro_file != NULL)
+					if (FILE_EXISTS("/etc/fedora-release"))
 					{
-						fclose(distro_file);
 						safe_strncpy(str, "Fedora", MAX_STRLEN);
 					}
 
 					else
 					{
-						distro_file = fopen("/etc/SuSE-release", "r");
-
-						if (distro_file != NULL)
+						if (FILE_EXISTS("/etc/SuSE-release"))
 						{
-							fclose(distro_file);
 							safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
 						}
 
@@ -719,12 +713,8 @@ void detect_pkgs(char* str)
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 
-		pkgs_file = fopen("/usr/local/bin/brew", "r"); /* test for existence of homebrew */
-
-		if (pkgs_file != NULL)
+		if (FILE_EXISTS("/usr/local/bin/brew"))
 		{
-			fclose(pkgs_file);
-
 			int brew_pkgs = 0;
 			pkgs_file = popen("brew list -1 | wc -l", "r");
 			fscanf(pkgs_file, "%d", &brew_pkgs);
@@ -899,22 +889,22 @@ void detect_disk(char* str)
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
+		disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
+		disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
 
 	else if (ISBSD())
 	{
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
+		disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
+		disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
