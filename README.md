@@ -13,9 +13,9 @@ screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environmen
 It has not yet been tested on any BSD distro. Therefore, I currently advise against using screenfetch-c on *BSD, even if it does compile successfully. However, it is up to you.
 
 There are only a few select sections that still require work. They are listed here:
-- DE/WM/WM Theme/GTK detection is not complete on *BSD or Linux. As a result, they will appear as 'Unknown' in output (unless specified in manual mode).
+- GPU detection is not implemented on Linux or BSD (appears as "Unknown").
 - Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
-- Package detection requires more in-depth testing.
+- Package detection requires more in-depth testing on OS X (testing for MacPorts/Fink).
 
 ### Installing screenfetch-c:
 
@@ -89,4 +89,5 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [ ] Scientific Linux
 - [x] Backtrack Linux
 - [ ] Sabayon
+- [x] Android (requires -D "Android" flag)
 - [x] Linux (upon failure to detect a specific distro)

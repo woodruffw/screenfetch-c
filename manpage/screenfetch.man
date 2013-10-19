@@ -26,7 +26,7 @@ Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD,
 and most Linux-kernel based distributions. 
 
 Note: If you are using manual mode to provide screenfetch-c with system information, you will need to enter the distribution name EXACTLY as written below:
-Arch Linux, ParabolaGNU/Linux-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Linux.
+Arch Linux, ParabolaGNU/Linux-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Andoid, Linux.
 
 Supported shells:
 GNU bash, csh, zsh, ksh, fish, dash, ash.
