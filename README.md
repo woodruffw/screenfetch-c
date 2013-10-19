@@ -24,21 +24,21 @@ screenfetch-c can be installed very easily via the install.sh script provided in
 
 Simply download the script and run it:
 ```
-sudo ./install.sh
+./install.sh
 ```
 
 It will fetch all source code (and manpages) required, compile screenfetch, install the manpage, and leave a tidy binary in $HOME. You can then move that binary whereever you please.
 
-_Note_: install.sh requires sudo to install the manpage! That is, unless you're on Cygwin. In that case, you're fine.
+_Note_: install.sh will prompt you for your root password in order to install the manpages!
 
 #### Manual compilation:
 Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
-screenfetch-c has no dependencies outside of the standard libraries of each OS.
+screenfetch-c has no dependencies outside of the standard and POSIX libraries of each OS.
 screenfetch-c is designed to be C99 compliant, although compiling with C90 should work provided
 you have the snprintf() function.
 
 ```
-gcc -std=c99 screenfetch-c.c -o screenfetch
+gcc -std=c99 screenfetch-c.c thread.c -o screenfetch -lpthread
 ```
 
 Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
