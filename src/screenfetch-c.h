@@ -955,6 +955,24 @@ char* sabayon_logo[] =
 	""TLBL"          ...............             " TNRM
 };
 
+/* 13 */
+char* android_logo[] =
+{
+	""TLGN"       ╲ ▁▂▂▂▁ ╱        " TNRM,
+	""TLGN"       ▄███████▄        " TNRM,
+	""TLGN"      ▄██"TWHT" "TLGN"███"TWHT" "TLGN"██▄       " TNRM,
+	""TLGN"     ▄███████████▄      " TNRM,
+	""TLGN"  ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄ █▄   " TNRM,
+	""TLGN"  ██ █████████████ ██   " TNRM,
+	""TLGN"  ██ █████████████ ██   " TNRM,
+	""TLGN"  ██ █████████████ ██   " TNRM,
+	""TLGN"  ██ █████████████ ██   " TNRM,
+	""TLGN"     █████████████      " TNRM,
+	""TLGN"      ███████████       " TNRM,
+	""TLGN"       ██     ██        " TNRM,
+	""TLGN"       ██     ██        " TNRM
+};
+
 /* 18 */
 char* linux_logo[] =
 {

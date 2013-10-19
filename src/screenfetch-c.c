@@ -1833,6 +1833,14 @@ void output_logo_only(char* distro)
 		}
 	}
 
+	else if (STRCMP(distro, "Android"))
+	{
+		for (i = 0; i < 13; i++)
+		{
+			printf("%s\n", android_logo[i]);
+		}
+	}
+
 	else
 	{
 		for (i = 0; i < 18; i++)
@@ -2186,6 +2194,17 @@ void main_ascii_output(char* data[], char* data_names[])
 					printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", sabayon_logo[i]);
+			}
+		}
+
+		else if (STRCMP(distro_str, "Android"))
+		{
+			for (i = 0; i < 13; i++)
+			{
+				if (i < 12)
+					printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				else
+					printf("%s\n", android_logo[i]);
 			}
 		}
 
