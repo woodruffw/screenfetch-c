@@ -19,6 +19,7 @@
 
 	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
+	Many thanks to spaghetti2514 for providing an improved Android logo.
 
 	PLANNED IMPROVEMENTS:
 	Add libcpuid to decrease reliance on shell utilities.
@@ -1835,7 +1836,7 @@ void output_logo_only(char* distro)
 
 	else if (STRCMP(distro, "Android"))
 	{
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 16; i++)
 		{
 			printf("%s\n", android_logo[i]);
 		}
@@ -2199,7 +2200,7 @@ void main_ascii_output(char* data[], char* data_names[])
 
 		else if (STRCMP(distro_str, "Android"))
 		{
-			for (i = 0; i < 13; i++)
+			for (i = 0; i < 16; i++)
 			{
 				if (i < 12)
 					printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);

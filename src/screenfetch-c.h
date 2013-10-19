@@ -956,7 +956,7 @@ char* sabayon_logo[] =
 };
 
 /* 13 */
-char* android_logo[] =
+char* android_logo_unused[] =
 {
 	""TLGN"       ╲ ▁▂▂▂▁ ╱        " TNRM,
 	""TLGN"       ▄███████▄        " TNRM,
@@ -971,6 +971,27 @@ char* android_logo[] =
 	""TLGN"      ███████████       " TNRM,
 	""TLGN"       ██     ██        " TNRM,
 	""TLGN"       ██     ██        " TNRM
+};
+
+/* 16 */
+char* android_logo[] =
+{
+	""TLGN"      ▀▄  ▂▂▂▂▂  ▄▀      " TNRM,
+	""TLGN "      ▗▟█████████▙▖      " TNRM,
+	""TLGN"     ▟██▀▀█████▀▀██▙     " TNRM,
+	""TLGN"     ███▄▄█████▄▄███▌    " TNRM,
+	""TLGN"    █████████████████    " TNRM,
+	""TLGN"▟█▙ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▟█▙" TNRM,
+	""TLGN"███ █████████████████ ███" TNRM,
+	""TLGN"███ █████████████████ ███" TNRM,
+	""TLGN"███ █████████████████ ███" TNRM,
+	""TLGN"███ █████████████████ ███" TNRM,
+	""TLGN"███ █████████████████ ███" TNRM,
+	""TLGN"▜█▛ █████████████████ ▜█▛" TNRM,
+	""TLGN"    ▀███████████████▀    " TNRM,
+	""TLGN"      ████     ████      " TNRM,
+	""TLGN"      ████     ████      " TNRM,
+	""TLGN"      ▜██▛     ▜██▛      " TNRM
 };
 
 /* 18 */
