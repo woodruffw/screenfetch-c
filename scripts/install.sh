@@ -17,11 +17,6 @@ read ans
 
 if [ "$ans" = "y" ] ; then
 
-	if [ `whoami` != root ]; then
-	    printf "Error: This script has to be run with sudo in order to install the manpage correctly.\n"
-	    exit 1
-	fi
-
 	if hash wget 2>/dev/null && hash gcc 2>/dev/null ; then
 		printf "Fetching files..."
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
@@ -44,8 +39,8 @@ if [ "$ans" = "y" ] ; then
 		printf "done\n"
 
 		printf "Moving manpage into place..."
-		mv ~/screenfetch.man /usr/share/man/man1/screenfetch.1
-		gzip /usr/share/man/man1/screenfetch.1
+		sudo mv ~/screenfetch.man /usr/share/man/man1/screenfetch.1
+		sudo gzip /usr/share/man/man1/screenfetch.1
 		printf "done\n"
 
 		printf "Cleaning up..."
