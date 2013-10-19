@@ -551,7 +551,7 @@ void detect_host(char* str)
 	{
 		#if defined(__CYGWIN__)
 			/* why does the winapi require a pointer to a long? */
-			long len = MAX_STRLEN;
+			unsigned long len = MAX_STRLEN;
 			GetUserName(given_user, &len);
 			gethostname(given_host, MAX_STRLEN);
 		#endif
@@ -899,22 +899,22 @@ void detect_disk(char* str)
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+		disk_file = popen("df -H | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
 
 	else if (ISBSD())
 	{
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);
 
-		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+		disk_file = popen("df -h | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G' 2> /dev/null", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
 	}
