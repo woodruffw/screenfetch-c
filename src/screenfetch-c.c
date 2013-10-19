@@ -63,6 +63,7 @@
 */
 
 #include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
+#include "thread.h" /* for cross-platform threading */
 
 /* string definitions */
 static char distro_str[MAX_STRLEN];
@@ -215,22 +216,79 @@ int main(int argc, char** argv)
 
 	else /* each string is filled by its respective function */
 	{
-		detect_distro(distro_str);
-		detect_arch(arch_str);
-		detect_host(host_str);
-		detect_kernel(kernel_str);
-		detect_uptime(uptime_str);
-		detect_pkgs(pkgs_str);
-		detect_cpu(cpu_str);
-		detect_gpu(gpu_str);
-		detect_disk(disk_str);
-		detect_mem(mem_str);
-		detect_shell(shell_str);
-		detect_res(res_str);
-		detect_de(de_str);
-		detect_wm(wm_str);
-		detect_wm_theme(wm_theme_str);
-		detect_gtk(gtk_str);
+		if (OS != CYGWIN)
+		{
+			THREAD distro_thread;
+			create_thread(&distro_thread, (void*) detect_distro, (void*) distro_str);
+			THREAD arch_thread;
+			create_thread(&arch_thread, (void*) detect_arch, (void*) arch_str);
+			THREAD host_thread;
+			create_thread(&host_thread, (void*) detect_host, (void*) host_str);
+			THREAD kernel_thread;
+			create_thread(&kernel_thread, (void*) detect_kernel, (void*) kernel_str);
+			THREAD uptime_thread;
+			create_thread(&uptime_thread, (void*) detect_uptime, (void*) uptime_str);
+			THREAD pkgs_thread;
+			create_thread(&pkgs_thread, (void*) detect_pkgs, (void*) pkgs_str);
+			THREAD cpu_thread;
+			create_thread(&cpu_thread, (void*) detect_cpu, (void*) cpu_str);
+			THREAD gpu_thread;
+			create_thread(&gpu_thread, (void*) detect_gpu, (void*) gpu_str);
+			THREAD disk_thread;
+			create_thread(&disk_thread, (void*) detect_disk, (void*) disk_str);
+			THREAD mem_thread;
+			create_thread(&mem_thread, (void*) detect_mem, (void*) mem_str);
+			THREAD shell_thread;
+			create_thread(&shell_thread, (void*) detect_shell, (void*) shell_str);
+			THREAD res_thread;
+			create_thread(&res_thread, (void*) detect_res, (void*) res_str);
+			THREAD de_thread;
+			create_thread(&de_thread, (void*) detect_de, (void*) de_str);
+			THREAD wm_thread;
+			create_thread(&wm_thread, (void*) detect_wm, (void*) wm_str);
+			THREAD wm_theme_thread;
+			create_thread(&wm_theme_thread, (void*) detect_wm_theme, (void*) wm_theme_str);
+			THREAD gtk_thread;
+			create_thread(&gtk_thread, (void*) detect_gtk, (void*) gtk_str);
+
+			join_thread(distro_thread);
+			join_thread(arch_thread);
+			join_thread(host_thread);
+			join_thread(kernel_thread);
+			join_thread(uptime_thread);
+			join_thread(pkgs_thread);
+			join_thread(cpu_thread);
+			join_thread(gpu_thread);
+			join_thread(disk_thread);
+			join_thread(mem_thread);
+			join_thread(shell_thread);
+			join_thread(res_thread);
+			join_thread(de_thread);
+			join_thread(wm_thread);
+			join_thread(wm_theme_thread);
+			join_thread(gtk_thread);
+		}
+
+		/* i haven't perfected thread.c's functions on windows yet */
+		else
+		{
+			detect_distro(distro_str);
+			detect_arch(arch_str);
+			detect_host(host_str);
+			detect_kernel(kernel_str);
+			detect_uptime(uptime_str);
+			detect_pkgs(pkgs_str);
+			detect_cpu(cpu_str);
+			detect_gpu(gpu_str);
+			detect_disk(disk_str);
+			detect_mem(mem_str);
+			detect_shell(shell_str);
+			detect_res(res_str);
+			detect_de(de_str);
+			detect_wm(wm_str);
+			detect_wm_theme(wm_theme_str);
+			detect_gtk(gtk_str);
+		}
 	}
 
 	/* detected_arr is filled with the gathered from the detection functions */
