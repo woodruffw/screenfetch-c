@@ -16,10 +16,18 @@ printf "Are you ABSOLUTELY sure you want to continue? (y/n) "
 read ans
 
 if [ "$ans" = "y" ] ; then
+
+	if [ `whoami` != root ]; then
+	    printf "Error: This script has to be run with sudo in order to install the manpage correctly.\n"
+	    exit 1
+	fi
+
 	if hash wget 2>/dev/null && hash gcc 2>/dev/null ; then
 		printf "Fetching files..."
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.c --no-check-certificate -O ~/screenfetch-c.c 2> /dev/null
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/screenfetch-c.h --no-check-certificate -O ~/screenfetch-c.h 2> /dev/null
+		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/thread.c --no-check-certificate -O ~/thread.c 2> /dev/null
+		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/thread.h --no-check-certificate -O ~/thread.h 2> /dev/null
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectde --no-check-certificate -O ~/detectde 2> /dev/null
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwm --no-check-certificate -O ~/detectwm 2> /dev/null
 		wget https://raw.github.com/woodrufw/screenfetch-c/master/src/detectwmtheme --no-check-certificate -O ~/detectwmtheme 2> /dev/null
@@ -28,7 +36,7 @@ if [ "$ans" = "y" ] ; then
 		printf "done\n"
 
 		printf "Compiling screenfetch-c..."
-		gcc ~/screenfetch-c.c -o ~/screenfetch -std=c99
+		gcc ~/screenfetch-c.c ~/thread.c -o ~/screenfetch -std=c99 -lpthread
 		chmod +x ~/detectde
 		chmod +x ~/detectwm
 		chmod +x ~/detectwmtheme
@@ -42,6 +50,7 @@ if [ "$ans" = "y" ] ; then
 
 		printf "Cleaning up..."
 		rm -f ~/screenfetch-c.*
+		rm -f ~/thread.*
 		rm -f ~/screenfetch.man
 		printf "done\n"
 
