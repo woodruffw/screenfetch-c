@@ -153,8 +153,8 @@ char* oldarch_logo[] =
 /* 18 */
 char* arch_logo[] =
 {
-	""TLCY"                   -`",
-	""TLCY"                  .o+`                 " TNRM,
+	""TLCY"                   -`                 ",
+	""TLCY"                  .o+`                " TNRM,
 	""TLCY"                 `ooo/                " TNRM,
 	""TLCY"                `+oooo:               " TNRM,
 	""TLCY"               `+oooooo:              " TNRM,

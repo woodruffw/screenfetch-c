@@ -57,6 +57,7 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 
 - [x] OS X
 - [x] Windows (requires Cygwin)
+- [x] Arch Linux
 - [x] Fedora
 - [x] Linux Mint
 - [x] LMDE
