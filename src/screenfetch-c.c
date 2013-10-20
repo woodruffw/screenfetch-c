@@ -382,7 +382,7 @@ int main(int argc, char** argv)
 */
 void detect_distro(char* str)
 {
-	if (STRCMP(str, "Unknown")) /* if distro_str was NOT set by the -D flag */
+	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
 	{
 		FILE* distro_file;
 
@@ -472,6 +472,11 @@ void detect_distro(char* str)
 					else if (FILE_EXISTS("/etc/arch-release"))
 					{
 						safe_strncpy(str, "Arch Linux", MAX_STRLEN);
+					}
+
+					else if (FILE_EXISTS("/etc/gentoo-release"))
+					{
+						safe_strncpy(str, "Gentoo", MAX_STRLEN);
 					}
 
 					else if (FILE_EXISTS("/etc/lsb-release"))
@@ -885,6 +890,7 @@ void detect_gpu(char* str)
 	else if (OS == LINUX || ISBSD())
 	{
 		/* is probably going to use lspci or glxinfo  */
+		safe_strncpy(str, "Unknown", MAX_STRLEN);
 	}
 
 	if (verbose)
@@ -1381,9 +1387,7 @@ int manual_input(void)
 	config_file_loc = getenv("HOME");
 	strncat(config_file_loc, "/.screenfetchc", MAX_STRLEN);
 
-	config_file = fopen(config_file_loc, "r");
-
-	if (config_file == NULL)
+	if (!FILE_EXISTS(config_file_loc))
 	{
 		if (OS == CYGWIN)
 		{
@@ -1489,9 +1493,36 @@ int manual_input(void)
 		if (verbose)
 			VERBOSE_OUT("Found config file. Reading...", "");
 
-		fscanf(config_file, "%s%s%s%s%s%s%s%s%s%s%s%s", distro_str, arch_str, host_str, kernel_str, cpu_str, gpu_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
+		config_file = fopen(config_file_loc, "r");
+
+		fgets(distro_str, MAX_STRLEN, config_file);
+		fgets(arch_str, MAX_STRLEN, config_file);
+		fgets(host_str, MAX_STRLEN, config_file);
+		fgets(kernel_str, MAX_STRLEN, config_file);
+		fgets(cpu_str, MAX_STRLEN, config_file);
+		fgets(shell_str, MAX_STRLEN, config_file);
+		fgets(res_str, MAX_STRLEN, config_file);
+		fgets(de_str, MAX_STRLEN, config_file);
+		fgets(wm_str, MAX_STRLEN, config_file);
+		fgets(wm_theme_str, MAX_STRLEN, config_file);
+		fgets(gtk_str, MAX_STRLEN, config_file);
+
 		fclose(config_file);
-		
+
+		/* i am deeply ashamed of this solution */
+		distro_str[strlen(distro_str) - 1] = '\0';
+		arch_str[strlen(arch_str) - 1] = '\0';
+		host_str[strlen(host_str) - 1] = '\0';
+		kernel_str[strlen(kernel_str) - 1] = '\0';
+		cpu_str[strlen(cpu_str) - 1] = '\0';
+		gpu_str[strlen(gpu_str) - 1] = '\0';
+		shell_str[strlen(shell_str) - 1] = '\0';
+		res_str[strlen(res_str) - 1] = '\0';
+		de_str[strlen(de_str) - 1] = '\0';
+		wm_str[strlen(wm_str) - 1] = '\0';
+		wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
+		gtk_str[strlen(gtk_str) - 1] = '\0';
+
 		return EXIT_SUCCESS;
 	}
 }
