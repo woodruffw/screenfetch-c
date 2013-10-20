@@ -302,11 +302,11 @@ char* gentoo_logo[] =
 	""TLPR"  :o"TWHT"yhhdNNMMMMMMMNNNmmdddhhhhhyym"TLPR"Mh  " TNRM,
 	""TLPR"    .:"TWHT"+sydNMMMMMNNNmmmdddhhhhhhmM"TLPR"my  " TNRM,
 	""TLPR"       /m"TWHT"MMMMMMNNNmmmdddhhhhhmMNh"TLPR"s:  " TNRM,
-	""TLPR"   `o"TWHT"NMMMMMMMNNNmmmddddhhdmMNhs"TLPR"+`   " TNRM,
+	""TLPR"   `o"TWHT"NMMMMMMMNNNmmmddddhhdmMNhs"TLPR"+`    " TNRM,
 	""TLPR"  `s"TWHT"NMMMMMMMMNNNmmmdddddmNMmhs"TLPR"/.     " TNRM,
 	""TLPR" /N"TWHT"MMMMMMMMNNNNmmmdddmNMNdso"TLPR":`       " TNRM,
 	""TLPR"+M"TWHT"MMMMMMNNNNNmmmmdmNMNdso"TLPR"/-          " TNRM,
-	""TLPR"yM"TWHT"MNNNNNNNmmmmmNNMmhs+/"TLPR"-`              " TNRM,
+	""TLPR"yM"TWHT"MNNNNNNNmmmmmNNMmhs+/"TLPR"-`            " TNRM,
 	""TLPR"/h"TWHT"MMNNNNNNNNMNdhs++/"TLPR"-`               " TNRM,
 	""TLPR"`/"TWHT"ohdmmddhys+++/:"TLPR".`                  " TNRM,
 	""TLPR"  `-//////:--.                       " TNRM
@@ -483,24 +483,24 @@ char* mandriva_mandrake_logo[] =
 /* tested, working */
 char* opensuse_logo[] =
 {
-	""TWHT"             .;ldkO0000Okdl;.               " TNRM,
-	""TWHT"         .;d00xl:,'....';:ok00d;.           " TNRM,
-	""TWHT"       .d00l'                ,o00d.         " TNRM,
-	""TWHT"     .d0Kd."TLGN" :Okxol:;'.          "TWHT":O0d.       " TNRM,
-	""TWHT"    'OK"TLGN"KKK0kOKKKKKKKKKKOxo:'      "TWHT"lKO'      " TNRM,
-	""TWHT"   ,0K"TLGN"KKKKKKKKKKKKKKK0d:"TWHT",,,"TLGN":dx:"TWHT"    ;00,     " TNRM,
-	""TWHT"  .OK"TLGN"KKKKKKKKKKKKKKKk."TWHT".oOkdl."TLGN"'0k."TWHT"   cKO.    " TNRM,
-	""TWHT"  :KK"TLGN"KKKKKKKKKKKKKKK: "TWHT"kKx..od "TLGN"lKd"TWHT"   .OK:    " TNRM,
-	""TWHT"  dKK"TLGN"KKKKKKKKKOx0KKKd "TWHT";0KKKO, "TLGN"kKKc"TWHT"   dKd    " TNRM,
-	""TWHT"  dKK"TLGN"KKKKKKKKKK;.;oOKx,.."TWHT"'"TLGN"..;kKKK0."TWHT"  dKd    " TNRM,
-	""TWHT"  :KK"TLGN"KKKKKKKKKK0o;...;cdxxOK0Oxc,.  "TWHT".0K:    " TNRM,
-	""TWHT"   kKK"TLGN"KKKKKKKKKKKKK0xl;'......,cdo  "TWHT"lKk     " TNRM,
-	""TWHT"   '0K"TLGN"KKKKKKKKKKKKKKKKKKKK00KKOo;  "TWHT"c00'     " TNRM,
-	""TWHT"    .kK"TLGN"KKOxddxkOO00000Okxoc;'.   "TWHT".dKk.      " TNRM,
-	""TWHT"      l0Ko.                    .c00l.       " TNRM,
-	""TWHT"       .l0Kk:.              .;xK0l.         " TNRM,
-	""TWHT"          ,lkK0xl:;,,,,;:ldO0kl,            " TNRM,
-	""TWHT"              .':ldxkkkkxdl:'.              " TNRM
+	""TWHT"             .;ldkO0000Okdl;.            " TNRM,
+	""TWHT"         .;d00xl:,'....';:ok00d;.        " TNRM,
+	""TWHT"       .d00l'                ,o00d.      " TNRM,
+	""TWHT"     .d0Kd."TLGN" :Okxol:;'.          "TWHT":O0d.    " TNRM,
+	""TWHT"    'OK"TLGN"KKK0kOKKKKKKKKKKOxo:'      "TWHT"lKO'   " TNRM,
+	""TWHT"   ,0K"TLGN"KKKKKKKKKKKKKKK0d:"TWHT",,,"TLGN":dx:"TWHT"    ;00,  " TNRM,
+	""TWHT"  .OK"TLGN"KKKKKKKKKKKKKKKk."TWHT".oOkdl."TLGN"'0k."TWHT"   cKO. " TNRM,
+	""TWHT"  :KK"TLGN"KKKKKKKKKKKKKKK: "TWHT"kKx..od "TLGN"lKd"TWHT"   .OK: " TNRM,
+	""TWHT"  dKK"TLGN"KKKKKKKKKOx0KKKd "TWHT";0KKKO, "TLGN"kKKc"TWHT"   dKd " TNRM,
+	""TWHT"  dKK"TLGN"KKKKKKKKKK;.;oOKx,.."TWHT"'"TLGN"..;kKKK0."TWHT"  dKd " TNRM,
+	""TWHT"  :KK"TLGN"KKKKKKKKKK0o;...;cdxxOK0Oxc,.  "TWHT".0K: " TNRM,
+	""TWHT"   kKK"TLGN"KKKKKKKKKKKKK0xl;'......,cdo  "TWHT"lKk  " TNRM,
+	""TWHT"   '0K"TLGN"KKKKKKKKKKKKKKKKKKKK00KKOo;  "TWHT"c00'  " TNRM,
+	""TWHT"    .kK"TLGN"KKOxddxkOO00000Okxoc;'.   "TWHT".dKk.   " TNRM,
+	""TWHT"      l0Ko.                    .c00l.    " TNRM,
+	""TWHT"       .l0Kk:.              .;xK0l.      " TNRM,
+	""TWHT"          ,lkK0xl:;,,,,;:ldO0kl,         " TNRM,
+	""TWHT"              .':ldxkkkkxdl:'.           " TNRM
 };
 
 /* 21 */
@@ -525,8 +525,8 @@ char* slackware_logo[] =
 	""TLBL"     ::"TWHT"lcc1lcccccccccccccccccccccccco"TLBL"::::     " TNRM,
 	""TLBL"       ::::::::::::::::::::::::::::::::       " TNRM,
 	""TLBL"         ::::::::::::::::::::::::::::         " TNRM,
-	""TLBL"            ::::::::::::::::::::::",
-	""TLBL"                 ::::::::::::"
+	""TLBL"            ::::::::::::::::::::::" TNRM,
+	""TLBL"                 ::::::::::::" TNRM
 };
 
 /* 18 */
@@ -555,10 +555,10 @@ char* redhat_logo[] =
 /* 23 */
 char* frugalware_logo[] =
 {
-	""TLBL"          `++/::-.`",
-	""TLBL"         /o+++++++++/::-.`",
-	""TLBL"        `o+++++++++++++++o++/::-.`",
-	""TLBL"        /+++++++++++++++++++++++oo++/:-.``         " TNRM,
+	""TLBL"          `++/::-.`                               " TNRM,
+	""TLBL"         /o+++++++++/::-.`                        " TNRM,
+	""TLBL"        `o+++++++++++++++o++/::-.`                " TNRM,
+	""TLBL"        /+++++++++++++++++++++++oo++/:-.``        " TNRM,
 	""TLBL"       .o+ooooooooooooooooooosssssssso++oo++/:-`  " TNRM,
 	""TLBL"       ++osoooooooooooosssssssssssssyyo+++++++o:  " TNRM,
 	""TLBL"      -o+ssoooooooooooosssssssssssssyyo+++++++s`  " TNRM,
@@ -884,8 +884,8 @@ char* elementaryos_logo[] =
 /* 20 */
 char* scientificlinux_logo[] =
 {
-	""TLBL"                  =/;;/-" TNRM,
-	""TLBL"                 +:    //                    " TNRM,
+	""TLBL"                  =/;;/-                    " TNRM,
+	""TLBL"                 +:    //                   " TNRM,
 	""TLBL"                /;      /;                  " TNRM,
 	""TLBL"               -X        H.                 " TNRM,
 	""TLBL" .//;;;:;;-,   X=        :+   .-;:=;:;#;.   " TNRM,
