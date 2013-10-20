@@ -221,38 +221,53 @@ int main(int argc, char** argv)
 		{
 			THREAD distro_thread;
 			create_thread(&distro_thread, (void*) detect_distro, (void*) distro_str);
+			join_thread(distro_thread); /* a few other functions rely on distro_str, so halt execution until detect_distro completes */
+
 			THREAD arch_thread;
 			create_thread(&arch_thread, (void*) detect_arch, (void*) arch_str);
+
 			THREAD host_thread;
 			create_thread(&host_thread, (void*) detect_host, (void*) host_str);
+
 			THREAD kernel_thread;
 			create_thread(&kernel_thread, (void*) detect_kernel, (void*) kernel_str);
+
 			THREAD uptime_thread;
 			create_thread(&uptime_thread, (void*) detect_uptime, (void*) uptime_str);
+
 			THREAD pkgs_thread;
 			create_thread(&pkgs_thread, (void*) detect_pkgs, (void*) pkgs_str);
+
 			THREAD cpu_thread;
 			create_thread(&cpu_thread, (void*) detect_cpu, (void*) cpu_str);
+
 			THREAD gpu_thread;
 			create_thread(&gpu_thread, (void*) detect_gpu, (void*) gpu_str);
+
 			THREAD disk_thread;
 			create_thread(&disk_thread, (void*) detect_disk, (void*) disk_str);
+
 			THREAD mem_thread;
 			create_thread(&mem_thread, (void*) detect_mem, (void*) mem_str);
+
 			THREAD shell_thread;
 			create_thread(&shell_thread, (void*) detect_shell, (void*) shell_str);
+
 			THREAD res_thread;
 			create_thread(&res_thread, (void*) detect_res, (void*) res_str);
+
 			THREAD de_thread;
 			create_thread(&de_thread, (void*) detect_de, (void*) de_str);
+
 			THREAD wm_thread;
 			create_thread(&wm_thread, (void*) detect_wm, (void*) wm_str);
+
 			THREAD wm_theme_thread;
 			create_thread(&wm_theme_thread, (void*) detect_wm_theme, (void*) wm_theme_str);
+
 			THREAD gtk_thread;
 			create_thread(&gtk_thread, (void*) detect_gtk, (void*) gtk_str);
 
-			join_thread(distro_thread);
 			join_thread(arch_thread);
 			join_thread(host_thread);
 			join_thread(kernel_thread);
@@ -270,8 +285,7 @@ int main(int argc, char** argv)
 			join_thread(gtk_thread);
 		}
 
-		/* i haven't perfected thread.c's functions on windows yet */
-		else
+		else /* i haven't perfected thread.c's functions on windows yet */
 		{
 			detect_distro(distro_str);
 			detect_arch(arch_str);
