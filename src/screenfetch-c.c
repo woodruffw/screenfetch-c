@@ -445,12 +445,23 @@ void detect_distro(char* str)
 
 				if (!detected)
 				{
-					distro_file = fopen("/etc/lsb-release", "r");
-
-					if (distro_file != NULL)
+					if (FILE_EXISTS("/etc/fedora-release"))
 					{
-						fclose(distro_file);
+						safe_strncpy(str, "Fedora", MAX_STRLEN);
+					}
 
+					else if (FILE_EXISTS("/etc/SuSE-release"))
+					{
+						safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+					}
+
+					else if (FILE_EXISTS("/etc/arch-release"))
+					{
+						safe_strncpy(str, "Arch Linux", MAX_STRLEN);
+					}
+
+					else if (FILE_EXISTS("/etc/lsb-release"))
+					{
 						distro_file = popen("cat /etc/lsb-release | head -1 | tr -d '\\\"\\n'", "r");
 						fgets(distro_name_str, MAX_STRLEN, distro_file);
 						pclose(distro_file);
@@ -460,35 +471,11 @@ void detect_distro(char* str)
 
 					else
 					{
-						if (FILE_EXISTS("/etc/fedora-release"))
+						safe_strncpy(str, "Linux", MAX_STRLEN);
+
+						if (error)
 						{
-							safe_strncpy(str, "Fedora", MAX_STRLEN);
-						}
-
-						else
-						{
-							if (FILE_EXISTS("/etc/SuSE-release"))
-							{
-								safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
-							}
-
-							else
-							{
-								if (FILE_EXISTS("/etc/arch-release"))
-								{
-									safe_strncpy(str, "Arch Linux", MAX_STRLEN);
-								}
-
-								else
-								{
-									safe_strncpy(str, "Linux", MAX_STRLEN);
-
-									if (error)
-									{
-										ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
-									}
-								}
-							}
+							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 						}
 					}
 				}
@@ -1911,7 +1898,7 @@ void main_ascii_output(char* data[], char* data_names[])
 			for (i = 0; i < 18; i++)
 			{
 				if (i < 16)
-					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
+					printf("%s %s%s%s%s%s\n", arch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
 				else
 					printf("%s\n", arch_logo[i]);
 			}
