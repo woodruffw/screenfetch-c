@@ -400,78 +400,84 @@ void detect_distro(char* str)
 
 		else if (OS == LINUX)
 		{
-			bool detected = false;
-
-			/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
-			distro_file = fopen("/etc/issue", "r");
-
-			if (distro_file != NULL)
+			if (FILE_EXISTS("/system/bin/getprop"))
 			{
-				/* get the first 4 chars, that's all we need */
-				fscanf(distro_file, "%4s", distro_name_str);
-				fclose(distro_file);
-
-				if (STRCMP(distro_name_str, "Back"))
-				{
-					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
-					detected = true;
-				}
-
-				else if (STRCMP(distro_name_str, "Crun"))
-				{
-					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
-					detected = true;
-				}
-
-				else if (STRCMP(distro_name_str, "LMDE"))
-				{
-					safe_strncpy(str, "LMDE", MAX_STRLEN);
-					detected = true;
-				}
-
-				else if (STRCMP(distro_name_str, "Debi") || STRCMP(distro_name_str, "Rasp"))
-				{
-					safe_strncpy(str, "Debian", MAX_STRLEN);
-					detected = true;
-				}
+				safe_strncpy(str, "Android", MAX_STRLEN);
 			}
 
-			if (!detected)
+			else
 			{
-				distro_file = fopen("/etc/lsb-release", "r");
+				bool detected = false;
+
+				/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
+				distro_file = fopen("/etc/issue", "r");
 
 				if (distro_file != NULL)
 				{
+					/* get the first 4 chars, that's all we need */
+					fscanf(distro_file, "%4s", distro_name_str);
 					fclose(distro_file);
 
-					distro_file = popen("cat /etc/lsb-release | head -1 | tr -d '\\\"\\n'", "r");
-					fgets(distro_name_str, MAX_STRLEN, distro_file);
-					pclose(distro_file);
+					if (STRCMP(distro_name_str, "Back"))
+					{
+						safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
+						detected = true;
+					}
 
-					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
+					else if (STRCMP(distro_name_str, "Crun"))
+					{
+						safe_strncpy(str, "CrunchBang", MAX_STRLEN);
+						detected = true;
+					}
+
+					else if (STRCMP(distro_name_str, "LMDE"))
+					{
+						safe_strncpy(str, "LMDE", MAX_STRLEN);
+						detected = true;
+					}
+
+					else if (STRCMP(distro_name_str, "Debi") || STRCMP(distro_name_str, "Rasp"))
+					{
+						safe_strncpy(str, "Debian", MAX_STRLEN);
+						detected = true;
+					}
 				}
 
-				else
+				if (!detected)
 				{
-					if (FILE_EXISTS("/etc/fedora-release"))
+					distro_file = fopen("/etc/lsb-release", "r");
+
+					if (distro_file != NULL)
 					{
-						safe_strncpy(str, "Fedora", MAX_STRLEN);
+						fclose(distro_file);
+
+						distro_file = popen("cat /etc/lsb-release | head -1 | tr -d '\\\"\\n'", "r");
+						fgets(distro_name_str, MAX_STRLEN, distro_file);
+						pclose(distro_file);
+
+						snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 					}
 
 					else
 					{
-						if (FILE_EXISTS("/etc/SuSE-release"))
+						if (FILE_EXISTS("/etc/fedora-release"))
 						{
-							safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+							safe_strncpy(str, "Fedora", MAX_STRLEN);
 						}
 
 						else
 						{
-							safe_strncpy(str, "Linux", MAX_STRLEN);
-
-							if (error)
+							if (FILE_EXISTS("/etc/SuSE-release"))
 							{
-								ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+								safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+							}
+
+							else
+							{
+								safe_strncpy(str, "Linux", MAX_STRLEN);
+
+								if (error)
+									ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
 							}
 						}
 					}
