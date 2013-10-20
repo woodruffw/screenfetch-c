@@ -474,10 +474,20 @@ void detect_distro(char* str)
 
 							else
 							{
-								safe_strncpy(str, "Linux", MAX_STRLEN);
+								if (FILE_EXISTS("/etc/arch-release"))
+								{
+									safe_strncpy(str, "Arch Linux", MAX_STRLEN);
+								}
 
-								if (error)
-									ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+								else
+								{
+									safe_strncpy(str, "Linux", MAX_STRLEN);
+
+									if (error)
+									{
+										ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+									}
+								}
 							}
 						}
 					}
