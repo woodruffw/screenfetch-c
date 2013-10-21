@@ -47,12 +47,14 @@
 	#include <sys/utsname.h> 
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
+	#define _POSIX_SOURCE
 	#include <sys/types.h>
     #include <sys/sysctl.h>
 #elif defined(__NetBSD__)
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
+	#define _POSIX_SOURCE
 	#include <sys/types.h>
     #include <sys/sysctl.h>
 #elif defined(__DragonFly__)
