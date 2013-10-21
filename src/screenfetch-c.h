@@ -361,7 +361,7 @@ char* fedora_logo[] =
 /* 18 */
 char* freebsd_logo[] =
 {
-	"                                      " TNRM,
+	"                                     " TNRM,
 	"   "TWHT"```                        "TLRD"`      " TNRM,
 	"  "TWHT"` `.....---..."TLRD"....--.```   -/      " TNRM,     
 	"  "TWHT"+o   .--`         "TLRD"/y:`      +.     " TNRM, 
