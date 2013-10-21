@@ -1032,7 +1032,7 @@ void detect_mem(char* str)
 	else if (OS == FREEBSD)
 	{
 		#if defined(__FREEBSD__)
-			int mib[2] = {CTL_HW, HW_USERMEM};
+			int mib[2] = {CTL_HW, HW_REALMEM};
 			size_t len = sizeof(total_mem);
 			sysctl(mib, 2, &total_mem, &len, NULL, 0);
 		#endif
@@ -1045,7 +1045,7 @@ void detect_mem(char* str)
 	else if (OS == OPENBSD)
 	{
 		#if defined(__OPENBSD__)
-			int mib[2] = {CTL_HW, HW_PHYSMEM};
+			int mib[2] = {CTL_HW, HW_REALMEM};
 			size_t len = sizeof(total_mem);
 			sysctl(mib, 2, &total_mem, &len, NULL, 0);
 		#endif
@@ -1175,7 +1175,7 @@ void detect_res(char* str)
 
 	else if (OS == LINUX)
 	{
-		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n' 2> /dev/null", "r");
+		res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 
@@ -1187,7 +1187,7 @@ void detect_res(char* str)
 
 	else if (ISBSD())
 	{
-		res_file = popen("xdpyinfo | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' ' 2> /dev/null", "r");
+		res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
 		fgets(str, MAX_STRLEN, res_file);
 		pclose(res_file);
 
