@@ -8,8 +8,6 @@
 	You should have received a copy of it with this code.
 */
 
-#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
-
 /* includes, all from the standard library */
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,18 +41,17 @@
 	#include <sys/utsname.h>
 #elif defined(__linux__)
 	#define OS LINUX
+	#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
 	#include <sys/sysinfo.h>
 	#include <sys/utsname.h> 
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
-	#define _POSIX_SOURCE
 	#include <sys/types.h>
     #include <sys/sysctl.h>
 #elif defined(__NetBSD__)
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
-	#define _POSIX_SOURCE
 	#include <sys/types.h>
     #include <sys/sysctl.h>
 #elif defined(__DragonFly__)
