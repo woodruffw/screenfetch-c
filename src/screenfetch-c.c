@@ -1020,19 +1020,11 @@ void detect_mem(char* str)
 
 	else if (OS == FREEBSD)
 	{
-		/* it's unknown if FreeBSD's /proc/meminfo is in the same format as Cygwin's */
-
-		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%lld", &total_mem);
-		pclose(mem_file);
-
-		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%lld", &free_mem);
-		pclose(mem_file);
-
-		total_mem /= (long) KB;
-		free_mem /= (long) KB;
-		used_mem = total_mem - free_mem;
+		#if defined(__FREEBSD__)
+			int mib[2] = {CTL_HW, HW_USERMEM};
+			size_t len = sizeof(total_mem);
+			sysctl(mib, 2, &total_mem, &len, NULL, 0);
+		#endif
 	}
 
 	else if (OS == OPENBSD)
@@ -1057,7 +1049,7 @@ void detect_mem(char* str)
 		total_mem /= (long) MB;
 	}
 
-	if (OS != DFBSD)
+	if (OS != DFBSD || OS != FREEBSD)
 		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
 	else
 		snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");

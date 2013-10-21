@@ -47,6 +47,8 @@
 	#include <sys/utsname.h> 
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
+	#include <sys/types.h>
+    #include <sys/sysctl.h>
 #elif defined(__NetBSD__)
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
