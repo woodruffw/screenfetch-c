@@ -13,6 +13,7 @@
 	NOTES:
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
+	Many thanks to him for discovering bugs and formatting issues as well.
 
 	The shell scripts detectwm.sh, detectwmtheme.sh, and detectde.sh are all partially or completely based upon
 	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE/GTK within C would be a pain in the ass.
@@ -2386,8 +2387,6 @@ void take_screenshot(void)
 
 	else
 	{
-		FILE* ss_file;
-
 		if (OS == OSX)
 		{
 			system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");	
@@ -2401,15 +2400,12 @@ void take_screenshot(void)
 		char* loc = getenv("HOME");
 		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
 
-		ss_file = fopen(loc, "r");
-
-		if (ss_file != NULL && verbose)
+		if (FILE_EXISTS(loc) && verbose)
 		{
-			fclose(ss_file);
 			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
 			
-		else if (ss_file == NULL)
+		else if (verbose)
 		{
 			ERROR_OUT("Error: ", "Problem saving screenshot.");
 		}
