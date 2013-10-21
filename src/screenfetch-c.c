@@ -1025,13 +1025,19 @@ void detect_mem(char* str)
 			size_t len = sizeof(total_mem);
 			sysctl(mib, 2, &total_mem, &len, NULL, 0);
 		#endif
+
+		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
+		fscanf(mem_file, "%lld", &used_mem);
+		pclose(mem_file);
 	}
 
 	else if (OS == OPENBSD)
 	{
-		mem_file = popen("top -1 1 | awk '/Real:/ {k=split($3,a,\"/\");print a[k] }' | tr -d 'M'", "r");
-		fscanf(mem_file, "%lld", &total_mem);
-		pclose(mem_file);
+		#if defined(__OPENBSD__)
+			int mib[2] = {CTL_HW, HW_USERMEM};
+			size_t len = sizeof(total_mem);
+			sysctl(mib, 2, &total_mem, &len, NULL, 0);
+		#endif
 
 		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
 		fscanf(mem_file, "%lld", &used_mem);

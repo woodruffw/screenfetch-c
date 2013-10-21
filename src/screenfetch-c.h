@@ -53,6 +53,8 @@
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
+	#include <sys/types.h>
+    #include <sys/sysctl.h>
 #elif defined(__DragonFly__)
 	#define OS DFBSD
 #else 
