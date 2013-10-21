@@ -923,7 +923,7 @@ void detect_disk(char* str)
 		pclose(disk_file);
 	}
 
-	else if (ISBSD())
+	else if (OS == FREEBSD) /* short circuit here */
 	{
 		disk_file = popen("df -h -c 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | tail -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_total);
@@ -932,6 +932,17 @@ void detect_disk(char* str)
 		disk_file = popen("df -h -c 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | tail -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_used);
 		pclose(disk_file);
+	}
+
+	else if (ISBSD())
+	{
+		disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+        fscanf(disk_file, "%d", &disk_total);
+        pclose(disk_file);
+
+        disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+        fscanf(disk_file, "%d", &disk_used);
+        pclose(disk_file);
 	}
 
 	/* ugly casting */
@@ -1034,7 +1045,7 @@ void detect_mem(char* str)
 	else if (OS == OPENBSD)
 	{
 		#if defined(__OPENBSD__)
-			int mib[2] = {CTL_HW, HW_USERMEM};
+			int mib[2] = {CTL_HW, HW_PHYSMEM};
 			size_t len = sizeof(total_mem);
 			sysctl(mib, 2, &total_mem, &len, NULL, 0);
 		#endif
