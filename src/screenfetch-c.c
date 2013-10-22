@@ -635,7 +635,7 @@ void detect_kernel(char* str)
 	}
 
 	if (verbose)
-		VERBOSE_OUT("Found kenel as ", str);
+		VERBOSE_OUT("Found kernel as ", str);
 
 	return;
 }
