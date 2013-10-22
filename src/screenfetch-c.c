@@ -980,21 +980,6 @@ void detect_mem(char* str)
 		#endif
 	}
 
-	else if (OS == NETBSD)
-	{
-		mem_file = popen("awk '/MemTotal/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%lld", &total_mem);
-		pclose(mem_file);
-
-		mem_file = popen("awk '/MemFree/ { print $2 }' /proc/meminfo", "r");
-		fscanf(mem_file, "%lld", &free_mem);
-		pclose(mem_file);
-
-		total_mem /= (long) KB;
-		free_mem /= (long) KB;
-		used_mem = total_mem - free_mem;
-	}
-
 	else if (OS == OSX)
 	{
 		mem_file = popen("sysctl -n hw.memsize", "r");
@@ -1029,47 +1014,29 @@ void detect_mem(char* str)
 		#endif
 	}
 
-	else if (OS == FREEBSD)
+	else if (ISBSD())
 	{
-		#if defined(__FREEBSD__)
-			int mib[2] = {CTL_HW, HW_REALMEM};
-			size_t len = sizeof(total_mem);
-			sysctl(mib, 2, &total_mem, &len, NULL, 0);
-		#endif
+		/* uniform memory detection on *BSDs is proving to be difficult, because of a lack of standards */
+		/* top's logging mode is not standardized, and sysctl varies in name/type/format */
+		if (OS == FREEBSD)
+		{
+			mem_file = popen("sysctl -n hw.realmem", "r");
+			fscanf(mem_file, "%lld", &total_mem);
+			pclose(mem_file);
+		}
 
-		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fscanf(mem_file, "%lld", &used_mem);
-		pclose(mem_file);
+		else
+		{
+			mem_file = popen("sysctl -n hw.physmem", "r");
+			fscanf(mem_file, "%lld", &total_mem);
+			pclose(mem_file);
+		}
 	}
 
-	else if (OS == OPENBSD)
-	{
-		#if defined(__OPENBSD__)
-			int mib[2] = {CTL_HW, HW_REALMEM};
-			size_t len = sizeof(total_mem);
-			sysctl(mib, 2, &total_mem, &len, NULL, 0);
-		#endif
-
-		mem_file = popen("top -1 1 | awk '/Real:/ {print $3}' | sed 's/M.*//'", "r");
-		fscanf(mem_file, "%lld", &used_mem);
-		pclose(mem_file);
-	}
-
-	else if (OS == DFBSD)
-	{
-		/* i currently don't know of any way to detected used memory in DFBSD */
-
-		mem_file = popen("sysctl -n hw.physmem", "r");
-		fscanf(mem_file, "%lld", &total_mem);
-		pclose(mem_file);
-
-		total_mem /= (long) MB;
-	}
-
-	if (OS != DFBSD || OS != FREEBSD)
-		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
-	else
+	if (ISBSD())
 		snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");
+	else
+		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
 
 	if (verbose)
 		VERBOSE_OUT("Found memory usage as ", str);
