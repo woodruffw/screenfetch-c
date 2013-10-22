@@ -1016,21 +1016,9 @@ void detect_mem(char* str)
 
 	else if (ISBSD())
 	{
-		/* uniform memory detection on *BSDs is proving to be difficult, because of a lack of standards */
-		/* top's logging mode is not standardized, and sysctl varies in name/type/format */
-		if (OS == FREEBSD)
-		{
-			mem_file = popen("sysctl -n hw.realmem", "r");
-			fscanf(mem_file, "%lld", &total_mem);
-			pclose(mem_file);
-		}
-
-		else
-		{
-			mem_file = popen("sysctl -n hw.physmem", "r");
-			fscanf(mem_file, "%lld", &total_mem);
-			pclose(mem_file);
-		}
+		mem_file = popen("sysctl -n hw.physmem", "r");
+		fscanf(mem_file, "%lld", &total_mem);
+		pclose(mem_file);
 
 		total_mem /= MB;
 	}
