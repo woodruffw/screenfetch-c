@@ -1031,6 +1031,8 @@ void detect_mem(char* str)
 			fscanf(mem_file, "%lld", &total_mem);
 			pclose(mem_file);
 		}
+
+		total_mem /= MB;
 	}
 
 	if (ISBSD())
