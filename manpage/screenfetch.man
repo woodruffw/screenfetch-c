@@ -6,7 +6,7 @@
 screenfetch \- Display computer information/statistics and an ASCII logo
 
 .SH SYNOPSIS
-screenfetch [-m | -d | -v | -s | -n | -E | -V | -h]
+screenfetch [-m | -v | -s | -n | -E | -V | -h]
 
 		  [-D DISTRO]
 
@@ -38,10 +38,6 @@ fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awes
 -m
 
 Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
-
--d
-
-Enable debug mode, which prints out detection failures.
 
 -v
 
@@ -92,12 +88,12 @@ Note: .screenfetchc's format isn't exactly human-friendly, so editing it manuall
 
 1.0 - BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
-1.1 - BETA - NEARLY COMPLETE, MINOR BUGS AND GTK NOT FINISHED
+1.1 - BETA - NEARLY COMPLETE, MINOR BUGS AND GPU DETECTION NOT FINISHED
 
 .SH BUGS AND ERRATIC BEHAVIOR
 Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its versioning scheme.
 
-DragonFlyBSD systems with more than 2GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
+DragonFlyBSD systems with more than 4GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
 
 Manual mode on Windows seems the result in a variety of weird bugs concerning uptime, packages, disk stats, and memory stats. For the time being, I recommend NOT using it on Windows.
 
@@ -107,9 +103,9 @@ Found a bug/issue? Please tell me about it:
 http://github.com/woodrufw/screenfetch-c
 
 .SH DIAGNOSTICS
-screenfetch-c has three built-in output modes: verbose (disabled by default), error (enabled by default), and debug (disabled by default).
+screenfetch-c has two built-in output modes: verbose (disabled by default) and error (enabled by default).
 If a serious or fatal error occurs, the user will be notified via error (stderr).
-Otherwise, the user may choose to enable the verbose and/or debug modes, which display real-time detection and minor errors respectively.
+Otherwise, the user may choose to enable the verbose mode, which display real-time detection.
 
 screenfetch-c returns EXIT_SUCCESS or EXIT_FAILURE, depending on the conditions behind program termination. 
 
