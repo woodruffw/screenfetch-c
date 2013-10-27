@@ -10,7 +10,7 @@
 	
 	------
 
-	NOTES:
+	NOTES AND THANKS:
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
 	Many thanks to him for discovering bugs and formatting issues as well.
@@ -22,15 +22,13 @@
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
 	Many thanks to spaghetti2514 for providing an improved Android logo.
 
-	PLANNED IMPROVEMENTS:
-	Add libcpuid to decrease reliance on shell utilities.
-	Streamline code, make C89 (ANSI) compatible.
-
 	TODO:
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
 	Fix strange bug on Windows in manual mode
 	Possibly add threading to improve performance
 	Add RPI-specific features like temp detection (use "grep -o BCM2708 /proc/cpuinfo" to detect maybe?)
+	Add Android-specific features
+	Improve detection on *BSDs
 
 	------
 
@@ -67,23 +65,23 @@
 #include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
 #include "thread.h" /* for cross-platform threading */
 
-/* string definitions */
-static char distro_str[MAX_STRLEN];
-static char arch_str[MAX_STRLEN];
-static char host_str[MAX_STRLEN];
-static char kernel_str[MAX_STRLEN];
-static char uptime_str[MAX_STRLEN];
-static char pkgs_str[MAX_STRLEN];
-static char cpu_str[MAX_STRLEN];
-static char gpu_str[MAX_STRLEN];
-static char disk_str[MAX_STRLEN];
-static char mem_str[MAX_STRLEN];
-static char shell_str[MAX_STRLEN];
-static char res_str[MAX_STRLEN];
-static char de_str[MAX_STRLEN];
-static char wm_str[MAX_STRLEN];
-static char wm_theme_str[MAX_STRLEN];
-static char gtk_str[MAX_STRLEN];
+/* string definitions - set to Unknown by default */
+static char distro_str[MAX_STRLEN] = "Unknown";
+static char arch_str[MAX_STRLEN] = "Unknown";
+static char host_str[MAX_STRLEN] = "Unknown";
+static char kernel_str[MAX_STRLEN] = "Unknown";
+static char uptime_str[MAX_STRLEN] = "Unknown";
+static char pkgs_str[MAX_STRLEN] = "Unknown";
+static char cpu_str[MAX_STRLEN] = "Unknown";
+static char gpu_str[MAX_STRLEN] = "Unknown";
+static char disk_str[MAX_STRLEN] = "Unknown";
+static char mem_str[MAX_STRLEN] = "Unknown";
+static char shell_str[MAX_STRLEN] = "Unknown";
+static char res_str[MAX_STRLEN] = "Unknown";
+static char de_str[MAX_STRLEN] = "Unknown";
+static char wm_str[MAX_STRLEN] = "Unknown";
+static char wm_theme_str[MAX_STRLEN] = "Unknown";
+static char gtk_str[MAX_STRLEN] = "Unknown";
 
 /* output string definitions */
 static char* detected_arr[16];
@@ -92,7 +90,6 @@ static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: "
 /* other definitions */
 bool manual = false;
 bool logo = true;
-bool debug = false;
 bool error = true;
 bool verbose = false;
 bool screenshot = false;
@@ -107,36 +104,15 @@ int main(int argc, char** argv)
 		ERROR_OUT("It is HIGHLY recommended, therefore, that you use manual mode.", "");
 	}
 
-	/* copy 'Unknown' to each string */
-	safe_strncpy(distro_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(host_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(kernel_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(uptime_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(pkgs_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(cpu_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(gpu_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(disk_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(mem_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(shell_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(res_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(de_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(wm_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
-	safe_strncpy(gtk_str, "Unknown", MAX_STRLEN);
-
 	/* bugfix: ARM Linux defaults 'char' to unsigned, so signedness needs to be explicit. Many thanks to diantahoc. */
 	signed char c;
 
-	while ((c = getopt(argc, argv, "mdvnsD:EVhL:")) != -1)
+	while ((c = getopt(argc, argv, "mvnsD:EVhL:")) != -1)
 	{
 		switch (c)
 		{
 			case 'm':
 				SET_MANUAL(true);
-				break;
-			case 'd':
-				SET_DEBUG(true);
 				break;
 			case 'v':
 				SET_VERBOSE(true);
@@ -286,7 +262,7 @@ int main(int argc, char** argv)
 			join_thread(gtk_thread);
 		}
 
-		else /* i haven't perfected thread.c's functions on windows yet */
+		else /* i haven't perfected threading on windows yet, so don't change this conditional */
 		{
 			detect_distro(distro_str);
 			detect_arch(arch_str);
@@ -307,7 +283,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	/* detected_arr is filled with the gathered from the detection functions */
+	/* detected_arr is filled with the strings gathered from the detection functions */
 	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 	if (logo)
@@ -317,60 +293,6 @@ int main(int argc, char** argv)
 
 	if (screenshot)
 		take_screenshot();
-
-	if (debug) /* debug section - only executed if -d flag is tripped */
-	{
-		if (STRCMP(distro_str, "Unknown"))
-			DEBUG_OUT("Distro detection failure: ", distro_str);
-
-		if (STRCMP(arch_str, "Unknown"))
-			DEBUG_OUT("Architecture detection failure: ", arch_str);
-
-		if (STRCMP(host_str, "Unknown"))
-			DEBUG_OUT("Host detection failure: ", host_str);
-
-		if (STRCMP(kernel_str, "Unknown"))
-			DEBUG_OUT("Kernel detection failure: ", kernel_str);
-
-		if (STRCMP(uptime_str, "Unknown"))
-			DEBUG_OUT("Uptime detection failure: ", uptime_str);
-
-		if (STRCMP(pkgs_str, "Unknown"))
-			DEBUG_OUT("Package detection failure: ", pkgs_str);
-
-		if (STRCMP(cpu_str, "Unknown"))
-			DEBUG_OUT("CPU detection failure: ", cpu_str);
-
-		if (STRCMP(gpu_str, "Unknown"))
-			DEBUG_OUT("GPU detection failure: ", gpu_str);
-
-		if (STRCMP(disk_str, "Unknown"))
-			DEBUG_OUT("Disk detection failure: ", disk_str);
-
-		if (STRCMP(mem_str, "Unknown"))
-			DEBUG_OUT("Memory detection failure: ", mem_str);
-
-		if (STRCMP(shell_str, "Unknown"))
-			DEBUG_OUT("Shell detection failure: ", shell_str);
-
-		if (STRCMP(res_str, "Unknown"))
-			DEBUG_OUT("Resolution detection failure: ", res_str);
-
-		if (STRCMP(de_str, "Unknown"))
-			DEBUG_OUT("DE detection failure: ", de_str);
-
-		if (STRCMP(wm_str, "Unknown"))
-			DEBUG_OUT("WM detection failure: ", wm_str);
-
-		if (STRCMP(wm_theme_str, "Unknown"))
-			DEBUG_OUT("WM Theme detection failure: ", wm_theme_str);
-
-		if (STRCMP(gtk_str, "Unknown"))
-			DEBUG_OUT("GTK detection failure: ", gtk_str);
-
-		printf("%s\n", "Enter any character to end the program.");
-		getchar();
-	}
 
 	return EXIT_SUCCESS;
 }

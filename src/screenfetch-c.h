@@ -84,7 +84,6 @@
 #define SET_MANUAL(flag) (manual = flag)
 #define SET_LOGO(flag) (logo = flag)
 #define SET_VERBOSE(flag) (verbose = flag)
-#define SET_DEBUG(flag) (debug = flag)
 #define SET_ERROR(flag) (error = flag)
 #define SET_SCREENSHOT(flag) (screenshot = flag)
 #define SET_DISTRO(str) (safe_strncpy(distro_str, str, MAX_STRLEN))
