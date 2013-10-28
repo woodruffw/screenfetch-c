@@ -1240,6 +1240,9 @@ void detect_gtk(char* str)
 	else if (OS == OSX)
 	{
 		safe_strncpy(str, "Not Applicable", MAX_STRLEN);
+
+		if (error)
+			ERROR_OUT("Error: ", "OS X does not have GTK info");
 	}
 
 	else if (OS == LINUX || ISBSD())

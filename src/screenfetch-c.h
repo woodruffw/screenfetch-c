@@ -84,7 +84,6 @@
 #define SET_DISTRO(str) (safe_strncpy(distro_str, str, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
 #define FILE_EXISTS(file) (!access(file, F_OK))
-#define DEBUG_OUT(str1, str2) (fprintf(stderr, TYLW "[[ DEBUG ]] " "%s%s\n" TNRM, str1, str2))
 #define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
 #define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
 
