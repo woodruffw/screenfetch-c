@@ -21,6 +21,7 @@
 	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
 	Many thanks to spaghetti2514 for providing an improved Android logo.
+	Many thanks to diantahoc for taking the time to look for bugs on ARM-based Linuxes.
 
 	TODO:
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
@@ -84,7 +85,7 @@ static char wm_theme_str[MAX_STRLEN] = "Unknown";
 static char gtk_str[MAX_STRLEN] = "Unknown";
 
 /* output string definitions */
-static char* detected_arr[16];
+static char* detected_arr[16] = {host_str, distro_str, kernel_str, arch_str, cpu_str, gpu_str, shell_str, pkgs_str, disk_str, mem_str, uptime_str, res_str, de_str, wm_str, wm_theme_str, gtk_str};
 static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
 
 /* other definitions */
@@ -104,30 +105,28 @@ int main(int argc, char** argv)
 		ERROR_OUT("It is HIGHLY recommended, therefore, that you use manual mode.", "");
 	}
 
-	/* bugfix: ARM Linux defaults 'char' to unsigned, so signedness needs to be explicit. Many thanks to diantahoc. */
 	signed char c;
-
 	while ((c = getopt(argc, argv, "mvnsD:EVhL:")) != -1)
 	{
 		switch (c)
 		{
 			case 'm':
-				SET_MANUAL(true);
+				manual = true;
 				break;
 			case 'v':
-				SET_VERBOSE(true);
+				verbose = true;
 				break;
 			case 'n':
-				SET_LOGO(false);
+				logo = false;
 				break;
 			case 's':
-				SET_SCREENSHOT(true);
+				screenshot = true;
 				break;
 			case 'D':
 				SET_DISTRO(optarg);
 				break;
 			case 'E':
-				SET_ERROR(false);
+				error = false;
 				break;
 			case 'V':
 				display_version();
@@ -282,9 +281,6 @@ int main(int argc, char** argv)
 			detect_gtk(gtk_str);
 		}
 	}
-
-	/* detected_arr is filled with the strings gathered from the detection functions */
-	fill_detected_arr(detected_arr, distro_str, arch_str, host_str, kernel_str, uptime_str, pkgs_str, cpu_str, gpu_str, disk_str, mem_str, shell_str, res_str, de_str, wm_str, wm_theme_str, gtk_str);
 
 	if (logo)
 		main_ascii_output(detected_arr, detected_arr_names);
@@ -536,7 +532,6 @@ void detect_kernel(char* str)
 
 		if (OS != CYGWIN)
 			fgets(str, MAX_STRLEN, kernel_file);
-
 		else
 			fscanf(kernel_file, "%s", str);
 
@@ -688,7 +683,7 @@ void detect_pkgs(char* str)
 			pclose(pkgs_file);
 		}
 
-		else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
+		else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu") || STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
 		{
 			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
@@ -720,6 +715,7 @@ void detect_pkgs(char* str)
 		else if (STRCMP(distro_str, "Linux"))
 		{
 			safe_strncpy(str, "Not Found", MAX_STRLEN);
+
 			if (error)
 				ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
 		}
@@ -735,7 +731,9 @@ void detect_pkgs(char* str)
 	else if (OS == NETBSD || OS == DFBSD)
 	{
 		safe_strncpy(str, "Not Found", MAX_STRLEN);
-		ERROR_OUT("Error: ", "Could not find packages on current OS.");
+
+		if (error)
+			ERROR_OUT("Error: ", "Could not find packages on current OS.");
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
@@ -823,7 +821,7 @@ void detect_gpu(char* str)
 }
 
 /*  detect_disk
-    detects the computer's total HDD/SSD capacity and usage
+    detects the computer's total disk capacity and usage
     argument char* str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
 void detect_disk(char* str)
@@ -1414,36 +1412,6 @@ int manual_input(void)
 
 		return EXIT_SUCCESS;
 	}
-}
-
-/*  fill_detected_arr
-    fills an array of 15 strings with the data gathered from the detect functions
-    argument char* arr[]: the array of strings to be filled
-    arguments char* distro...gtk: the strings to be placed in arr[]
-    --
-    CAVEAT: the order of the parameters is NOT the order of the array
-    --
-*/
-void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk)
-{
-	arr[0] = host;
-	arr[1] = distro;
-	arr[2] = kernel;
-	arr[3] = arch;
-	arr[4] = cpu;
-	arr[5] = gpu;
-	arr[6] = shell;
-	arr[7] = pkgs;
-	arr[8] = disk;
-	arr[9] = mem;
-	arr[10] = uptime;
-	arr[11] = res;
-	arr[12] = de;
-	arr[13] = wm;
-	arr[14] = wm_theme;
-	arr[15] = gtk;
-
-	return;
 }
 
 /*  **  END DETECTION FUNCTIONS  **  */

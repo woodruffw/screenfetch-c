@@ -81,11 +81,6 @@
 #define KB 1024
 #define MB 1048576
 #define MAX_STRLEN 128
-#define SET_MANUAL(flag) (manual = flag)
-#define SET_LOGO(flag) (logo = flag)
-#define SET_VERBOSE(flag) (verbose = flag)
-#define SET_ERROR(flag) (error = flag)
-#define SET_SCREENSHOT(flag) (screenshot = flag)
 #define SET_DISTRO(str) (safe_strncpy(distro_str, str, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
 #define FILE_EXISTS(file) (!access(file, F_OK))
@@ -111,7 +106,6 @@ void detect_de(char* str);
 void detect_wm(char* str);
 void detect_wm_theme(char* str);
 void detect_gtk(char* str);
-void fill_detected_arr(char* arr[], char* distro, char* arch, char* host, char* kernel, char* uptime, char* pkgs, char* cpu, char* gpu, char* disk, char* mem, char* shell, char* res, char* de, char* wm, char* wm_theme, char* gtk);
 
 /* other function definitions */
 int manual_input(void);
