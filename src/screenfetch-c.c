@@ -400,7 +400,7 @@ void detect_distro(char* str)
 
 					else if (FILE_EXISTS("/etc/lsb-release"))
 					{
-						distro_file = popen("cat /etc/lsb-release | head -1 | tr -d '\\\"\\n'", "r");
+						distro_file = popen("head -1 < /etc/lsb-release | tr -d '\\\"\\n'", "r");
 						fgets(distro_name_str, MAX_STRLEN, distro_file);
 						pclose(distro_file);
 
@@ -574,7 +574,7 @@ void detect_uptime(char* str)
 
 	if (OS == CYGWIN || OS == NETBSD)
 	{
-		uptime_file = popen("cat /proc/uptime | cut -d ' ' -f 1", "r");
+		uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
 		fscanf(uptime_file, "%ld", &uptime);
 		pclose(uptime_file);
 	}
@@ -1230,7 +1230,7 @@ void detect_gtk(char* str)
 	if (OS == CYGWIN)
 	{
 		/* get the terminal's font */
-		gtk_file = popen("cat $HOME/.minttyrc | grep '^Font=.*' | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
+		gtk_file = popen("grep '^Font=.*' < $HOME/.minttyrc | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
 		fgets(font_str, MAX_STRLEN, gtk_file);
 		pclose(gtk_file);
 
