@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 		{
 			THREAD distro_thread;
 			create_thread(&distro_thread, (void*) detect_distro, (void*) distro_str);
-			join_thread(distro_thread); /* a few other functions rely on distro_str, so halt execution until detect_distro completes */
+			join_thread(distro_thread); /* a few other functions rely on distro_str, so join the thread detect_distro completes */
 
 			THREAD arch_thread;
 			create_thread(&arch_thread, (void*) detect_arch, (void*) arch_str);
@@ -1240,9 +1240,6 @@ void detect_gtk(char* str)
 	else if (OS == OSX)
 	{
 		safe_strncpy(str, "Not Applicable", MAX_STRLEN);
-
-		if (error)
-			ERROR_OUT("Error: ", "OS X does not have GTK info");
 	}
 
 	else if (OS == LINUX || ISBSD())
@@ -1390,6 +1387,7 @@ int manual_input(void)
 		fgets(host_str, MAX_STRLEN, config_file);
 		fgets(kernel_str, MAX_STRLEN, config_file);
 		fgets(cpu_str, MAX_STRLEN, config_file);
+		fgets(gpu_str, MAX_STRLEN, config_file);
 		fgets(shell_str, MAX_STRLEN, config_file);
 		fgets(res_str, MAX_STRLEN, config_file);
 		fgets(de_str, MAX_STRLEN, config_file);

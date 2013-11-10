@@ -10,7 +10,7 @@
 
 #if defined(__CYGWIN__)
 	#include <Windows.h>
-	#define THREAD HANDLE
+	#define THREAD HANDLE /* this is potentially dangerous, HANDLE can be used for things other than threads */
 #else
 	#include <pthread.h>
 	#define THREAD pthread_t
