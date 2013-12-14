@@ -25,8 +25,7 @@
 
 	TODO:
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
-	Fix strange bug on Windows in manual mode
-	Possibly add threading to improve performance
+	Fix strange bug on Windows in manual mode (values wildly inaccurate)
 	Add RPI-specific features like temp detection (use "grep -o BCM2708 /proc/cpuinfo" to detect maybe?)
 	Add Android-specific features
 	Improve detection on *BSDs

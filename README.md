@@ -10,7 +10,6 @@ Like the original screenFetch, screenfetch-c is meant to be compatible with a nu
 
 ### Current Status:
 screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environment), OS X (10.6 and 10.8), and Linux (see list below).
-It has not yet been tested on any BSD distro. Therefore, I currently advise against using screenfetch-c on *BSD, even if it does compile successfully. However, it is up to you.
 
 There are only a few select sections that still require work. They are listed here:
 - GPU detection is not implemented on Linux or BSD (appears as "Unknown").
@@ -41,8 +40,7 @@ you have the snprintf() function.
 gcc -std=c99 screenfetch-c.c thread.c -o screenfetch -lpthread
 ```
 
-Just be sure that screenfetch-c.h is in the same directory, as it contains all of 
-screenfetch-c.c's prototypes and macros. If you want to be able to detect DE/WM/WM Theme/GTK information without manual mode, you will also need the scripts (chmoded to executable, of course). They _must_ be stored in the same directory as the screenfetch executable, or it will not be able to utilize them.
+Just be sure that screenfetch-c.h and thread.h are in the same directory, as they contain all of the function prototypes, logos, and macros. If you want to be able to detect DE/WM/WM Theme/GTK information without manual mode, you will also need the scripts (chmoded to executable, of course). They _must_ be stored in the same directory as the screenfetch executable, or it will not be able to utilize them.
 You can also choose the install screenfetch-c's manpage, if you wish.
 
 ##### Removal:
@@ -65,9 +63,9 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [x] Fedora
 - [x] Debian
 - [x] CrunchBang
-- [ ] Gentoo
+- [x] Gentoo
 - [ ] Funtoo
-- [ ] FreeBSD
+- [x] FreeBSD
 - [x] OpenBSD
 - [ ] NetBSD
 - [ ] DragonFlyBSD
