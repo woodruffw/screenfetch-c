@@ -664,7 +664,25 @@ void detect_pkgs(char* str)
 			packages += brew_pkgs;
 		}
 
-		/* test for existence of macports, fink, etc here */
+		if (FILE_EXISTS("/opt/local/bin/port"))
+		{
+			int port_pkgs = 0;
+			pkgs_file = popen("port installed | wc -l", "r");
+			fscanf(pkgs_file, "%d", &port_pkgs);
+			pclose(pkgs_file);
+
+			packages += port_pkgs;
+		}
+
+		if (FILE_EXISTS("/sw/bin/fink"))
+		{
+			int fink_pkgs = 0;
+			pkgs_file = popen("/sw/bin/fink list -i | wc -l", "r");
+			fscanf(pkgs_file, "%d", &fink_pkgs);
+			pclose(pkgs_file);
+
+			packages += fink_pkgs;
+		}
 	}
 
 	else if (OS == LINUX)
