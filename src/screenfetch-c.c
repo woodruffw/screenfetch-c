@@ -1302,10 +1302,10 @@ int manual_input(void)
 		printf("%s\n", "This appears to be your first time running screenfetch-c in manual mode.");
 		printf("%s", "Would you like to continue? (y/n) ");
 
-		char choice[3];
-		fgets(choice, 3, stdin);
+		char choice = getchar();
+		getchar(); /* flush the newline */
 
-		if (choice[0] == 'y' || choice[0] == 'Y')
+		if (choice == 'y' || choice == 'Y')
 		{
 			config_file = fopen(config_file_loc, "w");
 

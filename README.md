@@ -18,36 +18,26 @@ There are only a few select sections that still require work. They are listed he
 
 ### Installing screenfetch-c:
 
-#### Using the provided script (install.sh):
-screenfetch-c can be installed very easily via the install.sh script provided in the /scripts directory.
-
-Simply download the script and run it:
-```
-./install.sh
-```
-
-It will fetch all source code (and manpages) required, compile screenfetch, install the manpage, and leave a tidy binary in $HOME. You can then move that binary whereever you please.
-
-_Note_: install.sh will prompt you for your root password in order to install the manpages!
-
-#### Manual compilation:
-Alternatively, you could always compile screenfetch-c yourself. It's very easy to do, as 
-screenfetch-c has no dependencies outside of the standard and POSIX libraries of each OS.
-screenfetch-c is designed to be C99 compliant, although compiling with C90 should work provided
-you have the snprintf() function.
+Installing screenfetch-c is very simple.
+First, clone the repository:
 
 ```
-gcc -std=c99 screenfetch-c.c thread.c -o screenfetch -lpthread
+$ git clone https://www.github.com/woodrufw/screenfetch-c.git
+$ cd screenfetch-c
 ```
 
-Just be sure that screenfetch-c.h and thread.h are in the same directory, as they contain all of the function prototypes, logos, and macros. If you want to be able to detect DE/WM/WM Theme/GTK information without manual mode, you will also need the scripts (chmoded to executable, of course). They _must_ be stored in the same directory as the screenfetch executable, or it will not be able to utilize them.
-You can also choose the install screenfetch-c's manpage, if you wish.
+Then, simply run make:
+
+```
+$ make && make install
+```
 
 ##### Removal:
-Removing screenfetch-c is just as easy as installing it.
-Simply delete the binary, ~/.screenfetchc (if you used manual mode), and the manpage, which is stored in /usr/share/man/man1/screenfetch.1.gz
+Removing screenfetch-c is just as easy as installing it:
 
-If you compiled screenfetch-c manually, the final step may not be required.
+```
+$ make uninstall
+```
 
 ### Current Known Compatibility:
 
