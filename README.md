@@ -29,8 +29,10 @@ $ cd screenfetch-c
 Then, simply run make:
 
 ```
-$ sudo make && sudo make install
+$ make && sudo make install
 ```
+
+Homebrew formula coming soon!
 
 ##### Removal:
 Removing screenfetch-c is just as easy as installing it:
