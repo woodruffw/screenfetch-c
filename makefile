@@ -14,6 +14,7 @@ install:
 	$(INSTALL) ./src/detectgtk $(bindir)/detectgtk
 	$(INSTALL) ./src/detectwm $(bindir)/detectwm
 	$(INSTALL) ./src/detectwmtheme $(bindir)/detectwmtheme
+	mkdir -p $(mandir)
 	$(INSTALL) ./manpage/screenfetch.1 $(mandir)/screenfetch.1
 
 uninstall:
