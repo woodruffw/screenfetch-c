@@ -29,14 +29,14 @@ $ cd screenfetch-c
 Then, simply run make:
 
 ```
-$ make && make install
+$ sudo make && sudo make install
 ```
 
 ##### Removal:
 Removing screenfetch-c is just as easy as installing it:
 
 ```
-$ make uninstall
+$ sudo make uninstall
 ```
 
 ### Current Known Compatibility:
