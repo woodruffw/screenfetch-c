@@ -882,10 +882,20 @@ void detect_disk(char* str)
         pclose(disk_file);
 	}
 
-	/* ugly casting */
-	disk_percentage = (((float) disk_used / disk_total) * 100);
+	if (disk_total > disk_used)
+	{
+		disk_percentage = (((float) disk_used / disk_total) * 100);
 
-	snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+	}
+
+	else /* when used is in MBs */
+	{
+		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
+
+		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+	}
+
 
 	if (verbose)
 		VERBOSE_OUT("Found disk usage as ", str);
