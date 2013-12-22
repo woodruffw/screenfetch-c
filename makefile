@@ -1,27 +1,27 @@
 CC=gcc
-CFLAGS=-03
+CFLAGS=-O3 -lpthread -std=c99
 INSTALL=/usr/bin/install -c
 
-bindir=/usr/local/bin
-mandir=/usr/local/share/man/man1
+BINDIR=/usr/local/bin
+MANDIR=/usr/local/share/man/man1
 
 all:
-	$(CC) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch -std=c99 -lpthread
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
 
 install:
-	$(INSTALL) screenfetch $(bindir)/screenfetch
-	$(INSTALL) ./src/detectde $(bindir)/detectde
-	$(INSTALL) ./src/detectgtk $(bindir)/detectgtk
-	$(INSTALL) ./src/detectwm $(bindir)/detectwm
-	$(INSTALL) ./src/detectwmtheme $(bindir)/detectwmtheme
-	mkdir -p $(mandir)
-	$(INSTALL) ./manpage/screenfetch.1 $(mandir)/screenfetch.1
+	$(INSTALL) screenfetch $(BINDIR)/screenfetch
+	$(INSTALL) ./src/detectde $(BINDIR)/detectde
+	$(INSTALL) ./src/detectgtk $(BINDIR)/detectgtk
+	$(INSTALL) ./src/detectwm $(BINDIR)/detectwm
+	$(INSTALL) ./src/detectwmtheme $(BINDIR)/detectwmtheme
+	mkdir -p $(MANDIR)
+	$(INSTALL) ./manpage/screenfetch.1 $(MANDIR)/screenfetch.1
 
 uninstall:
-	rm -rf $(bindir)/screenfetch
-	rm -rf $(bindir)/detectde
-	rm -rf $(bindir)/detectgtk
-	rm -rf $(bindir)/detectwm
-	rm -rf $(bindir)/detectwmtheme
-	rm -rf $(mandir)/screenfetch.1
+	rm -rf $(BINDIR)/screenfetch
+	rm -rf $(BINDIR)/detectde
+	rm -rf $(BINDIR)/detectgtk
+	rm -rf $(BINDIR)/detectwm
+	rm -rf $(BINDIR)/detectwmtheme
+	rm -rf $(MANDIR)/screenfetch.1
 
