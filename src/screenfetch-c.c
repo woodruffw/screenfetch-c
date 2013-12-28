@@ -3,7 +3,7 @@
 	Source Version: 1.1 - BETA
 	-------------
 
-	A rewrite of screenFetch.sh 3.0.5 in C.
+	A rewrite of screenFetch.sh in C.
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
 	Hopefully this port will execute faster, although it's more for self education than anything else.
@@ -419,7 +419,7 @@ void detect_distro(char* str)
 			}
 		}
 
-		else if (ISBSD())
+		else if (ISBSD() || OS == SOLARIS)
 		{
 			distro_file = popen("uname -sr | tr -d '\\n'", "r");
 			fgets(str, MAX_STRLEN, distro_file);
@@ -457,7 +457,7 @@ void detect_arch(char* str)
 		#endif
 	}
 
-	else if (ISBSD())
+	else if (ISBSD() || OS == SOLARIS) /* uname -p for solaris? */
 	{
 		arch_file = popen("uname -m | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, arch_file);
@@ -500,7 +500,7 @@ void detect_host(char* str)
 		#endif
 	}
 
-	else if (ISBSD())
+	else if (ISBSD() || OS == SOLARIS)
 	{
 		given_user = getenv("USER");
 
@@ -525,9 +525,9 @@ void detect_host(char* str)
 */
 void detect_kernel(char* str)
 {
-	if (ISBSD())
+	if (ISBSD() || OS == SOLARIS)
 	{
-		FILE* kernel_file = popen("uname -sr | tr -d '\\r\\n'", "r");
+		FILE* kernel_file = popen("uname -sr | tr -d '\\n'", "r");
 
 		if (OS != CYGWIN)
 			fgets(str, MAX_STRLEN, kernel_file);
@@ -565,7 +565,7 @@ void detect_uptime(char* str)
 	FILE* uptime_file;
 
 	long uptime = 0;
-	long now = 0, boottime = 0; /* may or may not be used depending on OS */
+	long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
@@ -585,10 +585,10 @@ void detect_uptime(char* str)
 		pclose(uptime_file);
 
 		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &now); /* get current time in secs */
+		fscanf(uptime_file, "%ld", &currtime); /* get current time in secs */
 		pclose(uptime_file);
 
-		uptime = now - boottime;
+		uptime = currtime - boottime;
 	}
 
 	else if (OS == LINUX)
@@ -608,10 +608,28 @@ void detect_uptime(char* str)
 		pclose(uptime_file);
 
 		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &now); /* get current time in secs */
+		fscanf(uptime_file, "%ld", &currtime); /* get current time in secs */
 		pclose(uptime_file);
 
-		uptime = now - boottime;
+		uptime = currtime - boottime;
+	}
+
+	else if (OS == SOLARIS)
+	{
+		#if defined(__sun__)
+			currtime = time(NULL);
+			struct utmpx* ent;
+
+			while (ent = getutxent())
+			{
+				if (STRCMP("system boot", ent->ut_line))
+				{
+					boottime = ent->ut_tv.tv_sec;
+				}
+			}
+
+			uptime = currtime - boottime;
+		#endif
 	}
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
@@ -753,6 +771,13 @@ void detect_pkgs(char* str)
 			ERROR_OUT("Error: ", "Could not find packages on current OS.");
 	}
 
+	else if (OS == SOLARIS)
+	{
+		pkgs_file = popen("pkg list | wc -l", "r");
+		fscanf(pkgs_file, "%d", &packages);
+		pclose(pkgs_file);
+	}
+
 	snprintf(str, MAX_STRLEN, "%d", packages);
 
 	if (verbose)
@@ -797,6 +822,11 @@ void detect_cpu(char* str)
 		pclose(cpu_file);
 	}
 
+	else if (OS == SOLARIS)
+	{
+		/* prtdiag or psrinfo probably -- isalist? */
+	}
+
 	if (verbose)
 		VERBOSE_OUT("Found CPU as ", str);
 
@@ -825,7 +855,7 @@ void detect_gpu(char* str)
 		pclose(gpu_file);
 	}
 
-	else if (OS == LINUX || ISBSD())
+	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
 	{
 		/* is probably going to use lspci or glxinfo  */
 		safe_strncpy(str, "Unknown", MAX_STRLEN);
@@ -882,6 +912,11 @@ void detect_disk(char* str)
         pclose(disk_file);
 	}
 
+	else if (OS == SOLARIS)
+	{
+		/* not yet implemented */
+	}
+
 	if (disk_total > disk_used)
 	{
 		disk_percentage = (((float) disk_used / disk_total) * 100);
@@ -889,7 +924,7 @@ void detect_disk(char* str)
 		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 	}
 
-	else /* when used is in MBs */
+	else /* when disk_used is in a smaller unit */
 	{
 		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
 
@@ -968,6 +1003,11 @@ void detect_mem(char* str)
 		pclose(mem_file);
 
 		total_mem /= MB;
+	}
+
+	else if (OS == SOLARIS)
+	{
+		/* prtconf | grep Memory */
 	}
 
 	if (ISBSD())
@@ -1101,6 +1141,11 @@ void detect_res(char* str)
 		}
 	}
 
+	else if (OS == SOLARIS)
+	{
+		/* probably something very similar to *BSD's */
+	}
+
 	if (verbose)
 		VERBOSE_OUT("Found resolution as ", str);
 
@@ -1149,6 +1194,11 @@ void detect_de(char* str)
 		pclose(de_file);
 	}
 
+	else if (OS == SOLARIS)
+	{
+		/* detectde needs to be made compatible with Solaris's AWK */
+	}
+
 	if (verbose)
 		VERBOSE_OUT("Found DE as ", str);
 
@@ -1186,7 +1236,7 @@ void detect_wm(char* str)
 		safe_strncpy(str, "Quartz Compositor", MAX_STRLEN);
 	}
 
-	else if (OS == LINUX || ISBSD())
+	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
 	{
 		wm_file = popen("./detectwm 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, wm_file);
@@ -1224,7 +1274,7 @@ void detect_wm_theme(char* str)
 		safe_strncpy(str, "Aqua", MAX_STRLEN);
 	}
 
-	else if (OS == LINUX || ISBSD())
+	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
 	{
 		wm_theme_file = popen("./detectwmtheme 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, wm_theme_file);
@@ -1281,6 +1331,11 @@ void detect_gtk(char* str)
 			snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str, gtk_icons_str);
 		else
 			snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
+	}
+
+	else if (OS == SOLARIS)
+	{
+		/* detectgtk needs to be made compatible with Solaris's awk */
 	}
 
 	if (verbose)

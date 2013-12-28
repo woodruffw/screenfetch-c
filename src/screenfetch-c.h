@@ -26,13 +26,13 @@
 #define NETBSD 5
 #define OPENBSD 6
 #define DFBSD 7
+#define SOLARIS 8
 
 /* quick macro for when all BSDs have the same function syntax */
 #define ISBSD() ((OS >= 4 && OS <= 7) ? true : false)
 
 #if defined(__CYGWIN__)
 	#define OS CYGWIN
-	/* this is a very bad solution */
 	FILE* popen(const char* command, const char* type);
 	int pclose(FILE* stream);
 	#define WIN32_LEAN_AND_MEAN
@@ -53,6 +53,10 @@
 	#define OS OPENBSD
 #elif defined(__DragonFly__)
 	#define OS DFBSD
+#elif defined(__sun__)
+	#define OS SOLARIS
+	#include <utmpx.h>
+	#include <time.h>
 #else 
 	#define OS UNKNOWN
 #endif
