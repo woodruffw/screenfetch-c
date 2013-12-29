@@ -26,7 +26,7 @@ $ git clone https://www.github.com/woodrufw/screenfetch-c.git
 $ cd screenfetch-c
 ```
 
-Then, simply run make:
+Then, simply run make (or gmake on Solaris):
 
 ```
 $ make && sudo make install
