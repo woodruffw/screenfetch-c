@@ -8,7 +8,11 @@ MANDIR=/usr/local/share/man/man1
 UNAME := $(shell uname)
 
 all:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
+	ifeq ($(UNAME), SunOS)
+		$(error System not yet supported.)
+	else
+		$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
+	endif
 
 install:
 	ifeq ($(UNAME), SunOS)
