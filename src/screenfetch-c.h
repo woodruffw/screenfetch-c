@@ -8,7 +8,7 @@
 	You should have received a copy of it with this code.
 */
 
-#define _XOPEN_SOURCE 700 /* ensures that popen and pclose are available in C99 on Linux */
+#define _POSIX_C_SOURCE 200112L /* makes all these systems play nicely together */
 
 /* includes, all from the standard library */
 #include <stdio.h>
