@@ -26,3 +26,6 @@ uninstall:
 	rm -rf $(BINDIR)/detectwmtheme
 	rm -rf $(MANDIR)/screenfetch.1
 
+threadtest:
+	$(CC) $(CFLAGS) ./src/threadtest.c ./src/thread.c -o ./threadtest
+
