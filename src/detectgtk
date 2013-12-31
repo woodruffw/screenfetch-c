@@ -11,7 +11,7 @@ gtk3Theme="Unknown"
 gtkIcons="Unknown"
 gtkFont="Unknown"
 
-DE=`./detectde`
+DE=`detectde`
 
 case $DE in
 	'KDE'*) # Desktop Environment found as "KDE"
