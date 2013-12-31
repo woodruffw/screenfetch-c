@@ -1830,6 +1830,14 @@ void output_logo_only(char* distro)
 		}
 	}
 
+	else if (STRCMP(distro, "Solaris"))
+	{
+		for (i = 0; i < 17; i++)
+		{
+			printf("%s\n", solaris_logo[i]);
+		}
+	}
+
 	else
 	{
 		for (i = 0; i < 18; i++)
@@ -2250,6 +2258,17 @@ void main_ascii_output(char* data[], char* data_names[])
 				printf("%s %s%s\n", dragonflybsd_logo[i], data_names[i], data[i]);
 			else
 				printf("%s\n", dragonflybsd_logo[i]);
+		}
+	}
+
+	else if (OS == SOLARIS)
+	{
+		for (i = 0; i < 17; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s\n", solaris_logo[i], data_names[i], data[i]);
+			else
+				printf("%s\n", solaris_logo[i]);
 		}
 	}
 
