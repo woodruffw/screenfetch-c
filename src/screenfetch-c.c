@@ -1189,7 +1189,7 @@ void detect_de(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		de_file = popen("./detectde 2> /dev/null", "r");
+		de_file = popen("detectde 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, de_file);
 		pclose(de_file);
 	}
@@ -1238,7 +1238,7 @@ void detect_wm(char* str)
 
 	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
 	{
-		wm_file = popen("./detectwm 2> /dev/null", "r");
+		wm_file = popen("detectwm 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, wm_file);
 		pclose(wm_file);
 	}
@@ -1276,7 +1276,7 @@ void detect_wm_theme(char* str)
 
 	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
 	{
-		wm_theme_file = popen("./detectwmtheme 2> /dev/null", "r");
+		wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
 		fgets(str, MAX_STRLEN, wm_theme_file);
 		pclose(wm_theme_file);
 	}
@@ -1321,7 +1321,7 @@ void detect_gtk(char* str)
 
 	else if (OS == LINUX || ISBSD())
 	{
-		gtk_file = popen("./detectgtk 2> /dev/null", "r");
+		gtk_file = popen("detectgtk 2> /dev/null", "r");
 		fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
 		pclose(gtk_file);
 
