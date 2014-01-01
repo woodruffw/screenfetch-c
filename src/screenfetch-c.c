@@ -1148,7 +1148,14 @@ void detect_res(char* str)
 
 	else if (OS == SOLARIS)
 	{
-		/* probably something very similar to *BSD's */
+		#if defined(__sun__)
+			Display* disp = XOpenDisplay(NULL);
+			Screen* screen = XDefaultScreenOfDisplay(disp);
+			width = WidthOfScreen(screen);
+			height = HeightOfScreen(screen);
+		#endif
+
+		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
 
 	if (verbose)

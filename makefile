@@ -1,5 +1,7 @@
 CC=gcc
-CFLAGS=-O3 -lpthread -std=c99
+CFLAGS=-O3 -std=c99
+LDFLAGS=-lpthread
+LDFLAGS_SOLARIS=-lpthread -lX11
 INSTALL=/usr/bin/install -c
 
 BINDIR=/usr/local/bin
@@ -7,7 +9,10 @@ MANDIR=/usr/local/share/man/man1
 
 
 all:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS)
+
+solaris:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_SOLARIS)
 
 install:
 	$(INSTALL) screenfetch $(BINDIR)/screenfetch

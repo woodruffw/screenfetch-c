@@ -25,16 +25,23 @@ First, clone the repository:
 $ git clone https://www.github.com/woodrufw/screenfetch-c.git
 $ cd screenfetch-c
 ```
+Then, follow the instructions for your OS:
 
-Then, simply run make (or gmake on Solaris):
+#### Linux, BSD, OS X, and Windows:
 
 ```
-$ make && sudo make install
+make && sudo make install
+```
+
+#### Solaris and derivatives:
+
+```
+gmake solaris && sudo gmake install
 ```
 
 Homebrew formula coming soon!
 
-##### Removal:
+### Removal:
 Removing screenfetch-c is just as easy as installing it:
 
 ```
