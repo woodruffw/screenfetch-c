@@ -1042,7 +1042,7 @@ void detect_shell(char* str)
 	char shell_name[MAX_STRLEN];
 	char vers_str[MAX_STRLEN];
 
-	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' | tr -d '\\r\\n'", "r");
+	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' 2> /dev/null | tr -d '\\r\\n'", "r");
 	fgets(shell_name, MAX_STRLEN, shell_file);
 	pclose(shell_file);
 
