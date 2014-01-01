@@ -57,6 +57,8 @@
 	#define OS SOLARIS
 	#include <utmpx.h>
 	#include <time.h>
+	#include <sys/types.h>
+	#include <sys/param.h>
 #else 
 	#define OS UNKNOWN
 #endif

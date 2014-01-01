@@ -1002,15 +1002,20 @@ void detect_mem(char* str)
 		fscanf(mem_file, "%lld", &total_mem);
 		pclose(mem_file);
 
-		total_mem /= MB;
+		total_mem /= (long) MB;
 	}
 
 	else if (OS == SOLARIS)
 	{
-		/* prtconf | grep Memory */
+		#if defined(__sun__)
+			total_mem = sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
+			total_mem /= (long) MB;
+		#endif
+
+		/* sar -r 1 to get free pages? */
 	}
 
-	if (ISBSD())
+	if (ISBSD() || OS == SOLARIS)
 		snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");
 	else
 		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
