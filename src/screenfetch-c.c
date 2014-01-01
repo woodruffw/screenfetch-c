@@ -2352,6 +2352,24 @@ void take_screenshot(void)
 			
 			if (verbose)
 				VERBOSE_OUT("Screenshot has been saved to the clipboard.", "");
+			
+
+			/* NOT FINSISHED - HBITMAP needs to be saved
+			HDC screen_dc = GetDC(NULL);
+			HDC mem_dc = CreateCompatibleDC(screen_dc);
+
+			int horiz = GetDeviceCaps(screen_dc, HORZRES);
+			int vert = GetDeviceCaps(screen_dc, VERTRES);
+
+			HBITMAP bitmap = CreateCompatibleBitmap(screen_dc, horiz, vert);
+			HBITMAP old_bitmap = SelectObject(mem_dc, bitmap);
+
+			BitBlt(mem_dc, 0, 0, horiz, vert, screen_dc, 0, 0, SRCCOPY);
+			bitmap = SelectObject(mem_dc, old_bitmap);
+
+			DeleteDC(screen_dc);
+			DeleteDC(mem_dc);
+			*/
 		#endif
 	}
 
