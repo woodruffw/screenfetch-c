@@ -38,8 +38,8 @@ make && sudo make install
 ```
 gmake solaris && sudo gmake install
 ```
-_Note:_ The `solaris' target is important - it has additional linker flags. Running gmake without 
-`solaris' is unlikely to build.
+_Note:_ The 'solaris' target is important - it has additional linker flags. Running gmake without 
+'solaris' is unlikely to build.
 
 ### Removal:
 Removing screenfetch-c is just as easy as installing it:
