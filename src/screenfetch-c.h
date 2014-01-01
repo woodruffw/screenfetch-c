@@ -59,6 +59,7 @@
 	#include <time.h>
 	#include <sys/types.h>
 	#include <sys/param.h>
+	#include <X11/Xlib.h>
 #else 
 	#define OS UNKNOWN
 #endif
