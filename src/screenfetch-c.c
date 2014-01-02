@@ -1788,7 +1788,7 @@ void output_logo_only(char* distro)
 
 	else if (STRCMP(distro, "Backtrack Linux"))
 	{
-		for (i = 0; i < 20; i++)
+		for (i = 0; i < 21; i++)
 		{
 			printf("%s\n", backtracklinux_logo[i]);
 		}

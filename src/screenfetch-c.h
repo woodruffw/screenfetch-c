@@ -927,8 +927,8 @@ char* backtracklinux_logo[] =
 	""TWHT"                                         ;l   .." TNRM,
 	""TWHT"                                          .o    " TNRM,
 	""TWHT"                                            c   " TNRM,
-	""TWHT"                                            .'",
-	""TWHT"                                             ." TNRM
+	""TWHT"                                            .'  " TNRM,
+	""TWHT"                                             .  " TNRM
 };
 
 /* 18 */
@@ -1011,13 +1011,13 @@ char* solaris_logo[] =
 	"MMMMMMMMMMMMMMMMMMMMM"TWHT"██████████████████████████████"TNRM"MMMM",
 	"MMMMMMMMMMMMMMMMMMMMMMMM"TWHT"█████████████████████████"TNRM"MMMMMM",
 	"=======================================================",
-	"MMMI"TWHT"##"TNRM"NMMMMM"TWHT"####"TNRM"MMMM"TWHT"##"TNRM"MMMMMM"TWHT"####"TNRM"MMMM8"TWHT"#####"TNRM"MM"TWHT"##"TNRM"MMMN"TWHT"###"TNRM"MM",
-	"M$"TWHT"##"TNRM"DMOMMM"TWHT"###"TNRM"8Z"TWHT"###"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"#######"TNRM"MMMZ"TWHT"###"TNRM"==MM"TWHT"##"TNRM"MM"TWHT"###"TNRM"MM?M",
-	"M"TWHT"##"TNRM"7MMMMMI"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMMMMMM8"TWHT"##"TNRM"MMZ"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMM",
-	"MM"TWHT"####"TNRM"?MM"TWHT"###"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMM"TWHT"#######"TNRM"MMZ"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMO"TWHT"####"TNRM"MM",
-	"MMMMM"TWHT"###"TNRM"M="TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMM8"TWHT"##"TNRM"MMZ"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMMMMN"TWHT"##"TNRM"O",
-	"MMMMMM"TWHT"##"TNRM"M8"TWHT"###"TNRM"MM"TWHT"###"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMM"TWHT"###"TNRM"MM$"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMMMMM"TWHT"##"TNRM"I",
-	"M"TWHT"######"TNRM"MMMM:"TWHT"####"TNRM"OMMM="TWHT"####"TNRM"M$"TWHT"#######"TNRM"MM$"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MM"TWHT"#####"TNRM"?M"
+	"MMM"TWHT"###"TNRM"NMMMMM"TWHT"####"TNRM"MMMM"TWHT"##"TNRM"MMMMMM"TWHT"####"TNRM"MMMMM"TWHT"#####"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"###"TNRM"MM",
+	"MM"TWHT"##"TNRM"MMMMMM"TWHT"###"TNRM"MM"TWHT"###"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMM"TWHT"##"TNRM"MMMM"TWHT"###"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"###"TNRM"MMMM",
+	"M"TWHT"##"TNRM"MMMMMMM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMMMMMMM"TWHT"##"TNRM"MMM"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMM",
+	"MM"TWHT"####"TNRM"MMM"TWHT"###"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMMM"TWHT"#######"TNRM"MMM"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMM"TWHT"####"TNRM"MM",
+	"MMMMM"TWHT"###"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMM"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMMMMN"TWHT"##"TNRM"M",
+	"MMMMMM"TWHT"##"TNRM"MM"TWHT"###"TNRM"MM"TWHT"###"TNRM"MM"TWHT"##"TNRM"MMMM"TWHT"##"TNRM"MMM"TWHT"###"TNRM"MMM"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MMMMMM"TWHT"##"TNRM"M",
+	"M"TWHT"######"TNRM"MMMMM"TWHT"####"TNRM"MMMM="TWHT"####"TNRM"MM"TWHT"#######"TNRM"MMM"TWHT"##"TNRM"MMMMM"TWHT"##"TNRM"MM"TWHT"#####"TNRM"MM"
 };
 
 /* EOF */
