@@ -2319,7 +2319,7 @@ void display_help(void)
 	printf("%s\n", TBLU "screenfetch-c");
 	printf("%s\n", "A rewrite of screenFetch, the popular shell script, in C.");
 	printf("%s\n", "Operating Systems currently supported:");
-	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, and OS X.");
+	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, OS X, and Solaris.");
 	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all (and is disabled by default).");
 	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage." TNRM);
 	return;
