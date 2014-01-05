@@ -37,7 +37,6 @@
 	int pclose(FILE* stream);
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
-	#include <sys/utsname.h>
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define OS OSX
 	#include <sys/utsname.h>

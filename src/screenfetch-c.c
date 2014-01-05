@@ -443,9 +443,35 @@ void detect_arch(char* str)
 
 	if (OS == CYGWIN)
 	{
-		arch_file = popen("wmic os get OSArchitecture | head -2 | tail -1 | tr -d '\\r\\n '", "r");
-		fgets(str, MAX_STRLEN, arch_file);
-		pclose(arch_file);
+		#if defined(__CYGWIN__)
+			SYSTEM_INFO arch_info;
+			GetNativeSystemInfo(&arch_info);
+
+			if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+			{
+				safe_strncpy(str, "AMD64", MAX_STRLEN);
+			}
+
+			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
+			{
+				safe_strncpy(str, "ARM", MAX_STRLEN);
+			}
+
+			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+			{
+				safe_strncpy(str, "IA64", MAX_STRLEN);
+			}
+
+			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
+			{
+				safe_strncpy(str, "x86", MAX_STRLEN);
+			}
+
+			else
+			{
+				safe_strncpy(str, "Unknown", MAX_STRLEN);
+			}
+		#endif
 	}
 
 	else if (OS == OSX || OS == LINUX)
@@ -525,7 +551,18 @@ void detect_host(char* str)
 */
 void detect_kernel(char* str)
 {
-	if (ISBSD() || OS == SOLARIS)
+	if (OS == CYGWIN)
+	{
+		#if defined(__CYGWIN__)
+			OSVERSIONINFO kern_info;
+			ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
+			kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+			GetVersionEx(&kern_info);
+			snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", kern_info.dwMajorVersion, kern_info.dwMinorVersion, kern_info.dwBuildNumber);
+		#endif
+	}
+
+	else if (ISBSD() || OS == SOLARIS)
 	{
 		FILE* kernel_file = popen("uname -sr | tr -d '\\n'", "r");
 
@@ -537,16 +574,12 @@ void detect_kernel(char* str)
 		pclose(kernel_file);
 	}
 
-	else if (OS == CYGWIN || OS == OSX || OS == LINUX)
+	else if (OS == OSX || OS == LINUX)
 	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
 			struct utsname kern_info;
 			uname(&kern_info);
-
-			if (OS != CYGWIN)
-				snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
-			else
-				snprintf(str, MAX_STRLEN, "%s", kern_info.sysname);
+			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
 		#endif
 	}
 
@@ -564,14 +597,22 @@ void detect_uptime(char* str)
 {
 	FILE* uptime_file;
 
-	long uptime = 0;
+	long uptime = 0; 
 	long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
 	int days = 0;
 
-	if (OS == CYGWIN || OS == NETBSD)
+	if (OS == CYGWIN)
+	{
+		#if defined(__CYGWIN__)
+			uptime = GetTickCount(); /* known problem: will rollover after 49.7 days */
+			uptime /= 1000;
+		#endif
+	}
+
+	else if (OS == NETBSD)
 	{
 		uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
 		fscanf(uptime_file, "%ld", &uptime);
@@ -796,6 +837,11 @@ void detect_cpu(char* str)
 
 	if (OS == CYGWIN)
 	{
+		/*
+		DWORD buffer_sz = MAX_STRLEN;
+		RegGetValue(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0\\", "ProcessorNameString", RRF_RT_REG_SZ, NULL, (PVOID) &str, &buffer_sz);
+		*/
+
 		cpu_file = popen("wmic cpu get name | tail -2 | tr -d '\\r\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
