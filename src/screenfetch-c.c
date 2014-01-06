@@ -518,23 +518,21 @@ void detect_host(char* str)
 		#endif
 	}
 
-	else if (OS == OSX || OS == LINUX)
+	else if (OS == OSX || OS == LINUX || OS == SOLARIS)
 	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__)
 			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
 			gethostname(given_host, MAX_STRLEN);
 		#endif
 	}
 
-	else if (ISBSD() || OS == SOLARIS)
+	else if (ISBSD())
 	{
 		given_user = getenv("USER");
 
 		FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
 		fgets(given_host, MAX_STRLEN, host_file);
 		pclose(host_file);
-
-		/* format str */
 	}
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
@@ -562,7 +560,7 @@ void detect_kernel(char* str)
 		#endif
 	}
 
-	else if (ISBSD() || OS == SOLARIS)
+	else if (ISBSD())
 	{
 		FILE* kernel_file = popen("uname -sr | tr -d '\\n'", "r");
 
@@ -574,9 +572,9 @@ void detect_kernel(char* str)
 		pclose(kernel_file);
 	}
 
-	else if (OS == OSX || OS == LINUX)
+	else if (OS == OSX || OS == LINUX || OS == SOLARIS)
 	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__)
 			struct utsname kern_info;
 			uname(&kern_info);
 			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
