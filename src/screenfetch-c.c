@@ -835,14 +835,12 @@ void detect_cpu(char* str)
 
 	if (OS == CYGWIN)
 	{
-		/*
-		DWORD buffer_sz = MAX_STRLEN;
-		RegGetValue(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0\\", "ProcessorNameString", RRF_RT_REG_SZ, NULL, (PVOID) &str, &buffer_sz);
-		*/
-
-		cpu_file = popen("wmic cpu get name | tail -2 | tr -d '\\r\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
+		#if defined(__CYGWIN__)
+			HKEY hkey;
+			DWORD str_size = MAX_STRLEN;
+			RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
+			RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE*) str, &str_size);
+		#endif
 	}
 
 	else if (OS == OSX)
