@@ -885,6 +885,12 @@ void detect_gpu(char* str)
 
 	if (OS == CYGWIN)
 	{
+		/*
+			HKEY_LOCAL_MACHINE
+			SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings
+			"Device Description"
+		*/
+
 		gpu_file = popen("wmic path Win32_VideoController get caption | tail -2 | tr -d '\\r\\n'", "r");
 		fgets(str, MAX_STRLEN, gpu_file);
 		pclose(gpu_file);
@@ -923,6 +929,8 @@ void detect_disk(char* str)
 
 	if (OS == CYGWIN || OS == LINUX || OS == OSX)
 	{
+		/* Cygwin -- GetDiskFreeSpaceEx? */
+
 		disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 		fscanf(disk_file, "%d", &disk_total);
 		pclose(disk_file);

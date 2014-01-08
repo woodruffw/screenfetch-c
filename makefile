@@ -34,3 +34,6 @@ uninstall:
 threadtest:
 	$(CC) $(CFLAGS) ./src/threadtest.c ./src/thread.c -o ./threadtest
 
+clean:
+	rm screenfetch
+
