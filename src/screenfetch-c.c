@@ -22,6 +22,7 @@
 	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
 	Many thanks to spaghetti2514 for providing an improved Android logo.
 	Many thanks to diantahoc for taking the time to look for bugs on ARM-based Linuxes.
+	Many thanks to NachoSimo for implementing Fink/MacPorts detection.
 
 	TODO:
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
