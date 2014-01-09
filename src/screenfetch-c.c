@@ -2356,8 +2356,7 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 1.1 BETA");
-	printf("%s\n", "Warning: This version of screenfetch may be lacking support for certain Linux/BSD distros." TNRM);
+	printf("%s\n", TBLU "screenfetch-c - Version 1.1 BETA" TNRM);
 	return;
 }
 
