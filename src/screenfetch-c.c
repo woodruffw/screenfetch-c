@@ -313,7 +313,7 @@ void detect_distro(char* str)
 				safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
 			#elif defined(NTDDI_WIN8)
 				safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
-			#elif defined(NTDDI_VISTA) || NTDDI_VISTASP1
+			#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
 				safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
 			#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
 				safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
