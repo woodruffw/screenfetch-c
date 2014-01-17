@@ -398,6 +398,11 @@ void detect_distro(char* str)
 						safe_strncpy(str, "Gentoo", MAX_STRLEN);
 					}
 
+					else if (FILE_EXISTS("/etc/angstrom-version"))
+					{
+						safe_strncpy(str, "Angstrom", MAX_STRLEN);
+					}
+
 					else if (FILE_EXISTS("/etc/lsb-release"))
 					{
 						distro_file = popen("head -1 < /etc/lsb-release | tr -d '\\\"\\n'", "r");
@@ -782,6 +787,13 @@ void detect_pkgs(char* str)
 		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "OpenSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
 		{
 			pkgs_file = popen("rpm -qa | wc -l", "r");
+			fscanf(pkgs_file, "%d", &packages);
+			pclose(pkgs_file);
+		}
+
+		else if (STRCMP(distro_str, "Angstrom"))
+		{
+			pkgs_file = popen("opkg list-installed | wc -l", "r");
 			fscanf(pkgs_file, "%d", &packages);
 			pclose(pkgs_file);
 		}
@@ -1901,11 +1913,19 @@ void output_logo_only(char* distro)
 		}
 	}
 
+	else if (STRCMP(distro, "Angstrom"))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			printf("%s\n", angstrom_logo[i]);
+		}
+	}
+
 	else
 	{
 		for (i = 0; i < 18; i++)
 		{
-			printf("%s\n", linux_logo[i]);
+			printf("%s\n", angstrom_logo[i]);
 		}
 	}
 }
@@ -2265,6 +2285,14 @@ void main_ascii_output(char* data[], char* data_names[])
 					printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);
 				else
 					printf("%s\n", android_logo[i]);
+			}
+		}
+
+		else if (STRCMP(distro_str, "Angstrom"))
+		{
+			for (i = 0; i < 16; i++)
+			{
+				printf("%s %s%s\n", angstrom_logo[i], data_names[i], data[i]);
 			}
 		}
 
