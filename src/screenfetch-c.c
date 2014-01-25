@@ -60,7 +60,7 @@
 	------
 
 	I hereby regrant this version of screenFetch under the same MIT license.
-	If you have any questions, please contact me on github (http://www.github.com/woodrufw/screenfetch-c) or at woodrufwsoftware@gmail.com
+	If you have any questions, please contact me on github (http://www.github.com/woodrufw/screenfetch-c) or at william @ tuffbizz.com
 */
 
 #include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
