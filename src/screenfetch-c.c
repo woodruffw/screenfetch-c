@@ -1923,7 +1923,7 @@ void output_logo_only(char* distro)
 
 	else
 	{
-		for (i = 0; i < 18; i++)
+		for (i = 0; i < 16; i++)
 		{
 			printf("%s\n", angstrom_logo[i]);
 		}
