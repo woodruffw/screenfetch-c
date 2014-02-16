@@ -869,7 +869,7 @@ void detect_cpu(char* str)
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 
-		if (STRCMP(str, "ARMv6-compatible processor rev 7 (v61)"))
+		if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
 		{
 			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for Raspberry Pi machines */
 		}
