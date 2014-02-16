@@ -868,6 +868,11 @@ void detect_cpu(char* str)
 		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
+
+		if (STRCMP(str, "ARMv6-compatible processor rev 7 (v61)"))
+		{
+			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for Raspberry Pi machines */
+		}
 	}
 
 	else if (OS == DFBSD || OS == FREEBSD || OS == OPENBSD)
