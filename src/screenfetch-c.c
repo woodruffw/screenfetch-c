@@ -27,7 +27,6 @@
 	TODO:
 	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
 	Fix strange bug on Windows in manual mode (values wildly inaccurate)
-	Add RPI-specific features like temp detection (use "grep -o BCM2708 /proc/cpuinfo" to detect maybe?)
 	Add Android-specific features
 	Improve detection on *BSDs
 
@@ -60,7 +59,7 @@
 	------
 
 	I hereby regrant this version of screenFetch under the same MIT license.
-	If you have any questions, please contact me on github (http://www.github.com/woodrufw/screenfetch-c) or at william @ tuffbizz.com
+	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
 
 #include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
