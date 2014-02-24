@@ -1,7 +1,10 @@
 CC=gcc
 CFLAGS=-O3 -std=c99
 LDFLAGS_OSX=-lpthread
-LDFLAGS_NIX=-lpthread -lX11
+LDFLAGS_BSD=-LX11
+LDFLAGS_LINUX=-lpthread -lX11
+LDFLAGS_SOLARIS=-lpthread -lX11
+IFLAGS_BSD=-I/usr/X11R6/include
 INSTALL=/usr/bin/install -c
 
 BINDIR=/usr/local/bin
@@ -10,10 +13,16 @@ MANDIR=/usr/local/share/man/man1
 
 all:
 	@echo 'You must run make with a target corresponding to your OS.'
-	@echo 'Options: nix, osx, win.'
+	@echo 'Options: linux, solaris, bsd, osx, win.'
 
-nix:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_NIX)
+linux:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_LINUX)
+
+solaris:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_SOLARIS)
+
+bsd:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(IFLAGS_BSD) $(LDFLAGS_BSD)
 
 osx:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_OSX)

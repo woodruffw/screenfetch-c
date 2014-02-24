@@ -27,13 +27,25 @@ $ cd screenfetch-c
 ```
 Then, follow the instructions for your OS:
 
-#### Linux, BSD, and Solaris (incl. Solaris Derivatives)
+#### Linux
 
 ```
 make nix && sudo make install
 ```
 
+#### Solaris (incl. derivatives)
+
+```
+make solaris && sudo make install
+```
+
 _Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`.
+
+#### BSD
+
+```
+make bsd && sudo make install
+```
 
 #### OS X
 
