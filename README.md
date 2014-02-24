@@ -27,19 +27,25 @@ $ cd screenfetch-c
 ```
 Then, follow the instructions for your OS:
 
-#### Linux, BSD, OS X, and Windows:
+#### Linux, BSD, and Solaris (incl. Solaris Derivatives)
 
 ```
-make && sudo make install
+make nix && sudo make install
 ```
 
-#### Solaris and derivatives:
+_Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`.
+
+#### OS X
 
 ```
-gmake solaris && sudo gmake install
+make osx && sudo make install
 ```
-_Note:_ The 'solaris' target is important - it has additional linker flags. Running gmake without 
-'solaris' is unlikely to build.
+
+#### Windows (Cygwin)
+
+```
+make win && sudo make install
+```
 
 ### Removal:
 Removing screenfetch-c is just as easy as installing it:

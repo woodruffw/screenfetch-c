@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-O3 -std=c99
-LDFLAGS=-lpthread
-LDFLAGS_SOLARIS=-lpthread -lX11
+LDFLAGS_OSX=-lpthread
+LDFLAGS_NIX=-lpthread -lX11
 INSTALL=/usr/bin/install -c
 
 BINDIR=/usr/local/bin
@@ -9,10 +9,17 @@ MANDIR=/usr/local/share/man/man1
 
 
 all:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS)
+	@echo 'You must run make with a target corresponding to your OS.'
+	@echo 'Options: nix, osx, win.'
 
-solaris:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_SOLARIS)
+nix:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_NIX)
+
+osx:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_OSX)
+
+win:
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
 
 install:
 	$(INSTALL) screenfetch $(BINDIR)/screenfetch
