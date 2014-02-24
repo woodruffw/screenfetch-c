@@ -43,7 +43,8 @@
 #elif defined(__linux__)
 	#define OS LINUX
 	#include <sys/sysinfo.h>
-	#include <sys/utsname.h> 
+	#include <sys/utsname.h>
+	#include <X11/Xlib.h>
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
 #elif defined(__NetBSD__)

@@ -1188,14 +1188,14 @@ void detect_res(char* str)
 
 	else if (OS == LINUX)
 	{
-		res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | sed ':a;N;$!ba;s/\\n/ /g' | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, res_file);
-		pclose(res_file);
+		#if defined(__linux__)
+			Display* disp = XOpenDisplay(NULL);
+			Screen* screen = XDefaultScreenOfDisplay(disp);
+			width = WidthOfScreen(screen);
+			height = HeightOfScreen(screen);
+		#endif
 
-		if (STRCMP(str, "Unknown"))
-		{
-			safe_strncpy(str, "No X Server", MAX_STRLEN);
-		}
+		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
 
 	else if (ISBSD())
