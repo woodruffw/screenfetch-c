@@ -1200,23 +1200,14 @@ void detect_res(char* str)
 
 	else if (ISBSD())
 	{
-		// res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
-		// fgets(str, MAX_STRLEN, res_file);
-		// pclose(res_file);
+		res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
+		fgets(str, MAX_STRLEN, res_file);
+		pclose(res_file);
 
-		// if (STRCMP(str, "Unknown"))
-		// {
-		// 	safe_strncpy(str, "No X Server", MAX_STRLEN);
-		// }
-
-		#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(DragonFly)
-			Display* disp = XOpenDisplay(NULL);
-			Screen* screen = XDefaultScreenOfDisplay(disp);
-			width = WidthOfScreen(screen);
-			height = HeightOfScreen(screen);
-		#endif
-
-		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
+		if (STRCMP(str, "Unknown"))
+		{
+			safe_strncpy(str, "No X Server", MAX_STRLEN);
+		}
 	}
 
 	else if (OS == SOLARIS)
