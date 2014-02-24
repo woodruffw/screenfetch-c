@@ -1,10 +1,9 @@
 CC=gcc
 CFLAGS=-O3 -std=c99
 LDFLAGS_OSX=-lpthread
-LDFLAGS_BSD=-lpthread -LX11
+LDFLAGS_BSD=-lpthread
 LDFLAGS_LINUX=-lpthread -lX11
 LDFLAGS_SOLARIS=-lpthread -lX11
-IFLAGS_BSD=-I/usr/X11R6/include
 INSTALL=/usr/bin/install -c
 
 BINDIR=/usr/local/bin
@@ -22,7 +21,7 @@ solaris:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_SOLARIS)
 
 bsd:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(IFLAGS_BSD) $(LDFLAGS_BSD)
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_BSD)
 
 osx:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_OSX)
