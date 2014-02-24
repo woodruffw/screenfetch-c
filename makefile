@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-O3 -std=c99
 LDFLAGS_OSX=-lpthread
-LDFLAGS_BSD=-LX11
+LDFLAGS_BSD=-lpthread -LX11
 LDFLAGS_LINUX=-lpthread -lX11
 LDFLAGS_SOLARIS=-lpthread -lX11
 IFLAGS_BSD=-I/usr/X11R6/include
