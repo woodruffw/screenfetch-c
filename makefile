@@ -11,8 +11,10 @@ MANDIR=/usr/local/share/man/man1
 
 
 all:
+	@echo '========================================================='
 	@echo 'You must run make with a target corresponding to your OS.'
 	@echo 'Options: linux, solaris, bsd, osx, win.'
+	@echo '========================================================='
 
 linux:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_LINUX)
