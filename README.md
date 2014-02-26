@@ -22,7 +22,7 @@ Installing screenfetch-c is very simple.
 First, clone the repository:
 
 ```
-$ git clone https://www.github.com/woodrufw/screenfetch-c.git
+$ git clone https://www.github.com/woodruffw/screenfetch-c.git
 $ cd screenfetch-c
 ```
 Then, follow the instructions for your OS:
