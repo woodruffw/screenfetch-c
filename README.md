@@ -20,8 +20,10 @@ There are only a few select sections that still require work. They are listed he
 
 #### Dependencies:
 screenfetch-c only relies on libraries that come on virtually every system.
-On Linux and Solaris, libX11 is required. 
-On Windows, the WinAPI is required (duh).
+
+* On Linux and Solaris, libX11 is required. 
+
+* On Windows, the WinAPI is required (duh).
 
 Installing screenfetch-c is very simple.
 First, clone the repository:
