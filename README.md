@@ -37,7 +37,7 @@ Then, follow the instructions for your OS:
 #### Linux
 
 ```
-make nix && sudo make install
+make linux && sudo make install
 ```
 
 #### Solaris (incl. derivatives)
