@@ -628,9 +628,7 @@ void detect_uptime(char* str)
 		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 		pclose(uptime_file);
 
-		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &currtime); /* get current time in secs */
-		pclose(uptime_file);
+		currtime = time(NULL);
 
 		uptime = currtime - boottime;
 	}
@@ -651,9 +649,7 @@ void detect_uptime(char* str)
 		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 		pclose(uptime_file);
 
-		uptime_file = popen("date +%s", "r");
-		fscanf(uptime_file, "%ld", &currtime); /* get current time in secs */
-		pclose(uptime_file);
+		currtime = time(NULL);
 
 		uptime = currtime - boottime;
 	}

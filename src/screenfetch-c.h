@@ -40,6 +40,7 @@
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define OS OSX
 	#include <sys/utsname.h>
+	#include <time.h>
 #elif defined(__linux__)
 	#define OS LINUX
 	#include <sys/sysinfo.h>
@@ -47,13 +48,16 @@
 	#include <X11/Xlib.h>
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
+	#include <time.h>
 #elif defined(__NetBSD__)
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
 	#include <sys/utsname.h>
+	#include <time.h>
 #elif defined(__DragonFly__)
 	#define OS DFBSD
+	#include <time.h>
 #elif defined(__sun__)
 	#define OS SOLARIS
 	#include <utmpx.h>
