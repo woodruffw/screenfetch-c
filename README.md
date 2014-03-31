@@ -114,5 +114,5 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [ ] Sabayon
 - [x] Android (requires -D "Android" flag)
 - [x] Linux (upon failure to detect a specific distro)
-- [ ] Solaris (including SunOS, OpenSolaris, and OpenIndiana)
+- [x] Solaris (including SunOS, OpenSolaris, and OpenIndiana)
 - [x] Angstrom
