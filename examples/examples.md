@@ -82,3 +82,7 @@ OpenBSD:
 
 
 ![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/OpenBSD.png?raw=true)
+
+Solaris:
+
+![alt tag] (https://raw.github.com/woodrufw/screenfetch-c/master/examples/Solaris.png?raw=true)
