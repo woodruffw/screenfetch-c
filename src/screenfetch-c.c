@@ -879,7 +879,9 @@ void detect_cpu(char* str)
 
 	else if (OS == SOLARIS)
 	{
-		/* prtdiag or psrinfo probably -- isalist? */
+		cpu_file = popen("psrinfo -pv | tail -1 | tr -d '\\t'", "r");
+		fgets(str, MAX_STRLEN, cpu_file);
+		pclose(cpu_file);
 	}
 
 	if (verbose)
