@@ -479,16 +479,16 @@ void detect_arch(char* str)
 		#endif
 	}
 
-	else if (OS == OSX || OS == LINUX)
+	else if (OS == OSX || OS == LINUX || OS == SOLARIS)
 	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__)
 			struct utsname arch_info;
 			uname(&arch_info);
 			safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 		#endif
 	}
 
-	else if (ISBSD() || OS == SOLARIS) /* uname -p for solaris? */
+	else if (ISBSD())
 	{
 		arch_file = popen("uname -m | tr -d '\\n'", "r");
 		fgets(str, MAX_STRLEN, arch_file);
