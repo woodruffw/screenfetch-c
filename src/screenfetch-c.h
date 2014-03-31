@@ -51,6 +51,7 @@
 	#define OS NETBSD
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
+	#include <sys/utsname.h>
 #elif defined(__DragonFly__)
 	#define OS DFBSD
 #elif defined(__sun__)
