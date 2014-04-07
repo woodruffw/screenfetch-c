@@ -510,7 +510,7 @@ void detect_arch(char* str)
 */
 void detect_host(char* str)
 {
-	char* given_user = "Unknown"; /* has to be a pointer for getenv()/GetUserName(), god knows why */
+	char* given_user = malloc(sizeof(char) * MAX_STRLEN); /* has to be a pointer for getenv()/GetUserName(), god knows why */
 	char given_host[MAX_STRLEN] = "Unknown";
 
 	if (OS == CYGWIN)
@@ -541,6 +541,7 @@ void detect_host(char* str)
 	}
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	free(given_user);
 
 	if (verbose)
 		VERBOSE_OUT("Found host as ", str);
@@ -624,13 +625,15 @@ void detect_uptime(char* str)
 
 	else if (OS == OSX || OS == FREEBSD || OS == DFBSD)
 	{
-		uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
-		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
-		pclose(uptime_file);
+		#if defined(__FreeBSD__) || defined(__DragonFly__) || (defined(__APPLE__) && defined(__MACH__))
+			uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
+			fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+			pclose(uptime_file);
 
-		currtime = time(NULL);
+			currtime = time(NULL);
 
-		uptime = currtime - boottime;
+			uptime = currtime - boottime;
+		#endif
 	}
 
 	else if (OS == LINUX)
@@ -645,13 +648,15 @@ void detect_uptime(char* str)
 
 	else if (OS == OPENBSD)
 	{
-		uptime_file = popen("sysctl -n kern.boottime", "r");
-		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
-		pclose(uptime_file);
+		#if defined(__OpenBSD__)
+			uptime_file = popen("sysctl -n kern.boottime", "r");
+			fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+			pclose(uptime_file);
 
-		currtime = time(NULL);
+			currtime = time(NULL);
 
-		uptime = currtime - boottime;
+			uptime = currtime - boottime;
+		#endif
 	}
 
 	else if (OS == SOLARIS)
