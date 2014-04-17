@@ -107,10 +107,16 @@ screenfetch-c has two built-in output modes: verbose (disabled by default) and e
 If a serious or fatal error occurs, the user will be notified via error (stderr).
 Otherwise, the user may choose to enable the verbose mode, which display real-time detection.
 
-screenfetch-c returns EXIT_SUCCESS or EXIT_FAILURE, depending on the conditions behind program termination. 
+.SH EXIT STATUS
+screenfetch-c returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
+For example, screenfetch-c will return EXIT_FAILURE if flagged with -D but not given an additional argument.
 
 .SH AUTHOR
 screenFetch was originally written by Brett Bohnenkamper (kittykatt @ archlinux.us)
 
 This rewrite was written by William Woodruff (william @ tuffbizz.com).
-It is licensed under an MIT-style open source license, which you should have received with a copy of the source code.
+
+For other contributors, refer to the CONTRIBUTORS file.
+
+It is licensed under an MIT-style open source license, which you should have received with the source code.
+
