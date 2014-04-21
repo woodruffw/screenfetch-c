@@ -510,12 +510,13 @@ void detect_arch(char* str)
 */
 void detect_host(char* str)
 {
-	char* given_user = malloc(sizeof(char) * MAX_STRLEN); /* has to be a pointer for getenv()/GetUserName(), god knows why */
+	char* given_user = "Unknown"; /* has to be a pointer for getenv()/GetUserName(), god knows why */
 	char given_host[MAX_STRLEN] = "Unknown";
 
 	if (OS == CYGWIN)
 	{
 		#if defined(__CYGWIN__)
+			given_user = malloc(sizeof(char) * MAX_STRLEN);
 			/* why does the winapi require a pointer to a long? */
 			unsigned long len = MAX_STRLEN;
 			GetUserName(given_user, &len);
@@ -541,7 +542,10 @@ void detect_host(char* str)
 	}
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
-	free(given_user);
+
+	#if defined(__CYGWIN__)
+		free(given_user);
+	#endif
 
 	if (verbose)
 		VERBOSE_OUT("Found host as ", str);
