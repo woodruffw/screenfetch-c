@@ -2472,7 +2472,12 @@ void take_screenshot(void)
 		}
 
 		char* loc = getenv("HOME");
-		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+
+		#if defined(__OpenBSD__)
+			strlcat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+		#else
+			strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+		#endif
 
 		if (FILE_EXISTS(loc) && verbose)
 		{
