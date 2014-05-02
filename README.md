@@ -12,7 +12,7 @@ Like the original screenFetch, screenfetch-c is meant to be compatible with a nu
 screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environment), OS X (10.6 and 10.8), and Linux (see list below).
 
 There are only a few select sections that still require work. They are listed here:
-- GPU detection is not implemented on Linux or BSD (appears as "Unknown").
+- GPU detection is currently experimental on Linux and BSD.
 - Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
 - Package detection requires more in-depth testing on OS X (testing for MacPorts/Fink).
 
@@ -21,7 +21,7 @@ There are only a few select sections that still require work. They are listed he
 #### Dependencies:
 screenfetch-c only relies on libraries that come on virtually every system.
 
-* On Linux and Solaris, libX11 is required. 
+* On Linux and Solaris, libX11 is required. In most package managers, this is listed as libX11-dev.
 
 * On Windows, the WinAPI is required (duh).
 
