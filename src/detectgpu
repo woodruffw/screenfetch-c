@@ -32,7 +32,7 @@ if [ -n "$gpu" ];then
 	fi
 	gpu="${gpu}"
 else
-	gpu="Not Found"
+	gpu="Unknown"
 fi
 
 echo $gpu
