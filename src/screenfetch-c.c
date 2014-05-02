@@ -929,7 +929,6 @@ void detect_gpu(char* str)
 		gpu_file = popen("detectgpu 2>/dev/null", "r");
 		fgets(str, MAX_STRLEN, gpu_file);
 		pclose(gpu_file);
-		safe_strncpy(str, "Unknown", MAX_STRLEN);
 	}
 
 	if (verbose)
