@@ -1,10 +1,10 @@
-#!/bin/bash
-#  detectgtk.sh
+#!/usr/bin/env bash
+#  detectgtk
 #  detect and output any GTK information, if present
 #  only meant to be run on Linux/*BSD
 #  DEPENDS UPON: detectde for the name of the DE
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
-#  Modified to stand alone by William Woodruff (woodrufw) in screenfetch-c
+#  Modified to stand alone by William Woodruff (woodruffw) in screenfetch-c
 
 gtk2Theme="Unknown"
 gtk3Theme="Unknown"

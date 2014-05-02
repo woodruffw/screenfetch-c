@@ -37,6 +37,7 @@ install:
 	$(INSTALL) ./src/detectgtk $(BINDIR)/detectgtk
 	$(INSTALL) ./src/detectwm $(BINDIR)/detectwm
 	$(INSTALL) ./src/detectwmtheme $(BINDIR)/detectwmtheme
+	$(INSTALL) ./src/detectgpu $(BINDIR)/detectgpu
 	mkdir -p $(MANDIR)
 	$(INSTALL) ./manpage/screenfetch.1 $(MANDIR)/screenfetch.1
 

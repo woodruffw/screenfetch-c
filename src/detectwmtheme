@@ -1,10 +1,10 @@
-#!/bin/bash
-#  detectwmtheme.sh
+#!/usr/bin/env bash
+#  detectwmtheme
 #  detect and output the name of the theme used in the Window Manager, if present
 #  only meant to be run on Linux/*BSD
 #  DEPENDS UPON: detectwm for the name of the WM
 #  Original Author: Brett Bohnenkamper (KittyKatt) in screenfetch-dev
-#  Modified to stand alone by William Woodruff (woodrufw) in screenfetch-c
+#  Modified to stand alone by William Woodruff (woodruffw) in screenfetch-c
 
 Win_theme="Unknown"
 WM=`detectwm`
