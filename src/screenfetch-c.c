@@ -1,6 +1,6 @@
 /* 	screenfetch-c.c
 	Author: William Woodruff
-	Source Version: 1.1 - BETA
+	Source Version: 1.2 - Release
 	-------------
 
 	A rewrite of screenFetch.sh in C.
@@ -2394,7 +2394,7 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 1.1 BETA" TNRM);
+	printf("%s\n", TBLU "screenfetch-c - Version 1.2 Release" TNRM);
 	return;
 }
 

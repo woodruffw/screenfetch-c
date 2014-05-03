@@ -1,7 +1,7 @@
 screenfetch-c
 =============
 
-### Current Version: 1.1 Beta (compiled, 99% complete)
+### Current Version: 1.2 release (compiled and 99.99% complete)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 

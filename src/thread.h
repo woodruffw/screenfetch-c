@@ -1,6 +1,6 @@
 /*	thread.h
 	Author: William Woodruff
-	Source Version: 1.1 - BETA
+	Source Version: 1.2 - Release
 	-------------
 
 	This file contains the function prototypes and macros required by thread.c

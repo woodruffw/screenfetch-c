@@ -1,6 +1,6 @@
 /*	thread.c
 	Author: William Woodruff
-	Source Version: 1.1 - BETA
+	Source Version: 1.2 - Release
 	-------------
 
 	This file provides a very basic abstraction of the pthread and winapi thread APIs.
