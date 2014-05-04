@@ -17,29 +17,29 @@ all:
 	@echo '========================================================='
 
 linux:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_LINUX)
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_LINUX)
 
 solaris:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_SOLARIS)
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_SOLARIS)
 
 bsd:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_BSD)
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_BSD)
 
 osx:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch $(LDFLAGS_OSX)
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_OSX)
 
 win:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch
+	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c
 
 install:
-	$(INSTALL) screenfetch $(BINDIR)/screenfetch
+	$(INSTALL) screenfetch-c $(BINDIR)/screenfetch-c
 	$(INSTALL) ./src/detectde $(BINDIR)/detectde
 	$(INSTALL) ./src/detectgtk $(BINDIR)/detectgtk
 	$(INSTALL) ./src/detectwm $(BINDIR)/detectwm
 	$(INSTALL) ./src/detectwmtheme $(BINDIR)/detectwmtheme
 	$(INSTALL) ./src/detectgpu $(BINDIR)/detectgpu
 	mkdir -p $(MANDIR)
-	$(INSTALL) ./manpage/screenfetch.1 $(MANDIR)/screenfetch.1
+	$(INSTALL) ./manpage/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
 
 uninstall:
 	rm -rf $(BINDIR)/screenfetch
@@ -47,11 +47,11 @@ uninstall:
 	rm -rf $(BINDIR)/detectgtk
 	rm -rf $(BINDIR)/detectwm
 	rm -rf $(BINDIR)/detectwmtheme
-	rm -rf $(MANDIR)/screenfetch.1
+	rm -rf $(MANDIR)/screenfetch-c.1
 
 threadtest:
 	$(CC) $(CFLAGS) ./src/threadtest.c ./src/thread.c -o ./threadtest
 
 clean:
-	rm screenfetch
+	rm screenfetch-c
 
