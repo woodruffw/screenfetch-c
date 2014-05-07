@@ -120,4 +120,4 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 ### License
 screenfetch-c is licensed under the MIT license.
 
-For the exact terms, see the [license file](./LICENSE)
+For the exact terms, see the [license file](./LICENSE).
