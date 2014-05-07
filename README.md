@@ -116,3 +116,8 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [x] Linux (upon failure to detect a specific distro)
 - [x] Solaris (including SunOS, OpenSolaris, and OpenIndiana)
 - [x] Angstrom
+
+### License
+screenfetch-c is licensed under the MIT license.
+
+For the exact terms, see the [license file](./LICENSE)
