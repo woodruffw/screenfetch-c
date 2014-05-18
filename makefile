@@ -42,7 +42,7 @@ install:
 	$(INSTALL) ./manpage/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
 
 uninstall:
-	rm -rf $(BINDIR)/screenfetch
+	rm -rf $(BINDIR)/screenfetch-c
 	rm -rf $(BINDIR)/detectde
 	rm -rf $(BINDIR)/detectgtk
 	rm -rf $(BINDIR)/detectwm
