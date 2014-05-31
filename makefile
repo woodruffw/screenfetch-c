@@ -47,6 +47,7 @@ uninstall:
 	rm -rf $(BINDIR)/detectgtk
 	rm -rf $(BINDIR)/detectwm
 	rm -rf $(BINDIR)/detectwmtheme
+	rm -rf $(BINDIR)/detectgpu
 	rm -rf $(MANDIR)/screenfetch-c.1
 
 threadtest:
