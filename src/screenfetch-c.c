@@ -24,12 +24,6 @@
 	Many thanks to diantahoc for taking the time to look for bugs on ARM-based Linuxes.
 	Many thanks to NachoSimo for implementing Fink/MacPorts detection.
 
-	TODO:
-	Fix issues with RAM usage detection on OS X (values slightly inaccurate)
-	Fix strange bug on Windows in manual mode (values wildly inaccurate)
-	Add Android-specific features
-	Improve detection on *BSDs
-
 	------
 
 	**From the original author:**

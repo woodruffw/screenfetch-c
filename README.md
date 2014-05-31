@@ -8,14 +8,6 @@ script that displays system information and an ASCII logo, in the C
 language.
 Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, GNU/Linux, OS X, and Windows (via the Cygwin environment).
 
-## Current Status:
-screenfetch-c has been extensively tested on Windows 7 (in the Cygwin environment), OS X (10.6 and 10.8), and Linux (see list below).
-
-There are only a few select sections that still require work. They are listed here:
-- GPU detection is currently experimental on Linux and BSD.
-- Distro detection is not 100% complete, although it's close. If screenfetch-c fails to detect a specific distro, try running it with the -D [distro] flag.
-- Package detection requires more in-depth testing on OS X (testing for MacPorts/Fink).
-
 ## Installing screenfetch-c:
 
 ### Dependencies:
@@ -90,6 +82,20 @@ If you installed it via Homebrew:
 $ brew rm screenfetch-c
 $ brew untap woodruffw/screenfetch-c # optional
 ```
+
+## Contributing
+
+There are a number of things that still need to be tested or completed in screenfetch-c.
+
+If you think that you can test/fix/improve one or more of them, feel free to fork and issue requests back to me.
+
+In particular, the following things still need to be done:
+
+- Comprehensive testing of GPU detection on Linux/BSD/Solaris
+- Matching screencapture capabilities on Windows with OS X/Linux/BSD/Solaris
+- Improve RAM/HDD detection on BSD
+- Fix manual mode on Windows
+- Improve features on Android
 
 ## Current Known Compatibility:
 
