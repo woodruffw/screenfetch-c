@@ -28,7 +28,7 @@ screenfetch-c only relies on libraries that come on virtually every system.
 Installing screenfetch-c is very simple.
 First, clone the repository:
 
-```shell
+```bash
 $ git clone https://www.github.com/woodruffw/screenfetch-c.git
 $ cd screenfetch-c
 ```
@@ -36,13 +36,13 @@ Then, follow the instructions for your OS:
 
 ### Linux
 
-```shell
+```bash
 $ make linux && sudo make install
 ```
 
 ### Solaris (incl. derivatives)
 
-```shell
+```bash
 $ make solaris && sudo make install
 ```
 
@@ -50,7 +50,7 @@ _Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`.
 
 ### BSD
 
-```shell
+```bash
 $ make bsd && sudo make install
 ```
 
@@ -60,33 +60,33 @@ screenfetch-c is now available via Homebrew!
 
 To install it, just run the following:
 
-```shell
+```bash
 $ brew tap woodruffw/screenfetch-c
 $ brew install screenfetch-c
 ```
 
 Alternatively, you can use the plain makefile:
 
-```shell
+```bash
 $ make osx && sudo make install
 ```
 
 ### Windows (Cygwin)
 
-```shell
+```bash
 $ make win && sudo make install
 ```
 
 ## Removal:
 Removing screenfetch-c is just as easy as installing it:
 
-```shell
+```bash
 $ sudo make uninstall
 ```
 
 If you installed it via Homebrew:
 
-```shell
+```bash
 $ brew rm screenfetch-c
 $ brew untap woodruffw/screenfetch-c # optional
 ```
