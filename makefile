@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O3 -std=c99
+CFLAGS=-O3 -std=c99 -Wall
 LDFLAGS_OSX=-lpthread
 LDFLAGS_BSD=-lpthread
 LDFLAGS_LINUX=-lpthread -lX11
