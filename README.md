@@ -53,8 +53,7 @@ screenfetch-c is now available via Homebrew!
 To install it, just run the following:
 
 ```bash
-$ brew tap woodruffw/screenfetch-c
-$ brew install screenfetch-c
+$ brew install woodruffw/screenfetch-c/screenfetch-c
 ```
 
 Alternatively, you can use the plain makefile:
