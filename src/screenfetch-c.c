@@ -511,6 +511,11 @@ void detect_host(char* str)
 	{
 		#if defined(__CYGWIN__)
 			given_user = malloc(sizeof(char) * MAX_STRLEN);
+			if (given_user == NULL)
+			{
+				ERROR_OUT("Error: ", "Failed to allocate sufficient memory in detect_host.");
+				exit(1);
+			}
 			/* why does the winapi require a pointer to a long? */
 			unsigned long len = MAX_STRLEN;
 			GetUserName(given_user, &len);
@@ -560,7 +565,7 @@ void detect_kernel(char* str)
 			ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
 			kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 			GetVersionEx(&kern_info);
-			snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", kern_info.dwMajorVersion, kern_info.dwMinorVersion, kern_info.dwBuildNumber);
+			snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 		#endif
 	}
 
@@ -600,7 +605,9 @@ void detect_uptime(char* str)
 	FILE* uptime_file;
 
 	long uptime = 0; 
-	long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
+	#ifndef __CYGWIN__
+		long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
+	#endif
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
