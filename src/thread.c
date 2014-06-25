@@ -57,3 +57,5 @@ void exit_thread()
 		pthread_exit(NULL);
 	#endif
 }
+
+/* EOF */

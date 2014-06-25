@@ -8,6 +8,9 @@
 	You should have received a copy of it with this code.
 */
 
+#ifndef SCREENFETCH_C_H
+#define SCREENFETCH_C_H
+
 #define _POSIX_C_SOURCE 200112L /* makes all these systems play nicely together */
 
 /* includes, all from the standard library */
@@ -1046,5 +1049,7 @@ char* angstrom_logo[] =
 	"						    ",
 	"						    "
 };
+
+#endif /* SCREENFETCH_C_H */
 
 /* EOF */

@@ -8,6 +8,9 @@
 	You should have received a copy of it with this code.
 */
 
+#ifndef THREAD_H
+#define THREAD_H
+
 #if defined(__CYGWIN__)
 	#include <Windows.h>
 	#define THREAD HANDLE /* this is potentially dangerous, HANDLE can be used for things other than threads */
@@ -20,3 +23,7 @@
 void create_thread(THREAD* thread, void* (*func_call)(void*), void* arg);
 void join_thread(THREAD thread);
 void exit_thread();
+
+#endif
+
+/* EOF */
