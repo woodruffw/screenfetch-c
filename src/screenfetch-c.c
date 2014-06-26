@@ -10,19 +10,13 @@
 	
 	------
 
-	NOTES AND THANKS:
+	NOTES:
 	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
 	although some were modified to change/improve the output.
 	Many thanks to him for discovering bugs and formatting issues as well.
 
 	The shell scripts detectwm.sh, detectwmtheme.sh, and detectde.sh are all partially or completely based upon
 	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE/GTK within C would be a pain in the ass.
-
-	Credit goes to shrx and Hu6 for many of the oneliners used in screenfetch-c's OS X popen() calls.
-	The ASCII artwork used in screenfetch-c also comes directly from screenFetch, albiet with changes in color format.
-	Many thanks to spaghetti2514 for providing an improved Android logo.
-	Many thanks to diantahoc for taking the time to look for bugs on ARM-based Linuxes.
-	Many thanks to NachoSimo for implementing Fink/MacPorts detection.
 
 	------
 
