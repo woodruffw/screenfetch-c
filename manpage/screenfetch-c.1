@@ -1,19 +1,14 @@
-.\" Manpage for screenfetch-c
+.\" Manpage for screenfetch\-c
 .\" Contact woodruffw on GitHub or at william @ tuffbizz.com to report any bugs or errors
 .TH screenfetch\-c 1 "04 August 2013" "1.2r" "User Commands" 
 .SH NAME
 \fBscreenfetch\-c\fP \- Display computer information and an ASCII logo
 
 .SH SYNOPSIS
-\fBscreenfetch\-c\fP [\-m | \-v | \-s | \-n | \-E | \-V | \-h]
-
-		    [\-D DISTRO]
-
-
-		    [\-L LOGO]
+\fBscreenfetch\-c\fP [\fB\-mvsnEVh\fP] [\fB\-D DISTRO\fP] [\fB\-L LOGO\fP]
 
 .SH DESCRIPTION
-screenfetch\-c is a C rewrite of the original screenFetch, 
+\fBscreenfetch\-c\fP is a C rewrite of the original screenFetch, 
 which was written in bash by Brett Bohnenkamper. Like the original, 
 it displays both an ASCII logo determined by the computer's OS 
 and a variety of statistics, including kernel type, ram, uptime, and so forth.
@@ -44,7 +39,7 @@ Enable verbose mode, which prints out detection information.
 
 \fB\-s\fP
 
-Take a screenshot after completing the output. On non-Windows systems, this will save a file called 'screenfetch_screenshot.png' in $HOME. On Windows, this will save the screenshot in the system clipboard.
+Take a screenshot after completing the output. On non\-Windows systems, this will save a file called 'screenfetch_screenshot.png' in $HOME. On Windows, this will save the screenshot in the system clipboard.
 
 \fB\-n\fP
 
@@ -68,17 +63,17 @@ Displays help and compatibility information.
 
 \fB\-L\fP LOGO
 
-Output only the ASCII logo associated with that distro. Follows the general naming conventions of the -D flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
+Output only the ASCII logo associated with that distro. Follows the general naming conventions of the \fB\-D\fP flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
 
 .SH CONFIGURATION
-When screenfetch\-c is invoked with the \fB-m\fP flag for the first time, it enters manual mode.
-Manual mode prompts the user to enter specific information about the computer, storing that information in ~/.screenfetchc for the next invocation with the \fB\-m\fP flag.
+When \fBscreenfetch\-c\fP is invoked with the \fB-m\fP flag for the first time, it enters manual mode.
+Manual mode prompts the user to enter specific information about the computer, storing that information in ~/\fB.screenfetchc\fP for the next invocation with the \fB\-m\fP flag.
 
-By default, you must enter all fields asked for in manual mode. However, if you want screenfetch\-c to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force screenfetch-c to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
+By default, you must enter all fields asked for in manual mode. However, if you want \fBscreenfetch\-c\fP to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force \fBscreenfetch\-c\fP to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
 
-To remove your existing manual configuration, simply delete the .screenfetchc file located in your $HOME. 
+To remove your existing manual configuration, simply delete the \fB.screenfetchc\fP file located in your $HOME. 
 
-Note: .screenfetchc's format isn't exactly human\-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete .screenfetchc and start from the beginning.
+Note: \fB.screenfetchc\fP's format isn't exactly human\-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete \fB.screenfetchc\fP and start from the beginning.
 
 .SH RELEASE HISTORY
 \fB0.1\fP \- ALPHA \- INCOMPLETE, UNCOMPILED
@@ -104,12 +99,12 @@ Found a bug or issue? Please tell me about it:
 \fBhttp://github.com/woodruffw/screenfetch\-c\fP
 
 .SH DIAGNOSTICS
-screenfetch\-c has two built\-in output modes: verbose (disabled by default) and error (enabled by default).
+\fBscreenfetch\-c\fP has two built\-in output modes: verbose (disabled by default) and error (enabled by default).
 If a serious or fatal error occurs, the user will be notified via error (stderr).
 Otherwise, the user may choose to enable the verbose mode, which display real-time detection.
 
 .SH EXIT STATUS
-screenfetch\-c returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
+\fBscreenfetch\-c\fP returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
 For example, screenfetch-c will return EXIT_FAILURE if flagged with \fB\-D\fP but not given an additional argument.
 
 .SH AUTHOR
