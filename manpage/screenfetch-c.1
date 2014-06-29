@@ -71,25 +71,25 @@ Displays help and compatibility information.
 Output only the ASCII logo associated with that distro. Follows the general naming conventions of the -D flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
 
 .SH CONFIGURATION
-When screenfetch-c is invoked with the \fB-m\fP flag for the first time, it enters manual mode.
+When screenfetch\-c is invoked with the \fB-m\fP flag for the first time, it enters manual mode.
 Manual mode prompts the user to enter specific information about the computer, storing that information in ~/.screenfetchc for the next invocation with the \fB\-m\fP flag.
 
-By default, you must enter all fields asked for in manual mode. However, if you want screenfetch-c to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force screenfetch-c to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
+By default, you must enter all fields asked for in manual mode. However, if you want screenfetch\-c to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force screenfetch-c to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
 
 To remove your existing manual configuration, simply delete the .screenfetchc file located in your $HOME. 
 
 Note: .screenfetchc's format isn't exactly human\-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete .screenfetchc and start from the beginning.
 
 .SH RELEASE HISTORY
-\fB0.1\fP \- ALPHA - INCOMPLETE, UNCOMPILED
+\fB0.1\fP \- ALPHA \- INCOMPLETE, UNCOMPILED
 
-\fB0.5\fP \- ALPHA - INCOMPLETE, TEST COMPILED
+\fB0.5\fP \- ALPHA \- INCOMPLETE, TEST COMPILED
 
-\fB1.0\fP \- BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
+\fB1.0\fP \- BETA \- LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
-\fB1.1\fP \- BETA - NEARLY COMPLETE, MINOR BUGS AND GPU DETECTION NOT FINISHED
+\fB1.1\fP \- BETA \- NEARLY COMPLETE, MINOR BUGS AND GPU DETECTION NOT FINISHED
 
-\fB1.2\fP \- RELEASE - WORKS ON THE MAJORITY OF SYSTEMS
+\fB1.2\fP \- RELEASE \- WORKS ON THE MAJORITY OF SYSTEMS
 
 .SH BUGS AND ERRATIC BEHAVIOR
 Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its versioning scheme.
