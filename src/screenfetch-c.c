@@ -1189,9 +1189,9 @@ void detect_res(char* str)
 		pclose(res_file);
 	}
 
-	else if (OS == LINUX)
+	else if (OS == LINUX || OS == SOLARIS)
 	{
-		#if defined(__linux__)
+		#if defined(__linux__) || defined(__sun__)
 			Display* disp = XOpenDisplay(NULL);
 			Screen* screen = XDefaultScreenOfDisplay(disp);
 			width = WidthOfScreen(screen);
@@ -1211,18 +1211,6 @@ void detect_res(char* str)
 		{
 			safe_strncpy(str, "No X Server", MAX_STRLEN);
 		}
-	}
-
-	else if (OS == SOLARIS)
-	{
-		#if defined(__sun__)
-			Display* disp = XOpenDisplay(NULL);
-			Screen* screen = XDefaultScreenOfDisplay(disp);
-			width = WidthOfScreen(screen);
-			height = HeightOfScreen(screen);
-		#endif
-
-		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
 
 	if (verbose)
