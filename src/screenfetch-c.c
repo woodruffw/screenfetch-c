@@ -613,7 +613,7 @@ void detect_uptime(char* str)
 	FILE* uptime_file;
 
 	long uptime = 0; 
-	#if !defined(__CYGWIN__) || !defined(__linux__)
+	#if !defined(__CYGWIN__) && !defined(__linux__)
 		long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
 	#endif
 	int secs = 0;
