@@ -5,7 +5,7 @@
 \fBscreenfetch\-c\fP \- Display computer information and an ASCII logo
 
 .SH SYNOPSIS
-\fBscreenfetch\-c\fP [\fB\-mvsnEVh\fP] [\fB\-D DISTRO\fP] [\fB\-L LOGO\fP]
+\fBscreenfetch\-c\fP [\fBOPTIONS\fP]
 
 .SH DESCRIPTION
 \fBscreenfetch\-c\fP is a C rewrite of the original screenFetch, 
@@ -29,39 +29,39 @@ Supported WMs:
 fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awesome, wmaker, stumpwm, musca, i3, xmonad, ratpoison, scrotwm, spectrwm, wmfs, wmii, beryl, subtle, e16, enlightenment, sawfish, emerald, monsterwm, dminiwm, compiz, Finder, herbstluftwm.
 
 .SH OPTIONS
-\fB\-m\fP
+\fB\-m\fP, \fB--manual\fP
 
 Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
 
-\fB\-v\fP
+\fB\-v\fP, \fB--verbose\fP
 
 Enable verbose mode, which prints out detection information.
 
-\fB\-s\fP
+\fB\-s\fP, \fB--screenshot\fP
 
 Take a screenshot after completing the output. On non\-Windows systems, this will save a file called 'screenfetch_screenshot.png' in $HOME. On Windows, this will save the screenshot in the system clipboard.
 
-\fB\-n\fP
+\fB\-n\fP, \fB--no-logo\fP
 
 Strip output of ASCII logo \- print information only.
 
-\fB\-D\fP DISTRO
+\fB\-D\fP, \fB--distro\fP DISTRO
 
 Set the distro outputted by screenfetch.
 
-\fB\-E\fP
+\fB\-E\fP, \fB--suppress-errors\fP
 
 Suppress error messages (does not suppress debug mode).
 
-\fB\-V\fP
+\fB\-V\fP, \fB--version\fP
 
 Display the version of screenfetch currently being used.
 
-\fB\-h\fP
+\fB\-h\fP, \fB--help\fP
 
 Displays help and compatibility information.
 
-\fB\-L\fP LOGO
+\fB\-L\fP, \fB--logo-only\fP LOGO
 
 Output only the ASCII logo associated with that distro. Follows the general naming conventions of the \fB\-D\fP flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
 

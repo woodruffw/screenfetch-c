@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h>
 
 /* a number is assigned to each OS or OS family */
 #define UNKNOWN 0

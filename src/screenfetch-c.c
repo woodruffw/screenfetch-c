@@ -91,8 +91,23 @@ int main(int argc, char** argv)
 		ERROR_OUT("It is HIGHLY recommended, therefore, that you use manual mode.", "");
 	}
 
+	struct option long_options[] =
+	{
+		{"manual", no_argument, 0, 'm'},
+		{"verbose", no_argument, 0, 'v'},
+		{"no-logo", no_argument, 0, 'n'},
+		{"screenshot", no_argument, 0, 's'},
+		{"distro", required_argument, 0, 'D'},
+		{"suppress-errors", no_argument, 0, 'E'},
+		{"version", no_argument, 0, 'V'},
+		{"help", no_argument, 0, 'h'},
+		{"logo-only", required_argument, 0, 'L'},
+		{0, 0, 0, 0}
+	};
+
 	signed char c;
-	while ((c = getopt(argc, argv, "mvnsD:EVhL:")) != -1)
+	int index = 0;
+	while ((c = getopt_long(argc, argv, "mvnsD:EVhL:", long_options, &index)) != -1)
 	{
 		switch (c)
 		{
@@ -125,9 +140,9 @@ int main(int argc, char** argv)
 				return EXIT_SUCCESS;
 			case '?':
 				if (optopt == 'D')
-					ERROR_OUT("Error: ", "The -D flag requires an argument.");
+					ERROR_OUT("Error: ", "The -D (--distro) flag requires an argument.");
 				else if (optopt == 'L')
-					ERROR_OUT("Error: ", "The -L flag requires an argument.");
+					ERROR_OUT("Error: ", "The -L (--logo-only) flag requires an argument.");
 				else
 					ERROR_OUT("Error: ", "Unknown option or option character.");
 				return EXIT_FAILURE;
@@ -1517,7 +1532,7 @@ int manual_input(void)
 		else
 		{
 			printf("%s\n", "Exiting manual mode and screenfetch-c.");
-			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m flag next time.");
+			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m (--manual) flag next time.");
 
 			return EXIT_FAILURE;
 		}
@@ -1912,11 +1927,11 @@ void output_logo_only(char* distro)
 		}
 	}
 
-	else
+	else /* if (STRCMP(distro_str, "Linux")) */
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s\n", angstrom_logo[i]);
+			printf("%s\n", linux_logo[i]);
 		}
 	}
 }
@@ -2376,7 +2391,7 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", TBLU "screenfetch-c - Version 1.2, revision 2" TNRM);
+	printf("%s\n", "screenfetch-c - Version 1.2, revision 2");
 	return;
 }
 
@@ -2385,12 +2400,12 @@ void display_version(void)
 */
 void display_help(void)
 {
-	printf("%s\n", TBLU "screenfetch-c");
+	printf("%s\n", "screenfetch-c");
 	printf("%s\n", "A rewrite of screenFetch, the popular shell script, in C.");
 	printf("%s\n", "Operating Systems currently supported:");
 	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, OS X, and Solaris.");
 	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all (and is disabled by default).");
-	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage." TNRM);
+	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage.");
 	return;
 }
 
