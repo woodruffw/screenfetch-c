@@ -1217,7 +1217,9 @@ void detect_res(char* str)
 			else
 			{
 				safe_strncpy(str, "No X Server", MAX_STRLEN);
-				ERROR_OUT("Error:", "Problem detecting X display resolution.");
+
+				if (error)
+					ERROR_OUT("Error: ", "Problem detecting X display resolution.");
 			}
 		#endif
 	}
