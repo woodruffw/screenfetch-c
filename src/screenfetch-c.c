@@ -1208,8 +1208,15 @@ void detect_res(char* str)
 		#if defined(__linux__) || defined(__sun__)
 			Display* disp = XOpenDisplay(NULL);
 			Screen* screen = XDefaultScreenOfDisplay(disp);
-			width = WidthOfScreen(screen);
-			height = HeightOfScreen(screen);
+			if (screen != NULL)
+			{
+				width = WidthOfScreen(screen);
+				height = HeightOfScreen(screen);
+			}
+			else
+			{
+				ERROR_OUT("Error:", "Problem detecting X display resolution.")
+			}
 		#endif
 
 		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
