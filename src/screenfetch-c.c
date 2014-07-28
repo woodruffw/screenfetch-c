@@ -1207,9 +1207,9 @@ void detect_res(char* str)
 	{
 		#if defined(__linux__) || defined(__sun__)
 			Display* disp = XOpenDisplay(NULL);
-			Screen* screen = XDefaultScreenOfDisplay(disp);
-			if (screen != NULL)
+			if (disp != NULL)
 			{
+				Screen* screen = XDefaultScreenOfDisplay(disp);
 				width = WidthOfScreen(screen);
 				height = HeightOfScreen(screen);
 			}
