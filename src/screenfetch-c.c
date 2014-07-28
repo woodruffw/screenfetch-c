@@ -1215,7 +1215,7 @@ void detect_res(char* str)
 			}
 			else
 			{
-				ERROR_OUT("Error:", "Problem detecting X display resolution.")
+				ERROR_OUT("Error:", "Problem detecting X display resolution.");
 			}
 		#endif
 
