@@ -2391,7 +2391,7 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", "screenfetch-c - Version 1.2, revision 2");
+	printf("%s\n", "screenfetch-c - Version 1.2, revision 3");
 	return;
 }
 
