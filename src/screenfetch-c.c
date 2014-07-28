@@ -1212,14 +1212,14 @@ void detect_res(char* str)
 				Screen* screen = XDefaultScreenOfDisplay(disp);
 				width = WidthOfScreen(screen);
 				height = HeightOfScreen(screen);
+				snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 			}
 			else
 			{
+				safe_strncpy(str, "No X Server", MAX_STRLEN);
 				ERROR_OUT("Error:", "Problem detecting X display resolution.");
 			}
 		#endif
-
-		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
 	}
 
 	else if (ISBSD())
