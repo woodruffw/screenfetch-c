@@ -320,7 +320,11 @@ void detect_distro(char* str)
 				safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
 			#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
 				safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
-			#else /* might add Server 03/08 conditions later */
+			#elif defined(_WIN32_WINNT_WS03)
+				safe_strncpy(str, "Microsoft Windows Server 2003", MAX_STRLEN);
+			#elif defined(_WIN32_WINNT_WS08)
+				safe_strncpy(str, "Microsoft Windows Server 2008", MAX_STRLEN);
+			#else
 				safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
 			#endif
 		}
