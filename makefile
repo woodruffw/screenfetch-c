@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-O3 -std=c99 -Wall
+CFLAGS=-O3 -std=c99 -Wall -Wunused-variable
+CFLAGS_LINUX=-Wno-unused-result
 LDFLAGS_OSX=-lpthread
 LDFLAGS_BSD=-lpthread
 LDFLAGS_LINUX=-lpthread -lX11
@@ -17,7 +18,7 @@ all:
 	@echo '========================================================='
 
 linux:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_LINUX)
+	$(CC) $(CFLAGS) $(CFLAGS_LINUX) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_LINUX)
 
 solaris:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_SOLARIS)

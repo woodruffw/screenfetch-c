@@ -49,7 +49,8 @@
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
 
-#include "screenfetch-c.h" /* contains all other includes, function prototypes, macros, ascii logos */
+#include "screenfetch-c.h" /* contains all other includes, function prototypes, macros */
+#include "logos.h" /* contains ascii logos */
 #include "thread.h" /* for cross-platform threading */
 
 /* string definitions - set to Unknown by default */
