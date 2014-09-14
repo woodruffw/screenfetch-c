@@ -7,8 +7,9 @@ LDFLAGS_LINUX=-lpthread -lX11
 LDFLAGS_SOLARIS=-lpthread -lX11
 INSTALL=/usr/bin/install -c
 
-BINDIR=/usr/local/bin
-MANDIR=/usr/local/share/man/man1
+PREFIX=/usr/local
+BIN=$(PREFIX)/bin
+MAN=$(PREFIX)/share/man/man1
 
 
 all:
@@ -33,23 +34,23 @@ win:
 	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c
 
 install:
-	$(INSTALL) screenfetch-c $(BINDIR)/screenfetch-c
-	$(INSTALL) ./src/detectde $(BINDIR)/detectde
-	$(INSTALL) ./src/detectgtk $(BINDIR)/detectgtk
-	$(INSTALL) ./src/detectwm $(BINDIR)/detectwm
-	$(INSTALL) ./src/detectwmtheme $(BINDIR)/detectwmtheme
-	$(INSTALL) ./src/detectgpu $(BINDIR)/detectgpu
-	mkdir -p $(MANDIR)
-	$(INSTALL) ./manpage/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
+	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c
+	$(INSTALL) ./src/detectde $(BIN)/detectde
+	$(INSTALL) ./src/detectgtk $(BIN)/detectgtk
+	$(INSTALL) ./src/detectwm $(BIN)/detectwm
+	$(INSTALL) ./src/detectwmtheme $(BIN)/detectwmtheme
+	$(INSTALL) ./src/detectgpu $(BIN)/detectgpu
+	mkdir -p $(MAN)
+	$(INSTALL) ./manpage/screenfetch-c.1 $(MAN)/screenfetch-c.1
 
 uninstall:
-	rm -rf $(BINDIR)/screenfetch-c
-	rm -rf $(BINDIR)/detectde
-	rm -rf $(BINDIR)/detectgtk
-	rm -rf $(BINDIR)/detectwm
-	rm -rf $(BINDIR)/detectwmtheme
-	rm -rf $(BINDIR)/detectgpu
-	rm -rf $(MANDIR)/screenfetch-c.1
+	rm -rf $(BIN)/screenfetch-c
+	rm -rf $(BIN)/detectde
+	rm -rf $(BIN)/detectgtk
+	rm -rf $(BIN)/detectwm
+	rm -rf $(BIN)/detectwmtheme
+	rm -rf $(BIN)/detectgpu
+	rm -rf $(MAN)/screenfetch-c.1
 
 threadtest:
 	$(CC) $(CFLAGS) ./src/threadtest.c ./src/thread.c -o ./threadtest
