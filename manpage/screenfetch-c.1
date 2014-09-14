@@ -76,7 +76,15 @@ To remove your existing manual configuration, simply delete the \fB.screenfetchc
 Note: \fB.screenfetchc\fP's format isn't exactly human\-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete \fB.screenfetchc\fP and start from the beginning.
 
 .SH ENVIRONMENT VARIABLES
-\fBscreenfetch\-c\fP uses two environment variables: \fb$USER\fP and \fB$HOME\fP. Both must be properly set in order for \fBscreenfetch\-c\fP to operate correctly.
+\fBscreenfetch\-c\fP uses the following environment variables:
+
+\fB$USER\fP \- Used on BSD to determine the current user.
+
+\fB$HOME\fP \- Used to determine the user's home directory.
+
+\fB$SHELL\fP \- Used to determine the active shell.
+
+Each of these variables must be defined properly in order for \fBscreenfetch\-c\fP to function as intended.
 
 .SH RELEASE HISTORY
 Note: Revisions are not counted in the release history.
