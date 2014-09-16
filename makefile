@@ -11,6 +11,7 @@ PREFIX=/usr/local
 BIN=$(PREFIX)/bin
 MAN=$(PREFIX)/share/man/man1
 
+SOURCES=screenfetch.c thread.c resources.c
 
 all:
 	@echo '========================================================='
@@ -19,19 +20,19 @@ all:
 	@echo '========================================================='
 
 linux:
-	$(CC) $(CFLAGS) $(CFLAGS_LINUX) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_LINUX)
+	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS_LINUX)
 
 solaris:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_SOLARIS)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_SOLARIS)
 
 bsd:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_BSD)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_BSD)
 
 osx:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c $(LDFLAGS_OSX)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_OSX)
 
 win:
-	$(CC) $(CFLAGS) ./src/screenfetch-c.c ./src/thread.c -o ./screenfetch-c
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c
 
 install:
 	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c
