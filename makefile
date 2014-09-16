@@ -11,7 +11,7 @@ PREFIX=/usr/local
 BIN=$(PREFIX)/bin
 MAN=$(PREFIX)/share/man/man1
 
-SOURCES=screenfetch.c thread.c resources.c
+SOURCES=./src/*.c
 
 all:
 	@echo '========================================================='
