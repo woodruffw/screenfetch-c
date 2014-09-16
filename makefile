@@ -54,7 +54,7 @@ uninstall:
 	rm -rf $(MAN)/screenfetch-c.1
 
 threadtest:
-	$(CC) $(CFLAGS) ./src/threadtest.c ./src/thread.c -o ./threadtest
+	$(CC) $(CFLAGS) ./src/tests/threadtest.c ./src/thread.c -o ./threadtest
 
 clean:
 	rm screenfetch-c
