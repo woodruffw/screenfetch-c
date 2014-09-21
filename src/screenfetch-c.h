@@ -10,15 +10,10 @@
 #ifndef SCREENFETCH_C_H
 #define SCREENFETCH_C_H
 
-#define _POSIX_C_SOURCE 200112L /* makes all these systems play nicely together */
-
-/* includes, all from the standard library */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <unistd.h>
-#include <getopt.h>
+/* version macros */
+#define SCREENFETCH_C_VERSION_MAJOR "1"
+#define SCREENFETCH_C_VERSION_MINOR "2"
+#define SCREENFETCH_C_VERSION_RELEASE "6"
 
 /* a number is assigned to each OS or OS family */
 #define UNKNOWN 0
@@ -73,7 +68,6 @@
 	#define OS UNKNOWN
 #endif
 
-
 /* color/fmt definitions */
 #define TNRM "\x1B[0m" /* normal */
 #define TBLK "\x1B[30m" /* black */
@@ -102,7 +96,6 @@
 #define FILE_EXISTS(file) (!access(file, F_OK))
 #define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
 #define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
-
 
 /* screenfetch detection function definitions */
 void detect_distro(char* str);

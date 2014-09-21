@@ -49,6 +49,15 @@
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
 
+#define _POSIX_C_SOURCE 200112L /* makes all these systems play nicely together */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
+#include <getopt.h>
+
 #include "screenfetch-c.h" /* contains all other includes, function prototypes, macros */
 #include "logos.h" /* contains ascii logos */
 #include "thread.h" /* for cross-platform threading */
@@ -2407,7 +2416,7 @@ void main_text_output(char* data[], char* data_names[])
 */
 void display_version(void)
 {
-	printf("%s\n", "screenfetch-c - Version 1.2, revision 5");
+	printf("%s\n", "screenfetch-c - Version " SCREENFETCH_C_VERSION_MAJOR "." SCREENFETCH_C_VERSION_MINOR ", revision " SCREENFETCH_C_VERSION_RELEASE ".");
 	return;
 }
 
