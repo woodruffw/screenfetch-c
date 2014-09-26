@@ -583,22 +583,9 @@ void detect_kernel(char* str)
 			snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 		#endif
 	}
-
-	else if (ISBSD())
+	else
 	{
-		FILE* kernel_file = popen("uname -sr | tr -d '\\n'", "r");
-
-		if (OS != CYGWIN)
-			fgets(str, MAX_STRLEN, kernel_file);
-		else
-			fscanf(kernel_file, "%s", str);
-
-		pclose(kernel_file);
-	}
-
-	else if (OS == OSX || OS == LINUX || OS == SOLARIS)
-	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__unix__)
 			struct utsname kern_info;
 			uname(&kern_info);
 			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
