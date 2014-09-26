@@ -547,21 +547,12 @@ void detect_host(char* str)
 		#endif
 	}
 
-	else if (OS == OSX || OS == LINUX || OS == SOLARIS)
+	else if (OS == OSX || OS == LINUX || OS == SOLARIS || ISBSD())
 	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__)
+		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__unix__)
 			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
 			gethostname(given_host, MAX_STRLEN);
 		#endif
-	}
-
-	else if (ISBSD())
-	{
-		given_user = getenv("USER");
-
-		FILE* host_file = popen("hostname | tr -d '\\r\\n '", "r");
-		fgets(given_host, MAX_STRLEN, host_file);
-		pclose(host_file);
 	}
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);

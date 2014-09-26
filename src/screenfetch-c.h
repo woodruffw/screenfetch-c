@@ -46,15 +46,18 @@
 	#include <X11/Xlib.h>
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
+	#include <sys/utsname.h>
 	#include <time.h>
 #elif defined(__NetBSD__)
 	#define OS NETBSD
+	#include <sys/utsname.h>
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
 	#include <sys/utsname.h>
 	#include <time.h>
 #elif defined(__DragonFly__)
 	#define OS DFBSD
+	#include <sys/utsname.h>
 	#include <time.h>
 #elif defined(__sun__)
 	#define OS SOLARIS
