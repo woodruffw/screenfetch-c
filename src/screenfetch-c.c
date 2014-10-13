@@ -341,11 +341,21 @@ void detect_distro(char* str)
 
 		else if (OS == OSX)
 		{
-			distro_file = popen("sw_vers | grep ProductVersion | tr -d 'ProductVersion: \\t\\n'", "r");
-			fgets(distro_name_str, MAX_STRLEN, distro_file);
-			pclose(distro_file);
+			/* possibly read /System/Library/CoreServices/SystemVersion.plist? */
+			#if defined(__APPLE__) && defined(__MACH__) && __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+				int ver_maj, ver_min, ver_bug;
+				Gestalt(gestaltSystemVersionMajor, (SInt32 *) &ver_maj);
+				Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
+				Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
 
-			snprintf(str, MAX_STRLEN, "%s%s", "Mac OS X ", distro_name_str);
+				snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
+			#else /* Gestalt is deprecated on 10.8+, so use sw_vers */
+				distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
+				fgets(distro_name_str, MAX_STRLEN, distro_file);
+				pclose(distro_file);
+
+				snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
+			#endif
 		}
 
 		else if (OS == LINUX)

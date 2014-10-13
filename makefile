@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-O3 -std=c99 -Wall -Wunused-variable
 CFLAGS_LINUX=-Wno-unused-result
-LDFLAGS_OSX=-lpthread
+LDFLAGS_OSX=-lpthread -framework CoreServices
 LDFLAGS_BSD=-lpthread
 LDFLAGS_LINUX=-lpthread -lX11
 LDFLAGS_SOLARIS=-lpthread -lX11

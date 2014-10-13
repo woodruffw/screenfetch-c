@@ -39,6 +39,10 @@
 	#define OS OSX
 	#include <sys/utsname.h>
 	#include <time.h>
+	#include <Availability.h>
+	#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+		#include <CoreServices/CoreServices.h> /* for Gestalt */
+	#endif
 #elif defined(__linux__)
 	#define OS LINUX
 	#include <sys/sysinfo.h>
