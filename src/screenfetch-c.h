@@ -13,7 +13,7 @@
 /* version macros */
 #define SCREENFETCH_C_VERSION_MAJOR "1"
 #define SCREENFETCH_C_VERSION_MINOR "2"
-#define SCREENFETCH_C_VERSION_RELEASE "6"
+#define SCREENFETCH_C_VERSION_RELEASE "7"
 
 /* a number is assigned to each OS or OS family */
 #define UNKNOWN 0
