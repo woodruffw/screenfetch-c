@@ -1124,50 +1124,56 @@ void detect_shell(char* str)
 {
 	FILE* shell_file;
 
-	char shell_name[MAX_STRLEN];
+	char* shell_name;
 	char vers_str[MAX_STRLEN];
 
-	shell_file = popen("echo $SHELL | awk -F \"/\" '{print $NF}' 2> /dev/null | tr -d '\\r\\n'", "r");
-	fgets(shell_name, MAX_STRLEN, shell_file);
-	pclose(shell_file);
+	shell_name = getenv("SHELL");
 
-	if (STRCMP(shell_name, "bash"))
+	if (shell_name == NULL)
+	{
+		if (error)
+			ERROR_OUT("Error: ", "Problem detecting shell.");
+
+		return;
+	}
+
+	if (strstr(shell_name, "bash"))
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
 		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 17, vers_str + 10);
+		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
 		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_name, "zsh"))
+	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);	
 		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 5, vers_str + 4);
+		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_name, "csh"))
+	else if (strstr(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
 		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 7, vers_str + 5);
+		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
 		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_name, "fish"))
+	else if (strstr(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
 		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "%s %.*s", shell_name, 13, vers_str + 6);
+		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
 
-	else if (STRCMP(shell_name, "dash") || STRCMP(shell_name, "ash") || STRCMP(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
