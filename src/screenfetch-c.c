@@ -81,8 +81,43 @@ static char wm_theme_str[MAX_STRLEN] = "Unknown";
 static char gtk_str[MAX_STRLEN] = "Unknown";
 
 /* output string definitions */
-static char* detected_arr[16] = {host_str, distro_str, kernel_str, arch_str, cpu_str, gpu_str, shell_str, pkgs_str, disk_str, mem_str, uptime_str, res_str, de_str, wm_str, wm_theme_str, gtk_str};
-static char* detected_arr_names[16] = {"", "OS: ", "Kernel: ", "Arch: ", "CPU: ", "GPU: ", "Shell: ", "Packages: ", "Disk: ", "Memory: ", "Uptime: ", "Resolution: ", "DE: ", "WM: ", "WM Theme: ", "GTK: "};
+static char* detected_arr[16] = {
+									host_str,
+									distro_str,
+									kernel_str,
+									arch_str,
+									cpu_str,
+									gpu_str,
+									shell_str,
+									pkgs_str,
+									disk_str,
+									mem_str,
+									uptime_str,
+									res_str,
+									de_str,
+									wm_str,
+									wm_theme_str,
+									gtk_str
+								};
+
+static char* detected_arr_names[16] = {
+										"",
+										"OS: ",
+										"Kernel: ",
+										"Arch: ",
+										"CPU: ",
+										"GPU: ",
+										"Shell: ",
+										"Packages: ",
+										"Disk: ",
+										"Memory: ",
+										"Uptime: ",
+										"Resolution: ",
+										"DE: ",
+										"WM: ",
+										"WM Theme: ",
+										"GTK: "
+									};
 
 /* other definitions */
 bool manual = false;
@@ -103,16 +138,16 @@ int main(int argc, char** argv)
 
 	struct option long_options[] =
 	{
-		{"manual", no_argument, 0, 'm'},
-		{"verbose", no_argument, 0, 'v'},
-		{"no-logo", no_argument, 0, 'n'},
-		{"screenshot", no_argument, 0, 's'},
-		{"distro", required_argument, 0, 'D'},
-		{"suppress-errors", no_argument, 0, 'E'},
-		{"version", no_argument, 0, 'V'},
-		{"help", no_argument, 0, 'h'},
-		{"logo-only", required_argument, 0, 'L'},
-		{0, 0, 0, 0}
+		{ "manual", no_argument, 0, 'm' },
+		{ "verbose", no_argument, 0, 'v' },
+		{ "no-logo", no_argument, 0, 'n' },
+		{ "screenshot", no_argument, 0, 's' },
+		{ "distro", required_argument, 0, 'D' },
+		{ "suppress-errors", no_argument, 0, 'E' },
+		{ "version", no_argument, 0, 'V' },
+		{ "help", no_argument, 0, 'h' },
+		{ "logo-only", required_argument, 0, 'L' },
+		{ 0, 0, 0, 0 }
 	};
 
 	signed char c;
@@ -875,6 +910,12 @@ void detect_cpu(char* str)
 
 	else if (OS == OSX)
 	{
+		/*
+			something like:
+			int len = MAX_STRLEN;
+			sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
+		*/
+
 		cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n' | tr -s ' '", "r");
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
@@ -888,7 +929,7 @@ void detect_cpu(char* str)
 
 		if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
 		{
-			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for Raspberry Pi machines */
+			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for the Raspberry Pi */
 		}
 	}
 
