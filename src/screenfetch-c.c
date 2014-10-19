@@ -1495,9 +1495,9 @@ void detect_gtk(char* str)
 int manual_input(void)
 {
 	FILE* config_file;
-	char* config_file_loc;
+	char config_file_loc[MAX_STRLEN];
 
-	config_file_loc = getenv("HOME");
+	safe_strncpy(config_file_loc, getenv("HOME"), MAX_STRLEN);
 	strncat(config_file_loc, "/.screenfetchc", MAX_STRLEN);
 
 	if (!FILE_EXISTS(config_file_loc))

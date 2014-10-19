@@ -9,8 +9,6 @@
 #ifndef SCREENFETCH_C_MISC_H
 #define SCREENFETCH_C_MISC_H
 
-#include "colors.h"
-
 #define KB 1024
 #define MB 1048576
 #define MAX_STRLEN 128
