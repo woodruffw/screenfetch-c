@@ -1,4 +1,4 @@
-/* 	screenfetch-c.c
+/*	screenfetch-c.c
 	Author: William Woodruff
 	-------------
 
@@ -344,9 +344,9 @@ int main(int argc, char** argv)
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
 
-/*  detect_distro
-    detects the computer's distribution (really only relevant on Linux)
-    argument char* str: the char array to be filled with the distro name
+/*	detect_distro
+	detects the computer's distribution (really only relevant on Linux)
+	argument char* str: the char array to be filled with the distro name
 */
 void detect_distro(char* str)
 {
@@ -504,9 +504,9 @@ void detect_distro(char* str)
 	return;
 }
 
-/*  detect_arch
-    detects the computer's architecture
-    argument char* str: the char array to be filled with the architecture
+/*	detect_arch
+	detects the computer's architecture
+	argument char* str: the char array to be filled with the architecture
 */
 void detect_arch(char* str)
 {
@@ -567,12 +567,12 @@ void detect_arch(char* str)
 	return;
 }
 
-/*  detect_host
-    detects the computer's hostname and active user and formats them
-    argument char* str: the char array to be filled with the user and hostname in format 'user@host'
-    --
-    CAVEAT: acceses an environment variable
-    --
+/*	detect_host
+	detects the computer's hostname and active user and formats them
+	argument char* str: the char array to be filled with the user and hostname in format 'user@host'
+	--
+	CAVEAT: acceses an environment variable
+	--
 */
 void detect_host(char* str)
 {
@@ -615,9 +615,9 @@ void detect_host(char* str)
 	return;
 }
 
-/*  detect_kernel
-    detects the computer's kernel
-    argument char* str: the char array to be filled with the kernel name
+/*	detect_kernel
+	detects the computer's kernel
+	argument char* str: the char array to be filled with the kernel name
 */
 void detect_kernel(char* str)
 {
@@ -646,9 +646,9 @@ void detect_kernel(char* str)
 	return;
 }
 
-/*  detect_uptime
-    detects the computer's uptime
-    argument char* str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+/*	detect_uptime
+	detects the computer's uptime
+	argument char* str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
 */
 void detect_uptime(char* str)
 {
@@ -745,9 +745,9 @@ void detect_uptime(char* str)
 	return;
 }
 
-/*  detect_pkgs
-    detects the number of packages installed on the computer
-    argument char* str: the char array to be filled with the number of packages
+/*	detect_pkgs
+	detects the number of packages installed on the computer
+	argument char* str: the char array to be filled with the number of packages
 */
 void detect_pkgs(char* str)
 {
@@ -893,9 +893,9 @@ void detect_pkgs(char* str)
 	return;
 }
 
-/*  detect_cpu
-    detects the computer's CPU brand/name-string
-    argument char* str: the char array to be filled with the CPU name
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char* str: the char array to be filled with the CPU name
 */
 void detect_cpu(char* str)
 {
@@ -956,9 +956,9 @@ void detect_cpu(char* str)
 	return;
 }
 
-/*  detect_gpu
-    detects the computer's GPU brand/name-string
-    argument char* str: the char array to be filled with the GPU name
+/*	detect_gpu
+	detects the computer's GPU brand/name-string
+	argument char* str: the char array to be filled with the GPU name
 */
 void detect_gpu(char* str)
 {
@@ -994,9 +994,9 @@ void detect_gpu(char* str)
 	return;
 }
 
-/*  detect_disk
-    detects the computer's total disk capacity and usage
-    argument char* str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+/*	detect_disk
+	detects the computer's total disk capacity and usage
+	argument char* str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
 void detect_disk(char* str)
 {
@@ -1033,12 +1033,12 @@ void detect_disk(char* str)
 	else if (ISBSD())
 	{
 		disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
-        fscanf(disk_file, "%d", &disk_total);
-        pclose(disk_file);
+		fscanf(disk_file, "%d", &disk_total);
+		pclose(disk_file);
 
-        disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-        fscanf(disk_file, "%d", &disk_used);
-        pclose(disk_file);
+		disk_file = popen("df -h 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+		fscanf(disk_file, "%d", &disk_used);
+		pclose(disk_file);
 	}
 
 	else if (OS == SOLARIS)
@@ -1067,9 +1067,9 @@ void detect_disk(char* str)
 	return;
 }
 
-/*  detect_mem
-    detects the computer's total and used RAM
-    argument char* str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+/*	detect_mem
+	detects the computer's total and used RAM
+	argument char* str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
 */
 void detect_mem(char* str)
 {
@@ -1155,14 +1155,14 @@ void detect_mem(char* str)
 	return;
 }
 
-/*  detect_shell
-    detects the shell currently running on the computer
-    argument char* str: the char array to be filled with the shell name and version
-    --
-    CAVEAT: shell version detection relies on the standard versioning format for 
-    each shell. If any shell's older (or newer versions) suddenly begin to use a new
-    scheme, the version may be displayed incorrectly.
-    --
+/*	detect_shell
+	detects the shell currently running on the computer
+	argument char* str: the char array to be filled with the shell name and version
+	--
+	CAVEAT: shell version detection relies on the standard versioning format for 
+	each shell. If any shell's older (or newer versions) suddenly begin to use a new
+	scheme, the version may be displayed incorrectly.
+	--
 */
 void detect_shell(char* str)
 {
@@ -1229,9 +1229,9 @@ void detect_shell(char* str)
 	return;
 }
 
-/*  detect_res
-    detects the combined resolution of all monitors attached to the computer
-    argument char* str: the char array to be filled with the resolution in format '$x$', where $ is a number
+/*	detect_res
+	detects the combined resolution of all monitors attached to the computer
+	argument char* str: the char array to be filled with the resolution in format '$x$', where $ is a number
 */
 void detect_res(char* str)
 {
@@ -1296,13 +1296,13 @@ void detect_res(char* str)
 	return;
 }
 
-/*  detect_de
-    detects the desktop environment currently running on top of the OS
-    argument char* str: the char array to be filled with the DE name
-    --
+/*	detect_de
+	detects the desktop environment currently running on top of the OS
+	argument char* str: the char array to be filled with the DE name
+	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
-    --
+	--
 */
 void detect_de(char* str)
 {
@@ -1349,13 +1349,13 @@ void detect_de(char* str)
 	return;
 }
 
-/*  detect_wm
-    detects the window manager currently running on top of the OS
-    argument char* str: the char array to be filled with the WM name
-    --
+/*	detect_wm
+	detects the window manager currently running on top of the OS
+	argument char* str: the char array to be filled with the WM name
+	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
-    --
+	--
 */
 void detect_wm(char* str)
 {
@@ -1393,13 +1393,13 @@ void detect_wm(char* str)
 	return;
 }
 
-/*  detect_wm_theme
-    detects the theme associated with the WM detected in detect_wm()
-    argument char* str: the char array to be filled with the WM Theme name
-    --
+/*	detect_wm_theme
+	detects the theme associated with the WM detected in detect_wm()
+	argument char* str: the char array to be filled with the WM Theme name
+	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
-    --
+	--
 */
 void detect_wm_theme(char* str)
 {
@@ -1431,13 +1431,13 @@ void detect_wm_theme(char* str)
 	return;
 }
 
-/*  detect_gtk
-    detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-    argument char* str: the char array to be filled with the GTK info
-    --
+/*	detect_gtk
+	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
+	argument char* str: the char array to be filled with the GTK info
+	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
-    --
+	--
 */
 void detect_gtk(char* str)
 {
@@ -1646,9 +1646,9 @@ int manual_input(void)
 
 /*  **  BEGIN AUXILIARY FUNCTIONS  **  */
 
-/*  safe_strncpy
-    calls strncpy with the given params, then inserts a null char at the last position
-    returns a pointer to a string containing the copied data (same as destination)
+/*	safe_strncpy
+	calls strncpy with the given params, then inserts a null char at the last position
+	returns a pointer to a string containing the copied data (same as destination)
 */
 char* safe_strncpy(char* destination, const char* source, size_t num)
 {
@@ -1657,13 +1657,13 @@ char* safe_strncpy(char* destination, const char* source, size_t num)
 	return ret;
 }
 
-/*  split_uptime
-    splits param uptime into individual time-units
-    argument long uptime: the uptime, in seconds, to be split
-    arguments int* secs...days: pointers to ints where the split uptime will be stored
-    --
-    CAVEAT: uptime MUST be in seconds
-    --
+/*	split_uptime
+	splits param uptime into individual time-units
+	argument long uptime: the uptime, in seconds, to be split
+	arguments int* secs...days: pointers to ints where the split uptime will be stored
+	--
+	CAVEAT: uptime MUST be in seconds
+	--
 */
 void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 {
@@ -1678,7 +1678,7 @@ void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 /*  **  END AUXILIARY FUNCTIONS  **  */
 
 
-/*  output_logo_only
+/*	output_logo_only
 	outputs an ASCII logo based upon the distro name passed to it
 	argument char* distro the name of the distro to output
 */
@@ -2001,9 +2001,9 @@ void output_logo_only(char* distro)
 
 /*  **  BEGIN FLAG/OUTPUT/MISC FUNCTIONS  **  */
 
-/*  main_ascii_output
-    the primary output for screenfetch-c - all info and ASCII art is printed here
-    arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
+/*	main_ascii_output
+	the primary output for screenfetch-c - all info and ASCII art is printed here
+	arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
 void main_ascii_output(char* data[], char* data_names[])
 {
@@ -2435,7 +2435,7 @@ void main_ascii_output(char* data[], char* data_names[])
 	return;
 }
 
-/*  main_text_output
+/*	main_text_output
 	the secondary output for screenfetch-c - all info WITHOUT ASCII art is printed here
 	arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
 */
@@ -2449,11 +2449,8 @@ void main_text_output(char* data[], char* data_names[])
 	return;
 }
 
-/*  take_screenshot
-    takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
-    --
-    CAVEAT: THIS FUNCTION MAKES SYSTEM CALLS
-    --
+/*	take_screenshot
+	takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
 */
 void take_screenshot(void)
 {
