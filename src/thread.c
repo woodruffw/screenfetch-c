@@ -11,7 +11,7 @@
 
 #include "thread.h"
 
-/*  create_thread
+/*	create_thread
 	spawns a new thread, given a pointer to a THREAD, a function, and an argument
 	on POSIX systems, calls pthread_create
 	on Windows systems, calls CreateThread
@@ -28,7 +28,7 @@ void create_thread(THREAD* thread, void *(*func_call)(void*), void* arg)
 	#endif
 }
 
-/*  join_thread
+/*	join_thread
 	suspends execution of the calling thread until the argument thread has terminated its execution
 	on POSIX systems, calls pthread_join
 	on Windows systems, calls WaitForSingleObject
@@ -43,7 +43,7 @@ void join_thread(THREAD thread)
 	#endif
 }
 
-/*  exit_thread
+/*	exit_thread
 	exits the thread being called under
 	on POSIX systems, calls pthread_exit
 	on Windows systems, calls ExitThread

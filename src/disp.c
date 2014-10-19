@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include "version.h"
 
-/*  display_version
-    called if the -v flag is tripped
+/*	display_version
+	called if the -v flag is tripped
 */
 void display_version(void)
 {
@@ -20,8 +20,8 @@ void display_version(void)
 	return;
 }
 
-/*  display_help
-    called if the -h flag is tripped
+/*	display_help
+	called if the -h flag is tripped
 */
 void display_help(void)
 {

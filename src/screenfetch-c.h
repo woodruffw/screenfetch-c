@@ -1,4 +1,4 @@
-/*  screenfetch-c.h
+/*	screenfetch-c.h
 	Author: William Woodruff
 	-------------
 	
