@@ -45,7 +45,7 @@
 
 	------
 
-	I hereby regrant this version of screenFetch under the same MIT license.
+	I hereby regrant screenfetch-c under the same MIT license.
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
 
@@ -58,8 +58,11 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#include "screenfetch-c.h" /* contains all other includes, function prototypes, macros */
-#include "logos.h" /* contains ascii logos */
+#include "screenfetch-c.h" /* detection function prototypes, macros */
+#include "disp.h" /* version and help output functions */
+#include "logos.h" /* ascii logos */
+#include "colors.h" /* terminal color codes */
+#include "misc.h" /* misc macros */
 #include "thread.h" /* for cross-platform threading */
 
 /* string definitions - set to Unknown by default */
@@ -2443,29 +2446,6 @@ void main_text_output(char* data[], char* data_names[])
 	for (i = 0; i < 16; i++)
 		printf("%s %s\n", data_names[i], data[i]);
 
-	return;
-}
-
-/*  display_version
-    called if the -v flag is tripped, outputs the current version of screenfetch-c
-*/
-void display_version(void)
-{
-	printf("%s\n", "screenfetch-c - Version " SCREENFETCH_C_VERSION_MAJOR "." SCREENFETCH_C_VERSION_MINOR ", revision " SCREENFETCH_C_VERSION_RELEASE ".");
-	return;
-}
-
-/*  display_help
-    called if the -h flag is tripped, tells the user where to find the manpage
-*/
-void display_help(void)
-{
-	printf("%s\n", "screenfetch-c");
-	printf("%s\n", "A rewrite of screenFetch, the popular shell script, in C.");
-	printf("%s\n", "Operating Systems currently supported:");
-	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, OS X, and Solaris.");
-	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all (and is disabled by default).");
-	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage.");
 	return;
 }
 
