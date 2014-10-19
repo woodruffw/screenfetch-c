@@ -12,7 +12,7 @@
 #include "version.h"
 
 /*  display_version
-    called if the -v flag is tripped, outputs the current version of screenfetch-c
+    called if the -v flag is tripped
 */
 void display_version(void)
 {
@@ -21,15 +21,21 @@ void display_version(void)
 }
 
 /*  display_help
-    called if the -h flag is tripped, tells the user where to find the manpage
+    called if the -h flag is tripped
 */
 void display_help(void)
 {
-	printf("%s\n", "screenfetch-c");
-	printf("%s\n", "A rewrite of screenFetch, the popular shell script, in C.");
-	printf("%s\n", "Operating Systems currently supported:");
-	printf("%s\n", "Windows (via Cygwin), Linux, *BSD, OS X, and Solaris.");
-	printf("%s\n", "Using screenfetch-c on an OS not listed above may not work entirely or at all (and is disabled by default).");
-	printf("%s\n", "Please access 'man screenfetch' for in-depth information on compatibility and usage.");
+	display_version();
+	printf("\n%s\n", "Options:");
+	printf(" %s\n", "-m, --manual\t\t\t Enter manual mode.");
+	printf(" %s\n", "-v, --verbose\t\t\t Enable verbosity during output.");
+	printf(" %s\n", "-s, --screenshot\t\t Take a screenshot.");
+	printf(" %s\n", "-n, --no-logo\t\t\t Print output without a logo.");
+	printf(" %s\n", "-D, --distro [DISTRO]\t\t Print output with DISTRO's logo.");
+	printf(" %s\n", "-E, --suppress-errors\t\t Suppress error output.");
+	printf(" %s\n", "-V, --version\t\t\t Output screenfetch-c's version and exit.");
+	printf(" %s\n", "-h, --help\t\t\t Output this help information.");
+	printf(" %s\n", "-L, --logo-only [DISTRO]\t Output only the logo associated with DISTRO.");
+	printf("\n%s\n", "For more information, consult screenfetch-c's man page.");
 	return;
 }

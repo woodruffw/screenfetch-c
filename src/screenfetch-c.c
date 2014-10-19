@@ -2509,6 +2509,7 @@ void take_screenshot(void)
 			system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
 		}
 
+		/* change this to getpwuid() */
 		char* loc = getenv("HOME");
 		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
 
@@ -2527,5 +2528,3 @@ void take_screenshot(void)
 }
 
 /*  **  END FLAG/OUTPUT/MISC FUNCTIONS  **  */
-
-/* EOF */

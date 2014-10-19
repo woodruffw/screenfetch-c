@@ -19,7 +19,7 @@ Supported OSes:
 Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris and its derivatives, 
 and most Linux\-kernel based distributions. 
 
-Note: If you are using manual mode to provide screenfetch\-c with system information, you will need to enter the distribution name EXACTLY as written below:
+Note: If you are using manual mode to provide \fBscreenfetch\-c\fP with system information, you will need to enter the distribution name EXACTLY as written below:
 Arch Linux, ParabolaGNU/Linux\-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Andoid, Linux, Solaris, Angstrom.
 
 Supported shells:
@@ -47,21 +47,21 @@ Strip output of ASCII logo \- print information only.
 
 \fB\-D\fP, \fB--distro\fP DISTRO
 
-Set the distro outputted by screenfetch.
+Set the distro outputted by \fBscreenfetch-c\fP.
 
 \fB\-E\fP, \fB--suppress-errors\fP
 
-Suppress error messages (does not suppress debug mode).
+Suppress error messages as they arise.
 
 \fB\-V\fP, \fB--version\fP
 
-Display the version of screenfetch currently being used.
+Display the version of \fBscreenfetch-c\fP currently being used.
 
 \fB\-h\fP, \fB--help\fP
 
 Displays help and compatibility information.
 
-\fB\-L\fP, \fB--logo-only\fP LOGO
+\fB\-L\fP, \fB--logo-only\fP DISTRO
 
 Output only the ASCII logo associated with that distro. Follows the general naming conventions of the \fB\-D\fP flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
 
@@ -118,7 +118,7 @@ Otherwise, the user may choose to enable the verbose mode, which display real-ti
 
 .SH EXIT STATUS
 \fBscreenfetch\-c\fP returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
-For example, screenfetch-c will return EXIT_FAILURE if flagged with \fB\-D\fP but not given an additional argument.
+For example, \fBscreenfetch-c\fP will return EXIT_FAILURE if flagged with \fB\-D\fP but not given an additional argument.
 
 .SH AUTHOR
 screenFetch was originally written by Brett Bohnenkamper (\fBkittykatt @ archlinux.us\fP)

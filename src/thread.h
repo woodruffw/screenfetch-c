@@ -2,7 +2,7 @@
 	Author: William Woodruff
 	-------------
 
-	This file contains the function prototypes and macros required by thread.c
+	This file contains the function prototypes and macros required by thread.c.
 	Like the rest of screenfetch-c, this file is licensed under the MIT License.
 	You should have received a copy of it with this code.
 */
@@ -24,5 +24,3 @@ void join_thread(THREAD thread);
 void exit_thread();
 
 #endif
-
-/* EOF */
