@@ -2510,10 +2510,11 @@ void take_screenshot(void)
 		}
 
 		/* change this to getpwuid() */
-		char* loc = getenv("HOME");
-		strncat(loc, "/screenfetch_screenshot.png", MAX_STRLEN);
+		char file_loc[MAX_STRLEN];
+		safe_strncpy(file_loc, getenv("HOME"), MAX_STRLEN);
+		strncat(file_loc, "/screenfetch_screenshot.png", MAX_STRLEN);
 
-		if (FILE_EXISTS(loc) && verbose)
+		if (FILE_EXISTS(file_loc) && verbose)
 		{
 			VERBOSE_OUT("Screenshot successfully saved.", "");
 		}
