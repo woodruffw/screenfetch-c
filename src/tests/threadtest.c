@@ -11,15 +11,15 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "thread.h"
+#include "../thread.h"
 
-void* printtest(void* ptr) { printf("%s\n", "inside a thread"); exit_thread(); }
+void printtest(void* ptr) { printf("%s\n", "inside a thread"); exit_thread(); }
 
 int main(int argc, char const *argv[])
 {
 	printf("%s\n", "test");
 	THREAD thread;
-	create_thread(&thread, printtest, NULL);
+	create_thread(&thread, (void *) printtest, NULL);
 	join_thread(thread);
 	printf("%s\n", "test done");
 	return 0;
