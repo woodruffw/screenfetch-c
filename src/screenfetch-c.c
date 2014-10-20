@@ -570,9 +570,6 @@ void detect_arch(char* str)
 /*	detect_host
 	detects the computer's hostname and active user and formats them
 	argument char* str: the char array to be filled with the user and hostname in format 'user@host'
-	--
-	CAVEAT: acceses an environment variable
-	--
 */
 void detect_host(char* str)
 {
