@@ -770,18 +770,22 @@ void detect_pkgs(char* str)
 
 	else if (OS == OSX)
 	{
-		pkgs_file = popen("ls /usr/local/bin 2> /dev/null | wc -w", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
-
 		if (FILE_EXISTS("/usr/local/bin/brew"))
 		{
-			int brew_pkgs = 0;
-			pkgs_file = popen("brew list -1 | wc -l", "r");
-			fscanf(pkgs_file, "%d", &brew_pkgs);
-			pclose(pkgs_file);
+			#if (defined(__APPLE__) || defined(__MACH__))
+				glob_t gl;
 
-			packages += brew_pkgs;
+				if (glob("/usr/local/Cellar/*", GLOB_NOSORT, NULL, &gl) == 0)
+				{
+					packages = gl.gl_pathc;
+				}
+				else if (error)
+				{
+					ERROR_OUT("Error: ", "Failure while globbing packages.");
+				}
+
+				globfree(&gl);
+			#endif
 		}
 
 		if (FILE_EXISTS("/opt/local/bin/port"))
@@ -809,9 +813,20 @@ void detect_pkgs(char* str)
 	{
 		if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre") || STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
 		{
-			pkgs_file = popen("pacman -Qq | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
+			#if defined(__linux__)
+				glob_t gl;
+
+				if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
+				{
+					packages = gl.gl_pathc;
+				}
+				else if (error)
+				{
+					ERROR_OUT("Error: ", "Failure while globbing packages.");
+				}
+
+				globfree(&gl);
+			#endif
 		}
 
 		else if (STRCMP(distro_str, "Frugalware"))
@@ -830,9 +845,20 @@ void detect_pkgs(char* str)
 
 		else if (STRCMP(distro_str, "Slackware"))
 		{
-			pkgs_file = popen("ls -l /var/log/packages | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
+			#if defined(__linux__)
+				glob_t gl;
+
+				if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
+				{
+					packages = gl.gl_pathc;
+				}
+				else if (error)
+				{
+					ERROR_OUT("Error: ", "Failure while globbing packages.");
+				}
+
+				globfree(&gl);
+			#endif
 		}
 
 		else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") || STRCMP(distro_str, "Funtoo"))

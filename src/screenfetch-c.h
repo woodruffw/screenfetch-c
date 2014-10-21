@@ -34,6 +34,7 @@
 	#define OS OSX
 	#include <sys/utsname.h>
 	#include <time.h>
+	#include <glob.h>
 	#include <Availability.h>
 	#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 		#include <CoreServices/CoreServices.h> /* for Gestalt */
@@ -43,6 +44,7 @@
 	#include <sys/sysinfo.h>
 	#include <sys/utsname.h>
 	#include <X11/Xlib.h>
+	#include <glob.h>
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
 	#include <sys/utsname.h>
