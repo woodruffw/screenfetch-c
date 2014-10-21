@@ -468,13 +468,18 @@ void detect_distro(char* str)
 						safe_strncpy(str, "Angstrom", MAX_STRLEN);
 					}
 
+					else if (FILE_EXISTS("/etc/manjaro-release"))
+					{
+						safe_strncpy(str, "Manjaro", MAX_STRLEN);
+					}
+
 					else if (FILE_EXISTS("/etc/lsb-release"))
 					{
 						distro_file = fopen("/etc/lsb-release", "r");
 						fgets(distro_name_str, MAX_STRLEN, distro_file);
 						distro_name_str[strlen(distro_name_str) - 1] = '\0';
 						fclose(distro_file);
-						
+
 						snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 					}
 
