@@ -470,10 +470,11 @@ void detect_distro(char* str)
 
 					else if (FILE_EXISTS("/etc/lsb-release"))
 					{
-						distro_file = popen("head -1 < /etc/lsb-release | tr -d '\\\"\\n'", "r");
+						distro_file = fopen("/etc/lsb-release", "r");
 						fgets(distro_name_str, MAX_STRLEN, distro_file);
-						pclose(distro_file);
-
+						distro_name_str[strlen(distro_name_str) - 1] = '\0';
+						fclose(distro_file);
+						
 						snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 					}
 
