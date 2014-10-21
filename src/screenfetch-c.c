@@ -602,7 +602,10 @@ void detect_host(char* str)
 	{
 		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__unix__)
 			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
-			gethostname(given_host, MAX_STRLEN);
+
+			struct utsname host_info;
+			uname(&host_info);
+			safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 		#endif
 	}
 
