@@ -26,7 +26,7 @@
 
 #if defined(__CYGWIN__)
 	#define OS CYGWIN
-	extern FILE* popen(const char* command, const char* type);
+	extern FILE *popen(const char *command, const char *type);
 	extern int pclose(FILE* stream);
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
@@ -74,30 +74,30 @@
 #endif
 
 /* screenfetch detection function definitions */
-void detect_distro(char* str);
-void detect_arch(char* str);
-void detect_host(char* str);
-void detect_kernel(char* str);
-void detect_uptime(char* str);
-void detect_pkgs(char* str);
-void detect_cpu(char* str);
-void detect_gpu(char* str);
-void detect_disk(char* str);
-void detect_mem(char* str);
-void detect_shell(char* str);
-void detect_res(char* str);
-void detect_de(char* str);
-void detect_wm(char* str);
-void detect_wm_theme(char* str);
-void detect_gtk(char* str);
+void detect_distro(char *str);
+void detect_arch(char *str);
+void detect_host(char *str);
+void detect_kernel(char *str);
+void detect_uptime(char *str);
+void detect_pkgs(char *str);
+void detect_cpu(char *str);
+void detect_gpu(char *str);
+void detect_disk(char *str);
+void detect_mem(char *str);
+void detect_shell(char *str);
+void detect_res(char *str);
+void detect_de(char *str);
+void detect_wm(char *str);
+void detect_wm_theme(char *str);
+void detect_gtk(char *str);
 
 /* other function definitions */
 int manual_input(void);
-void output_logo_only(char* distro);
-void main_ascii_output(char* data[], char* data_names[]);
-void main_text_output(char* data[], char* data_names[]);
-char* safe_strncpy(char* destination, const char* source, size_t num); 
-void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days);
+void output_logo_only(char *distro);
+void main_ascii_output(char *data[], char *data_names[]);
+void main_text_output(char *data[], char *data_names[]);
+char *safe_strncpy(char *destination, const char *source, size_t num); 
+void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days);
 void take_screenshot(void);
 
 #endif /* SCREENFETCH_C_H */

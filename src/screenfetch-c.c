@@ -84,7 +84,7 @@ static char wm_theme_str[MAX_STRLEN] = "Unknown";
 static char gtk_str[MAX_STRLEN] = "Unknown";
 
 /* output string definitions */
-static char* detected_arr[16] = {
+static char *detected_arr[16] = {
 									host_str,
 									distro_str,
 									kernel_str,
@@ -103,7 +103,7 @@ static char* detected_arr[16] = {
 									gtk_str
 								};
 
-static char* detected_arr_names[16] = {
+static char *detected_arr_names[16] = {
 										"",
 										"OS: ",
 										"Kernel: ",
@@ -129,7 +129,7 @@ bool error = true;
 bool verbose = false;
 bool screenshot = false;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	/* warn unknown OSes about using this program */
 	if (OS == UNKNOWN)
@@ -245,53 +245,53 @@ int main(int argc, char** argv)
 		if (OS != CYGWIN)
 		{
 			THREAD distro_thread;
-			create_thread(&distro_thread, (void*) detect_distro, (void*) distro_str);
+			create_thread(&distro_thread, (void *) detect_distro, (void *) distro_str);
 			join_thread(distro_thread); /* a few other functions rely on distro_str, so join the thread detect_distro completes */
 
 			THREAD arch_thread;
-			create_thread(&arch_thread, (void*) detect_arch, (void*) arch_str);
+			create_thread(&arch_thread, (void *) detect_arch, (void *) arch_str);
 
 			THREAD host_thread;
-			create_thread(&host_thread, (void*) detect_host, (void*) host_str);
+			create_thread(&host_thread, (void *) detect_host, (void *) host_str);
 
 			THREAD kernel_thread;
-			create_thread(&kernel_thread, (void*) detect_kernel, (void*) kernel_str);
+			create_thread(&kernel_thread, (void *) detect_kernel, (void *) kernel_str);
 
 			THREAD uptime_thread;
-			create_thread(&uptime_thread, (void*) detect_uptime, (void*) uptime_str);
+			create_thread(&uptime_thread, (void *) detect_uptime, (void *) uptime_str);
 
 			THREAD pkgs_thread;
-			create_thread(&pkgs_thread, (void*) detect_pkgs, (void*) pkgs_str);
+			create_thread(&pkgs_thread, (void *) detect_pkgs, (void *) pkgs_str);
 
 			THREAD cpu_thread;
-			create_thread(&cpu_thread, (void*) detect_cpu, (void*) cpu_str);
+			create_thread(&cpu_thread, (void *) detect_cpu, (void *) cpu_str);
 
 			THREAD gpu_thread;
-			create_thread(&gpu_thread, (void*) detect_gpu, (void*) gpu_str);
+			create_thread(&gpu_thread, (void *) detect_gpu, (void *) gpu_str);
 
 			THREAD disk_thread;
-			create_thread(&disk_thread, (void*) detect_disk, (void*) disk_str);
+			create_thread(&disk_thread, (void *) detect_disk, (void *) disk_str);
 
 			THREAD mem_thread;
-			create_thread(&mem_thread, (void*) detect_mem, (void*) mem_str);
+			create_thread(&mem_thread, (void *) detect_mem, (void *) mem_str);
 
 			THREAD shell_thread;
-			create_thread(&shell_thread, (void*) detect_shell, (void*) shell_str);
+			create_thread(&shell_thread, (void *) detect_shell, (void *) shell_str);
 
 			THREAD res_thread;
-			create_thread(&res_thread, (void*) detect_res, (void*) res_str);
+			create_thread(&res_thread, (void *) detect_res, (void *) res_str);
 
 			THREAD de_thread;
-			create_thread(&de_thread, (void*) detect_de, (void*) de_str);
+			create_thread(&de_thread, (void *) detect_de, (void *) de_str);
 
 			THREAD wm_thread;
-			create_thread(&wm_thread, (void*) detect_wm, (void*) wm_str);
+			create_thread(&wm_thread, (void *) detect_wm, (void *) wm_str);
 
 			THREAD wm_theme_thread;
-			create_thread(&wm_theme_thread, (void*) detect_wm_theme, (void*) wm_theme_str);
+			create_thread(&wm_theme_thread, (void *) detect_wm_theme, (void *) wm_theme_str);
 
 			THREAD gtk_thread;
-			create_thread(&gtk_thread, (void*) detect_gtk, (void*) gtk_str);
+			create_thread(&gtk_thread, (void *) detect_gtk, (void *) gtk_str);
 
 			join_thread(arch_thread);
 			join_thread(host_thread);
@@ -346,13 +346,13 @@ int main(int argc, char** argv)
 
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
-	argument char* str: the char array to be filled with the distro name
+	argument char *str: the char array to be filled with the distro name
 */
-void detect_distro(char* str)
+void detect_distro(char *str)
 {
 	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
 	{
-		FILE* distro_file;
+		FILE *distro_file;
 
 		char distro_name_str[MAX_STRLEN];
 
@@ -512,11 +512,11 @@ void detect_distro(char* str)
 
 /*	detect_arch
 	detects the computer's architecture
-	argument char* str: the char array to be filled with the architecture
+	argument char *str: the char array to be filled with the architecture
 */
-void detect_arch(char* str)
+void detect_arch(char *str)
 {
-	FILE* arch_file;
+	FILE *arch_file;
 
 	if (OS == CYGWIN)
 	{
@@ -575,11 +575,11 @@ void detect_arch(char* str)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char* str: the char array to be filled with the user and hostname in format 'user@host'
+	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
 */
-void detect_host(char* str)
+void detect_host(char *str)
 {
-	char* given_user = "Unknown"; /* has to be a pointer for getenv()/GetUserName(), god knows why */
+	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
 
 	if (OS == CYGWIN)
@@ -623,9 +623,9 @@ void detect_host(char* str)
 
 /*	detect_kernel
 	detects the computer's kernel
-	argument char* str: the char array to be filled with the kernel name
+	argument char *str: the char array to be filled with the kernel name
 */
-void detect_kernel(char* str)
+void detect_kernel(char *str)
 {
 	if (OS == CYGWIN)
 	{
@@ -654,9 +654,9 @@ void detect_kernel(char* str)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char* str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
 */
-void detect_uptime(char* str)
+void detect_uptime(char *str)
 {
 	#if (defined(__APPLE__) && defined(__MACH__))
 		long long uptime = 0; 
@@ -664,8 +664,8 @@ void detect_uptime(char* str)
 		long uptime = 0;
 	#endif
 
-	#if !defined(__linux__)
-		FILE* uptime_file;
+	#if !defined(__linux__) && !(defined(__APPLE__) && defined(__MACH__))
+		FILE *uptime_file;
 	#endif
 
 	#if !defined(__CYGWIN__) && !defined(__linux__) && !(defined(__APPLE__) && defined(__MACH__))
@@ -750,7 +750,7 @@ void detect_uptime(char* str)
 	{
 		#if defined(__sun__)
 			currtime = time(NULL);
-			struct utmpx* ent;
+			struct utmpx *ent;
 
 			while (ent = getutxent())
 			{
@@ -779,11 +779,11 @@ void detect_uptime(char* str)
 
 /*	detect_pkgs
 	detects the number of packages installed on the computer
-	argument char* str: the char array to be filled with the number of packages
+	argument char *str: the char array to be filled with the number of packages
 */
-void detect_pkgs(char* str)
+void detect_pkgs(char *str)
 {
-	FILE* pkgs_file;
+	FILE *pkgs_file;
 
 	int packages = 0;
 
@@ -953,11 +953,11 @@ void detect_pkgs(char* str)
 
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
-	argument char* str: the char array to be filled with the CPU name
+	argument char *str: the char array to be filled with the CPU name
 */
-void detect_cpu(char* str)
+void detect_cpu(char *str)
 {
-	FILE* cpu_file;
+	FILE *cpu_file;
 
 	if (OS == CYGWIN)
 	{
@@ -965,7 +965,7 @@ void detect_cpu(char* str)
 			HKEY hkey;
 			DWORD str_size = MAX_STRLEN;
 			RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
-			RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE*) str, &str_size);
+			RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str, &str_size);
 		#endif
 	}
 
@@ -1016,11 +1016,11 @@ void detect_cpu(char* str)
 
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
-	argument char* str: the char array to be filled with the GPU name
+	argument char *str: the char array to be filled with the GPU name
 */
-void detect_gpu(char* str)
+void detect_gpu(char *str)
 {
-	FILE* gpu_file;
+	FILE *gpu_file;
 
 	if (OS == CYGWIN)
 	{
@@ -1028,7 +1028,7 @@ void detect_gpu(char* str)
 			HKEY hkey;
 			DWORD str_size = MAX_STRLEN;
 			RegOpenKey(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
-			RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE*) str, &str_size);
+			RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str, &str_size);
 		#endif
 	}
 
@@ -1054,11 +1054,11 @@ void detect_gpu(char* str)
 
 /*	detect_disk
 	detects the computer's total disk capacity and usage
-	argument char* str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char* str)
+void detect_disk(char *str)
 {
-	FILE* disk_file;
+	FILE *disk_file;
 
 	int disk_total = 0;
 	int disk_used = 0;
@@ -1127,11 +1127,11 @@ void detect_disk(char* str)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char* str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
 */
-void detect_mem(char* str)
+void detect_mem(char *str)
 {
-	FILE* mem_file;
+	FILE *mem_file;
 
 	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
 	long long free_mem = 0;
@@ -1215,18 +1215,18 @@ void detect_mem(char* str)
 
 /*	detect_shell
 	detects the shell currently running on the computer
-	argument char* str: the char array to be filled with the shell name and version
+	argument char *str: the char array to be filled with the shell name and version
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
 	scheme, the version may be displayed incorrectly.
 	--
 */
-void detect_shell(char* str)
+void detect_shell(char *str)
 {
-	FILE* shell_file;
+	FILE *shell_file;
 
-	char* shell_name;
+	char *shell_name;
 	char vers_str[MAX_STRLEN];
 
 	shell_name = getenv("SHELL");
@@ -1289,11 +1289,11 @@ void detect_shell(char* str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char* str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
 */
-void detect_res(char* str)
+void detect_res(char *str)
 {
-	FILE* res_file;
+	FILE *res_file;
 
 	int width = 0;
 	int height = 0;
@@ -1318,10 +1318,10 @@ void detect_res(char* str)
 	else if (OS == LINUX || OS == SOLARIS)
 	{
 		#if defined(__linux__) || defined(__sun__)
-			Display* disp = XOpenDisplay(NULL);
+			Display *disp = XOpenDisplay(NULL);
 			if (disp != NULL)
 			{
-				Screen* screen = XDefaultScreenOfDisplay(disp);
+				Screen *screen = XDefaultScreenOfDisplay(disp);
 				width = WidthOfScreen(screen);
 				height = HeightOfScreen(screen);
 				snprintf(str, MAX_STRLEN, "%dx%d", width, height);
@@ -1356,15 +1356,15 @@ void detect_res(char* str)
 
 /*	detect_de
 	detects the desktop environment currently running on top of the OS
-	argument char* str: the char array to be filled with the DE name
+	argument char *str: the char array to be filled with the DE name
 	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
 	--
 */
-void detect_de(char* str)
+void detect_de(char *str)
 {
-	FILE* de_file;
+	FILE *de_file;
 
 	if (OS == CYGWIN)
 	{
@@ -1409,15 +1409,15 @@ void detect_de(char* str)
 
 /*	detect_wm
 	detects the window manager currently running on top of the OS
-	argument char* str: the char array to be filled with the WM name
+	argument char *str: the char array to be filled with the WM name
 	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
 	--
 */
-void detect_wm(char* str)
+void detect_wm(char *str)
 {
-	FILE* wm_file;
+	FILE *wm_file;
 
 	if (OS == CYGWIN)
 	{
@@ -1453,15 +1453,15 @@ void detect_wm(char* str)
 
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm()
-	argument char* str: the char array to be filled with the WM Theme name
+	argument char *str: the char array to be filled with the WM Theme name
 	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm_theme(char* str)
+void detect_wm_theme(char *str)
 {
-	FILE* wm_theme_file;
+	FILE *wm_theme_file;
 
 	if (OS == CYGWIN)
 	{
@@ -1491,15 +1491,15 @@ void detect_wm_theme(char* str)
 
 /*	detect_gtk
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char* str: the char array to be filled with the GTK info
+	argument char *str: the char array to be filled with the GTK info
 	--
 	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
 	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
 	--
 */
-void detect_gtk(char* str)
+void detect_gtk(char *str)
 {
-	FILE* gtk_file;
+	FILE *gtk_file;
 
 	char gtk2_str[MAX_STRLEN] = "Unknown";
 	char gtk3_str[MAX_STRLEN] = "Unknown";
@@ -1552,7 +1552,7 @@ void detect_gtk(char* str)
 */
 int manual_input(void)
 {
-	FILE* config_file;
+	FILE *config_file;
 	char config_file_loc[MAX_STRLEN];
 
 	safe_strncpy(config_file_loc, getenv("HOME"), MAX_STRLEN);
@@ -1708,9 +1708,9 @@ int manual_input(void)
 	calls strncpy with the given params, then inserts a null char at the last position
 	returns a pointer to a string containing the copied data (same as destination)
 */
-char* safe_strncpy(char* destination, const char* source, size_t num)
+char *safe_strncpy(char *destination, const char *source, size_t num)
 {
-	char* ret = strncpy(destination, source, num);
+	char *ret = strncpy(destination, source, num);
 	ret[num - 1] = '\0';
 	return ret;
 }
@@ -1718,12 +1718,12 @@ char* safe_strncpy(char* destination, const char* source, size_t num)
 /*	split_uptime
 	splits param uptime into individual time-units
 	argument long uptime: the uptime, in seconds, to be split
-	arguments int* secs...days: pointers to ints where the split uptime will be stored
+	arguments int *secs...*days: pointers to ints where the split uptime will be stored
 	--
 	CAVEAT: uptime MUST be in seconds
 	--
 */
-void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
+void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days)
 {
 	*secs = (int) uptime % 60;
 	*mins = (int) (uptime / 60) % 60;
@@ -1738,9 +1738,9 @@ void split_uptime(long uptime, int* secs, int* mins, int* hrs, int* days)
 
 /*	output_logo_only
 	outputs an ASCII logo based upon the distro name passed to it
-	argument char* distro the name of the distro to output
+	argument char *distro the name of the distro to output
 */
-void output_logo_only(char* distro)
+void output_logo_only(char *distro)
 {
 	int i = 0;
 
@@ -2061,9 +2061,9 @@ void output_logo_only(char* distro)
 
 /*	main_ascii_output
 	the primary output for screenfetch-c - all info and ASCII art is printed here
-	arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
+	arguments char *data[], char *data_names[]: string arrays containing the names and data acquired
 */
-void main_ascii_output(char* data[], char* data_names[])
+void main_ascii_output(char *data[], char *data_names[])
 {
 	int i = 0;
 
@@ -2495,9 +2495,9 @@ void main_ascii_output(char* data[], char* data_names[])
 
 /*	main_text_output
 	the secondary output for screenfetch-c - all info WITHOUT ASCII art is printed here
-	arguments char* data[], char* data_names[]: string arrays containing the names and data acquired
+	arguments char *data[], char *data_names[]: string arrays containing the names and data acquired
 */
-void main_text_output(char* data[], char* data_names[])
+void main_text_output(char *data[], char *data_names[])
 {
 	int i;
 

@@ -15,11 +15,11 @@
 	spawns a new thread, given a pointer to a THREAD, a function, and an argument
 	on POSIX systems, calls pthread_create
 	on Windows systems, calls CreateThread
-	argument THREAD* thread, a pointer to the thread being created
+	argument THREAD *thread, a pointer to the thread being created
 	argument void* func_call, the function call to be made within the new thread
 	argument void* arg, an argument for the function to use
 */
-void create_thread(THREAD* thread, void *(*func_call)(void*), void* arg)
+void create_thread(THREAD *thread, void *(*func_call)(void *), void *arg)
 {
 	#if defined(__CYGWIN__)
 		*thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) func_call, arg, 0, NULL);

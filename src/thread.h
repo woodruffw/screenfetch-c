@@ -19,7 +19,7 @@
 #endif
 
 /* function prototypes */
-void create_thread(THREAD* thread, void* (*func_call)(void*), void* arg);
+void create_thread(THREAD *thread, void *(*func_call)(void *), void *arg);
 void join_thread(THREAD thread);
 void exit_thread();
 
