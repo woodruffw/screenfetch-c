@@ -13,7 +13,9 @@ Like the original screenFetch, screenfetch-c is meant to be compatible with a nu
 ### Dependencies:
 screenfetch-c only relies on libraries that come on virtually every system.
 
-* On Linux and Solaris, libX11 is required. In most package managers, this is listed as libX11-dev.
+* On Linux, OpenGL is used to detect the GPU. In most package managers, this is listed as `libgl-dev`.
+
+* On Linux and Solaris, libX11 is required. In most package managers, this is listed as `libX11-dev`.
 
 * On Windows, the WinAPI is required (duh).
 

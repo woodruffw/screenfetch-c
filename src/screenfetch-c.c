@@ -1039,7 +1039,53 @@ void detect_gpu(char *str)
 		pclose(gpu_file);
 	}
 
-	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
+	else if (OS == LINUX)
+	{
+		#if defined(__linux__)
+			Display *disp = NULL;
+			Window wind = NULL;
+			GLint attr[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+			XVisualInfo *visual_info = NULL;
+			GLXContext context = NULL;
+
+			if ((disp = XOpenDisplay(NULL)))
+			{
+				wind = DefaultRootWindow(disp);
+
+				if ((visual_info = glXChooseVisual(disp, 0, attr)))
+				{
+					if ((context = glXCreateContext(disp, visual_info, NULL, GL_TRUE)))
+					{
+						glXMakeCurrent(disp, wind, context);
+						safe_strncpy(str, (const char *) glGetString(GL_RENDERER), MAX_STRLEN);
+					}
+					else if (error)
+					{
+						ERROR_OUT("Error: ", "Failed to create OpenGL context.");
+					}
+				}
+				else if (error)
+				{
+					ERROR_OUT("Error: ", "Failed to select a proper X visual.");
+				}
+			}
+			else if (error)
+			{
+				safe_strncpy(str, "No X Server", MAX_STRLEN);
+				ERROR_OUT("Error: ", "Could not open an X display.");
+			}
+
+			/* cleanup */
+			if (context)
+				glXDestroyContext(disp, context);
+			if (visual_info)
+				XFree((void *) visual_info);
+			if (disp)
+				XCloseDisplay(disp);
+		#endif
+	}
+
+	else if (ISBSD() || OS == SOLARIS)
 	{
 		gpu_file = popen("detectgpu 2>/dev/null", "r");
 		fgets(str, MAX_STRLEN, gpu_file);
@@ -1318,8 +1364,9 @@ void detect_res(char *str)
 	else if (OS == LINUX || OS == SOLARIS)
 	{
 		#if defined(__linux__) || defined(__sun__)
-			Display *disp = XOpenDisplay(NULL);
-			if (disp != NULL)
+			Display *disp;
+
+			if ((disp = XOpenDisplay(NULL)))
 			{
 				Screen *screen = XDefaultScreenOfDisplay(disp);
 				width = WidthOfScreen(screen);
@@ -1333,6 +1380,8 @@ void detect_res(char *str)
 				if (error)
 					ERROR_OUT("Error: ", "Problem detecting X display resolution.");
 			}
+
+			XCloseDisplay(disp);
 		#endif
 	}
 

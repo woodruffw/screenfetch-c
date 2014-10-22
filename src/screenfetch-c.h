@@ -45,6 +45,8 @@
 	#include <sys/sysinfo.h>
 	#include <sys/utsname.h>
 	#include <X11/Xlib.h>
+	#include <GL/gl.h>
+	#include <GL/glx.h>
 	#include <glob.h>
 #elif defined(__FreeBSD__)
 	#define OS FREEBSD
