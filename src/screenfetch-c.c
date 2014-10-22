@@ -658,12 +658,20 @@ void detect_kernel(char* str)
 */
 void detect_uptime(char* str)
 {
-	FILE* uptime_file;
-
-	long uptime = 0; 
-	#if !defined(__CYGWIN__) && !defined(__linux__)
-		long currtime = 0, boottime = 0; /* may or may not be used depending on OS */
+	#if (defined(__APPLE__) && defined(__MACH__))
+		long long uptime = 0; 
+	#else
+		long uptime = 0;
 	#endif
+
+	#if !defined(__linux__)
+		FILE* uptime_file;
+	#endif
+
+	#if !defined(__CYGWIN__) && !defined(__linux__) && !(defined(__APPLE__) && defined(__MACH__))
+		long currtime = 0, boottime = 0;
+	#endif
+
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
@@ -677,16 +685,34 @@ void detect_uptime(char* str)
 		#endif
 	}
 
-	else if (OS == NETBSD)
+	else if (OS == OSX)
 	{
-		uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
-		fscanf(uptime_file, "%ld", &uptime);
-		pclose(uptime_file);
+		#if (defined(__APPLE__) && defined(__MACH__))
+			/* three cheers for undocumented functions and structs */
+			static mach_timebase_info_data_t timebase_info;
+
+			if (timebase_info.denom == 0)
+			{
+				(void) mach_timebase_info(&timebase_info);
+			}
+
+			uptime = (long long)((mach_absolute_time() * timebase_info.numer) / (1000* 1000 * timebase_info.denom));
+			uptime /= 1000;
+		#endif
 	}
 
-	else if (OS == OSX || OS == FREEBSD || OS == DFBSD)
+	else if (OS == NETBSD)
 	{
-		#if defined(__FreeBSD__) || defined(__DragonFly__) || (defined(__APPLE__) && defined(__MACH__))
+		#if defined(__NetBSD__)
+			uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
+			fscanf(uptime_file, "%ld", &uptime);
+			pclose(uptime_file);
+		#endif
+	}
+
+	else if (OS == FREEBSD || OS == DFBSD)
+	{
+		#if defined(__FreeBSD__) || defined(__DragonFly__)
 			uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
 			fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 			pclose(uptime_file);
