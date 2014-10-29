@@ -1,14 +1,14 @@
-.\" Manpage for screenfetch\-c
+.\" Manpage for screenfetch-c
 .\" Contact woodruffw on GitHub or at william @ tuffbizz.com to report any bugs or errors
-.TH screenfetch\-c 1 "04 August 2013" "1.2r" "User Commands" 
+.TH screenfetch-c 1 "04 August 2013" "1.2r" "User Commands" 
 .SH NAME
-\fBscreenfetch\-c\fP \- Display computer information and an ASCII logo
+\fBscreenfetch-c\fP - Display computer information and an ASCII logo
 
 .SH SYNOPSIS
-\fBscreenfetch\-c\fP [\fBOPTIONS\fP]
+.B screenfetch-c [\fBOPTIONS\fP]
 
 .SH DESCRIPTION
-\fBscreenfetch\-c\fP is a C rewrite of the original screenFetch, 
+\fBscreenfetch-c\fP is a C rewrite of the original screenFetch, 
 which was written in bash by Brett Bohnenkamper. Like the original, 
 it displays both an ASCII logo determined by the computer's OS 
 and a variety of statistics, including kernel type, ram, uptime, and so forth.
@@ -17,10 +17,10 @@ and a variety of statistics, including kernel type, ram, uptime, and so forth.
 
 Supported OSes:
 Microsoft Windows, Mac OS X, FreeBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris and its derivatives, 
-and most Linux\-kernel based distributions. 
+and most Linux-kernel based distributions. 
 
-Note: If you are using manual mode to provide \fBscreenfetch\-c\fP with system information, you will need to enter the distribution name EXACTLY as written below:
-Arch Linux, ParabolaGNU/Linux\-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Andoid, Linux, Solaris, Angstrom.
+Note: If you are using manual mode to provide \fBscreenfetch-c\fP with system information, you will need to enter the distribution name EXACTLY as written below:
+Arch Linux, ParabolaGNU/Linux-libre, Chakra, Manjaro, Frugalware, Ubuntu, LinuxMint, SolusOS, Debian, LMDE, CrunchBang, Peppermint, LinuxDeepin, Trisquel, elementary OS, Backtrack Linux, Slackware, Gentoo, Sabayon, Funtoo, Fuduntu, Fedora, OpenSUSE, Red Hat Linux, Mandriva, Mandrake, Mageia, Viperr, Andoid, Linux, Solaris, Angstrom.
 
 Supported shells:
 GNU bash, csh, zsh, ksh, fish, dash, ash.
@@ -29,105 +29,105 @@ Supported WMs:
 fluxbox, openbox, blackbox, xfwm4, metacity, kwin, icewm, pekwm, fvwm, dwm, awesome, wmaker, stumpwm, musca, i3, xmonad, ratpoison, scrotwm, spectrwm, wmfs, wmii, beryl, subtle, e16, enlightenment, sawfish, emerald, monsterwm, dminiwm, compiz, Finder, herbstluftwm.
 
 .SH OPTIONS
-\fB\-m\fP, \fB--manual\fP
+\fB\-m\fP, \fB\-\-manual\fP
 
 Begin manual mode, which allows the user to enter specific values for devices/statistics. See 'Configuration' below for formatting options.
 
-\fB\-v\fP, \fB--verbose\fP
+\fB\-v\fP, \fB\-\-verbose\fP
 
 Enable verbose mode, which prints out detection information.
 
-\fB\-s\fP, \fB--screenshot\fP
+\fB\-s\fP, \fB\-\-screenshot\fP
 
 Take a screenshot after completing the output. On non\-Windows systems, this will save a file called 'screenfetch_screenshot.png' in $HOME. On Windows, this will save the screenshot in the system clipboard.
 
-\fB\-n\fP, \fB--no-logo\fP
+\fB\-n\fP, \fB\-\-no-logo\fP
 
-Strip output of ASCII logo \- print information only.
+Strip output of ASCII logo - print information only.
 
-\fB\-D\fP, \fB--distro\fP DISTRO
+\fB\-D\fP, \fB\-\-distro\fP \fIDISTRO\fP
 
 Set the distro outputted by \fBscreenfetch-c\fP.
 
-\fB\-E\fP, \fB--suppress-errors\fP
+\fB\-E\fP, \fB\-\-suppress-errors\fP
 
 Suppress error messages as they arise.
 
-\fB\-V\fP, \fB--version\fP
+\fB\-V\fP, \fB\-\-version\fP
 
 Display the version of \fBscreenfetch-c\fP currently being used.
 
-\fB\-h\fP, \fB--help\fP
+\fB\-h\fP, \fB\-\-help\fP
 
 Displays help and compatibility information.
 
-\fB\-L\fP, \fB--logo-only\fP DISTRO
+\fB\-L\fP, \fB\-\-logo-only\fP \fIDISTRO\fP
 
 Output only the ASCII logo associated with that distro. Follows the general naming conventions of the \fB\-D\fP flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
 
 .SH CONFIGURATION
-When \fBscreenfetch\-c\fP is invoked with the \fB-m\fP flag for the first time, it enters manual mode.
-Manual mode prompts the user to enter specific information about the computer, storing that information in ~/\fB.screenfetchc\fP for the next invocation with the \fB\-m\fP flag.
+When \fBscreenfetch-c\fP is invoked with the \fB\-m\fP flag for the first time, it enters manual mode.
+Manual mode prompts the user to enter specific information about the computer, storing that information in ~/\fI.screenfetchc\fP for the next invocation with the \fB\-m\fP flag.
 
-By default, you must enter all fields asked for in manual mode. However, if you want \fBscreenfetch\-c\fP to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force \fBscreenfetch\-c\fP to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
+By default, you must enter all fields asked for in manual mode. However, if you want \fBscreenfetch-c\fP to skip a particular field while reading from the file, enter an asterisk ("*") for that section. This will force \fBscreenfetch-c\fP to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
 
-To remove your existing manual configuration, simply delete the \fB.screenfetchc\fP file located in your $HOME. 
+To remove your existing manual configuration, simply delete the \fI.screenfetchc\fP file located in your $HOME. 
 
-Note: \fB.screenfetchc\fP's format isn't exactly human\-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete \fB.screenfetchc\fP and start from the beginning.
+Note: \fI.screenfetchc\fP's format isn't exactly human-friendly, so editing it manually is NOT recommended. If you make a mistake during input, the safest fix is to delete \fI.screenfetchc\fP and start from the beginning.
 
 .SH ENVIRONMENT VARIABLES
-\fBscreenfetch\-c\fP uses the following environment variables:
+\fBscreenfetch-c\fP uses the following environment variables:
 
-\fB$USER\fP \- Used on BSD to determine the current user.
+\fI$USER\fP - Used on BSD to determine the current user.
 
-\fB$HOME\fP \- Used to determine the user's home directory.
+\fI$HOME\fP - Used to determine the user's home directory.
 
-\fB$SHELL\fP \- Used to determine the active shell.
+\fI$SHELL\fP - Used to determine the active shell.
 
-Each of these variables must be defined properly in order for \fBscreenfetch\-c\fP to function as intended.
+Each of these variables must be defined properly in order for \fBscreenfetch-c\fP to function as intended.
 
 .SH RELEASE HISTORY
 Note: Revisions are not counted in the release history.
 
-\fB0.1\fP \- ALPHA \- INCOMPLETE, UNCOMPILED
+\fB0.1\fP - ALPHA - INCOMPLETE, UNCOMPILED
 
-\fB0.5\fP \- ALPHA \- INCOMPLETE, TEST COMPILED
+\fB0.5\fP - ALPHA - INCOMPLETE, TEST COMPILED
 
-\fB1.0\fP \- BETA \- LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
+\fB1.0\fP - BETA - LACKING MINOR PARTS, STABLE, WORKING ON MOST SYSTEMS
 
-\fB1.1\fP \- BETA \- NEARLY COMPLETE, MINOR BUGS AND GPU DETECTION NOT FINISHED
+\fB1.1\fP - BETA - NEARLY COMPLETE, MINOR BUGS AND GPU DETECTION NOT FINISHED
 
-\fB1.2\fP \- RELEASE \- WORKS ON THE MAJORITY OF SYSTEMS
+\fB1.2\fP - RELEASE - WORKS ON THE MAJORITY OF SYSTEMS
 
 .SH BUGS AND ERRATIC BEHAVIOR
 Shell version detection relies of very specific naming schemes and may appear incorrectly if any shell changes its versioning scheme.
 
-DragonFlyBSD systems with more than 4GiB of RAM may have their RAM stats displayed incorrectly, as 32\-bit ints are used in sysctl.
+DragonFly BSD systems with more than 4GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit ints are used in sysctl.
 
 Manual mode on Windows seems the result in a variety of weird bugs concerning uptime, packages, disk stats, and memory stats. For the time being, I recommend NOT using it on Windows.
 
 Memory detection on Linux systems includes swap/buffer RAM in used RAM, not free RAM. While this is not a bug per se, it may contradict figures from other utilities (which factor out swap/buffer RAM).
 
 Found a bug or issue? Please tell me about it:
-\fBhttp://github.com/woodruffw/screenfetch\-c\fP
+\fIhttp://github.com/woodruffw/screenfetch-c\fP
 
 .SH DIAGNOSTICS
-\fBscreenfetch\-c\fP has two built\-in output modes: verbose (disabled by default) and error (enabled by default).
+\fBscreenfetch-c\fP has two built-in output modes: verbose (disabled by default) and error (enabled by default).
 If a serious or fatal error occurs, the user will be notified via error (stderr).
 Otherwise, the user may choose to enable the verbose mode, which display real-time detection.
 
 .SH EXIT STATUS
-\fBscreenfetch\-c\fP returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
+\fBscreenfetch-c\fP returns EXIT_SUCCESS in all circumstances except for malformed argument strings.
 For example, \fBscreenfetch-c\fP will return EXIT_FAILURE if flagged with \fB\-D\fP but not given an additional argument.
 
 .SH AUTHOR
-screenFetch was originally written by Brett Bohnenkamper (\fBkittykatt @ archlinux.us\fP)
+\fBscreenfetch-c\fP was written and is maintained by William Woodruff (\fIwilliam @ tuffbizz.com\fP)
 
-This rewrite was written by William Woodruff (\fBwilliam @ tuffbizz.com\fP).
+The original screenFetch was written by Brett Bohnenkamper (\fIkittykatt @ archlinux.us\fP)
 
-For other contributors, refer to the CONTRIBUTORS file.
+For a list of \fBscreenfetch-c\fP's contributors, please refer to the CONTRIBUTORS file.
 
-It is licensed under an MIT\-style open source license, which you should have received with the source code.
+It is licensed under an MIT-style open source license, which you should have received with the source code.
 
 .SH SEE ALSO
-\fBscreenFetch\fP(1)
+.BR screenFetch (1)
