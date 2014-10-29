@@ -331,6 +331,26 @@ int main(int argc, char **argv)
 		}
 	}
 
+	if (verbose)
+	{
+		VERBOSE_OUT("Found distro as ", distro_str);
+		VERBOSE_OUT("Found system arch as ", arch_str);
+		VERBOSE_OUT("Found hostname ", host_str);
+		VERBOSE_OUT("Found kernel as ", kernel_str);
+		VERBOSE_OUT("Found uptime as ", uptime_str);
+		VERBOSE_OUT("Found package count as ", pkgs_str);
+		VERBOSE_OUT("Found CPU as ", cpu_str);
+		VERBOSE_OUT("Found GPU as ", gpu_str);
+		VERBOSE_OUT("Found disk usage as ", disk_str);
+		VERBOSE_OUT("Found memory usage as ", mem_str);
+		VERBOSE_OUT("Found shell as ", shell_str);
+		VERBOSE_OUT("Found resolution as ", res_str);
+		VERBOSE_OUT("Found DE as ", de_str);
+		VERBOSE_OUT("Found WM as ", res_str);
+		VERBOSE_OUT("Found WM theme as ", wm_theme_str);
+		VERBOSE_OUT("Found GTK as ", gtk_str);
+	}
+
 	if (logo)
 		main_ascii_output(detected_arr, detected_arr_names);
 	else
@@ -507,9 +527,6 @@ void detect_distro(char *str)
 		}
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found distro as ", str);
-
 	return;
 }
 
@@ -570,9 +587,6 @@ void detect_arch(char *str)
 		pclose(arch_file);
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found system arch as ", str);
-
 	return;
 }
 
@@ -618,9 +632,6 @@ void detect_host(char *str)
 		free(given_user);
 	#endif
 
-	if (verbose)
-		VERBOSE_OUT("Found host as ", str);
-
 	return;
 }
 
@@ -648,9 +659,6 @@ void detect_kernel(char *str)
 			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
 		#endif
 	}
-
-	if (verbose)
-		VERBOSE_OUT("Found kernel as ", str);
 
 	return;
 }
@@ -773,9 +781,6 @@ void detect_uptime(char *str)
 		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
 	else
 		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
-
-	if (verbose)
-		VERBOSE_OUT("Found uptime as ", str);
 
 	return;
 }
@@ -948,9 +953,6 @@ void detect_pkgs(char *str)
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
 
-	if (verbose)
-		VERBOSE_OUT("Found package count as ", str);
-
 	return;
 }
 
@@ -1010,9 +1012,6 @@ void detect_cpu(char *str)
 		fgets(str, MAX_STRLEN, cpu_file);
 		pclose(cpu_file);
 	}
-
-	if (verbose)
-		VERBOSE_OUT("Found CPU as ", str);
 
 	return;
 }
@@ -1095,9 +1094,6 @@ void detect_gpu(char *str)
 		pclose(gpu_file);
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found GPU as ", str);
-
 	return;
 }
 
@@ -1166,10 +1162,6 @@ void detect_disk(char *str)
 
 		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 	}
-
-
-	if (verbose)
-		VERBOSE_OUT("Found disk usage as ", str);
 
 	return;
 }
@@ -1256,9 +1248,6 @@ void detect_mem(char *str)
 	else
 		snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
 
-	if (verbose)
-		VERBOSE_OUT("Found memory usage as ", str);
-
 	return;
 }
 
@@ -1330,9 +1319,6 @@ void detect_shell(char *str)
 		safe_strncpy(str, shell_name, MAX_STRLEN);
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found shell as ", str);
-
 	return;
 }
 
@@ -1400,9 +1386,6 @@ void detect_res(char *str)
 		}
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found resolution as ", str);
-
 	return;
 }
 
@@ -1453,9 +1436,6 @@ void detect_de(char *str)
 		/* detectde needs to be made compatible with Solaris's AWK */
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found DE as ", str);
-
 	return;
 }
 
@@ -1497,9 +1477,6 @@ void detect_wm(char *str)
 		pclose(wm_file);
 	}
 
-	if (verbose)
-		VERBOSE_OUT("Found WM as ", str);
-
 	return;
 }
 
@@ -1534,9 +1511,6 @@ void detect_wm_theme(char *str)
 		fgets(str, MAX_STRLEN, wm_theme_file);
 		pclose(wm_theme_file);
 	}
-
-	if (verbose)
-		VERBOSE_OUT("Found WM theme as ", str);
 
 	return;
 }
@@ -1591,9 +1565,6 @@ void detect_gtk(char *str)
 	{
 		/* detectgtk needs to be made compatible with Solaris's awk */
 	}
-
-	if (verbose)
-		VERBOSE_OUT("Found GTK as ", str);
 
 	return;
 }
