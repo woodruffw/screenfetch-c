@@ -27,7 +27,7 @@
 #if defined(__CYGWIN__)
 	#define OS CYGWIN
 	extern FILE *popen(const char *command, const char *type);
-	extern int pclose(FILE* stream);
+	extern int pclose(FILE *stream);
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
 #elif defined(__APPLE__) && defined(__MACH__)
