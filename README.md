@@ -1,7 +1,7 @@
 screenfetch-c
 =============
 
-## Current Version: 1.2 release 
+## Current Version: 1.3 (release) 
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 
@@ -145,4 +145,4 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 ## License
 screenfetch-c is licensed under the MIT license.
 
-For the exact terms, see the [license file](./LICENSE).
+For the exact terms, see the [license](./LICENSE).

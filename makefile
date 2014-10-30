@@ -1,17 +1,17 @@
-CC=gcc
-CFLAGS=-O3 -std=c99 -Wall -Wunused-variable
-CFLAGS_LINUX=-Wno-unused-result
-LDFLAGS_OSX=-lpthread -framework CoreServices
-LDFLAGS_BSD=-lpthread
-LDFLAGS_LINUX=-lpthread -lX11 -lGL
-LDFLAGS_SOLARIS=-lpthread -lX11
-INSTALL=/usr/bin/install -c
+CC = gcc
+CFLAGS = -O3 -std=c99 -Wall -Wunused-variable
+CFLAGS_LINUX = -Wno-unused-result
+LDFLAGS_OSX = -lpthread -framework CoreServices
+LDFLAGS_BSD = -lpthread
+LDFLAGS_LINUX = -lpthread -lX11 -lGL
+LDFLAGS_SOLARIS = -lpthread -lX11
+INSTALL = /usr/bin/install -c
 
-PREFIX=/usr/local
-BIN=$(PREFIX)/bin
-MAN=$(PREFIX)/share/man/man1
+PREFIX = /usr/local
+BIN = $(PREFIX)/bin
+MAN = $(PREFIX)/share/man/man1
 
-SOURCES=./src/*.c
+SOURCES = ./src/*.c
 
 all:
 	@echo '========================================================='
@@ -36,11 +36,11 @@ win:
 
 install:
 	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c
-	$(INSTALL) ./src/detectde $(BIN)/detectde
-	$(INSTALL) ./src/detectgtk $(BIN)/detectgtk
-	$(INSTALL) ./src/detectwm $(BIN)/detectwm
-	$(INSTALL) ./src/detectwmtheme $(BIN)/detectwmtheme
-	$(INSTALL) ./src/detectgpu $(BIN)/detectgpu
+	$(INSTALL) ./src/scripts/detectde $(BIN)/detectde
+	$(INSTALL) ./src/scripts/detectgtk $(BIN)/detectgtk
+	$(INSTALL) ./src/scripts/detectwm $(BIN)/detectwm
+	$(INSTALL) ./src/scripts/detectwmtheme $(BIN)/detectwmtheme
+	$(INSTALL) ./src/scripts/detectgpu $(BIN)/detectgpu
 	mkdir -p $(MAN)
 	$(INSTALL) ./manpage/screenfetch-c.1 $(MAN)/screenfetch-c.1
 
