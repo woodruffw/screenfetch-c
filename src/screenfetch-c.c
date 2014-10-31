@@ -56,8 +56,8 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#include "screenfetch-c.h" /* detection function prototypes, macros */
-#include "detect.h"
+#include "screenfetch-c.h" /* vestigial */
+#include "detect.h" /* detection function prototypes */
 #include "disp.h" /* version and help output functions */
 #include "logos.h" /* ascii logos */
 #include "colors.h" /* terminal color codes */
@@ -122,7 +122,7 @@ static char *detected_arr_names[16] = {
 										"GTK: "
 									};
 
-/* other definitions */
+/* flag definitions */
 bool manual = false;
 bool logo = true;
 bool error = true;

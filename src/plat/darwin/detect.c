@@ -1,3 +1,12 @@
+/*	detect.c
+	Author: William Woodruff
+	-------------
+
+	The detection functions used by screenfetch-c on OS X (Darwin) are implemented here.
+	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+	You should have received a copy of it with this code.
+*/
+
 /* standard includes */
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,8 +31,9 @@
 #include "../../util.h"
 
 /*	detect_distro
-	detects the computer's distribution (really only relevant on Linux)
+	detects the computer's distribution (OS X release)
 	argument char *str: the char array to be filled with the distro name
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_distro(char *str, bool error)
 {
@@ -73,7 +83,7 @@ void detect_host(char *str)
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
 
-	given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
+	given_user = getlogin();
 
 	struct utsname host_info;
 	uname(&host_info);
@@ -154,6 +164,7 @@ void detect_cpu(char *str)
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
 	argument char *str: the char array to be filled with the GPU name
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_gpu(char *str, bool error)
 {
@@ -237,6 +248,7 @@ void detect_mem(char *str)
 /*	detect_shell
 	detects the shell currently running on the computer
 	argument char *str: the char array to be filled with the shell name and version
+	argument bool error: true for verbose errors, false for silent
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
@@ -308,6 +320,7 @@ void detect_shell(char *str, bool error)
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_res(char *str, bool error)
 {
@@ -321,12 +334,9 @@ void detect_res(char *str, bool error)
 }
 
 /*	detect_de
-	detects the desktop environment currently running on top of the OS
+	detects the desktop environment currently running on top of the OS.
+	On OS X, this will always be Aqua.
 	argument char *str: the char array to be filled with the DE name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
-	--
 */
 void detect_de(char *str)
 {
@@ -336,12 +346,9 @@ void detect_de(char *str)
 }
 
 /*	detect_wm
-	detects the window manager currently running on top of the OS
+	detects the window manager currently running on top of the OS.
+	On OS X, this will always be the Quartz Compositor.
 	argument char *str: the char array to be filled with the WM name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
-	--
 */
 void detect_wm(char *str)
 {
@@ -351,12 +358,9 @@ void detect_wm(char *str)
 }
 
 /*	detect_wm_theme
-	detects the theme associated with the WM detected in detect_wm()
+	detects the theme associated with the WM detected in detect_wm().
+	On OS X, this will always be Aqua.
 	argument char *str: the char array to be filled with the WM Theme name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
-	--
 */
 void detect_wm_theme(char *str)
 {
@@ -366,12 +370,8 @@ void detect_wm_theme(char *str)
 }
 
 /*	detect_gtk
-	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char *str: the char array to be filled with the GTK info
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
-	--
+	OS X doesn't use GTK, so this function fills str with "Not Applicable"
+	argument char *str: the char array to be filled with any GTK info
 */
 void detect_gtk(char *str)
 {

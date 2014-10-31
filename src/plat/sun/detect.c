@@ -1,3 +1,12 @@
+/*	detect.c
+	Author: William Woodruff
+	-------------
+
+	The detection functions used by screenfetch-c on Solaris are implemented here.
+	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+	You should have received a copy of it with this code.
+*/
+
 /* standard includes */
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,16 +29,15 @@
 #include "../../util.h"
 
 /*	detect_distro
-	detects the computer's distribution (really only relevant on Linux)
+	detects the computer's distribution
 	argument char *str: the char array to be filled with the distro name
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_distro(char *str, bool error)
 {
-	FILE *distro_file;
-
-	distro_file = popen("uname -sr | tr -d '\\n'", "r");
-	fgets(str, MAX_STRLEN, distro_file);
-	pclose(distro_file);
+	struct utsname distro_info;
+	uname(&distro_info);
+	snprintf(str, MAX_STRLEN, "%s", distro_info.sysname);
 
 	return;
 }
@@ -75,7 +83,7 @@ void detect_kernel(char *str)
 {
 	struct utsname kern_info;
 	uname(&kern_info);
-	snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+	snprintf(str, MAX_STRLEN, "%s", kern_info.release);
 
 	return;
 }
@@ -134,6 +142,7 @@ void detect_cpu(char *str)
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
 	argument char *str: the char array to be filled with the GPU name
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_gpu(char *str, bool error)
 {
@@ -178,6 +187,7 @@ void detect_mem(char *str)
 /*	detect_shell
 	detects the shell currently running on the computer
 	argument char *str: the char array to be filled with the shell name and version
+	argument bool error: true for verbose errors, false for silent
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
@@ -249,6 +259,7 @@ void detect_shell(char *str, bool error)
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_res(char *str, bool error)
 {
@@ -281,8 +292,8 @@ void detect_res(char *str, bool error)
 	detects the desktop environment currently running on top of the OS
 	argument char *str: the char array to be filled with the DE name
 	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
+	CAVEAT: This function relies on the presence of 'detectde', a shell script. 
+	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
 void detect_de(char *str)
@@ -296,8 +307,8 @@ void detect_de(char *str)
 	detects the window manager currently running on top of the OS
 	argument char *str: the char array to be filled with the WM name
 	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
+	CAVEAT: This function relies on the presence of 'detectwm', a shell script. 
+	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
 void detect_wm(char *str)
@@ -315,8 +326,8 @@ void detect_wm(char *str)
 	detects the theme associated with the WM detected in detect_wm()
 	argument char *str: the char array to be filled with the WM Theme name
 	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
+	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script. 
+	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
 void detect_wm_theme(char *str)
@@ -334,8 +345,8 @@ void detect_wm_theme(char *str)
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
 	argument char *str: the char array to be filled with the GTK info
 	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
+	CAVEAT: This function relies on the presence of 'detectgtk', a shell script. 
+	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
 void detect_gtk(char *str)
