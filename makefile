@@ -1,10 +1,7 @@
 CC = gcc
 CFLAGS = -O3 -std=c99 -Wall -Wunused-variable
 CFLAGS_LINUX = -Wno-unused-result
-LDFLAGS_OSX = -lpthread -framework CoreServices
-LDFLAGS_BSD = -lpthread
-LDFLAGS_LINUX = -lpthread -lX11 -lGL
-LDFLAGS_SOLARIS = -lpthread -lX11
+LDFLAGS =
 INSTALL = /usr/bin/install -c
 
 PREFIX = /usr/local
@@ -22,28 +19,32 @@ all:
 linux:
 	$(eval SOURCES+=./src/plat/linux/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS_LINUX)
+	$(eval LDFLAGS+=-lpthread -lX11 -lGL)
+	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS)
 
 solaris:
 	$(eval SOURCES+=./src/plat/sun/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_SOLARIS)
+	$(eval LDFLAGS+=-lpthread -lX11)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 bsd:
 	$(eval SOURCES+=./src/plat/bsd/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_BSD)
+	$(eval LDFLAGS+=-lpthread)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 osx:
 	$(eval SOURCES+=./src/plat/darwin/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_OSX)
+	$(eval LDFLAGS+=-lpthread -framework CoreServices)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 win:
 	$(eval SOURCES+=./src/plat/win32/*.c)
 	$(eval CFLAGS+=-DWIN32_LEAN_AND_MEAN)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 install:
 	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c
