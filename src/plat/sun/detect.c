@@ -79,3 +79,39 @@ void detect_kernel(char *str)
 
 	return;
 }
+
+/*	detect_uptime
+	detects the computer's uptime
+	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+*/
+void detect_uptime(char *str)
+{
+	long uptime = 0, currtime = 0, boottime = 0;
+
+	int secs = 0;
+	int mins = 0;
+	int hrs = 0;
+	int days = 0;
+
+	currtime = time(NULL);
+	struct utmpx *ent;
+
+	while (ent = getutxent())
+	{
+		if (STRCMP("system boot", ent->ut_line))
+		{
+			boottime = ent->ut_tv.tv_sec;
+		}
+	}
+
+	uptime = currtime - boottime;
+			
+	split_uptime(uptime, &secs, &mins, &hrs, &days);
+
+	if (days > 0)
+		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+	else
+		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+
+	return;
+}

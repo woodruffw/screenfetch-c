@@ -86,3 +86,54 @@ void detect_kernel(char *str)
 
 	return;
 }
+
+/*	detect_uptime
+	detects the computer's uptime
+	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+*/
+void detect_uptime(char *str)
+{
+	long uptime = 0;
+
+	#if !defined(__NetBSD__)
+		long currtime = 0, boottime = 0;
+	#endif
+
+	FILE *uptime_file;
+
+	int secs = 0;
+	int mins = 0;
+	int hrs = 0;
+	int days = 0;
+
+	#if defined(__NetBSD__)
+		uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
+		fscanf(uptime_file, "%ld", &uptime);
+		pclose(uptime_file);
+	#elif defined(__FreeBSD__) || defined(__DragonFly__)
+		uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
+		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+		pclose(uptime_file);
+
+		currtime = time(NULL);
+
+		uptime = currtime - boottime;
+	#elif defined(__OpenBSD__)
+		uptime_file = popen("sysctl -n kern.boottime", "r");
+		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+		pclose(uptime_file);
+
+		currtime = time(NULL);
+
+		uptime = currtime - boottime;
+	#endif
+
+	split_uptime(uptime, &secs, &mins, &hrs, &days);
+
+	if (days > 0)
+		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+	else
+		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+
+	return;
+}

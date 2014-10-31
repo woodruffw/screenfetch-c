@@ -96,3 +96,37 @@ void detect_kernel(char *str)
 
 	return;
 }
+
+/*	detect_uptime
+	detects the computer's uptime
+	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+*/
+void detect_uptime(char *str)
+{
+	long long uptime = 0;
+
+	int secs = 0;
+	int mins = 0;
+	int hrs = 0;
+	int days = 0;
+
+	/* three cheers for undocumented functions and structs */
+	static mach_timebase_info_data_t timebase_info;
+
+	if (timebase_info.denom == 0)
+	{
+		(void) mach_timebase_info(&timebase_info);
+	}
+
+	uptime = (long long)((mach_absolute_time() * timebase_info.numer) / (1000* 1000 * timebase_info.denom));
+	uptime /= 1000;
+
+	split_uptime(uptime, &secs, &mins, &hrs, &days);
+
+	if (days > 0)
+		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+	else
+		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+
+	return;
+}
