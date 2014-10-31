@@ -116,13 +116,6 @@ void detect_distro(char *str, bool error)
 				}
 			}
 		}
-
-		// else if (ISBSD() || OS == SOLARIS)
-		// {
-		// 	distro_file = popen("uname -sr | tr -d '\\n'", "r");
-		// 	fgets(str, MAX_STRLEN, distro_file);
-		// 	pclose(distro_file);
-		// }
 	}
 
 	return;

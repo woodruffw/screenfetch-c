@@ -25,6 +25,8 @@
 */
 void detect_distro(char *str, bool error)
 {
+	FILE *distro_file;
+
 	distro_file = popen("uname -sr | tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, distro_file);
 	pclose(distro_file);
