@@ -89,7 +89,7 @@ void detect_pkgs(char *str);
 // void detect_res(char *str);
 // void detect_de(char *str);
 // void detect_wm(char *str);
-void detect_wm_theme(char *str);
+// void detect_wm_theme(char *str);
 void detect_gtk(char *str);
 
 /* other function definitions */

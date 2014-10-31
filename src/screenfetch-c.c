@@ -527,42 +527,6 @@ void detect_pkgs(char *str)
 	return;
 }
 
-
-/*	detect_wm_theme
-	detects the theme associated with the WM detected in detect_wm()
-	argument char *str: the char array to be filled with the WM Theme name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
-	--
-*/
-void detect_wm_theme(char *str)
-{
-	FILE *wm_theme_file;
-
-	if (OS == CYGWIN)
-	{
-		/* nasty one-liner */
-		wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes' /v 'CurrentTheme' | grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'", "r");
-		fgets(str, MAX_STRLEN, wm_theme_file);
-		pclose(wm_theme_file);
-	}
-
-	else if (OS == OSX)
-	{
-		safe_strncpy(str, "Aqua", MAX_STRLEN);
-	}
-
-	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
-	{
-		wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
-		fgets(str, MAX_STRLEN, wm_theme_file);
-		pclose(wm_theme_file);
-	}
-
-	return;
-}
-
 /*	detect_gtk
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
 	argument char *str: the char array to be filled with the GTK info

@@ -465,3 +465,22 @@ void detect_wm(char *str)
 
 	return;
 }
+
+/*	detect_wm_theme
+	detects the theme associated with the WM detected in detect_wm()
+	argument char *str: the char array to be filled with the WM Theme name
+	--
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectwmtheme', a shell script. If it isn't present in the working directory, the WM Theme will be set as 'Unknown'
+	--
+*/
+void detect_wm_theme(char *str)
+{
+	FILE *wm_theme_file;
+
+	wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
+	fgets(str, MAX_STRLEN, wm_theme_file);
+	pclose(wm_theme_file);
+
+	return;
+}
