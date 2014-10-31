@@ -101,8 +101,23 @@ void detect_host(char *str)
 	gethostname(given_host, MAX_STRLEN);
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
-	
+
 	free(given_user);
+
+	return;
+}
+
+/*	detect_kernel
+	detects the computer's kernel
+	argument char *str: the char array to be filled with the kernel name
+*/
+void detect_kernel(char *str)
+{
+	OSVERSIONINFO kern_info;
+	ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
+	kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&kern_info);
+	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 
 	return;
 }

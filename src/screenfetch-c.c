@@ -362,34 +362,6 @@ int main(int argc, char **argv)
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
 
-/*	detect_kernel
-	detects the computer's kernel
-	argument char *str: the char array to be filled with the kernel name
-*/
-void detect_kernel(char *str)
-{
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			OSVERSIONINFO kern_info;
-			ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
-			kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-			GetVersionEx(&kern_info);
-			snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
-		#endif
-	}
-	else
-	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__unix__)
-			struct utsname kern_info;
-			uname(&kern_info);
-			snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
-		#endif
-	}
-
-	return;
-}
-
 /*	detect_uptime
 	detects the computer's uptime
 	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number

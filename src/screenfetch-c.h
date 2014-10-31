@@ -78,7 +78,7 @@
 // void detect_distro(char *str);
 // void detect_arch(char *str);
 // void detect_host(char *str);
-void detect_kernel(char *str);
+// void detect_kernel(char *str);
 void detect_uptime(char *str);
 void detect_pkgs(char *str);
 void detect_cpu(char *str);
