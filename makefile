@@ -21,23 +21,28 @@ all:
 
 linux:
 	$(eval SOURCES+=./src/plat/linux/*.c)
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS_LINUX)
 
 solaris:
 	$(eval SOURCES+=./src/plat/sun/*.c)
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_SOLARIS)
 
 bsd:
 	$(eval SOURCES+=./src/plat/bsd/*.c)
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_BSD)
 
 osx:
 	$(eval SOURCES+=./src/plat/darwin/*.c)
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_OSX)
 
 win:
 	$(eval SOURCES+=./src/plat/win32/*.c)
 	$(eval CFLAGS+=-DWIN32_LEAN_AND_MEAN)
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c
 
 install:

@@ -40,7 +40,7 @@ $ make linux && sudo make install
 $ make solaris && sudo make install
 ```
 
-_Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`.
+_Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`. Using regular (Sun) `make` will cause strange errors.
 
 ### BSD
 

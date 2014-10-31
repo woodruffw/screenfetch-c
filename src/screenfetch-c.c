@@ -48,9 +48,7 @@
 	I hereby regrant screenfetch-c under the same MIT license.
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
-
-#define _POSIX_C_SOURCE 200112L /* makes all these systems play nicely together */
-
+	
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
