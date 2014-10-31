@@ -53,3 +53,23 @@ void detect_arch(char *str)
 
 	return;
 }
+
+/*	detect_host
+	detects the computer's hostname and active user and formats them
+	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+*/
+void detect_host(char *str)
+{
+	char *given_user = "Unknown";
+	char given_host[MAX_STRLEN] = "Unknown";
+
+	given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
+
+	struct utsname host_info;
+	uname(&host_info);
+	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
+
+	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+
+	return;
+}

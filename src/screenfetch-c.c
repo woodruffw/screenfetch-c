@@ -362,51 +362,6 @@ int main(int argc, char **argv)
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
 
-/*	detect_host
-	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
-*/
-void detect_host(char *str)
-{
-	char *given_user = "Unknown";
-	char given_host[MAX_STRLEN] = "Unknown";
-
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			given_user = malloc(sizeof(char) * MAX_STRLEN);
-			if (given_user == NULL)
-			{
-				ERROR_OUT("Error: ", "Failed to allocate sufficient memory in detect_host.");
-				exit(1);
-			}
-			/* why does the winapi require a pointer to a long? */
-			unsigned long len = MAX_STRLEN;
-			GetUserName(given_user, &len);
-			gethostname(given_host, MAX_STRLEN);
-		#endif
-	}
-
-	else if (OS == OSX || OS == LINUX || OS == SOLARIS || ISBSD())
-	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__unix__)
-			given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
-
-			struct utsname host_info;
-			uname(&host_info);
-			safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
-		#endif
-	}
-
-	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
-
-	#if defined(__CYGWIN__)
-		free(given_user);
-	#endif
-
-	return;
-}
-
 /*	detect_kernel
 	detects the computer's kernel
 	argument char *str: the char array to be filled with the kernel name

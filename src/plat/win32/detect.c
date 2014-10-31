@@ -79,3 +79,30 @@ void detect_arch(char *str)
 
 	return;
 }
+
+/*	detect_host
+	detects the computer's hostname and active user and formats them
+	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+*/
+void detect_host(char *str)
+{
+	char *given_user = "Unknown";
+	char given_host[MAX_STRLEN] = "Unknown";
+
+	given_user = malloc(sizeof(char) * MAX_STRLEN);
+	if (given_user == NULL)
+	{
+		ERROR_OUT("Error: ", "Failed to allocate sufficient memory in detect_host.");
+		exit(1);
+	}
+	/* why does the winapi require a pointer to a long? */
+	unsigned long len = MAX_STRLEN;
+	GetUserName(given_user, &len);
+	gethostname(given_host, MAX_STRLEN);
+
+	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	
+	free(given_user);
+
+	return;
+}
