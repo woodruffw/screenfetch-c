@@ -306,3 +306,20 @@ void detect_shell(char *str, bool error)
 
 	return;
 }
+
+/*	detect_res
+	detects the combined resolution of all monitors attached to the computer
+	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+*/
+void detect_res(char *str, bool error)
+{
+	int width = 0;
+	int height = 0;
+
+	width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+	height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+	snprintf(str, MAX_STRLEN, "%dx%d", width, height);
+
+	return;
+}

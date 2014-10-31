@@ -311,3 +311,23 @@ void detect_shell(char *str, bool error)
 
 	return;
 }
+
+/*	detect_res
+	detects the combined resolution of all monitors attached to the computer
+	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+*/
+void detect_res(char *str, bool error)
+{
+	FILE *res_file;
+
+	res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
+	fgets(str, MAX_STRLEN, res_file);
+	pclose(res_file);
+
+	if (STRCMP(str, "Unknown"))
+	{
+		safe_strncpy(str, "No X Server", MAX_STRLEN);
+	}
+
+	return;
+}

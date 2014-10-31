@@ -245,3 +245,34 @@ void detect_shell(char *str, bool error)
 
 	return;
 }
+
+/*	detect_res
+	detects the combined resolution of all monitors attached to the computer
+	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+*/
+void detect_res(char *str, bool error)
+{
+	int width = 0;
+	int height = 0;
+
+	Display *disp;
+
+	if ((disp = XOpenDisplay(NULL)))
+	{
+		Screen *screen = XDefaultScreenOfDisplay(disp);
+		width = WidthOfScreen(screen);
+		height = HeightOfScreen(screen);
+		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
+	}
+	else
+	{
+		safe_strncpy(str, "No X Server", MAX_STRLEN);
+
+		if (error)
+			ERROR_OUT("Error: ", "Problem detecting X display resolution.");
+	}
+
+	XCloseDisplay(disp);
+	
+	return;
+}

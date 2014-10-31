@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 			if (STRCMP(shell_str, "*"))
 				detect_shell(shell_str, error);
 			if (STRCMP(res_str, "*"))
-				detect_res(res_str);
+				detect_res(res_str, error);
 			if (STRCMP(de_str, "*"))
 				detect_de(de_str);
 			if (STRCMP(wm_str, "*"))
@@ -274,8 +274,7 @@ int main(int argc, char **argv)
 
 			detect_shell(shell_str, error);
 
-			THREAD res_thread;
-			create_thread(&res_thread, (void *) detect_res, (void *) res_str);
+			detect_res(res_str, error);
 
 			THREAD de_thread;
 			create_thread(&de_thread, (void *) detect_de, (void *) de_str);
@@ -297,7 +296,6 @@ int main(int argc, char **argv)
 			join_thread(cpu_thread);
 			join_thread(disk_thread);
 			join_thread(mem_thread);
-			join_thread(res_thread);
 			join_thread(de_thread);
 			join_thread(wm_thread);
 			join_thread(wm_theme_thread);
@@ -317,7 +315,7 @@ int main(int argc, char **argv)
 			detect_disk(disk_str);
 			detect_mem(mem_str);
 			detect_shell(shell_str, error);
-			detect_res(res_str);
+			detect_res(res_str, error);
 			detect_de(de_str);
 			detect_wm(wm_str);
 			detect_wm_theme(wm_theme_str);
@@ -525,73 +523,6 @@ void detect_pkgs(char *str)
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
-
-	return;
-}
-
-/*	detect_res
-	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
-*/
-void detect_res(char *str)
-{
-	FILE *res_file;
-
-	int width = 0;
-	int height = 0;
-
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-			height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-		#endif
-
-		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
-	}
-
-	else if (OS == OSX)
-	{
-		res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, res_file);
-		pclose(res_file);
-	}
-
-	else if (OS == LINUX || OS == SOLARIS)
-	{
-		#if defined(__linux__) || defined(__sun__)
-			Display *disp;
-
-			if ((disp = XOpenDisplay(NULL)))
-			{
-				Screen *screen = XDefaultScreenOfDisplay(disp);
-				width = WidthOfScreen(screen);
-				height = HeightOfScreen(screen);
-				snprintf(str, MAX_STRLEN, "%dx%d", width, height);
-			}
-			else
-			{
-				safe_strncpy(str, "No X Server", MAX_STRLEN);
-
-				if (error)
-					ERROR_OUT("Error: ", "Problem detecting X display resolution.");
-			}
-
-			XCloseDisplay(disp);
-		#endif
-	}
-
-	else if (ISBSD())
-	{
-		res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
-		fgets(str, MAX_STRLEN, res_file);
-		pclose(res_file);
-
-		if (STRCMP(str, "Unknown"))
-		{
-			safe_strncpy(str, "No X Server", MAX_STRLEN);
-		}
-	}
 
 	return;
 }

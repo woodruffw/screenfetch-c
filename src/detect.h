@@ -12,5 +12,6 @@ void detect_gpu(char *str, bool error);
 void detect_disk(char *str);
 void detect_mem(char *str);
 void detect_shell(char *str, bool error);
+void detect_res(char *str, bool error);
 
 #endif /* SCREENFETCH_C_DETECT_H */
