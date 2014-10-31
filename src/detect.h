@@ -1,0 +1,1 @@
+void detect_distro(char *str, bool error);

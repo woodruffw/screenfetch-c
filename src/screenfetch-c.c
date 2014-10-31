@@ -59,6 +59,7 @@
 #include <getopt.h>
 
 #include "screenfetch-c.h" /* detection function prototypes, macros */
+#include "detect.h"
 #include "disp.h" /* version and help output functions */
 #include "logos.h" /* ascii logos */
 #include "colors.h" /* terminal color codes */
@@ -212,7 +213,7 @@ int main(int argc, char **argv)
 
 			/* if the user specifies an asterisk, fill the data in for them */
 			if (STRCMP(distro_str, "*"))
-				detect_distro(distro_str);
+				detect_distro(distro_str, error);
 			if (STRCMP(arch_str, "*"))
 				detect_arch(arch_str);
 			if (STRCMP(host_str, "*"))
@@ -245,9 +246,7 @@ int main(int argc, char **argv)
 	{
 		if (OS != CYGWIN)
 		{
-			THREAD distro_thread;
-			create_thread(&distro_thread, (void *) detect_distro, (void *) distro_str);
-			join_thread(distro_thread); /* a few other functions rely on distro_str, so join the thread detect_distro completes */
+			detect_distro(distro_str, error);
 
 			THREAD arch_thread;
 			create_thread(&arch_thread, (void *) detect_arch, (void *) arch_str);
@@ -313,7 +312,7 @@ int main(int argc, char **argv)
 
 		else /* i haven't perfected threading on windows yet, so don't change this conditional */
 		{
-			detect_distro(distro_str);
+			detect_distro(distro_str, error);
 			detect_arch(arch_str);
 			detect_host(host_str);
 			detect_kernel(kernel_str);
@@ -364,172 +363,6 @@ int main(int argc, char **argv)
 }
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
-
-/*	detect_distro
-	detects the computer's distribution (really only relevant on Linux)
-	argument char *str: the char array to be filled with the distro name
-*/
-void detect_distro(char *str)
-{
-	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
-	{
-		FILE *distro_file;
-
-		char distro_name_str[MAX_STRLEN];
-
-		if (OS == CYGWIN)
-		{
-			#if defined(NTDDI_WIN7)
-				safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
-			#elif defined(NTDDI_WIN8)
-				safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
-			#elif defined(NTDDI_WINBLUE)
-				safe_strncpy(str, "Microsoft Windows 8.1", MAX_STRLEN);
-			#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
-				safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
-			#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
-				safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
-			#elif defined(_WIN32_WINNT_WS03)
-				safe_strncpy(str, "Microsoft Windows Server 2003", MAX_STRLEN);
-			#elif defined(_WIN32_WINNT_WS08)
-				safe_strncpy(str, "Microsoft Windows Server 2008", MAX_STRLEN);
-			#else
-				safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
-			#endif
-		}
-
-		else if (OS == OSX)
-		{
-			/*
-				Use this:
-				https://www.opensource.apple.com/source/DarwinTools/DarwinTools-1/sw_vers.c
-			*/
-			#if defined(__APPLE__) && defined(__MACH__) && __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-				int ver_maj, ver_min, ver_bug;
-				Gestalt(gestaltSystemVersionMajor, (SInt32 *) &ver_maj);
-				Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
-				Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
-
-				snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
-			#elif defined(__APPLE__) && defined(__MACH__) /* Gestalt is deprecated on 10.8+, so use sw_vers */
-				distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-				fgets(distro_name_str, MAX_STRLEN, distro_file);
-				pclose(distro_file);
-
-				snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
-			#endif
-		}
-
-		else if (OS == LINUX)
-		{
-			if (FILE_EXISTS("/system/bin/getprop"))
-			{
-				safe_strncpy(str, "Android", MAX_STRLEN);
-			}
-
-			else
-			{
-				bool detected = false;
-
-				/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
-				distro_file = fopen("/etc/issue", "r");
-
-				if (distro_file != NULL)
-				{
-					/* get the first 4 chars, that's all we need */
-					fscanf(distro_file, "%4s", distro_name_str);
-					fclose(distro_file);
-
-					if (STRCMP(distro_name_str, "Back"))
-					{
-						safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
-						detected = true;
-					}
-
-					else if (STRCMP(distro_name_str, "Crun"))
-					{
-						safe_strncpy(str, "CrunchBang", MAX_STRLEN);
-						detected = true;
-					}
-
-					else if (STRCMP(distro_name_str, "LMDE"))
-					{
-						safe_strncpy(str, "LMDE", MAX_STRLEN);
-						detected = true;
-					}
-
-					else if (STRCMP(distro_name_str, "Debi") || STRCMP(distro_name_str, "Rasp"))
-					{
-						safe_strncpy(str, "Debian", MAX_STRLEN);
-						detected = true;
-					}
-				}
-
-				if (!detected)
-				{
-					if (FILE_EXISTS("/etc/fedora-release"))
-					{
-						safe_strncpy(str, "Fedora", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/SuSE-release"))
-					{
-						safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/arch-release"))
-					{
-						safe_strncpy(str, "Arch Linux", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/gentoo-release"))
-					{
-						safe_strncpy(str, "Gentoo", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/angstrom-version"))
-					{
-						safe_strncpy(str, "Angstrom", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/manjaro-release"))
-					{
-						safe_strncpy(str, "Manjaro", MAX_STRLEN);
-					}
-
-					else if (FILE_EXISTS("/etc/lsb-release"))
-					{
-						distro_file = fopen("/etc/lsb-release", "r");
-						fgets(distro_name_str, MAX_STRLEN, distro_file);
-						distro_name_str[strlen(distro_name_str) - 1] = '\0';
-						fclose(distro_file);
-
-						snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
-					}
-
-					else
-					{
-						safe_strncpy(str, "Linux", MAX_STRLEN);
-
-						if (error)
-						{
-							ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
-						}
-					}
-				}
-			}
-		}
-
-		else if (ISBSD() || OS == SOLARIS)
-		{
-			distro_file = popen("uname -sr | tr -d '\\n'", "r");
-			fgets(str, MAX_STRLEN, distro_file);
-			pclose(distro_file);
-		}
-	}
-
-	return;
-}
 
 /*	detect_arch
 	detects the computer's architecture

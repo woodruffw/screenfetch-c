@@ -20,18 +20,24 @@ all:
 	@echo '========================================================='
 
 linux:
+	$(eval SOURCES+=./src/plat/linux/*.c)
 	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS_LINUX)
 
 solaris:
+	$(eval SOURCES+=./src/plat/sun/*.c)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_SOLARIS)
 
 bsd:
+	$(eval SOURCES+=./src/plat/bsd/*.c)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_BSD)
 
 osx:
+	$(eval SOURCES+=./src/plat/darwin/*.c)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS_OSX)
 
 win:
+	$(eval SOURCES+=./src/plat/win32/*.c)
+	$(eval CFLAGS+=-DWIN32_LEAN_AND_MEAN)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c
 
 install:
