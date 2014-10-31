@@ -10,5 +10,6 @@ void detect_uptime(char *str);
 void detect_cpu(char *str);
 void detect_gpu(char *str, bool error);
 void detect_disk(char *str);
+void detect_mem(char *str);
 
 #endif /* SCREENFETCH_C_DETECT_H */

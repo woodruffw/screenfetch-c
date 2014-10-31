@@ -156,3 +156,21 @@ void detect_disk(char *str)
 
 	return;
 }
+
+/*	detect_mem
+	detects the computer's total and used RAM
+	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+*/
+void detect_mem(char *str)
+{
+	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+
+	total_mem = sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
+	total_mem /= (long) MB;
+
+	/* sar -r 1 to get free pages? */
+
+	snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");
+
+	return;
+}

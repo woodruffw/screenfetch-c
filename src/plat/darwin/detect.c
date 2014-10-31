@@ -201,3 +201,35 @@ void detect_disk(char *str)
 
 	return;
 }
+
+/*	detect_mem
+	detects the computer's total and used RAM
+	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+*/
+void detect_mem(char *str)
+{
+	FILE *mem_file;
+
+	long long total_mem = 0;
+	long long free_mem = 0;
+	long long used_mem = 0;
+
+	mem_file = popen("sysctl -n hw.memsize", "r");
+	fscanf(mem_file, "%lld", &total_mem);
+	pclose(mem_file);
+
+	mem_file = popen("vm_stat | head -2 | tail -1 | tr -d 'Pages free: .'", "r");
+	fscanf(mem_file, "%lld", &free_mem);
+	pclose(mem_file);
+
+	total_mem /= (long) MB;
+
+	free_mem *= 4096; /* 4KiB is OS X's page size */
+	free_mem /= (long) MB;
+
+	used_mem = total_mem - free_mem;
+
+	snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
+
+	return;
+}
