@@ -350,3 +350,22 @@ void detect_de(char *str)
 
 	return;
 }
+
+/*	detect_wm
+	detects the window manager currently running on top of the OS
+	argument char *str: the char array to be filled with the WM name
+	--
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
+	--
+*/
+void detect_wm(char *str)
+{
+	FILE *wm_file;
+
+	wm_file = popen("detectwm 2> /dev/null", "r");
+	fgets(str, MAX_STRLEN, wm_file);
+	pclose(wm_file);
+
+	return;
+}

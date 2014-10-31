@@ -528,47 +528,6 @@ void detect_pkgs(char *str)
 }
 
 
-/*	detect_wm
-	detects the window manager currently running on top of the OS
-	argument char *str: the char array to be filled with the WM name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectwm', a shell script. If it isn't present in the working directory, the WM will be set as 'Unknown'
-	--
-*/
-void detect_wm(char *str)
-{
-	FILE *wm_file;
-
-	if (OS == CYGWIN)
-	{
-		/* wm_file = popen("tasklist | grep -o 'bugn' | tr -d '\\r\\n'", "r"); */
-		/* test for bugn */
-		/* pclose(wm_file); */
-
-		/* wm_file = popen("tasklist | grep -o 'Windawesome' | tr -d '\\r \\n'", "r"); */
-		/* test for Windawesome */
-		/* pclose(wm_file); */
-
-		/* else */
-		safe_strncpy(str, "DWM", MAX_STRLEN);
-	}
-
-	else if (OS == OSX)
-	{
-		safe_strncpy(str, "Quartz Compositor", MAX_STRLEN);
-	}
-
-	else if (OS == LINUX || ISBSD() || OS == SOLARIS)
-	{
-		wm_file = popen("detectwm 2> /dev/null", "r");
-		fgets(str, MAX_STRLEN, wm_file);
-		pclose(wm_file);
-	}
-
-	return;
-}
-
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm()
 	argument char *str: the char array to be filled with the WM Theme name

@@ -14,5 +14,6 @@ void detect_mem(char *str);
 void detect_shell(char *str, bool error);
 void detect_res(char *str, bool error);
 void detect_de(char *str);
+void detect_wm(char *str);
 
 #endif /* SCREENFETCH_C_DETECT_H */
