@@ -176,3 +176,41 @@ void detect_gpu(char *str, bool error)
 
 	return;
 }
+
+/*	detect_disk
+	detects the computer's total disk capacity and usage
+	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+*/
+void detect_disk(char *str)
+{
+	FILE *disk_file;
+
+	int disk_total = 0;
+	int disk_used = 0;
+	int disk_percentage = 0;
+
+	/* Cygwin -- GetDiskFreeSpaceEx? */
+
+	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+	fscanf(disk_file, "%d", &disk_total);
+	pclose(disk_file);
+
+	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+	fscanf(disk_file, "%d", &disk_used);
+	pclose(disk_file);
+
+	if (disk_total > disk_used)
+	{
+		disk_percentage = (((float) disk_used / disk_total) * 100);
+
+		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+	}
+	else /* when disk_used is in a smaller unit */
+	{
+		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
+
+		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+	}
+
+	return;
+}

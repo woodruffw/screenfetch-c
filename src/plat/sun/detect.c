@@ -145,3 +145,14 @@ void detect_gpu(char *str, bool error)
 
 	return;
 }
+
+/*	detect_disk
+	detects the computer's total disk capacity and usage
+	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+*/
+void detect_disk(char *str)
+{
+	safe_strncpy(str, "Not implemented", MAX_STRLEN);
+
+	return;
+}
