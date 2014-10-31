@@ -16,13 +16,13 @@ all:
 	@echo 'Options: linux, solaris, bsd, osx, win.'
 	@echo '========================================================='
 
-linux:
+linux: x11test gltest
 	$(eval SOURCES+=./src/plat/linux/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(eval LDFLAGS+=-lpthread -lX11 -lGL)
 	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS)
 
-solaris:
+solaris: x11test
 	$(eval SOURCES+=./src/plat/sun/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(eval LDFLAGS+=-lpthread -lX11)
@@ -65,11 +65,24 @@ uninstall:
 	rm -rf $(BIN)/detectgpu
 	rm -rf $(MAN)/screenfetch-c.1
 
+x11test:
+	@echo "Testing for X11..."
+	$(CC) $(CFLAGS) ./src/tests/x11test.c -o ./x11test -lX11
+	rm -f ./x11test
+
+gltest:
+	@echo "Testing for OpenGL..."
+	$(CC) $(CFLAGS) ./src/tests/gltest.c -o ./gltest -lGL
+	rm -f ./gltest
+
 threadtest:
 	$(CC) $(CFLAGS) ./src/thread.c ./src/tests/threadtest.c -o ./threadtest -lpthread
 	./threadtest
-	rm ./threadtest
+	rm -f ./threadtest
 
 clean:
-	rm screenfetch-c
+	rm -f threadtest
+	rm -f x11test
+	rm -f gltest
+	rm -f screenfetch-c
 
