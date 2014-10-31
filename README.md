@@ -97,6 +97,7 @@ In particular, the following things still need to be done:
 - Improve RAM/HDD detection on BSD
 - Fix manual mode on Windows
 - Improve features on Android
+- Improve/replace configuration format and parser
 
 ## Current Known Compatibility:
 
