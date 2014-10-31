@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 			if (STRCMP(gpu_str, "*"))
 				detect_gpu(gpu_str, error);
 			if (STRCMP(shell_str, "*"))
-				detect_shell(shell_str);
+				detect_shell(shell_str, error);
 			if (STRCMP(res_str, "*"))
 				detect_res(res_str);
 			if (STRCMP(de_str, "*"))
@@ -272,8 +272,7 @@ int main(int argc, char **argv)
 			THREAD mem_thread;
 			create_thread(&mem_thread, (void *) detect_mem, (void *) mem_str);
 
-			THREAD shell_thread;
-			create_thread(&shell_thread, (void *) detect_shell, (void *) shell_str);
+			detect_shell(shell_str, error);
 
 			THREAD res_thread;
 			create_thread(&res_thread, (void *) detect_res, (void *) res_str);
@@ -298,7 +297,6 @@ int main(int argc, char **argv)
 			join_thread(cpu_thread);
 			join_thread(disk_thread);
 			join_thread(mem_thread);
-			join_thread(shell_thread);
 			join_thread(res_thread);
 			join_thread(de_thread);
 			join_thread(wm_thread);
@@ -318,7 +316,7 @@ int main(int argc, char **argv)
 			detect_gpu(gpu_str, error);
 			detect_disk(disk_str);
 			detect_mem(mem_str);
-			detect_shell(shell_str);
+			detect_shell(shell_str, error);
 			detect_res(res_str);
 			detect_de(de_str);
 			detect_wm(wm_str);
@@ -527,77 +525,6 @@ void detect_pkgs(char *str)
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
-
-	return;
-}
-
-/*	detect_shell
-	detects the shell currently running on the computer
-	argument char *str: the char array to be filled with the shell name and version
-	--
-	CAVEAT: shell version detection relies on the standard versioning format for 
-	each shell. If any shell's older (or newer versions) suddenly begin to use a new
-	scheme, the version may be displayed incorrectly.
-	--
-*/
-void detect_shell(char *str)
-{
-	FILE *shell_file;
-
-	char *shell_name;
-	char vers_str[MAX_STRLEN];
-
-	shell_name = getenv("SHELL");
-
-	if (shell_name == NULL)
-	{
-		if (error)
-			ERROR_OUT("Error: ", "Problem detecting shell.");
-
-		return;
-	}
-
-	if (strstr(shell_name, "bash"))
-	{
-		shell_file = popen("bash --version | head -1", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
-		pclose(shell_file);
-	}
-
-	else if (strstr(shell_name, "zsh"))
-	{
-		shell_file = popen("zsh --version", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);	
-		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
-		pclose(shell_file);
-	}
-
-	else if (strstr(shell_name, "csh"))
-	{
-		shell_file = popen("csh --version | head -1", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
-		pclose(shell_file);
-	}
-
-	else if (strstr(shell_name, "fish"))
-	{
-		shell_file = popen("fish --version", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
-		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
-		pclose(shell_file);
-	}
-
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
-	{
-		/* i don't have a version detection system for these, yet */
-		safe_strncpy(str, shell_name, MAX_STRLEN);
-	}
 
 	return;
 }
