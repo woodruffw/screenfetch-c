@@ -150,3 +150,18 @@ void detect_cpu(char *str)
 
 	return;
 }
+
+/*	detect_gpu
+	detects the computer's GPU brand/name-string
+	argument char *str: the char array to be filled with the GPU name
+*/
+void detect_gpu(char *str, bool error)
+{
+	FILE *gpu_file;
+
+	gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | tr -d '\\n'", "r");
+	fgets(str, MAX_STRLEN, gpu_file);
+	pclose(gpu_file);
+
+	return;
+}

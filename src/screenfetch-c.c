@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 			if (STRCMP(cpu_str, "*"))
 				detect_cpu(cpu_str);
 			if (STRCMP(gpu_str, "*"))
-				detect_gpu(gpu_str);
+				detect_gpu(gpu_str, error);
 			if (STRCMP(shell_str, "*"))
 				detect_shell(shell_str);
 			if (STRCMP(res_str, "*"))
@@ -264,8 +264,7 @@ int main(int argc, char **argv)
 			THREAD cpu_thread;
 			create_thread(&cpu_thread, (void *) detect_cpu, (void *) cpu_str);
 
-			THREAD gpu_thread;
-			create_thread(&gpu_thread, (void *) detect_gpu, (void *) gpu_str);
+			detect_gpu(gpu_str, error);
 
 			THREAD disk_thread;
 			create_thread(&disk_thread, (void *) detect_disk, (void *) disk_str);
@@ -297,7 +296,6 @@ int main(int argc, char **argv)
 			join_thread(uptime_thread);
 			join_thread(pkgs_thread);
 			join_thread(cpu_thread);
-			join_thread(gpu_thread);
 			join_thread(disk_thread);
 			join_thread(mem_thread);
 			join_thread(shell_thread);
@@ -317,7 +315,7 @@ int main(int argc, char **argv)
 			detect_uptime(uptime_str);
 			detect_pkgs(pkgs_str);
 			detect_cpu(cpu_str);
-			detect_gpu(gpu_str);
+			detect_gpu(gpu_str, error);
 			detect_disk(disk_str);
 			detect_mem(mem_str);
 			detect_shell(shell_str);
@@ -529,87 +527,6 @@ void detect_pkgs(char *str)
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
-
-	return;
-}
-
-/*	detect_gpu
-	detects the computer's GPU brand/name-string
-	argument char *str: the char array to be filled with the GPU name
-*/
-void detect_gpu(char *str)
-{
-	FILE *gpu_file;
-
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			HKEY hkey;
-			DWORD str_size = MAX_STRLEN;
-			RegOpenKey(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
-			RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str, &str_size);
-		#endif
-	}
-
-	else if (OS == OSX)
-	{
-		gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, gpu_file);
-		pclose(gpu_file);
-	}
-
-	else if (OS == LINUX)
-	{
-		#if defined(__linux__)
-			Display *disp = NULL;
-			Window wind = NULL;
-			GLint attr[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-			XVisualInfo *visual_info = NULL;
-			GLXContext context = NULL;
-
-			if ((disp = XOpenDisplay(NULL)))
-			{
-				wind = DefaultRootWindow(disp);
-
-				if ((visual_info = glXChooseVisual(disp, 0, attr)))
-				{
-					if ((context = glXCreateContext(disp, visual_info, NULL, GL_TRUE)))
-					{
-						glXMakeCurrent(disp, wind, context);
-						safe_strncpy(str, (const char *) glGetString(GL_RENDERER), MAX_STRLEN);
-					}
-					else if (error)
-					{
-						ERROR_OUT("Error: ", "Failed to create OpenGL context.");
-					}
-				}
-				else if (error)
-				{
-					ERROR_OUT("Error: ", "Failed to select a proper X visual.");
-				}
-			}
-			else if (error)
-			{
-				safe_strncpy(str, "No X Server", MAX_STRLEN);
-				ERROR_OUT("Error: ", "Could not open an X display.");
-			}
-
-			/* cleanup */
-			if (context)
-				glXDestroyContext(disp, context);
-			if (visual_info)
-				XFree((void *) visual_info);
-			if (disp)
-				XCloseDisplay(disp);
-		#endif
-	}
-
-	else if (ISBSD() || OS == SOLARIS)
-	{
-		gpu_file = popen("detectgpu 2>/dev/null", "r");
-		fgets(str, MAX_STRLEN, gpu_file);
-		pclose(gpu_file);
-	}
 
 	return;
 }

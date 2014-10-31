@@ -8,5 +8,6 @@ void detect_kernel(char *str);
 void detect_uptime(char *str);
 // void detect_pkgs(char *str);
 void detect_cpu(char *str);
+void detect_gpu(char *str, bool error);
 
 #endif /* SCREENFETCH_C_DETECT_H */

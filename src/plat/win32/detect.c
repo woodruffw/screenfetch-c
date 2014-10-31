@@ -162,3 +162,17 @@ void detect_cpu(char *str)
 
 	return;
 }
+
+/*	detect_gpu
+	detects the computer's GPU brand/name-string
+	argument char *str: the char array to be filled with the GPU name
+*/
+void detect_gpu(char *str, bool error)
+{
+	HKEY hkey;
+	DWORD str_size = MAX_STRLEN;
+	RegOpenKey(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
+	RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str, &str_size);
+
+	return;
+}
