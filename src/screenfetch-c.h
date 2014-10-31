@@ -94,6 +94,5 @@ void detect_gtk(char *str);
 
 /* other function definitions */
 int manual_input(bool verbose);
-void take_screenshot(void);
 
 #endif /* SCREENFETCH_C_H */

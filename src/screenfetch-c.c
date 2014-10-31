@@ -349,7 +349,7 @@ int main(int argc, char **argv)
 		main_text_output(detected_arr, detected_arr_names);
 
 	if (screenshot)
-		take_screenshot();
+		take_screenshot(verbose, error);
 
 	return EXIT_SUCCESS;
 }
@@ -548,13 +548,11 @@ void detect_de(char *str)
 		pclose(de_file);
 
 		if (version == 6 || version == 7)
-		{
 			safe_strncpy(str, "Aero", MAX_STRLEN);
-		}
+		else if (version == 8)
+			safe_strncpy(str, "Metro", MAX_STRLEN);
 		else
-		{
 			safe_strncpy(str, "Luna", MAX_STRLEN);
-		}
 	}
 
 	else if (OS == OSX)
@@ -858,84 +856,6 @@ int manual_input(bool verbose)
 
 		return EXIT_SUCCESS;
 	}
-}
-
-/*  **  END DETECTION FUNCTIONS  **  */
-
-/*	take_screenshot
-	takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
-*/
-void take_screenshot(void)
-{
-	printf("%s", "Taking shot in 3..");
-	fflush(stdout);
-	sleep(1);
-	printf("%s", "2..");
-	fflush(stdout);
-	sleep(1);
-	printf("%s", "1..");
-	fflush(stdout);
-	sleep(1);
-	printf("%s\n", "0");
-
-	if (OS == CYGWIN)
-	{
-		#ifdef __CYGWIN__
-			/* terrible hack, the printscreen key is simulated */
-			keybd_event(VK_SNAPSHOT, 0, 0, 0);
-			
-			if (verbose)
-				VERBOSE_OUT("Screenshot has been saved to the clipboard.", "");
-			
-
-			/* NOT FINSISHED - HBITMAP needs to be saved
-			HDC screen_dc = GetDC(NULL);
-			HDC mem_dc = CreateCompatibleDC(screen_dc);
-
-			int horiz = GetDeviceCaps(screen_dc, HORZRES);
-			int vert = GetDeviceCaps(screen_dc, VERTRES);
-
-			HBITMAP bitmap = CreateCompatibleBitmap(screen_dc, horiz, vert);
-			HBITMAP old_bitmap = SelectObject(mem_dc, bitmap);
-
-			BitBlt(mem_dc, 0, 0, horiz, vert, screen_dc, 0, 0, SRCCOPY);
-			bitmap = SelectObject(mem_dc, old_bitmap);
-
-			DeleteDC(screen_dc);
-			DeleteDC(mem_dc);
-			*/
-		#endif
-	}
-
-	else
-	{
-		if (OS == OSX)
-		{
-			system("screencapture -x ~/screenfetch_screenshot.png 2> /dev/null");	
-		}
-
-		else if (OS == LINUX || ISBSD())
-		{
-			system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
-		}
-
-		/* change this to getpwuid() */
-		char file_loc[MAX_STRLEN];
-		safe_strncpy(file_loc, getenv("HOME"), MAX_STRLEN);
-		strncat(file_loc, "/screenfetch_screenshot.png", MAX_STRLEN);
-
-		if (FILE_EXISTS(file_loc) && verbose)
-		{
-			VERBOSE_OUT("Screenshot successfully saved.", "");
-		}
-			
-		else if (verbose)
-		{
-			ERROR_OUT("Error: ", "Problem saving screenshot.");
-		}
-	}
-
-	return;
 }
 
 /*  **  END FLAG/OUTPUT/MISC FUNCTIONS  **  */

@@ -12,5 +12,6 @@
 
 char *safe_strncpy(char *destination, const char *source, size_t num);
 void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days);
+void take_screenshot(bool verbose, bool error);
 
 #endif /* SCREENFETCH_C_UTIL_H */
