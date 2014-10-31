@@ -527,60 +527,6 @@ void detect_pkgs(char *str)
 	return;
 }
 
-/*	detect_gtk
-	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char *str: the char array to be filled with the GTK info
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
-	--
-*/
-void detect_gtk(char *str)
-{
-	FILE *gtk_file;
-
-	char gtk2_str[MAX_STRLEN] = "Unknown";
-	char gtk3_str[MAX_STRLEN] = "Unknown";
-	char gtk_icons_str[MAX_STRLEN] = "Unknown";
-	char font_str[MAX_STRLEN] = "Unknown";
-
-	if (OS == CYGWIN)
-	{
-		/* get the terminal's font */
-		gtk_file = popen("grep '^Font=.*' < $HOME/.minttyrc | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
-		fgets(font_str, MAX_STRLEN, gtk_file);
-		pclose(gtk_file);
-
-		snprintf(str, MAX_STRLEN, "%s (Font)", font_str);
-	}
-
-	else if (OS == OSX)
-	{
-		safe_strncpy(str, "Not Applicable", MAX_STRLEN);
-	}
-
-	else if (OS == LINUX || ISBSD())
-	{
-		gtk_file = popen("detectgtk 2> /dev/null", "r");
-		fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
-		pclose(gtk_file);
-
-		if (STRCMP(gtk3_str, "Unknown"))
-			snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str, gtk_icons_str);
-		else if (STRCMP(gtk2_str, "Unknown"))
-			snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str, gtk_icons_str);
-		else
-			snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
-	}
-
-	else if (OS == SOLARIS)
-	{
-		/* detectgtk needs to be made compatible with Solaris's awk */
-	}
-
-	return;
-}
-
 /*  manual_input
 	generates (or reads) the ~/.screenfetchc file based upon user input
 	returns an int indicating status (SUCCESS or FAILURE)

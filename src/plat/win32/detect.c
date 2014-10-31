@@ -386,3 +386,25 @@ void detect_wm_theme(char *str)
 
 	return;
 }
+
+/*	detect_gtk
+	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
+	argument char *str: the char array to be filled with the GTK info
+	--
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectgtk', a shell script. If it isn't present in the working directory, the GTK will be set as 'Unknown'
+	--
+*/
+void detect_gtk(char *str)
+{
+	FILE *gtk_file;
+	char font_str[MAX_STRLEN] = "Unknown";
+
+	gtk_file = popen("grep '^Font=.*' < $HOME/.minttyrc | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
+	fgets(font_str, MAX_STRLEN, gtk_file);
+	pclose(gtk_file);
+
+	snprintf(str, MAX_STRLEN, "%s (Font)", font_str);
+
+	return;
+}
