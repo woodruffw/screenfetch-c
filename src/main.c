@@ -1,11 +1,11 @@
-/*	screenfetch-c.c
+/*	main.c
 	Author: William Woodruff
 	-------------
 
 	A rewrite of screenFetch.sh in C.
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
-	Hopefully this port will execute faster, although it's more for self education than anything else.
+	Hopefully this rewrite will execute faster, although it's more for self education than anything else.
 	
 	------
 
@@ -49,14 +49,13 @@
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
 
+/* standard includes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <unistd.h>
 #include <getopt.h>
 
-#include "screenfetch-c.h" /* vestigial */
 #include "detect.h" /* detection function prototypes */
 #include "disp.h" /* version and help output functions */
 #include "logos.h" /* ascii logos */
@@ -122,22 +121,9 @@ static char *detected_arr_names[16] = {
 										"GTK: "
 									};
 
-/* flag definitions */
-bool manual = false;
-bool logo = true;
-bool error = true;
-bool verbose = false;
-bool screenshot = false;
-
 int main(int argc, char **argv)
 {
-	/* warn unknown OSes about using this program */
-	if (OS == UNKNOWN)
-	{
-		ERROR_OUT("Warning: ", "This program isn't designed for your OS.");
-		ERROR_OUT("Even if it did compile successfully, it will not execute correctly.", "");
-		ERROR_OUT("It is HIGHLY recommended, therefore, that you use manual mode.", "");
-	}
+	bool manual = false, logo = true, error = true, verbose = false, screenshot = false;
 
 	struct option long_options[] =
 	{
@@ -199,7 +185,7 @@ int main(int argc, char **argv)
 
 	if (manual) /* if the user has decided to enter manual mode */
 	{
-		int stat = manual_input(verbose);
+		int stat = manual_input(detected_arr, verbose);
 
 		if (stat == EXIT_SUCCESS)
 		{
@@ -242,9 +228,13 @@ int main(int argc, char **argv)
 
 	else /* each string is filled by its respective function */
 	{
-		if (OS != CYGWIN)
-		{
+		#if !defined(__CYGWIN__)
+			/* TODO: create structs for these for passing args in threads */
 			detect_distro(distro_str, error);
+			detect_pkgs(pkgs_str, distro_str, error);
+			detect_shell(shell_str, error);
+			detect_res(res_str, error);
+			detect_gpu(gpu_str, error);
 
 			THREAD arch_thread;
 			create_thread(&arch_thread, (void *) detect_arch, (void *) arch_str);
@@ -258,22 +248,14 @@ int main(int argc, char **argv)
 			THREAD uptime_thread;
 			create_thread(&uptime_thread, (void *) detect_uptime, (void *) uptime_str);
 
-			detect_pkgs(pkgs_str, distro_str, error);
-
 			THREAD cpu_thread;
 			create_thread(&cpu_thread, (void *) detect_cpu, (void *) cpu_str);
-
-			detect_gpu(gpu_str, error);
 
 			THREAD disk_thread;
 			create_thread(&disk_thread, (void *) detect_disk, (void *) disk_str);
 
 			THREAD mem_thread;
 			create_thread(&mem_thread, (void *) detect_mem, (void *) mem_str);
-
-			detect_shell(shell_str, error);
-
-			detect_res(res_str, error);
 
 			THREAD de_thread;
 			create_thread(&de_thread, (void *) detect_de, (void *) de_str);
@@ -298,10 +280,7 @@ int main(int argc, char **argv)
 			join_thread(wm_thread);
 			join_thread(wm_theme_thread);
 			join_thread(gtk_thread);
-		}
-
-		else /* i haven't perfected threading on windows yet, so don't change this conditional */
-		{
+		#else
 			detect_distro(distro_str, error);
 			detect_arch(arch_str);
 			detect_host(host_str);
@@ -318,7 +297,7 @@ int main(int argc, char **argv)
 			detect_wm(wm_str);
 			detect_wm_theme(wm_theme_str);
 			detect_gtk(gtk_str);
-		}
+		#endif
 	}
 
 	if (verbose)
@@ -351,160 +330,3 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
-
-/*  **  BEGIN DETECTION FUNCTIONS  ** */
-
-/*  manual_input
-	generates (or reads) the ~/.screenfetchc file based upon user input
-	returns an int indicating status (SUCCESS or FAILURE)
-*/
-int manual_input(bool verbose)
-{
-	FILE *config_file;
-	char config_file_loc[MAX_STRLEN];
-
-	safe_strncpy(config_file_loc, getenv("HOME"), MAX_STRLEN);
-	strncat(config_file_loc, "/.screenfetchc", MAX_STRLEN);
-
-	if (!FILE_EXISTS(config_file_loc))
-	{
-		if (OS == CYGWIN)
-		{
-			printf("%s\n", TBLU "WARNING: There is currenly a bug involving manual mode on Windows." TNRM);
-			printf("%s\n", TBLU "Only continue if you are ABSOLUTELY sure." TNRM);
-		}
-
-		printf("%s\n", "This appears to be your first time running screenfetch-c in manual mode.");
-		printf("%s", "Would you like to continue? (y/n) ");
-
-		char choice = getchar();
-		getchar(); /* flush the newline */
-
-		if (choice == 'y' || choice == 'Y')
-		{
-			config_file = fopen(config_file_loc, "w");
-
-			printf("%s\n", "We are now going to begin the manual mode input process.");
-			printf("%s\n", "Please enter exactly what is asked for.");
-			printf("%s\n", "If you are unsure about format, please consult the manpage.");
-
-			printf("%s", "Please enter the name of your distribution/OS: ");
-			fgets(distro_str, MAX_STRLEN, stdin);
-			fputs(distro_str, config_file);
-
-			printf("%s", "Please enter your architecture: ");
-			fgets(arch_str, MAX_STRLEN, stdin);
-			fputs(arch_str, config_file);
-
-			printf("%s", "Please enter your username@hostname: ");
-			fgets(host_str, MAX_STRLEN, stdin);
-			fputs(host_str, config_file);
-
-			printf("%s", "Please enter your kernel: ");
-			fgets(kernel_str, MAX_STRLEN, stdin);
-			fputs(kernel_str, config_file);
-
-			printf("%s", "Please enter your CPU name: ");
-			fgets(cpu_str, MAX_STRLEN, stdin);
-			fputs(cpu_str, config_file);
-
-			printf("%s", "Please enter your GPU name: ");
-			fgets(gpu_str, MAX_STRLEN, stdin);
-			fputs(gpu_str, config_file);
-
-			printf("%s", "Please enter your shell name and version: ");
-			fgets(shell_str, MAX_STRLEN, stdin);
-			fputs(shell_str, config_file);
-
-			printf("%s", "Please enter your monitor resolution: ");
-			fgets(res_str, MAX_STRLEN, stdin);
-			fputs(res_str, config_file);
-
-			printf("%s", "Please enter your DE name: ");
-			fgets(de_str, MAX_STRLEN, stdin);
-			fputs(de_str, config_file);
-
-			printf("%s", "Please enter your WM name: ");
-			fgets(wm_str, MAX_STRLEN, stdin);
-			fputs(wm_str, config_file);
-
-			printf("%s", "Please enter your WM Theme name: ");
-			fgets(wm_theme_str, MAX_STRLEN, stdin);
-			fputs(wm_theme_str, config_file);
-
-			printf("%s", "Please enter any GTK info: ");
-			fgets(gtk_str, MAX_STRLEN, stdin);
-			fputs(gtk_str, config_file);
-
-			printf("%s\n", "That concludes the manual input.");
-			printf("%s\n", "From now on, screenfetch-c will use this information when called with -m.");
-
-			fclose(config_file);
-
-			/* i am deeply ashamed of this solution */
-			distro_str[strlen(distro_str) - 1] = '\0';
-			arch_str[strlen(arch_str) - 1] = '\0';
-			host_str[strlen(host_str) - 1] = '\0';
-			kernel_str[strlen(kernel_str) - 1] = '\0';
-			cpu_str[strlen(cpu_str) - 1] = '\0';
-			gpu_str[strlen(gpu_str) - 1] = '\0';
-			shell_str[strlen(shell_str) - 1] = '\0';
-			res_str[strlen(res_str) - 1] = '\0';
-			de_str[strlen(de_str) - 1] = '\0';
-			wm_str[strlen(wm_str) - 1] = '\0';
-			wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
-			gtk_str[strlen(gtk_str) - 1] = '\0';
-
-			return EXIT_SUCCESS;
-		}
-
-		else
-		{
-			printf("%s\n", "Exiting manual mode and screenfetch-c.");
-			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m (--manual) flag next time.");
-
-			return EXIT_FAILURE;
-		}
-	}
-
-	else
-	{
-		if (verbose)
-			VERBOSE_OUT("Found config file. Reading...", "");
-
-		config_file = fopen(config_file_loc, "r");
-
-		fgets(distro_str, MAX_STRLEN, config_file);
-		fgets(arch_str, MAX_STRLEN, config_file);
-		fgets(host_str, MAX_STRLEN, config_file);
-		fgets(kernel_str, MAX_STRLEN, config_file);
-		fgets(cpu_str, MAX_STRLEN, config_file);
-		fgets(gpu_str, MAX_STRLEN, config_file);
-		fgets(shell_str, MAX_STRLEN, config_file);
-		fgets(res_str, MAX_STRLEN, config_file);
-		fgets(de_str, MAX_STRLEN, config_file);
-		fgets(wm_str, MAX_STRLEN, config_file);
-		fgets(wm_theme_str, MAX_STRLEN, config_file);
-		fgets(gtk_str, MAX_STRLEN, config_file);
-
-		fclose(config_file);
-
-		/* i am deeply ashamed of this solution */
-		distro_str[strlen(distro_str) - 1] = '\0';
-		arch_str[strlen(arch_str) - 1] = '\0';
-		host_str[strlen(host_str) - 1] = '\0';
-		kernel_str[strlen(kernel_str) - 1] = '\0';
-		cpu_str[strlen(cpu_str) - 1] = '\0';
-		gpu_str[strlen(gpu_str) - 1] = '\0';
-		shell_str[strlen(shell_str) - 1] = '\0';
-		res_str[strlen(res_str) - 1] = '\0';
-		de_str[strlen(de_str) - 1] = '\0';
-		wm_str[strlen(wm_str) - 1] = '\0';
-		wm_theme_str[strlen(wm_theme_str) - 1] = '\0';
-		gtk_str[strlen(gtk_str) - 1] = '\0';
-
-		return EXIT_SUCCESS;
-	}
-}
-
-/*  **  END FLAG/OUTPUT/MISC FUNCTIONS  **  */

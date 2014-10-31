@@ -10,7 +10,6 @@
 #ifndef SCREENFETCH_C_COLORS_H
 #define SCREENFETCH_C_COLORS_H
 
-/* color/fmt definitions */
 #define TNRM "\x1B[0m" /* normal */
 #define TBLK "\x1B[30m" /* black */
 #define TRED "\x1B[31m" /* red */
@@ -27,6 +26,6 @@
 #define TLBL "\x1B[1;34m" /* light blue */
 #define TLPR "\x1B[1;35m" /* light purple */
 #define TLCY "\x1B[1;36m" /* light cyan */
-#define TWHT "\x1B[1;37m" /* white */\
+#define TWHT "\x1B[1;37m" /* white */
 
 #endif

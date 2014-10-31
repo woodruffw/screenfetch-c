@@ -112,3 +112,153 @@ void take_screenshot(bool verbose, bool error)
 
 	return;
 }
+
+/*  manual_input
+	generates (or reads) the ~/.screenfetchc file based upon user input
+	returns an int indicating status (SUCCESS or FAILURE)
+*/
+int manual_input(char **data, bool verbose)
+{
+	FILE *config_file;
+	char config_file_loc[MAX_STRLEN];
+
+	safe_strncpy(config_file_loc, getenv("HOME"), MAX_STRLEN);
+	strncat(config_file_loc, "/.screenfetchc", MAX_STRLEN);
+
+	if (!FILE_EXISTS(config_file_loc))
+	{
+		#if defined(__CYGWIN__)
+			printf("%s\n", TBLU "WARNING: There is currenly a bug involving manual mode on Windows." TNRM);
+			printf("%s\n", TBLU "Only continue if you are ABSOLUTELY sure." TNRM);
+		#endif
+
+		printf("%s\n", "This appears to be your first time running screenfetch-c in manual mode.");
+		printf("%s", "Would you like to continue? (y/n) ");
+
+		char choice = getchar();
+		getchar(); /* flush the newline */
+
+		if (choice == 'y' || choice == 'Y')
+		{
+			config_file = fopen(config_file_loc, "w");
+
+			printf("%s\n", "We are now going to begin the manual mode input process.");
+			printf("%s\n", "Please enter exactly what is asked for.");
+			printf("%s\n", "If you are unsure about format, please consult the manpage.");
+
+			printf("%s", "Please enter the name of your distribution/OS: ");
+			fgets(data[1], MAX_STRLEN, stdin);
+			fputs(data[1], config_file);
+
+			printf("%s", "Please enter your architecture: ");
+			fgets(data[3], MAX_STRLEN, stdin);
+			fputs(data[3], config_file);
+
+			printf("%s", "Please enter your username@hostname: ");
+			fgets(data[0], MAX_STRLEN, stdin);
+			fputs(data[0], config_file);
+
+			printf("%s", "Please enter your kernel: ");
+			fgets(data[2], MAX_STRLEN, stdin);
+			fputs(data[2], config_file);
+
+			printf("%s", "Please enter your CPU name: ");
+			fgets(data[4], MAX_STRLEN, stdin);
+			fputs(data[4], config_file);
+
+			printf("%s", "Please enter your GPU name: ");
+			fgets(data[5], MAX_STRLEN, stdin);
+			fputs(data[5], config_file);
+
+			printf("%s", "Please enter your shell name and version: ");
+			fgets(data[6], MAX_STRLEN, stdin);
+			fputs(data[6], config_file);
+
+			printf("%s", "Please enter your monitor resolution: ");
+			fgets(data[11], MAX_STRLEN, stdin);
+			fputs(data[11], config_file);
+
+			printf("%s", "Please enter your DE name: ");
+			fgets(data[12], MAX_STRLEN, stdin);
+			fputs(data[12], config_file);
+
+			printf("%s", "Please enter your WM name: ");
+			fgets(data[13], MAX_STRLEN, stdin);
+			fputs(data[13], config_file);
+
+			printf("%s", "Please enter your WM Theme name: ");
+			fgets(data[14], MAX_STRLEN, stdin);
+			fputs(data[14], config_file);
+
+			printf("%s", "Please enter any GTK info: ");
+			fgets(data[15], MAX_STRLEN, stdin);
+			fputs(data[15], config_file);
+
+			printf("%s\n", "That concludes the manual input.");
+			printf("%s\n", "From now on, screenfetch-c will use this information when called with -m.");
+
+			fclose(config_file);
+
+			/* i am deeply ashamed of this solution */
+			data[1][strlen(data[1]) - 1] = '\0';
+			data[3][strlen(data[3]) - 1] = '\0';
+			data[0][strlen(data[0]) - 1] = '\0';
+			data[2][strlen(data[2]) - 1] = '\0';
+			data[4][strlen(data[4]) - 1] = '\0';
+			data[5][strlen(data[5]) - 1] = '\0';
+			data[6][strlen(data[6]) - 1] = '\0';
+			data[11][strlen(data[11]) - 1] = '\0';
+			data[12][strlen(data[12]) - 1] = '\0';
+			data[13][strlen(data[13]) - 1] = '\0';
+			data[14][strlen(data[14]) - 1] = '\0';
+			data[15][strlen(data[15]) - 1] = '\0';
+
+			return EXIT_SUCCESS;
+		}
+		else
+		{
+			printf("%s\n", "Exiting manual mode and screenfetch-c.");
+			printf("%s\n", "If you wish to run screenfetch-c normally, do not use the -m (--manual) flag next time.");
+
+			return EXIT_FAILURE;
+		}
+	}
+	else
+	{
+		if (verbose)
+			VERBOSE_OUT("Found config file. Reading...", "");
+
+		config_file = fopen(config_file_loc, "r");
+
+		fgets(data[1], MAX_STRLEN, config_file);
+		fgets(data[3], MAX_STRLEN, config_file);
+		fgets(data[0], MAX_STRLEN, config_file);
+		fgets(data[2], MAX_STRLEN, config_file);
+		fgets(data[4], MAX_STRLEN, config_file);
+		fgets(data[5], MAX_STRLEN, config_file);
+		fgets(data[6], MAX_STRLEN, config_file);
+		fgets(data[11], MAX_STRLEN, config_file);
+		fgets(data[12], MAX_STRLEN, config_file);
+		fgets(data[13], MAX_STRLEN, config_file);
+		fgets(data[14], MAX_STRLEN, config_file);
+		fgets(data[15], MAX_STRLEN, config_file);
+
+		fclose(config_file);
+
+		/* i am deeply ashamed of this solution */
+		data[1][strlen(data[1]) - 1] = '\0';
+		data[3][strlen(data[3]) - 1] = '\0';
+		data[0][strlen(data[0]) - 1] = '\0';
+		data[2][strlen(data[2]) - 1] = '\0';
+		data[4][strlen(data[4]) - 1] = '\0';
+		data[5][strlen(data[5]) - 1] = '\0';
+		data[6][strlen(data[6]) - 1] = '\0';
+		data[11][strlen(data[11]) - 1] = '\0';
+		data[12][strlen(data[12]) - 1] = '\0';
+		data[13][strlen(data[13]) - 1] = '\0';
+		data[14][strlen(data[14]) - 1] = '\0';
+		data[15][strlen(data[15]) - 1] = '\0';
+
+		return EXIT_SUCCESS;
+	}
+}

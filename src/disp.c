@@ -15,7 +15,7 @@
 #include "logos.h"
 #include "colors.h"
 #include "misc.h"
-#include "screenfetch-c.h"
+#include "disp.h"
 
 /*	display_version
 	called if the -v flag is tripped
@@ -61,7 +61,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", windows_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "OS X"))
 	{
 		for (i = 0; i < 16; i++)
@@ -69,7 +68,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", macosx_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Arch Linux - Old"))
 	{
 		for (i = 0; i < 18; i++)
@@ -77,7 +75,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", oldarch_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Arch Linux"))
 	{
 		for (i = 0; i < 18; i++)
@@ -85,7 +82,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", arch_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "LinuxMint"))
 	{
 		for (i = 0; i < 18; i++)
@@ -93,7 +89,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", mint_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "LMDE"))
 	{
 		for (i = 0; i < 18; i++)
@@ -101,7 +96,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", lmde_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Ubuntu") || STRCMP(distro, "Lubuntu") || STRCMP(distro, "Xubuntu"))
 	{
 		for (i = 0; i < 18; i++)
@@ -109,7 +103,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", ubuntu_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Debian"))
 	{
 		for (i = 0; i < 18; i++)
@@ -117,7 +110,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", debian_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "CrunchBang"))
 	{
 		for (i = 0; i < 18; i++)
@@ -125,7 +117,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", crunchbang_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Gentoo"))
 	{
 		for (i = 0; i < 18; i++)
@@ -133,7 +124,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", gentoo_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Funtoo"))
 	{
 		for (i = 0; i < 18; i++)
@@ -141,7 +131,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", funtoo_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Fedora"))
 	{
 		for (i = 0; i < 18; i++)
@@ -149,7 +138,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", fedora_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Mandriva") || STRCMP(distro, "Mandrake"))
 	{
 		for (i = 0; i < 18; i++)
@@ -157,7 +145,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", mandriva_mandrake_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "OpenSUSE"))
 	{
 		for (i = 0; i < 18; i++)
@@ -165,7 +152,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", opensuse_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Slackware"))
 	{
 		for (i = 0; i < 21; i++)
@@ -173,7 +159,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", slackware_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Red Hat Linux"))
 	{
 		for (i = 0; i < 18; i++)
@@ -181,7 +166,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", redhat_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Frugalware"))
 	{
 		for (i = 0; i < 23; i++)
@@ -189,7 +173,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", frugalware_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Peppermint"))
 	{
 		for (i = 0; i < 19; i++)
@@ -197,7 +180,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", peppermint_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "SolusOS"))
 	{
 		for (i = 0; i < 18; i++)
@@ -205,7 +187,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", solusos_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Mageia"))
 	{
 		for (i = 0; i < 18; i++)
@@ -213,7 +194,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", mageia_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "ParabolaGNU/Linux-libre"))
 	{
 		for (i = 0; i < 18; i++)
@@ -221,7 +201,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", parabolagnu_linuxlibre_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Viperr"))
 	{
 		for (i = 0; i < 18; i++)
@@ -229,7 +208,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", viperr_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "LinuxDeepin"))
 	{
 		for (i = 0; i < 18; i++)
@@ -237,7 +215,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", linuxdeepin_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Chakra"))
 	{
 		for (i = 0; i < 18; i++)
@@ -245,7 +222,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", chakra_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Fuduntu"))
 	{
 		for (i = 0; i < 21; i++)
@@ -253,7 +229,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", fuduntu_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Trisquel"))
 	{
 		for (i = 0; i < 18; i++)
@@ -261,7 +236,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", trisquel_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Manjaro"))
 	{
 		for (i = 0; i < 18; i++)
@@ -269,7 +243,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", manjaro_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "elementary OS"))
 	{
 		for (i = 0; i < 18; i++)
@@ -277,7 +250,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", elementaryos_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Scientific Linux"))
 	{
 		for (i = 0; i < 20; i++)
@@ -285,7 +257,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", scientificlinux_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Backtrack Linux"))
 	{
 		for (i = 0; i < 21; i++)
@@ -293,7 +264,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", backtracklinux_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Sabayon"))
 	{
 		for (i = 0; i < 18; i++)
@@ -301,7 +271,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", sabayon_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "FreeBSD"))
 	{
 		for (i = 0; i < 18; i++)
@@ -309,7 +278,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", freebsd_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "OpenBSD"))
 	{
 		for (i = 0; i < 23; i++)
@@ -317,7 +285,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", openbsd_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "NetBSD"))
 	{
 		for (i = 0; i < 20; i++)
@@ -325,7 +292,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", netbsd_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "DragonFly BSD"))
 	{
 		for (i = 0; i < 18; i++)
@@ -333,7 +299,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", dragonflybsd_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Android"))
 	{
 		for (i = 0; i < 16; i++)
@@ -341,7 +306,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", android_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Solaris"))
 	{
 		for (i = 0; i < 17; i++)
@@ -349,7 +313,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", solaris_logo[i]);
 		}
 	}
-
 	else if (STRCMP(distro, "Angstrom"))
 	{
 		for (i = 0; i < 16; i++)
@@ -357,7 +320,6 @@ void output_logo_only(char *distro)
 			printf("%s\n", angstrom_logo[i]);
 		}
 	}
-
 	else /* if (STRCMP(distro_str, "Linux")) */
 	{
 		for (i = 0; i < 16; i++)
@@ -375,375 +337,338 @@ void main_ascii_output(char *data[], char *data_names[])
 {
 	int i = 0;
 
-	if (OS == CYGWIN)
+	if (strstr(data[1], "Microsoft"))
 	{
 		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, data_names[i], TWHT, data[i], TNRM);
 		}
 	}
-
-	else if (OS == OSX)
+	else if (strstr(data[i], "OS X"))
 	{
 		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, data_names[i], TNRM, data[i]);
 		}
 	}
-
-	else if (OS == LINUX)
+	else if (STRCMP(data[1], "Arch Linux - Old"))
 	{
-		if (STRCMP(data[1], "Arch Linux - Old"))
+		for (i = 0; i < 18; i++)
 		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, data_names[i], TNRM, data[i], TNRM);
-				else
-					printf("%s\n", oldarch_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Arch Linux"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s%s\n", arch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
-				else
-					printf("%s\n", arch_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "LinuxMint"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, data_names[i], TNRM, data[i], TNRM);
-				else
-					printf("%s\n", mint_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "LMDE"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", lmde_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Ubuntu") || STRCMP(data[1], "Lubuntu") || STRCMP(data[1], "Xubuntu"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, data_names[i], TNRM, data[i], TNRM);
-				else
-					printf("%s\n", ubuntu_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Debian"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", debian_logo[i], TLRD, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", debian_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "CrunchBang"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", crunchbang_logo[i], TDGY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", crunchbang_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Gentoo"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", gentoo_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Funtoo"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", funtoo_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Fedora"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", fedora_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Mandriva") || STRCMP(data[1], "Mandrake"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", mandriva_mandrake_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "OpenSUSE"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", opensuse_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Slackware"))
-		{
-			for (i = 0; i < 21; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", slackware_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Red Hat Linux"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", redhat_logo[i], TRED, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", redhat_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Frugalware"))
-		{
-			for (i = 0; i < 23; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", frugalware_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Peppermint"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", peppermint_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "SolusOS"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", solusos_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Mageia"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", mageia_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "ParabolaGNU/Linux-libre"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", parabolagnu_linuxlibre_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Viperr"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", viperr_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "LinuxDeepin"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", linuxdeepin_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Chakra"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", chakra_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Fuduntu"))
-		{
-			for (i = 0; i < 21; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", fuduntu_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Trisquel"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", trisquel_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Manjaro"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s\n", manjaro_logo[i], data_names[i], data[i]);
-				else
-					printf("%s\n", manjaro_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "elementary OS"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", elementaryos_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Scientific Linux"))
-		{
-			for (i = 0; i < 20; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", scientificlinux_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Backtrack Linux"))
-		{
-			for (i = 0; i < 20; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", backtracklinux_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Sabayon"))
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", sabayon_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Android"))
-		{
-			for (i = 0; i < 16; i++)
-			{
-				if (i < 12)
-					printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", android_logo[i]);
-			}
-		}
-
-		else if (STRCMP(data[1], "Angstrom"))
-		{
-			for (i = 0; i < 16; i++)
-			{
-				printf("%s %s%s\n", angstrom_logo[i], data_names[i], data[i]);
-			}
-		}
-
-		else /* if (STRCMP(data[1], "Linux")) */
-		{
-			for (i = 0; i < 18; i++)
-			{
-				if (i < 16)
-					printf("%s %s%s%s%s\n", linux_logo[i], TLGY, data_names[i], TNRM, data[i]);
-				else
-					printf("%s\n", linux_logo[i]);
-			}
+			if (i < 16)
+				printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, data_names[i], TNRM, data[i], TNRM);
+			else
+				printf("%s\n", oldarch_logo[i]);
 		}
 	}
-
-	else if (OS == FREEBSD)
+	else if (STRCMP(data[1], "Arch Linux"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s%s\n", arch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
+			else
+				printf("%s\n", arch_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "LinuxMint"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, data_names[i], TNRM, data[i], TNRM);
+			else
+				printf("%s\n", mint_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "LMDE"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", lmde_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Ubuntu") || STRCMP(data[1], "Lubuntu") || STRCMP(data[1], "Xubuntu"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, data_names[i], TNRM, data[i], TNRM);
+			else
+				printf("%s\n", ubuntu_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Debian"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", debian_logo[i], TLRD, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", debian_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "CrunchBang"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", crunchbang_logo[i], TDGY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", crunchbang_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Gentoo"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", gentoo_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Funtoo"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", funtoo_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Fedora"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", fedora_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Mandriva") || STRCMP(data[1], "Mandrake"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", mandriva_mandrake_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "OpenSUSE"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", opensuse_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Slackware"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", slackware_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Red Hat Linux"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", redhat_logo[i], TRED, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", redhat_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Frugalware"))
+	{
+		for (i = 0; i < 23; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", frugalware_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Peppermint"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", peppermint_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "SolusOS"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", solusos_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Mageia"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", mageia_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "ParabolaGNU/Linux-libre"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", parabolagnu_linuxlibre_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Viperr"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", viperr_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "LinuxDeepin"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", linuxdeepin_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Chakra"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", chakra_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Fuduntu"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", fuduntu_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Trisquel"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", trisquel_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Manjaro"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s\n", manjaro_logo[i], data_names[i], data[i]);
+			else
+				printf("%s\n", manjaro_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "elementary OS"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", elementaryos_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Scientific Linux"))
+	{
+		for (i = 0; i < 20; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", scientificlinux_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Backtrack Linux"))
+	{
+		for (i = 0; i < 20; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", backtracklinux_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Sabayon"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", sabayon_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Android"))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			if (i < 12)
+				printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", android_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Angstrom"))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			printf("%s %s%s\n", angstrom_logo[i], data_names[i], data[i]);
+		}
+	}
+	else if (STRCMP(data[1], "Linux"))
+	{
+		for (i = 0; i < 18; i++)
+		{
+			if (i < 16)
+				printf("%s %s%s%s%s\n", linux_logo[i], TLGY, data_names[i], TNRM, data[i]);
+			else
+				printf("%s\n", linux_logo[i]);
+		}
+	}
+	else if (STRCMP(data[1], "FreeBSD"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -753,8 +678,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", freebsd_logo[i]);
 		}
 	}
-
-	else if (OS == OPENBSD)
+	else if (STRCMP(data[1], "OpenBSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -764,8 +688,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", openbsd_logo[i]);
 		}
 	}
-
-	else if (OS == NETBSD)
+	else if (STRCMP(data[1], "NetBSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -775,8 +698,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", netbsd_logo[i]);
 		}
 	}
-
-	else if (OS == DFBSD)
+	else if (STRCMP(data[1], "DragonFly BSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -786,8 +708,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", dragonflybsd_logo[i]);
 		}
 	}
-
-	else if (OS == SOLARIS)
+	else if (STRCMP(data[1], "SunOS"))
 	{
 		for (i = 0; i < 17; i++)
 		{
@@ -796,6 +717,10 @@ void main_ascii_output(char *data[], char *data_names[])
 			else
 				printf("%s\n", solaris_logo[i]);
 		}
+	}
+	else
+	{
+		ERROR_OUT("Error: ", "Could not find a logo corresponding to the distro.");
 	}
 
 	return;
