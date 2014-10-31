@@ -96,7 +96,7 @@ void detect_uptime(char *str)
 	currtime = time(NULL);
 	struct utmpx *ent;
 
-	while (ent = getutxent())
+	while ((ent = getutxent()))
 	{
 		if (STRCMP("system boot", ent->ut_line))
 		{
@@ -105,13 +105,28 @@ void detect_uptime(char *str)
 	}
 
 	uptime = currtime - boottime;
-			
+
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
 
 	if (days > 0)
 		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
 	else
 		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+
+	return;
+}
+
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char *str: the char array to be filled with the CPU name
+*/
+void detect_cpu(char *str)
+{
+	FILE *cpu_file;
+
+	cpu_file = popen("psrinfo -pv | tail -1 | tr -d '\\t\\n'", "r");
+	fgets(str, MAX_STRLEN, cpu_file);
+	pclose(cpu_file);
 
 	return;
 }

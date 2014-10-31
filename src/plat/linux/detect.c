@@ -194,3 +194,23 @@ void detect_uptime(char *str)
 
 	return;
 }
+
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char *str: the char array to be filled with the CPU name
+*/
+void detect_cpu(char *str)
+{
+	FILE *cpu_file;
+
+	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
+	fgets(str, MAX_STRLEN, cpu_file);
+	pclose(cpu_file);
+
+	if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
+	{
+		safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for the Raspberry Pi */
+	}
+
+	return;
+}

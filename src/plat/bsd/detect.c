@@ -137,3 +137,24 @@ void detect_uptime(char *str)
 
 	return;
 }
+
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char *str: the char array to be filled with the CPU name
+*/
+void detect_cpu(char *str)
+{
+	FILE *cpu_file;
+
+	#if defined(__NetBSD__)
+		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, cpu_file);
+		pclose(cpu_file);
+	#else
+		cpu_file = popen("sysctl -n hw.model | tr -d '\\n'", "r");
+		fgets(str, MAX_STRLEN, cpu_file);
+		pclose(cpu_file);
+	#endif
+
+	return;
+}

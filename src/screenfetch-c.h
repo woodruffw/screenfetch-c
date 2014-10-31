@@ -81,7 +81,7 @@
 // void detect_kernel(char *str);
 // void detect_uptime(char *str);
 void detect_pkgs(char *str);
-void detect_cpu(char *str);
+// void detect_cpu(char *str);
 void detect_gpu(char *str);
 void detect_disk(char *str);
 void detect_mem(char *str);

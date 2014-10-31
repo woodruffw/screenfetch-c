@@ -130,3 +130,23 @@ void detect_uptime(char *str)
 
 	return;
 }
+
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char *str: the char array to be filled with the CPU name
+*/
+void detect_cpu(char *str)
+{
+	FILE *cpu_file;
+
+	/*
+		something like:
+		int len = MAX_STRLEN;
+		sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
+	*/
+	cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n' | tr -s ' '", "r");
+	fgets(str, MAX_STRLEN, cpu_file);
+	pclose(cpu_file);
+
+	return;
+}

@@ -533,66 +533,6 @@ void detect_pkgs(char *str)
 	return;
 }
 
-/*	detect_cpu
-	detects the computer's CPU brand/name-string
-	argument char *str: the char array to be filled with the CPU name
-*/
-void detect_cpu(char *str)
-{
-	FILE *cpu_file;
-
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			HKEY hkey;
-			DWORD str_size = MAX_STRLEN;
-			RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
-			RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str, &str_size);
-		#endif
-	}
-
-	else if (OS == OSX)
-	{
-		/*
-			something like:
-			int len = MAX_STRLEN;
-			sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
-		*/
-
-		cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n' | tr -s ' '", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-	}
-
-	else if (OS == LINUX || OS == NETBSD)
-	{
-		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-
-		if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
-		{
-			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for the Raspberry Pi */
-		}
-	}
-
-	else if (OS == DFBSD || OS == FREEBSD || OS == OPENBSD)
-	{
-		cpu_file = popen("sysctl -n hw.model | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-	}
-
-	else if (OS == SOLARIS)
-	{
-		cpu_file = popen("psrinfo -pv | tail -1 | tr -d '\\t\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-	}
-
-	return;
-}
-
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
 	argument char *str: the char array to be filled with the GPU name

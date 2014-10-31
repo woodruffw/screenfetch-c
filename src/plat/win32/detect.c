@@ -148,3 +148,17 @@ void detect_uptime(char *str)
 
 	return;
 }
+
+/*	detect_cpu
+	detects the computer's CPU brand/name-string
+	argument char *str: the char array to be filled with the CPU name
+*/
+void detect_cpu(char *str)
+{
+	HKEY hkey;
+	DWORD str_size = MAX_STRLEN;
+	RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
+	RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str, &str_size);
+
+	return;
+}
