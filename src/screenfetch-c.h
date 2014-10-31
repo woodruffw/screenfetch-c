@@ -74,9 +74,6 @@
 	#define OS UNKNOWN
 #endif
 
-/* screenfetch detection function definitions */
-void detect_pkgs(char *str);
-
 /* other function definitions */
 int manual_input(bool verbose);
 

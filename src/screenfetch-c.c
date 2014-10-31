@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 		{
 			/* these sections are ALWAYS detected */
 			detect_uptime(uptime_str);
-			detect_pkgs(pkgs_str);
+			detect_pkgs(pkgs_str, distro_str, error);
 			detect_disk(disk_str);
 			detect_mem(mem_str);
 
@@ -258,8 +258,7 @@ int main(int argc, char **argv)
 			THREAD uptime_thread;
 			create_thread(&uptime_thread, (void *) detect_uptime, (void *) uptime_str);
 
-			THREAD pkgs_thread;
-			create_thread(&pkgs_thread, (void *) detect_pkgs, (void *) pkgs_str);
+			detect_pkgs(pkgs_str, distro_str, error);
 
 			THREAD cpu_thread;
 			create_thread(&cpu_thread, (void *) detect_cpu, (void *) cpu_str);
@@ -292,7 +291,6 @@ int main(int argc, char **argv)
 			join_thread(host_thread);
 			join_thread(kernel_thread);
 			join_thread(uptime_thread);
-			join_thread(pkgs_thread);
 			join_thread(cpu_thread);
 			join_thread(disk_thread);
 			join_thread(mem_thread);
@@ -309,7 +307,7 @@ int main(int argc, char **argv)
 			detect_host(host_str);
 			detect_kernel(kernel_str);
 			detect_uptime(uptime_str);
-			detect_pkgs(pkgs_str);
+			detect_pkgs(pkgs_str, distro_str, error);
 			detect_cpu(cpu_str);
 			detect_gpu(gpu_str, error);
 			detect_disk(disk_str);
@@ -355,177 +353,6 @@ int main(int argc, char **argv)
 }
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
-
-/*	detect_pkgs
-	detects the number of packages installed on the computer
-	argument char *str: the char array to be filled with the number of packages
-*/
-void detect_pkgs(char *str)
-{
-	FILE *pkgs_file;
-
-	int packages = 0;
-
-	if (OS == CYGWIN)
-	{
-		pkgs_file = popen("cygcheck -cd | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		packages -= 2;
-		pclose(pkgs_file);
-
-		snprintf(str, MAX_STRLEN, "%d", packages);
-	}
-
-	else if (OS == OSX)
-	{
-		if (FILE_EXISTS("/usr/local/bin/brew"))
-		{
-			#if (defined(__APPLE__) || defined(__MACH__))
-				glob_t gl;
-
-				if (glob("/usr/local/Cellar/*", GLOB_NOSORT, NULL, &gl) == 0)
-				{
-					packages = gl.gl_pathc;
-				}
-				else if (error)
-				{
-					ERROR_OUT("Error: ", "Failure while globbing packages.");
-				}
-
-				globfree(&gl);
-			#endif
-		}
-
-		if (FILE_EXISTS("/opt/local/bin/port"))
-		{
-			int port_pkgs = 0;
-			pkgs_file = popen("port installed | wc -l", "r");
-			fscanf(pkgs_file, "%d", &port_pkgs);
-			pclose(pkgs_file);
-
-			packages += port_pkgs;
-		}
-
-		if (FILE_EXISTS("/sw/bin/fink"))
-		{
-			int fink_pkgs = 0;
-			pkgs_file = popen("/sw/bin/fink list -i | wc -l", "r");
-			fscanf(pkgs_file, "%d", &fink_pkgs);
-			pclose(pkgs_file);
-
-			packages += fink_pkgs;
-		}
-	}
-
-	else if (OS == LINUX)
-	{
-		if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre") || STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
-		{
-			#if defined(__linux__)
-				glob_t gl;
-
-				if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
-				{
-					packages = gl.gl_pathc;
-				}
-				else if (error)
-				{
-					ERROR_OUT("Error: ", "Failure while globbing packages.");
-				}
-
-				globfree(&gl);
-			#endif
-		}
-
-		else if (STRCMP(distro_str, "Frugalware"))
-		{
-			pkgs_file = popen("pacman-g2 -Q | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
-		}
-
-		else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu") || STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
-		{
-			pkgs_file = popen("dpkg --get-selections | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
-		}
-
-		else if (STRCMP(distro_str, "Slackware"))
-		{
-			#if defined(__linux__)
-				glob_t gl;
-
-				if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
-				{
-					packages = gl.gl_pathc;
-				}
-				else if (error)
-				{
-					ERROR_OUT("Error: ", "Failure while globbing packages.");
-				}
-
-				globfree(&gl);
-			#endif
-		}
-
-		else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") || STRCMP(distro_str, "Funtoo"))
-		{
-			pkgs_file = popen("ls -d /var/db/pkg/*/* | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
-		}
-
-		else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "OpenSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
-		{
-			pkgs_file = popen("rpm -qa | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
-		}
-
-		else if (STRCMP(distro_str, "Angstrom"))
-		{
-			pkgs_file = popen("opkg list-installed | wc -l", "r");
-			fscanf(pkgs_file, "%d", &packages);
-			pclose(pkgs_file);
-		}
-
-		/* if linux disto detection failed */
-		else if (STRCMP(distro_str, "Linux"))
-		{
-			safe_strncpy(str, "Not Found", MAX_STRLEN);
-
-			if (error)
-				ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
-		}
-	}
-
-	else if (OS == FREEBSD || OS == OPENBSD)
-	{
-		pkgs_file = popen("pkg_info | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
-	}
-
-	else if (OS == NETBSD || OS == DFBSD)
-	{
-		safe_strncpy(str, "Not Found", MAX_STRLEN);
-
-		if (error)
-			ERROR_OUT("Error: ", "Could not find packages on current OS.");
-	}
-
-	else if (OS == SOLARIS)
-	{
-		pkgs_file = popen("pkg list | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
-	}
-
-	snprintf(str, MAX_STRLEN, "%d", packages);
-
-	return;
-}
 
 /*  manual_input
 	generates (or reads) the ~/.screenfetchc file based upon user input

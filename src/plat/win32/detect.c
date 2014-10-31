@@ -159,6 +159,25 @@ void detect_uptime(char *str)
 	return;
 }
 
+/*	detect_pkgs
+	detects the number of packages installed on the computer
+	argument char *str: the char array to be filled with the number of packages
+*/
+void detect_pkgs(char *str, const char *distro_str, bool error)
+{
+	FILE *pkgs_file;
+	int packages = 0;
+
+	pkgs_file = popen("cygcheck -cd | wc -l", "r");
+	fscanf(pkgs_file, "%d", &packages);
+	packages -= 2;
+	pclose(pkgs_file);
+
+	snprintf(str, MAX_STRLEN, "%d", packages);
+
+	return;
+}
+
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
 	argument char *str: the char array to be filled with the CPU name

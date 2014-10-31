@@ -141,6 +141,32 @@ void detect_uptime(char *str)
 	return;
 }
 
+/*	detect_pkgs
+	detects the number of packages installed on the computer
+	argument char *str: the char array to be filled with the number of packages
+*/
+void detect_pkgs(char *str, const char *distro_str, bool error)
+{
+	FILE *pkgs_file;
+	int packages = 0;
+	glob_t gl;
+
+	if (glob("/usr/local/Cellar/*", GLOB_NOSORT, NULL, &gl) == 0)
+	{
+		packages = gl.gl_pathc;
+	}
+	else if (error)
+	{
+		ERROR_OUT("Error: ", "Failure while globbing packages.");
+	}
+
+	globfree(&gl);
+
+	snprintf(str, MAX_STRLEN, "%d", packages);
+
+	return;
+}
+
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
 	argument char *str: the char array to be filled with the CPU name
