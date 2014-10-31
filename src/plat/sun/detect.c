@@ -273,6 +273,21 @@ void detect_res(char *str, bool error)
 	}
 
 	XCloseDisplay(disp);
-	
+
+	return;
+}
+
+/*	detect_de
+	detects the desktop environment currently running on top of the OS
+	argument char *str: the char array to be filled with the DE name
+	--
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
+	--
+*/
+void detect_de(char *str)
+{
+	safe_strncpy(str, "Not implemented", MAX_STRLEN);
+
 	return;
 }

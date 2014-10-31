@@ -13,5 +13,6 @@ void detect_disk(char *str);
 void detect_mem(char *str);
 void detect_shell(char *str, bool error);
 void detect_res(char *str, bool error);
+void detect_de(char *str);
 
 #endif /* SCREENFETCH_C_DETECT_H */

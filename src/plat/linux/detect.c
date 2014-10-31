@@ -427,3 +427,22 @@ void detect_res(char *str, bool error)
 
 	return;
 }
+
+/*	detect_de
+	detects the desktop environment currently running on top of the OS
+	argument char *str: the char array to be filled with the DE name
+	--
+	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
+	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
+	--
+*/
+void detect_de(char *str)
+{
+	FILE *de_file;
+
+	de_file = popen("detectde 2> /dev/null", "r");
+	fgets(str, MAX_STRLEN, de_file);
+	pclose(de_file);
+
+	return;
+}

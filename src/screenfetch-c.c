@@ -527,53 +527,6 @@ void detect_pkgs(char *str)
 	return;
 }
 
-/*	detect_de
-	detects the desktop environment currently running on top of the OS
-	argument char *str: the char array to be filled with the DE name
-	--
-	CAVEAT: On *BSDs and Linux distros, this function relies on the presence of 
-	'detectde', a shell script. If it isn't present in the working directory, the DE will be set as 'Unknown'
-	--
-*/
-void detect_de(char *str)
-{
-	FILE *de_file;
-
-	if (OS == CYGWIN)
-	{
-		int version;
-
-		de_file = popen("wmic os get version | grep -o '^[0-9]'", "r");
-		fscanf(de_file, "%d", &version);
-		pclose(de_file);
-
-		if (version == 6 || version == 7)
-			safe_strncpy(str, "Aero", MAX_STRLEN);
-		else if (version == 8)
-			safe_strncpy(str, "Metro", MAX_STRLEN);
-		else
-			safe_strncpy(str, "Luna", MAX_STRLEN);
-	}
-
-	else if (OS == OSX)
-	{
-		safe_strncpy(str, "Aqua", MAX_STRLEN);
-	}
-
-	else if (OS == LINUX || ISBSD())
-	{
-		de_file = popen("detectde 2> /dev/null", "r");
-		fgets(str, MAX_STRLEN, de_file);
-		pclose(de_file);
-	}
-
-	else if (OS == SOLARIS)
-	{
-		/* detectde needs to be made compatible with Solaris's AWK */
-	}
-
-	return;
-}
 
 /*	detect_wm
 	detects the window manager currently running on top of the OS
