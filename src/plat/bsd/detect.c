@@ -33,10 +33,23 @@
 void detect_distro(char *str, bool error)
 {
 	FILE *distro_file;
-	
+
 	distro_file = popen("uname -sr | tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, distro_file);
 	pclose(distro_file);
+
+	return;
+}
+
+/*	detect_arch
+	detects the computer's architecture
+	argument char *str: the char array to be filled with the architecture
+*/
+void detect_arch(char *str)
+{
+	struct utsname arch_info;
+	uname(&arch_info);
+	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
 	return;
 }

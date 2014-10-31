@@ -40,13 +40,26 @@ void detect_distro(char *str, bool error)
 		snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
 	#else
 		FILE *distro_file;
-		
+
 		distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
 		fgets(distro_name_str, MAX_STRLEN, distro_file);
 		pclose(distro_file);
 
 		snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
 	#endif
+
+	return;
+}
+
+/*	detect_arch
+	detects the computer's architecture
+	argument char *str: the char array to be filled with the architecture
+*/
+void detect_arch(char *str)
+{
+	struct utsname arch_info;
+	uname(&arch_info);
+	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
 	return;
 }

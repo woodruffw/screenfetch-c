@@ -48,7 +48,7 @@
 	I hereby regrant screenfetch-c under the same MIT license.
 	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
 */
-	
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -361,66 +361,6 @@ int main(int argc, char **argv)
 }
 
 /*  **  BEGIN DETECTION FUNCTIONS  ** */
-
-/*	detect_arch
-	detects the computer's architecture
-	argument char *str: the char array to be filled with the architecture
-*/
-void detect_arch(char *str)
-{
-	FILE *arch_file;
-
-	if (OS == CYGWIN)
-	{
-		#if defined(__CYGWIN__)
-			SYSTEM_INFO arch_info;
-			GetNativeSystemInfo(&arch_info);
-
-			if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
-			{
-				safe_strncpy(str, "AMD64", MAX_STRLEN);
-			}
-
-			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
-			{
-				safe_strncpy(str, "ARM", MAX_STRLEN);
-			}
-
-			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
-			{
-				safe_strncpy(str, "IA64", MAX_STRLEN);
-			}
-
-			else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
-			{
-				safe_strncpy(str, "x86", MAX_STRLEN);
-			}
-
-			else
-			{
-				safe_strncpy(str, "Unknown", MAX_STRLEN);
-			}
-		#endif
-	}
-
-	else if (OS == OSX || OS == LINUX || OS == SOLARIS || OS == OPENBSD) /* short circuit here */
-	{
-		#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__sun__) || defined(__OpenBSD__)
-			struct utsname arch_info;
-			uname(&arch_info);
-			safe_strncpy(str, arch_info.machine, MAX_STRLEN);
-		#endif
-	}
-
-	else if (ISBSD()) 
-	{
-		arch_file = popen("uname -m | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, arch_file);
-		pclose(arch_file);
-	}
-
-	return;
-}
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them

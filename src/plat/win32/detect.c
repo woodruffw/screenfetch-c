@@ -46,3 +46,36 @@ void detect_distro(char *str, bool error)
 
 	return;
 }
+
+/*	detect_arch
+	detects the computer's architecture
+	argument char *str: the char array to be filled with the architecture
+*/
+void detect_arch(char *str)
+{
+	SYSTEM_INFO arch_info;
+	GetNativeSystemInfo(&arch_info);
+
+	if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	{
+		safe_strncpy(str, "AMD64", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
+	{
+		safe_strncpy(str, "ARM", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+	{
+		safe_strncpy(str, "IA64", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
+	{
+		safe_strncpy(str, "x86", MAX_STRLEN);
+	}
+	else
+	{
+		safe_strncpy(str, "Unknown", MAX_STRLEN);
+	}
+
+	return;
+}
