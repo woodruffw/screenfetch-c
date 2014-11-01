@@ -1,6 +1,5 @@
 CC = gcc
-CFLAGS = -O3 -std=c99 -Wall -Wunused-variable
-CFLAGS_LINUX = -Wno-unused-result
+CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable
 LDFLAGS =
 INSTALL = /usr/bin/install -c
 
@@ -8,7 +7,7 @@ PREFIX = /usr/local
 BIN = $(PREFIX)/bin
 MAN = $(PREFIX)/share/man/man1
 
-SOURCES = ./src/*.c
+SOURCES = $(wildcard ./src/*.c)
 
 all:
 	@echo '========================================================='
@@ -17,10 +16,10 @@ all:
 	@echo '========================================================='
 
 linux: x11test gltest
-	$(eval SOURCES+=./src/plat/linux/*.c)
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
+	$(eval SOURCES+=$(wildcard ./src/plat/linux/*.c))
+	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L' -Wno-unused-result)
 	$(eval LDFLAGS+=-lpthread -lX11 -lGL)
-	$(CC) $(CFLAGS) $(SOURCES) $(CFLAGS_LINUX) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 solaris: x11test
 	$(eval SOURCES+=./src/plat/sun/*.c)
