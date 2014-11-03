@@ -63,65 +63,65 @@
 #include "misc.h" /* misc macros */
 #include "util.h" /* convenience functions */
 
-/* string definitions - set to Unknown by default */
-static char distro_str[MAX_STRLEN] = "Unknown";
-static char arch_str[MAX_STRLEN] = "Unknown";
-static char host_str[MAX_STRLEN] = "Unknown";
-static char kernel_str[MAX_STRLEN] = "Unknown";
-static char uptime_str[MAX_STRLEN] = "Unknown";
-static char pkgs_str[MAX_STRLEN] = "Unknown";
-static char cpu_str[MAX_STRLEN] = "Unknown";
-static char gpu_str[MAX_STRLEN] = "Unknown";
-static char disk_str[MAX_STRLEN] = "Unknown";
-static char mem_str[MAX_STRLEN] = "Unknown";
-static char shell_str[MAX_STRLEN] = "Unknown";
-static char res_str[MAX_STRLEN] = "Unknown";
-static char de_str[MAX_STRLEN] = "Unknown";
-static char wm_str[MAX_STRLEN] = "Unknown";
-static char wm_theme_str[MAX_STRLEN] = "Unknown";
-static char gtk_str[MAX_STRLEN] = "Unknown";
-
-/* output string definitions */
-static char *detected_arr[16] = {
-									host_str,
-									distro_str,
-									kernel_str,
-									arch_str,
-									cpu_str,
-									gpu_str,
-									shell_str,
-									pkgs_str,
-									disk_str,
-									mem_str,
-									uptime_str,
-									res_str,
-									de_str,
-									wm_str,
-									wm_theme_str,
-									gtk_str
-								};
-
-static char *detected_arr_names[16] = {
-										"",
-										"OS: ",
-										"Kernel: ",
-										"Arch: ",
-										"CPU: ",
-										"GPU: ",
-										"Shell: ",
-										"Packages: ",
-										"Disk: ",
-										"Memory: ",
-										"Uptime: ",
-										"Resolution: ",
-										"DE: ",
-										"WM: ",
-										"WM Theme: ",
-										"GTK: "
-									};
-
 int main(int argc, char **argv)
 {
+	/* string definitions - set to Unknown by default */
+	char distro_str[MAX_STRLEN] = "Unknown";
+	char arch_str[MAX_STRLEN] = "Unknown";
+	char host_str[MAX_STRLEN] = "Unknown";
+	char kernel_str[MAX_STRLEN] = "Unknown";
+	char uptime_str[MAX_STRLEN] = "Unknown";
+	char pkgs_str[MAX_STRLEN] = "Unknown";
+	char cpu_str[MAX_STRLEN] = "Unknown";
+	char gpu_str[MAX_STRLEN] = "Unknown";
+	char disk_str[MAX_STRLEN] = "Unknown";
+	char mem_str[MAX_STRLEN] = "Unknown";
+	char shell_str[MAX_STRLEN] = "Unknown";
+	char res_str[MAX_STRLEN] = "Unknown";
+	char de_str[MAX_STRLEN] = "Unknown";
+	char wm_str[MAX_STRLEN] = "Unknown";
+	char wm_theme_str[MAX_STRLEN] = "Unknown";
+	char gtk_str[MAX_STRLEN] = "Unknown";
+
+	/* output string definitions */
+	char *detected_arr[16] = {
+								host_str,
+								distro_str,
+								kernel_str,
+								arch_str,
+								cpu_str,
+								gpu_str,
+								shell_str,
+								pkgs_str,
+								disk_str,
+								mem_str,
+								uptime_str,
+								res_str,
+								de_str,
+								wm_str,
+								wm_theme_str,
+								gtk_str
+							};
+
+	char *detected_arr_names[16] = {
+									"",
+									"OS: ",
+									"Kernel: ",
+									"Arch: ",
+									"CPU: ",
+									"GPU: ",
+									"Shell: ",
+									"Packages: ",
+									"Disk: ",
+									"Memory: ",
+									"Uptime: ",
+									"Resolution: ",
+									"DE: ",
+									"WM: ",
+									"WM Theme: ",
+									"GTK: "
+								};
+
 	bool manual = false, logo = true, error = true, verbose = false, screenshot = false;
 
 	struct option long_options[] =
