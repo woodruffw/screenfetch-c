@@ -84,43 +84,45 @@ int main(int argc, char **argv)
 	char gtk_str[MAX_STRLEN] = "Unknown";
 
 	/* output string definitions */
-	char *detected_arr[16] = {
-								host_str,
-								distro_str,
-								kernel_str,
-								arch_str,
-								cpu_str,
-								gpu_str,
-								shell_str,
-								pkgs_str,
-								disk_str,
-								mem_str,
-								uptime_str,
-								res_str,
-								de_str,
-								wm_str,
-								wm_theme_str,
-								gtk_str
-							};
+	char *detected_arr[16] =
+	{
+		host_str,
+		distro_str,
+		kernel_str,
+		arch_str,
+		cpu_str,
+		gpu_str,
+		shell_str,
+		pkgs_str,
+		disk_str,
+		mem_str,
+		uptime_str,
+		res_str,
+		de_str,
+		wm_str,
+		wm_theme_str,
+		gtk_str
+	};
 
-	char *detected_arr_names[16] = {
-									"",
-									"OS: ",
-									"Kernel: ",
-									"Arch: ",
-									"CPU: ",
-									"GPU: ",
-									"Shell: ",
-									"Packages: ",
-									"Disk: ",
-									"Memory: ",
-									"Uptime: ",
-									"Resolution: ",
-									"DE: ",
-									"WM: ",
-									"WM Theme: ",
-									"GTK: "
-								};
+	char *detected_arr_names[16] =
+	{
+		"",
+		"OS: ",
+		"Kernel: ",
+		"Arch: ",
+		"CPU: ",
+		"GPU: ",
+		"Shell: ",
+		"Packages: ",
+		"Disk: ",
+		"Memory: ",
+		"Uptime: ",
+		"Resolution: ",
+		"DE: ",
+		"WM: ",
+		"WM Theme: ",
+		"GTK: "
+	};
 
 	bool manual = false, logo = true, error = true, verbose = false, screenshot = false;
 
