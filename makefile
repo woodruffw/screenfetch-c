@@ -53,7 +53,7 @@ install:
 	$(INSTALL) ./src/scripts/detectwmtheme $(BIN)/detectwmtheme
 	$(INSTALL) ./src/scripts/detectgpu $(BIN)/detectgpu
 	mkdir -p $(MAN)
-	$(INSTALL) ./manpage/screenfetch-c.1 $(MAN)/screenfetch-c.1
+	$(INSTALL) ./man/screenfetch-c.1 $(MAN)/screenfetch-c.1
 
 uninstall:
 	rm -rf $(BIN)/screenfetch-c

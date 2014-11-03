@@ -2,7 +2,7 @@
 	Author: William Woodruff
 	-------------
 
-	A rewrite of screenFetch.sh in C.
+	screenfetch-c is a rewrite of screenFetch.sh in C.
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
 	Hopefully this rewrite will execute faster, although it's more for self education than anything else.
@@ -62,7 +62,6 @@
 #include "colors.h" /* terminal color codes */
 #include "misc.h" /* misc macros */
 #include "util.h" /* convenience functions */
-#include "thread.h" /* for cross-platform threading */
 
 /* string definitions - set to Unknown by default */
 static char distro_str[MAX_STRLEN] = "Unknown";
@@ -228,76 +227,22 @@ int main(int argc, char **argv)
 
 	else /* each string is filled by its respective function */
 	{
-		#if !defined(__CYGWIN__)
-			/* TODO: create structs for these for passing args in threads */
-			detect_distro(distro_str, error);
-			detect_pkgs(pkgs_str, distro_str, error);
-			detect_shell(shell_str, error);
-			detect_res(res_str, error);
-			detect_gpu(gpu_str, error);
-
-			THREAD arch_thread;
-			create_thread(&arch_thread, (void *) detect_arch, (void *) arch_str);
-
-			THREAD host_thread;
-			create_thread(&host_thread, (void *) detect_host, (void *) host_str);
-
-			THREAD kernel_thread;
-			create_thread(&kernel_thread, (void *) detect_kernel, (void *) kernel_str);
-
-			THREAD uptime_thread;
-			create_thread(&uptime_thread, (void *) detect_uptime, (void *) uptime_str);
-
-			THREAD cpu_thread;
-			create_thread(&cpu_thread, (void *) detect_cpu, (void *) cpu_str);
-
-			THREAD disk_thread;
-			create_thread(&disk_thread, (void *) detect_disk, (void *) disk_str);
-
-			THREAD mem_thread;
-			create_thread(&mem_thread, (void *) detect_mem, (void *) mem_str);
-
-			THREAD de_thread;
-			create_thread(&de_thread, (void *) detect_de, (void *) de_str);
-
-			THREAD wm_thread;
-			create_thread(&wm_thread, (void *) detect_wm, (void *) wm_str);
-
-			THREAD wm_theme_thread;
-			create_thread(&wm_theme_thread, (void *) detect_wm_theme, (void *) wm_theme_str);
-
-			THREAD gtk_thread;
-			create_thread(&gtk_thread, (void *) detect_gtk, (void *) gtk_str);
-
-			join_thread(arch_thread);
-			join_thread(host_thread);
-			join_thread(kernel_thread);
-			join_thread(uptime_thread);
-			join_thread(cpu_thread);
-			join_thread(disk_thread);
-			join_thread(mem_thread);
-			join_thread(de_thread);
-			join_thread(wm_thread);
-			join_thread(wm_theme_thread);
-			join_thread(gtk_thread);
-		#else
-			detect_distro(distro_str, error);
-			detect_arch(arch_str);
-			detect_host(host_str);
-			detect_kernel(kernel_str);
-			detect_uptime(uptime_str);
-			detect_pkgs(pkgs_str, distro_str, error);
-			detect_cpu(cpu_str);
-			detect_gpu(gpu_str, error);
-			detect_disk(disk_str);
-			detect_mem(mem_str);
-			detect_shell(shell_str, error);
-			detect_res(res_str, error);
-			detect_de(de_str);
-			detect_wm(wm_str);
-			detect_wm_theme(wm_theme_str);
-			detect_gtk(gtk_str);
-		#endif
+		detect_distro(distro_str, error);
+		detect_arch(arch_str);
+		detect_host(host_str);
+		detect_kernel(kernel_str);
+		detect_uptime(uptime_str);
+		detect_pkgs(pkgs_str, distro_str, error);
+		detect_cpu(cpu_str);
+		detect_gpu(gpu_str, error);
+		detect_disk(disk_str);
+		detect_mem(mem_str);
+		detect_shell(shell_str, error);
+		detect_res(res_str, error);
+		detect_de(de_str);
+		detect_wm(wm_str);
+		detect_wm_theme(wm_theme_str);
+		detect_gtk(gtk_str);
 	}
 
 	if (verbose)
