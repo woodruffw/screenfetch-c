@@ -248,24 +248,7 @@ int main(int argc, char **argv)
 	}
 
 	if (verbose)
-	{
-		VERBOSE_OUT("Found distro as ", distro_str);
-		VERBOSE_OUT("Found system arch as ", arch_str);
-		VERBOSE_OUT("Found hostname ", host_str);
-		VERBOSE_OUT("Found kernel as ", kernel_str);
-		VERBOSE_OUT("Found uptime as ", uptime_str);
-		VERBOSE_OUT("Found package count as ", pkgs_str);
-		VERBOSE_OUT("Found CPU as ", cpu_str);
-		VERBOSE_OUT("Found GPU as ", gpu_str);
-		VERBOSE_OUT("Found disk usage as ", disk_str);
-		VERBOSE_OUT("Found memory usage as ", mem_str);
-		VERBOSE_OUT("Found shell as ", shell_str);
-		VERBOSE_OUT("Found resolution as ", res_str);
-		VERBOSE_OUT("Found DE as ", de_str);
-		VERBOSE_OUT("Found WM as ", res_str);
-		VERBOSE_OUT("Found WM theme as ", wm_theme_str);
-		VERBOSE_OUT("Found GTK as ", gtk_str);
-	}
+		display_verbose(detected_arr, detected_arr_names);
 
 	if (logo)
 		main_ascii_output(detected_arr, detected_arr_names);

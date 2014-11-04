@@ -14,6 +14,7 @@
 
 void display_version(void);
 void display_help(void);
+void display_verbose(char *data[], char *data_names[]);
 void output_logo_only(char *distro);
 void main_ascii_output(char *data[], char *data_names[]);
 void main_text_output(char *data[], char *data_names[]);

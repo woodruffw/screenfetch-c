@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+
 #include "version.h"
 #include "logos.h"
 #include "colors.h"
@@ -18,7 +19,7 @@
 #include "disp.h"
 
 /*	display_version
-	called if the -v flag is tripped
+	called if the -V flag is tripped
 */
 void display_version(void)
 {
@@ -44,6 +45,16 @@ void display_help(void)
 	printf(" %s\n", "-L, --logo-only [DISTRO]\t Output only the logo associated with DISTRO.");
 	printf("\n%s\n", "For more information, consult screenfetch-c's man page.");
 	return;
+}
+
+/*	display_verbose
+	called if the -v flag is tripped
+*/
+void display_verbose(char *data[], char *data_names[])
+{
+	int i = 0;
+	for (i = 0; i < 16; i++)
+		VERBOSE_OUT(data_names[i], data[i]);
 }
 
 /*	output_logo_only
