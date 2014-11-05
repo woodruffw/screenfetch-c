@@ -6,47 +6,10 @@
 	This is primarily an experiment borne out of an awareness of the slow execution time on the 
 	screenfetch-dev.sh script. 
 	Hopefully this rewrite will execute faster, although it's more for self education than anything else.
-	
-	------
 
-	NOTES:
-	I used many of Brett Bohnenkamper's awk/sed/grep/etc oneliners in my popen() calls, 
-	although some were modified to change/improve the output.
-	Many thanks to him for discovering bugs and formatting issues as well.
-
-	The shell scripts detectwm.sh, detectwmtheme.sh, and detectde.sh are all partially or completely based upon
-	screenfetch-dev. They are called within the program, as detecting the WM/WM theme/DE/GTK within C would be a pain in the ass.
-
-	------
-
-	**From the original author:**
-
-	------
-
-	Copyright (c) 2010-2012 Brett Bohnenkamper < kittykatt AT archlinux DOT us >
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-	and associated documentation files (the "Software"), to deal in the Software without restriction,
-	including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-	and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-	subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-	COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	Yes, I do realize some of this is horribly ugly coding. Any ideas/suggestions would be
-	appreciated by emailing me or by stopping by http://github.com/KittyKatt/screenFetch . You
-	could also drop in on my IRC network, SilverIRC, at irc://kittykatt.silverirc.com:6667/screenFetch
-	to put forth suggestions/ideas. Thank you.
-
-	------
-
-	I hereby regrant screenfetch-c under the same MIT license.
-	If you have any questions, please contact me on github (http://www.github.com/woodruffw/screenfetch-c) or at william @ tuffbizz.com
+	If you have any questions, please contact me via:
+		- github: http://www.github.com/woodruffw/screenfetch-c
+		- email: william @ tuffbizz.com
 */
 
 /* standard includes */
@@ -56,16 +19,16 @@
 #include <string.h>
 #include <getopt.h>
 
-#include "detect.h" /* detection function prototypes */
-#include "disp.h" /* version and help output functions */
-#include "logos.h" /* ascii logos */
-#include "colors.h" /* terminal color codes */
-#include "misc.h" /* misc macros */
-#include "util.h" /* convenience functions */
+/* program includes */
+#include "detect.h"
+#include "disp.h"
+#include "logos.h"
+#include "colors.h"
+#include "misc.h"
+#include "util.h"
 
 int main(int argc, char **argv)
 {
-	/* string definitions - set to Unknown by default */
 	char distro_str[MAX_STRLEN] = "Unknown";
 	char arch_str[MAX_STRLEN] = "Unknown";
 	char host_str[MAX_STRLEN] = "Unknown";
@@ -83,7 +46,6 @@ int main(int argc, char **argv)
 	char wm_theme_str[MAX_STRLEN] = "Unknown";
 	char gtk_str[MAX_STRLEN] = "Unknown";
 
-	/* output string definitions */
 	char *detected_arr[16] =
 	{
 		host_str,
@@ -184,7 +146,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (manual) /* if the user has decided to enter manual mode */
+	if (manual) /* triggered by -m (--manual) flag */
 	{
 		int stat = manual_input(detected_arr, verbose);
 
@@ -226,7 +188,6 @@ int main(int argc, char **argv)
 		else /* if the user decided to leave manual mode without input */
 			return EXIT_SUCCESS;
 	}
-
 	else /* each string is filled by its respective function */
 	{
 		detect_distro(distro_str, error);

@@ -7,7 +7,6 @@
 	You should have received a copy of it with this code.
 */
 
-
 #ifndef SCREENFETCH_C_DETECT_H
 #define SCREENFETCH_C_DETECT_H
 

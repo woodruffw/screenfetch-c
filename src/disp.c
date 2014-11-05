@@ -8,10 +8,12 @@
 	You should have received a copy of it with this code.
 */
 
+/* standard includes */
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
+/* program includes */
 #include "version.h"
 #include "logos.h"
 #include "colors.h"
@@ -19,7 +21,7 @@
 #include "disp.h"
 
 /*	display_version
-	called if the -V flag is tripped
+	called if the -V (--version) flag is tripped
 */
 void display_version(void)
 {
@@ -28,7 +30,7 @@ void display_version(void)
 }
 
 /*	display_help
-	called if the -h flag is tripped
+	called if the -h (--help) flag is tripped
 */
 void display_help(void)
 {
@@ -48,7 +50,8 @@ void display_help(void)
 }
 
 /*	display_verbose
-	called if the -v flag is tripped
+	called if the -v (--verbose) flag is tripped
+	arguments: char *data[], *data_names[] the system data and names being printed
 */
 void display_verbose(char *data[], char *data_names[])
 {

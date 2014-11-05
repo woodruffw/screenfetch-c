@@ -7,11 +7,14 @@
 	You should have received a copy of it with this code.
 */
 
+/* standard includes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+
+/* program includes */
 #include "disp.h"
 #include "misc.h"
 
