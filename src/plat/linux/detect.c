@@ -576,11 +576,11 @@ void detect_wm(char *str, bool error)
 
 	if ((disp = XOpenDisplay(NULL)))
 	{
-		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),	XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", True),
-			0, 1024, False,	XA_WINDOW, &actual_type, &actual_format, &nitems, &bytes, (unsigned char **) &wm_check_window)))
+		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),	XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", true),
+			0, 1024, false,	XA_WINDOW, &actual_type, &actual_format, &nitems, &bytes, (unsigned char **) &wm_check_window)))
 		{
-			if (!(XGetWindowProperty(disp, *wm_check_window, XInternAtom(disp, "_NET_WM_NAME", True),
-				0, 1024, False,	XInternAtom(disp, "UTF8_STRING", True),	&actual_type,
+			if (!(XGetWindowProperty(disp, *wm_check_window, XInternAtom(disp, "_NET_WM_NAME", true),
+				0, 1024, false,	XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
 			{
 				safe_strncpy(str, (char *) wm_name, MAX_STRLEN);
