@@ -23,7 +23,7 @@ void detect_mem(char *str);
 void detect_shell(char *str, bool error);
 void detect_res(char *str, bool error);
 void detect_de(char *str);
-void detect_wm(char *str);
+void detect_wm(char *str, bool error);
 void detect_wm_theme(char *str);
 void detect_gtk(char *str);
 

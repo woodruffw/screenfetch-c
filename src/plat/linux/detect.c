@@ -19,6 +19,7 @@
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
 #include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <glob.h>
@@ -215,7 +216,8 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 
 	int packages = 0;
 
-	if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre") || STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
+	if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre")
+		|| STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
 	{
 		#if defined(__linux__)
 			glob_t gl;
@@ -240,7 +242,13 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu") || STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint") || STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian") || STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang") || STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin") || STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS") || STRCMP(distro_str, "Backtrack Linux"))
+	else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu")
+			|| STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint")
+			|| STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian")
+			|| STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang")
+			|| STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin")
+			|| STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS")
+			|| STRCMP(distro_str, "Backtrack Linux"))
 	{
 		pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
@@ -265,14 +273,18 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 		#endif
 	}
 
-	else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") || STRCMP(distro_str, "Funtoo"))
+	else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") 
+			|| STRCMP(distro_str, "Funtoo"))
 	{
 		pkgs_file = popen("ls -d /var/db/pkg/*/* | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora") || STRCMP(distro_str, "OpenSUSE") || STRCMP(distro_str, "Red Hat Linux") || STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake") || STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
+	else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora")
+			|| STRCMP(distro_str, "OpenSUSE") || STRCMP(distro_str, "Red Hat Linux")
+			|| STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake")
+			|| STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
 	{
 		pkgs_file = popen("rpm -qa | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
@@ -563,13 +575,46 @@ void detect_de(char *str)
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm(char *str)
+void detect_wm(char *str, bool error)
 {
-	FILE *wm_file;
+	Display *disp;
+	Atom actual_type;
+	int actual_format;
+	unsigned long nitems;
+	unsigned long bytes;
+	unsigned char *wm_name = '\0';
+	Window *wm_check_window;
 
-	wm_file = popen("detectwm 2> /dev/null", "r");
-	fgets(str, MAX_STRLEN, wm_file);
-	pclose(wm_file);
+	if ((disp = XOpenDisplay(NULL)))
+	{
+		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),	XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", True),
+			0, 1024, False,	XA_WINDOW, &actual_type, &actual_format, &nitems, &bytes, (unsigned char **) &wm_check_window)))
+		{
+			if (!(XGetWindowProperty(disp, *wm_check_window, XInternAtom(disp, "_NET_WM_NAME", True),
+				0, 1024, False,	XInternAtom(disp, "UTF8_STRING", True),	&actual_type,
+				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
+			{
+				safe_strncpy(str, (char *) wm_name, MAX_STRLEN);
+				XFree(wm_name);
+			}
+			else if (error)
+			{
+				ERROR_OUT("Error: ", "No _NET_WM_NAME property found.");
+			}
+
+			XFree(wm_check_window);
+		}
+		else if (error)
+		{
+			ERROR_OUT("Error: ", "WM cannot be detected without EWMH compliance.");
+		}
+
+		XCloseDisplay(disp);
+	}
+	else if (error)
+	{
+		ERROR_OUT("Error: ", "Could not open an X display.");
+	}
 
 	return;
 }

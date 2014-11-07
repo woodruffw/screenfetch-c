@@ -329,7 +329,7 @@ void detect_de(char *str)
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm(char *str)
+void detect_wm(char *str, bool error)
 {
 	FILE *wm_file;
 

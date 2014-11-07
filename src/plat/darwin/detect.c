@@ -376,7 +376,7 @@ void detect_de(char *str)
 	On OS X, this will always be the Quartz Compositor.
 	argument char *str: the char array to be filled with the WM name
 */
-void detect_wm(char *str)
+void detect_wm(char *str, bool error)
 {
 	safe_strncpy(str, "Quartz Compositor", MAX_STRLEN);
 
