@@ -204,10 +204,10 @@ void detect_disk(char *str, bool error)
 */
 void detect_mem(char *str)
 {
-	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+	long long total_mem = 0;
 
 	total_mem = sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
-	total_mem /= (long) MB;
+	total_mem /= MB;
 
 	/* sar -r 1 to get free pages? */
 
