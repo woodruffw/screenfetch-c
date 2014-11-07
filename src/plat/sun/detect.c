@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/param.h>
 #include <sys/utsname.h>
+#include <sys/statvfs.h>
 #include <X11/Xlib.h>
 
 /* program includes */
@@ -179,7 +180,20 @@ void detect_gpu(char *str, bool error)
 */
 void detect_disk(char *str, bool error)
 {
-	safe_strncpy(str, "Not implemented", MAX_STRLEN);
+	struct statvfs disk_info;
+	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
+
+	if (!(statvfs("/home", &disk_info)))
+	{
+		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
+		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
+		disk_percentage = (((float) disk_used / disk_total) * 100);
+		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
+	}
+	else if (error)
+	{
+		ERROR_OUT("Error: ", "Could not stat /home for filesystem statistics.");
+	}
 
 	return;
 }
