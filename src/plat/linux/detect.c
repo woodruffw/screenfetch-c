@@ -18,6 +18,7 @@
 /* linux-specific includes */
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
+#include <sys/statvfs.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <GL/gl.h>
@@ -387,33 +388,21 @@ void detect_gpu(char *str, bool error)
 	detects the computer's total disk capacity and usage
 	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char *str)
+void detect_disk(char *str, bool error)
 {
-	FILE *disk_file;
+	struct statvfs disk_info;
+	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
 
-	int disk_total = 0;
-	int disk_used = 0;
-	int disk_percentage = 0;
-
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_total);
-	pclose(disk_file);
-
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_used);
-	pclose(disk_file);
-
-	if (disk_total > disk_used)
+	if (!(statvfs("/home", &disk_info)))
 	{
+		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
+		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
 		disk_percentage = (((float) disk_used / disk_total) * 100);
-
-		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
 	}
-	else /* when disk_used is in a smaller unit */
+	else if (error)
 	{
-		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
-
-		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		ERROR_OUT("Error: ", "Could not stat /home for filesystem statistics.");
 	}
 
 	return;

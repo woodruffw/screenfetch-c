@@ -18,7 +18,7 @@ void detect_uptime(char *str);
 void detect_pkgs(char *str, const char *distro_str, bool error);
 void detect_cpu(char *str);
 void detect_gpu(char *str, bool error);
-void detect_disk(char *str);
+void detect_disk(char *str, bool error);
 void detect_mem(char *str);
 void detect_shell(char *str, bool error);
 void detect_res(char *str, bool error);

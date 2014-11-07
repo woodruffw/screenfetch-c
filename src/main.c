@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 			/* these sections are ALWAYS detected */
 			detect_uptime(uptime_str);
 			detect_pkgs(pkgs_str, distro_str, error);
-			detect_disk(disk_str);
+			detect_disk(disk_str, error);
 			detect_mem(mem_str);
 
 			/* if the user specifies an asterisk, fill the data in for them */
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 		detect_pkgs(pkgs_str, distro_str, error);
 		detect_cpu(cpu_str);
 		detect_gpu(gpu_str, error);
-		detect_disk(disk_str);
+		detect_disk(disk_str, error);
 		detect_mem(mem_str);
 		detect_shell(shell_str, error);
 		detect_res(res_str, error);

@@ -211,7 +211,7 @@ void detect_gpu(char *str, bool error)
 	detects the computer's total disk capacity and usage
 	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char *str)
+void detect_disk(char *str, bool error)
 {
 	FILE *disk_file;
 
