@@ -571,7 +571,7 @@ void detect_wm(char *str, bool error)
 	int actual_format;
 	unsigned long nitems;
 	unsigned long bytes;
-	unsigned char *wm_name = '\0';
+	char *wm_name = '\0';
 	Window *wm_check_window;
 
 	if ((disp = XOpenDisplay(NULL)))
@@ -583,7 +583,7 @@ void detect_wm(char *str, bool error)
 				0, 1024, false,	XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
 			{
-				safe_strncpy(str, (char *) wm_name, MAX_STRLEN);
+				safe_strncpy(str, wm_name, MAX_STRLEN);
 				XFree(wm_name);
 			}
 			else if (error)
