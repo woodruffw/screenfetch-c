@@ -559,10 +559,7 @@ void detect_de(char *str)
 /*	detect_wm
 	detects the window manager currently running on top of the OS
 	argument char *str: the char array to be filled with the WM name
-	--
-	CAVEAT: This function relies on the presence of 'detectwm', a shell script. 
-	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
-	--
+	argument bool error: true for verbose errors, false for silent
 */
 void detect_wm(char *str, bool error)
 {
