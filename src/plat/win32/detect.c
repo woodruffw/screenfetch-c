@@ -251,7 +251,7 @@ void detect_disk(char *str, bool error)
 */
 void detect_mem(char *str)
 {
-	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+	long long total_mem = 0;
 	long long used_mem = 0;
 
 	MEMORYSTATUSEX mem_stat;

@@ -261,7 +261,7 @@ void detect_mem(char *str)
 {
 	FILE *mem_file;
 
-	long long total_mem = 0; /* each of the following MAY contain bytes/kbytes/mbytes/pages */
+	long long total_mem = 0;
 
 	mem_file = popen("sysctl -n hw.physmem", "r");
 	fscanf(mem_file, "%lld", &total_mem);
