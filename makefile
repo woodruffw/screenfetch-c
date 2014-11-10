@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -D_POSIX_C_SOURCE=200112L
+CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -pedantic -D_POSIX_C_SOURCE=200112L
 LDFLAGS =
 INSTALL = /usr/bin/install -c
 
@@ -32,7 +32,7 @@ else
 
 	ifeq ($(UNAME_S),SunOS)
 		SOURCES += $(wildcard ./src/plat/sun/*.c)
-		CFLAGS += -lpthread -lX11
+		LDFLAGS += -lpthread -lX11
 		TESTS += x11test
 	endif
 
