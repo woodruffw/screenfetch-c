@@ -43,22 +43,22 @@ all:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 linux: x11test gltest $(OBJS)
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 solaris: x11test $(OBJS)
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 bsd:
 	$(eval SOURCES+=./src/plat/bsd/*.c)
 	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
 	$(eval LDFLAGS+=-lpthread)
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 osx: $(OBJS)
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 win: $(OBJS)
-	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 install:
 	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c

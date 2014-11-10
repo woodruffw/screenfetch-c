@@ -341,7 +341,7 @@ void detect_cpu(char *str)
 void detect_gpu(char *str, bool error)
 {
 	Display *disp = NULL;
-	Window wind = NULL;
+	Window wind;
 	GLint attr[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
 	XVisualInfo *visual_info = NULL;
 	GLXContext context = NULL;
