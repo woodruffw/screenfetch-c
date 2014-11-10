@@ -19,55 +19,24 @@ screenfetch-c only relies on libraries that come on virtually every system.
 
 * On Windows, the WinAPI is required (duh).
 
-Installing screenfetch-c is very simple.
-First, clone the repository:
+Installing screenfetch-c is very simple:
 
 ```bash
 $ git clone https://www.github.com/woodruffw/screenfetch-c.git
 $ cd screenfetch-c
-```
-Then, follow the instructions for your OS:
-
-### Linux
-
-```bash
-$ make linux && sudo make install
-```
-
-### Solaris (incl. derivatives)
-
-```bash
-$ make solaris && sudo make install
+$ make
 ```
 
 _Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`. Using regular (Sun) `make` will cause strange errors.
 
-### BSD
-
-```bash
-$ make bsd && sudo make install
-```
-
 ### OS X
 
-screenfetch-c is now available via Homebrew!
+screenfetch-c is also available via Homebrew!
 
 To install it, just run the following:
 
 ```bash
 $ brew install woodruffw/screenfetch-c/screenfetch-c
-```
-
-Alternatively, you can use the plain makefile:
-
-```bash
-$ make osx && sudo make install
-```
-
-### Windows (Cygwin)
-
-```bash
-$ make win && sudo make install
 ```
 
 ## Removal:

@@ -10,6 +10,8 @@ MAN = $(PREFIX)/share/man/man1
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
+TESTS =
+
 ifeq ($(OS),Windows_NT)
 	SOURCES += $(wildcard ./src/plat/win32/*.c)
 	CFLAGS += -DWIN32_LEAN_AND_MEAN
@@ -20,6 +22,7 @@ else
 		SOURCES += $(wildcard ./src/plat/linux/*.c)
 		CFLAGS += -Wno-unused-result
 		LDFLAGS += -lpthread -lX11 -lGL
+		TESTS += x11test gltest
 	endif
 
 	ifeq ($(UNAME_S),Darwin)
@@ -29,36 +32,21 @@ else
 
 	ifeq ($(UNAME_S),SunOS)
 		SOURCES += $(wildcard ./src/plat/sun/*.c)
-		SOURCES += -lpthread -lX11
+		CFLAGS += -lpthread -lX11
+		TESTS += x11test
+	endif
+
+	ifneq (,$(filter $(UNAME_S),FreeBSD NetBSD OpenBSD DragonFly))
+		SOURCES += $(wildcard ./src/plat/bsd/*.c)
+		LDFLAGS += -lpthread
 	endif
 endif
 
-all:
-	@echo '========================================================='
-	@echo 'You must run make with a target corresponding to your OS.'
-	@echo 'Options: linux, solaris, bsd, osx, win.'
-	@echo '========================================================='
+all: $(TESTS) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
-
-linux: x11test gltest $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
-
-solaris: x11test $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
-
-bsd:
-	$(eval SOURCES+=./src/plat/bsd/*.c)
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(eval LDFLAGS+=-lpthread)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
-
-osx: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
-
-win: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 install:
 	$(INSTALL) screenfetch-c $(BIN)/screenfetch-c
