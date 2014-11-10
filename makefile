@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable
+CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -D_POSIX_C_SOURCE=200112L
 LDFLAGS =
 INSTALL = /usr/bin/install -c
 
@@ -8,6 +8,30 @@ BIN = $(PREFIX)/bin
 MAN = $(PREFIX)/share/man/man1
 
 SOURCES = $(wildcard ./src/*.c)
+OBJS = $(SOURCES:.c=.o)
+
+ifeq ($(OS),Windows_NT)
+	SOURCES += $(wildcard ./src/plat/win32/*.c)
+	CFLAGS += -DWIN32_LEAN_AND_MEAN
+else
+	UNAME_S := $(shell uname -s)
+
+	ifeq ($(UNAME_S),Linux)
+		SOURCES += $(wildcard ./src/plat/linux/*.c)
+		CFLAGS += -Wno-unused-result
+		LDFLAGS += -lpthread -lX11 -lGL
+	endif
+
+	ifeq ($(UNAME_S),Darwin)
+		SOURCES += $(wildcard ./src/plat/darwin/*.c)
+		LDFLAGS += -lpthread -framework CoreServices
+	endif
+
+	ifeq ($(UNAME_S),SunOS)
+		SOURCES += $(wildcard ./src/plat/sun/*.c)
+		SOURCES += -lpthread -lX11
+	endif
+endif
 
 all:
 	@echo '========================================================='
@@ -15,16 +39,13 @@ all:
 	@echo 'Options: linux, solaris, bsd, osx, win.'
 	@echo '========================================================='
 
-linux: x11test gltest
-	$(eval SOURCES+=$(wildcard ./src/plat/linux/*.c))
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L' -Wno-unused-result)
-	$(eval LDFLAGS+=-lpthread -lX11 -lGL)
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+linux: x11test gltest $(OBJS)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
-solaris: x11test
-	$(eval SOURCES+=./src/plat/sun/*.c)
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(eval LDFLAGS+=-lpthread -lX11)
+solaris: x11test $(OBJS)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 bsd:
@@ -33,16 +54,10 @@ bsd:
 	$(eval LDFLAGS+=-lpthread)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
-osx:
-	$(eval SOURCES+=./src/plat/darwin/*.c)
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
-	$(eval LDFLAGS+=-lpthread -framework CoreServices)
+osx: $(OBJS)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
-win:
-	$(eval SOURCES+=./src/plat/win32/*.c)
-	$(eval CFLAGS+=-DWIN32_LEAN_AND_MEAN)
-	$(eval CFLAGS+='-D_POSIX_C_SOURCE=200112L')
+win: $(OBJS)
 	$(CC) $(CFLAGS) $(SOURCES) -o ./screenfetch-c $(LDFLAGS)
 
 install:
@@ -80,6 +95,7 @@ threadtest:
 	rm -f ./threadtest
 
 clean:
+	rm -f ./src/*.o ./src/plat/*/*.o
 	rm -f threadtest
 	rm -f x11test
 	rm -f gltest
