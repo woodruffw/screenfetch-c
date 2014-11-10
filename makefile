@@ -77,11 +77,6 @@ gltest:
 	$(CC) $(CFLAGS) ./src/tests/gltest.c -o ./gltest -lGL
 	rm -f ./gltest
 
-threadtest:
-	$(CC) $(CFLAGS) ./src/thread.c ./src/tests/threadtest.c -o ./threadtest -lpthread
-	./threadtest
-	rm -f ./threadtest
-
 clean:
 	rm -f ./src/*.o ./src/plat/*/*.o
 	rm -f threadtest

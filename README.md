@@ -6,7 +6,7 @@ screenfetch-c
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 
 language.
-Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, GNU/Linux, OS X, and Windows (via the Cygwin environment).
+Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, Solaris, GNU/Linux, OS X, and Windows (via the Cygwin environment).
 
 ## Installing screenfetch-c:
 
