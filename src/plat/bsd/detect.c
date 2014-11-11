@@ -16,9 +16,9 @@
 #include <getopt.h>
 
 /* BSD-specific includes */
+#include <sys/statvfs.h>
 #if defined(__FreeBSD__)
 	#include <sys/utsname.h>
-	#include <sys/statvfs.h>
 	#include <time.h>
 #elif defined(__NetBSD__)
 	#include <sys/utsname.h>
