@@ -17,17 +17,14 @@
 
 /* BSD-specific includes */
 #include <sys/statvfs.h>
+#include <sys/utsname.h>
 #if defined(__FreeBSD__)
-	#include <sys/utsname.h>
 	#include <time.h>
 #elif defined(__NetBSD__)
-	#include <sys/utsname.h>
 #elif defined(__OpenBSD__)
 	#define OS OPENBSD
-	#include <sys/utsname.h>
 	#include <time.h>
 #elif defined(__DragonFly__)
-	#include <sys/utsname.h>
 	#include <time.h>
 #endif
 
