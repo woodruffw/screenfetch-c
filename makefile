@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -pedantic -D_POSIX_C_SOURCE=200112L
+CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -pedantic
+CPPFLAGS = -D_POSIX_C_SOURCE=200112L
 LDFLAGS =
 INSTALL = /usr/bin/install -c
 
@@ -14,7 +15,7 @@ TESTS =
 
 ifeq ($(OS),Windows_NT)
 	SOURCES += $(wildcard ./src/plat/win32/*.c)
-	CFLAGS += -DWIN32_LEAN_AND_MEAN
+	CPPFLAGS += -DWIN32_LEAN_AND_MEAN
 else
 	UNAME_S := $(shell uname -s)
 
@@ -43,10 +44,10 @@ else
 endif
 
 all: $(TESTS) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 install: all
 	$(INSTALL) ./screenfetch-c $(BIN)/screenfetch-c
