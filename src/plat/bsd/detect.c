@@ -69,7 +69,7 @@ void detect_host(char *str)
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
 
-	given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
+	given_user = getlogin();
 
 	struct utsname host_info;
 	uname(&host_info);
@@ -152,7 +152,12 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 {
 	int packages = 0;
 
-	#if defined(__FreeBSD__) || defined(__OpenBSD__)
+	#if defined(__FreeBSD__)
+		FILE *pkgs_file;
+		pkgs_file = popen("pkg info | wc -l", "r");
+		fscanf(pkgs_file, "%d", &packages);
+		pclose(pkgs_file);
+	#elif defined(__OpenBSD__)
 		FILE *pkgs_file;
 		pkgs_file = popen("pkg_info | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
