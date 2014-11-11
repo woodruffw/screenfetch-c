@@ -48,7 +48,7 @@ all: $(TESTS) $(OBJS)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-install:
+install: all
 	$(INSTALL) ./screenfetch-c $(BIN)/screenfetch-c
 	$(INSTALL) ./src/scripts/detectde $(BIN)/detectde
 	$(INSTALL) ./src/scripts/detectgtk $(BIN)/detectgtk
