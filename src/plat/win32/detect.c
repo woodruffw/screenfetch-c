@@ -1,11 +1,11 @@
 /*	detect.c
-	Author: William Woodruff
-	-------------
-
-	The detection functions used by screenfetch-c on Windows (Cygwin) are implemented here.
-	Like the rest of screenfetch-c, this file is licensed under the MIT license.
-	You should have received a copy of it with this code.
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	The detection functions used by screenfetch-c on Windows (Cygwin) are implemented here.
+ *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+ *	You should have received a copy of it with this code.
+ */
 
 /* standard includes */
 #include <stdio.h>
@@ -35,23 +35,23 @@ void detect_distro(char *str, bool error)
 {
 	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
 	{
-		#if defined(NTDDI_WIN7)
+#if defined(NTDDI_WIN7)
 			safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
-		#elif defined(NTDDI_WIN8)
+#elif defined(NTDDI_WIN8)
 			safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
-		#elif defined(NTDDI_WINBLUE)
+#elif defined(NTDDI_WINBLUE)
 			safe_strncpy(str, "Microsoft Windows 8.1", MAX_STRLEN);
-		#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
+#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
 			safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
-		#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
+#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
 			safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
-		#elif defined(_WIN32_WINNT_WS03)
+#elif defined(_WIN32_WINNT_WS03)
 			safe_strncpy(str, "Microsoft Windows Server 2003", MAX_STRLEN);
-		#elif defined(_WIN32_WINNT_WS08)
+#elif defined(_WIN32_WINNT_WS08)
 			safe_strncpy(str, "Microsoft Windows Server 2008", MAX_STRLEN);
-		#else
+#else
 			safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
-		#endif
+#endif
 	}
 
 	return;
@@ -288,7 +288,7 @@ void detect_shell(char *str, bool error)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Problem detecting shell.");
+			ERROR_OUT("Error: ", "Could not detect a shell.");
 
 		return;
 	}
@@ -297,39 +297,32 @@ void detect_shell(char *str, bool error)
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);	
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);

@@ -1,11 +1,11 @@
 /*	detect.h
-	Author: William Woodruff
-	-------------
-
-	The detection functions used by screenfetch-c are prototyped here.
-	Like the rest of screenfetch-c, this file is licensed under the MIT license.
-	You should have received a copy of it with this code.
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	The detection functions used by screenfetch-c are prototyped here.
+ *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+ *	You should have received a copy of it with this code.
+ */
 
 #ifndef SCREENFETCH_C_DETECT_H
 #define SCREENFETCH_C_DETECT_H

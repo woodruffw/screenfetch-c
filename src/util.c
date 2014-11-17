@@ -1,11 +1,11 @@
 /*	util.c
-	Author: William Woodruff
-	-------------
-
-	Utility functions used by screenfetch-c.
-	Like the rest of screenfetch-c, this file is licensed under the MIT license.
-	You should have received a copy of it with this code.
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	Utility functions used by screenfetch-c.
+ *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+ *	You should have received a copy of it with this code.
+ */
 
 /* standard includes */
 #include <stdio.h>

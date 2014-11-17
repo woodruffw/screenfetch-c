@@ -1,16 +1,17 @@
 /*	main.c
-	Author: William Woodruff
-	-------------
-
-	screenfetch-c is a rewrite of screenFetch.sh in C.
-	This is primarily an experiment borne out of an awareness of the slow execution time on the 
-	screenfetch-dev.sh script. 
-	Hopefully this rewrite will execute faster, although it's more for self education than anything else.
-
-	If you have any questions, please contact me via:
-		- github: http://www.github.com/woodruffw/screenfetch-c
-		- email: william @ tuffbizz.com
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	screenfetch-c is a rewrite of screenFetch.sh in C.
+ *	This is primarily an experiment borne out of an awareness of the
+ *	slow execution time on the screenfetch-dev.sh script. 
+ *	Hopefully this rewrite will execute faster, although it's more for
+ *	self education than anything else.
+ *
+ *	If you have any questions, please contact me via:
+ *		- github: http://www.github.com/woodruffw/screenfetch-c
+ *		- email: william @ tuffbizz.com
+ */
 
 /* standard includes */
 #include <stdio.h>
@@ -86,9 +87,10 @@ int main(int argc, char **argv)
 		"GTK: "
 	};
 
-	bool manual = false, logo = true, error = true, verbose = false, screenshot = false;
+	bool manual = false, logo = true, error = true;
+	bool verbose = false, screenshot = false;
 
-	struct option long_options[] =
+	struct option options[] =
 	{
 		{ "manual", no_argument, 0, 'm' },
 		{ "verbose", no_argument, 0, 'v' },
@@ -104,7 +106,7 @@ int main(int argc, char **argv)
 
 	signed char c;
 	int index = 0;
-	while ((c = getopt_long(argc, argv, "mvnsD:EVhL:", long_options, &index)) != -1)
+	while ((c = getopt_long(argc, argv, "mvnsD:EVhL:", options, &index)) != -1)
 	{
 		switch (c)
 		{
@@ -135,13 +137,7 @@ int main(int argc, char **argv)
 			case 'L':
 				output_logo_only(optarg);
 				return EXIT_SUCCESS;
-			case '?':
-				if (optopt == 'D')
-					ERROR_OUT("Error: ", "The -D (--distro) flag requires an argument.");
-				else if (optopt == 'L')
-					ERROR_OUT("Error: ", "The -L (--logo-only) flag requires an argument.");
-				else
-					ERROR_OUT("Error: ", "Unknown option or option character.");
+			default:
 				return EXIT_FAILURE;
 		}
 	}

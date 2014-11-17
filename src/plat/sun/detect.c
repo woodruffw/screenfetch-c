@@ -1,11 +1,11 @@
 /*	detect.c
-	Author: William Woodruff
-	-------------
-
-	The detection functions used by screenfetch-c on Solaris are implemented here.
-	Like the rest of screenfetch-c, this file is licensed under the MIT license.
-	You should have received a copy of it with this code.
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	The detection functions used by screenfetch-c on Solaris are implemented here.
+ *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+ *	You should have received a copy of it with this code.
+ */
 
 /* standard includes */
 #include <stdio.h>
@@ -238,7 +238,7 @@ void detect_shell(char *str, bool error)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Problem detecting shell.");
+			ERROR_OUT("Error: ", "Could not detect a shell.");
 
 		return;
 	}
@@ -247,38 +247,30 @@ void detect_shell(char *str, bool error)
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);	
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */

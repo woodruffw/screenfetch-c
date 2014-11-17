@@ -1,11 +1,11 @@
 /*	detect.c
-	Author: William Woodruff
-	-------------
-
-	The detection functions used by screenfetch-c on Linux are implemented here.
-	Like the rest of screenfetch-c, this file is licensed under the MIT license.
-	You should have received a copy of it with this code.
-*/
+ *	Author: William Woodruff
+ *	-------------
+ *
+ *	The detection functions used by screenfetch-c on Linux are implemented here.
+ *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+ *	You should have received a copy of it with this code.
+ */
 
 /* standard includes */
 #include <stdio.h>
@@ -75,7 +75,8 @@ void detect_distro(char *str, bool error)
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
 					detected = true;
 				}
-				else if (STRCMP(distro_name_str, "Debi") || STRCMP(distro_name_str, "Rasp"))
+				else if (STRCMP(distro_name_str, "Debi")
+						|| STRCMP(distro_name_str, "Rasp"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
 					detected = true;
@@ -217,23 +218,22 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 
 	int packages = 0;
 
-	if (STRCMP(distro_str, "Arch Linux") || STRCMP(distro_str, "ParabolaGNU/Linux-libre")
+	if (STRCMP(distro_str, "Arch Linux")
+		|| STRCMP(distro_str, "ParabolaGNU/Linux-libre")
 		|| STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
 	{
-		#if defined(__linux__)
-			glob_t gl;
+		glob_t gl;
 
-			if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
-			{
-				packages = gl.gl_pathc;
-			}
-			else if (error)
-			{
-				ERROR_OUT("Error: ", "Failure while globbing packages.");
-			}
+		if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
+		{
+			packages = gl.gl_pathc;
+		}
+		else if (error)
+		{
+			ERROR_OUT("Error: ", "Failure while globbing packages.");
+		}
 
-			globfree(&gl);
-		#endif
+		globfree(&gl);
 	}
 
 	else if (STRCMP(distro_str, "Frugalware"))
@@ -247,8 +247,10 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 			|| STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint")
 			|| STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian")
 			|| STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang")
-			|| STRCMP(distro_str, "Peppermint") || STRCMP(distro_str, "LinuxDeepin")
-			|| STRCMP(distro_str, "Trisquel") || STRCMP(distro_str, "elementary OS")
+			|| STRCMP(distro_str, "Peppermint")
+			|| STRCMP(distro_str, "LinuxDeepin")
+			|| STRCMP(distro_str, "Trisquel")
+			|| STRCMP(distro_str, "elementary OS")
 			|| STRCMP(distro_str, "Backtrack Linux"))
 	{
 		pkgs_file = popen("dpkg --get-selections | wc -l", "r");
@@ -258,20 +260,18 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 
 	else if (STRCMP(distro_str, "Slackware"))
 	{
-		#if defined(__linux__)
-			glob_t gl;
+		glob_t gl;
 
-			if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
-			{
-				packages = gl.gl_pathc;
-			}
-			else if (error)
-			{
-				ERROR_OUT("Error: ", "Failure while globbing packages.");
-			}
+		if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
+		{
+			packages = gl.gl_pathc;
+		}
+		else if (error)
+		{
+			ERROR_OUT("Error: ", "Failure while globbing packages.");
+		}
 
-			globfree(&gl);
-		#endif
+		globfree(&gl);
 	}
 
 	else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") 
@@ -283,7 +283,8 @@ void detect_pkgs(char *str, const char *distro_str, bool error)
 	}
 
 	else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora")
-			|| STRCMP(distro_str, "OpenSUSE") || STRCMP(distro_str, "Red Hat Linux")
+			|| STRCMP(distro_str, "OpenSUSE")
+			|| STRCMP(distro_str, "Red Hat Linux")
 			|| STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake")
 			|| STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
 	{
@@ -327,7 +328,7 @@ void detect_cpu(char *str)
 
 	if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
 	{
-		safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN); /* quick patch for the Raspberry Pi */
+		safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
 	}
 
 	return;
@@ -356,30 +357,28 @@ void detect_gpu(char *str, bool error)
 			{
 				glXMakeCurrent(disp, wind, context);
 				safe_strncpy(str, (const char *) glGetString(GL_RENDERER), MAX_STRLEN);
+
+				glXDestroyContext(disp, context);
 			}
 			else if (error)
 			{
 				ERROR_OUT("Error: ", "Failed to create OpenGL context.");
 			}
+
+			XFree((void *) visual_info);
 		}
 		else if (error)
 		{
 			ERROR_OUT("Error: ", "Failed to select a proper X visual.");
 		}
+
+		XCloseDisplay(disp);
 	}
 	else if (error)
 	{
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 		ERROR_OUT("Error: ", "Could not open an X display.");
 	}
-
-	/* cleanup */
-	if (context)
-		glXDestroyContext(disp, context);
-	if (visual_info)
-		XFree((void *) visual_info);
-	if (disp)
-		XCloseDisplay(disp);
 
 	return;
 }
@@ -455,7 +454,7 @@ void detect_shell(char *str, bool error)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Problem detecting shell.");
+			ERROR_OUT("Error: ", "Could not detect a shell.");
 
 		return;
 	}
@@ -464,38 +463,30 @@ void detect_shell(char *str, bool error)
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);	
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		/* evil pointer arithmetic */
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-
 	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
@@ -522,7 +513,10 @@ void detect_res(char *str, bool error)
 		Screen *screen = XDefaultScreenOfDisplay(disp);
 		width = WidthOfScreen(screen);
 		height = HeightOfScreen(screen);
+
 		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
+
+		XCloseDisplay(disp);
 	}
 	else
 	{
@@ -531,8 +525,6 @@ void detect_res(char *str, bool error)
 		if (error)
 			ERROR_OUT("Error: ", "Problem detecting X display resolution.");
 	}
-
-	XCloseDisplay(disp);
 
 	return;
 }
@@ -573,11 +565,14 @@ void detect_wm(char *str, bool error)
 
 	if ((disp = XOpenDisplay(NULL)))
 	{
-		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),	XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", true),
-			0, KB, false,	XA_WINDOW, &actual_type, &actual_format, &nitems, &bytes, (unsigned char **) &wm_check_window)))
+		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),
+			XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", true),
+			0, KB, false,	XA_WINDOW, &actual_type, &actual_format, &nitems,
+			&bytes, (unsigned char **) &wm_check_window)))
 		{
-			if (!(XGetWindowProperty(disp, *wm_check_window, XInternAtom(disp, "_NET_WM_NAME", true),
-				0, KB, false,	XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
+			if (!(XGetWindowProperty(disp, *wm_check_window,
+				XInternAtom(disp, "_NET_WM_NAME", true), 0, KB, false,
+				XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
 			{
 				safe_strncpy(str, wm_name, MAX_STRLEN);
