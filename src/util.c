@@ -17,6 +17,7 @@
 /* program includes */
 #include "disp.h"
 #include "misc.h"
+#include "error_flag.h"
 
 #if defined(__CYGWIN__)
 	#include <Windows.h>
@@ -54,7 +55,7 @@ void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days)
 /*	take_screenshot
 	takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
 */
-void take_screenshot(bool verbose, bool error)
+void take_screenshot(bool verbose)
 {
 	printf("%s", "Taking shot in 3..");
 	fflush(stdout);

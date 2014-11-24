@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		main_text_output(detected_arr, detected_arr_names);
 
 	if (screenshot)
-		take_screenshot(verbose, error);
+		take_screenshot(verbose);
 
 	return EXIT_SUCCESS;
 }
