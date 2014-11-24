@@ -28,13 +28,14 @@
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
+#include "../../error_flag.h"
 
 /*	detect_distro
 	detects the computer's distribution
 	argument char *str: the char array to be filled with the distro name
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_distro(char *str, bool error)
+void detect_distro(char *str)
 {
 	struct utsname distro_info;
 	uname(&distro_info);
@@ -129,7 +130,7 @@ void detect_uptime(char *str)
 	detects the number of packages installed on the computer
 	argument char *str: the char array to be filled with the number of packages
 */
-void detect_pkgs(char *str, const char *distro_str, bool error)
+void detect_pkgs(char *str, const char *distro_str)
 {
 	FILE *pkgs_file;
 	int packages = 0;
@@ -163,7 +164,7 @@ void detect_cpu(char *str)
 	argument char *str: the char array to be filled with the GPU name
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_gpu(char *str, bool error)
+void detect_gpu(char *str)
 {
 	FILE *gpu_file;
 
@@ -178,7 +179,7 @@ void detect_gpu(char *str, bool error)
 	detects the computer's total disk capacity and usage
 	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char *str, bool error)
+void detect_disk(char *str)
 {
 	struct statvfs disk_info;
 	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
@@ -226,7 +227,7 @@ void detect_mem(char *str)
 	scheme, the version may be displayed incorrectly.
 	--
 */
-void detect_shell(char *str, bool error)
+void detect_shell(char *str)
 {
 	FILE *shell_file;
 
@@ -285,7 +286,7 @@ void detect_shell(char *str, bool error)
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_res(char *str, bool error)
+void detect_res(char *str)
 {
 	int width = 0;
 	int height = 0;
@@ -335,7 +336,7 @@ void detect_de(char *str)
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm(char *str, bool error)
+void detect_wm(char *str)
 {
 	FILE *wm_file;
 

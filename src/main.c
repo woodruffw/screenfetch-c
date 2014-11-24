@@ -150,13 +150,13 @@ int main(int argc, char **argv)
 		{
 			/* these sections are ALWAYS detected */
 			detect_uptime(uptime_str);
-			detect_pkgs(pkgs_str, distro_str, error);
-			detect_disk(disk_str, error);
+			detect_pkgs(pkgs_str, distro_str);
+			detect_disk(disk_str);
 			detect_mem(mem_str);
 
 			/* if the user specifies an asterisk, fill the data in for them */
 			if (STRCMP(distro_str, "*"))
-				detect_distro(distro_str, error);
+				detect_distro(distro_str);
 			if (STRCMP(arch_str, "*"))
 				detect_arch(arch_str);
 			if (STRCMP(host_str, "*"))
@@ -166,15 +166,15 @@ int main(int argc, char **argv)
 			if (STRCMP(cpu_str, "*"))
 				detect_cpu(cpu_str);
 			if (STRCMP(gpu_str, "*"))
-				detect_gpu(gpu_str, error);
+				detect_gpu(gpu_str);
 			if (STRCMP(shell_str, "*"))
-				detect_shell(shell_str, error);
+				detect_shell(shell_str);
 			if (STRCMP(res_str, "*"))
-				detect_res(res_str, error);
+				detect_res(res_str);
 			if (STRCMP(de_str, "*"))
 				detect_de(de_str);
 			if (STRCMP(wm_str, "*"))
-				detect_wm(wm_str, error);
+				detect_wm(wm_str);
 			if (STRCMP(wm_theme_str, "*"))
 				detect_wm_theme(wm_theme_str);
 			if (STRCMP(gtk_str, "*"))
@@ -186,20 +186,20 @@ int main(int argc, char **argv)
 	}
 	else /* each string is filled by its respective function */
 	{
-		detect_distro(distro_str, error);
+		detect_distro(distro_str);
 		detect_arch(arch_str);
 		detect_host(host_str);
 		detect_kernel(kernel_str);
 		detect_uptime(uptime_str);
-		detect_pkgs(pkgs_str, distro_str, error);
+		detect_pkgs(pkgs_str, distro_str);
 		detect_cpu(cpu_str);
-		detect_gpu(gpu_str, error);
-		detect_disk(disk_str, error);
+		detect_gpu(gpu_str);
+		detect_disk(disk_str);
 		detect_mem(mem_str);
-		detect_shell(shell_str, error);
-		detect_res(res_str, error);
+		detect_shell(shell_str);
+		detect_res(res_str);
 		detect_de(de_str);
-		detect_wm(wm_str, error);
+		detect_wm(wm_str);
 		detect_wm_theme(wm_theme_str);
 		detect_gtk(gtk_str);
 	}

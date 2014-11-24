@@ -11,6 +11,7 @@ MAN = $(PREFIX)/share/man/man1
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
+SCRIPTS =
 TESTS =
 
 ifeq ($(OS),Windows_NT)
@@ -23,6 +24,7 @@ else
 		SOURCES += $(wildcard ./src/plat/linux/*.c)
 		CFLAGS += -Wno-unused-result
 		LDFLAGS += -lpthread -lX11 -lGL
+		SCRIPTS += ./src/scripts/detectwmtheme ./src/scripts/detectgtk
 		TESTS += x11test gltest
 	endif
 
@@ -34,12 +36,16 @@ else
 	ifeq ($(UNAME_S),SunOS)
 		SOURCES += $(wildcard ./src/plat/sun/*.c)
 		LDFLAGS += -lpthread -lX11
+		SCRIPTS += ./src/scripts/detectde ./src/scripts/detectwm \
+		./src/scripts/detectwmtheme
 		TESTS += x11test
 	endif
 
 	ifneq (,$(filter $(UNAME_S),FreeBSD NetBSD OpenBSD DragonFly))
 		SOURCES += $(wildcard ./src/plat/bsd/*.c)
 		LDFLAGS += -lpthread
+		SCRIPTS += ./src/scripts/detectde ./src/scripts/detectwm \
+		./src/scripts/detectwmtheme ./src/scripts/detectgtk
 	endif
 endif
 
@@ -51,11 +57,7 @@ all: $(TESTS) $(OBJS)
 
 install: all
 	$(INSTALL) ./screenfetch-c $(BIN)/screenfetch-c
-	$(INSTALL) ./src/scripts/detectde $(BIN)/detectde
-	$(INSTALL) ./src/scripts/detectgtk $(BIN)/detectgtk
-	$(INSTALL) ./src/scripts/detectwm $(BIN)/detectwm
-	$(INSTALL) ./src/scripts/detectwmtheme $(BIN)/detectwmtheme
-	$(INSTALL) ./src/scripts/detectgpu $(BIN)/detectgpu
+	$(INSTALL) $(SCRIPTS) $(BIN)
 	mkdir -p $(MAN)
 	$(INSTALL) ./man/screenfetch-c.1 $(MAN)/screenfetch-c.1
 
@@ -70,12 +72,12 @@ uninstall:
 
 x11test:
 	@echo "Testing for X11..."
-	$(CC) $(CFLAGS) ./src/tests/x11test.c -o ./x11test -lX11
+	$(CC) $(CFLAGS) ./tests/x11test.c -o ./x11test -lX11
 	@echo "Looks good."
 
 gltest:
 	@echo "Testing for OpenGL..."
-	$(CC) $(CFLAGS) ./src/tests/gltest.c -o ./gltest -lGL
+	$(CC) $(CFLAGS) ./tests/gltest.c -o ./gltest -lGL
 	@echo "Looks good."
 
 clean:
@@ -84,4 +86,6 @@ clean:
 	rm -f x11test
 	rm -f gltest
 	rm -f screenfetch-c
+
+.PHONY: all install clean
 

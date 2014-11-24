@@ -3,7 +3,6 @@
  *
  *	Miscellaneous macros used in screenfetch-c.
  *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- *	You should have received a copy of it with this code.
  */
 
 #ifndef SCREENFETCH_C_MISC_H

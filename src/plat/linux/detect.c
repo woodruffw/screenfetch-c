@@ -4,7 +4,6 @@
  *
  *	The detection functions used by screenfetch-c on Linux are implemented here.
  *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- *	You should have received a copy of it with this code.
  */
 
 /* standard includes */
@@ -29,13 +28,14 @@
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
+#include "../../error_flag.h"
 
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
 	argument char *str: the char array to be filled with the distro name
-	argument bool error: true for verbose errors, false for silent errors
+	argumen: true for verbose errors, false for silent errors
 */
-void detect_distro(char *str, bool error)
+void detect_distro(char *str)
 {
 	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
 	{
@@ -212,7 +212,7 @@ void detect_uptime(char *str)
 	detects the number of packages installed on the computer
 	argument char *str: the char array to be filled with the number of packages
 */
-void detect_pkgs(char *str, const char *distro_str, bool error)
+void detect_pkgs(char *str, const char *distro_str)
 {
 	FILE *pkgs_file;
 
@@ -337,9 +337,9 @@ void detect_cpu(char *str)
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
 	argument char *str: the char array to be filled with the GPU name
-	argument bool error: true for verbose errors, false for silent
+	argumen: true for verbose errors, false for silent
 */
-void detect_gpu(char *str, bool error)
+void detect_gpu(char *str)
 {
 	Display *disp = NULL;
 	Window wind;
@@ -387,7 +387,7 @@ void detect_gpu(char *str, bool error)
 	detects the computer's total disk capacity and usage
 	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char *str, bool error)
+void detect_disk(char *str)
 {
 	struct statvfs disk_info;
 	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
@@ -435,14 +435,14 @@ void detect_mem(char *str)
 /*	detect_shell
 	detects the shell currently running on the computer
 	argument char *str: the char array to be filled with the shell name and version
-	argument bool error: true for verbose errors, false for silent
+	argumen: true for verbose errors, false for silent
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
 	scheme, the version may be displayed incorrectly.
 	--
 */
-void detect_shell(char *str, bool error)
+void detect_shell(char *str)
 {
 	FILE *shell_file;
 
@@ -499,9 +499,9 @@ void detect_shell(char *str, bool error)
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
-	argument bool error: true for verbose errors, false for silent
+	argumen: true for verbose errors, false for silent
 */
-void detect_res(char *str, bool error)
+void detect_res(char *str)
 {
 	int width = 0;
 	int height = 0;
@@ -532,18 +532,37 @@ void detect_res(char *str, bool error)
 /*	detect_de
 	detects the desktop environment currently running on top of the OS
 	argument char *str: the char array to be filled with the DE name
-	--
-	CAVEAT: This function relies on the presence of 'detectde', a shell script. 
-	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
-	--
 */
 void detect_de(char *str)
 {
-	FILE *de_file;
+	char *curr_de;
 
-	de_file = popen("detectde 2> /dev/null", "r");
-	fgets(str, MAX_STRLEN, de_file);
-	pclose(de_file);
+	if ((curr_de = getenv("XDG_CURRENT_DESKTOP")))
+	{
+		safe_strncpy(str, curr_de, MAX_STRLEN);
+	}
+	else
+	{
+		if (getenv("GNOME_DESKTOP_SESSION_ID"))
+		{
+			safe_strncpy(str, "Gnome", MAX_STRLEN);
+		}
+		else if (getenv("MATE_DESKTOP_SESSION_ID"))
+		{
+			safe_strncpy(str, "MATE", MAX_STRLEN);
+		}
+		else if (getenv("KDE_FULL_SESSION"))
+		{
+			/*	KDE_SESSION_VERSION only exists on KDE4+, so 
+				getenv will return NULL on KDE <= 3.
+			 */
+			snprintf(str, MAX_STRLEN, "KDE%s", getenv("KDE_SESSION_VERSION"));
+		}
+		else if (error)
+		{
+			ERROR_OUT("Error: ", "No desktop environment found.");
+		}
+	}
 
 	return;
 }
@@ -551,9 +570,9 @@ void detect_de(char *str)
 /*	detect_wm
 	detects the window manager currently running on top of the OS
 	argument char *str: the char array to be filled with the WM name
-	argument bool error: true for verbose errors, false for silent
+	argumen: true for verbose errors, false for silent
 */
-void detect_wm(char *str, bool error)
+void detect_wm(char *str)
 {
 	Display *disp;
 	Atom actual_type;

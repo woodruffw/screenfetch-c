@@ -25,13 +25,14 @@ extern int pclose(FILE *stream);
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
+#include "../../error_flag.h"
 
 /*	detect_distro
 	detects the computer's distribution (Windows version)
 	argument char *str: the char array to be filled with the distro name
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_distro(char *str, bool error)
+void detect_distro(char *str)
 {
 	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
 	{
@@ -163,7 +164,7 @@ void detect_uptime(char *str)
 	detects the number of packages installed on the computer
 	argument char *str: the char array to be filled with the number of packages
 */
-void detect_pkgs(char *str, const char *distro_str, bool error)
+void detect_pkgs(char *str, const char *distro_str)
 {
 	FILE *pkgs_file;
 	int packages = 0;
@@ -197,7 +198,7 @@ void detect_cpu(char *str)
 	argument char *str: the char array to be filled with the GPU name
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_gpu(char *str, bool error)
+void detect_gpu(char *str)
 {
 	HKEY hkey;
 	DWORD str_size = MAX_STRLEN;
@@ -211,7 +212,7 @@ void detect_gpu(char *str, bool error)
 	detects the computer's total disk capacity and usage
 	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
 */
-void detect_disk(char *str, bool error)
+void detect_disk(char *str)
 {
 	FILE *disk_file;
 
@@ -276,7 +277,7 @@ void detect_mem(char *str)
 	scheme, the version may be displayed incorrectly.
 	--
 */
-void detect_shell(char *str, bool error)
+void detect_shell(char *str)
 {
 	FILE *shell_file;
 
@@ -336,7 +337,7 @@ void detect_shell(char *str, bool error)
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
 	argument bool error: true for verbose errors, false for silent
 */
-void detect_res(char *str, bool error)
+void detect_res(char *str)
 {
 	int width = 0;
 	int height = 0;
@@ -379,7 +380,7 @@ void detect_de(char *str)
 	On Windows, this will always be DWM/Explorer.
 	argument char *str: the char array to be filled with the WM name
 */
-void detect_wm(char *str, bool error)
+void detect_wm(char *str)
 {
 	safe_strncpy(str, "DWM/Explorer", MAX_STRLEN);
 
