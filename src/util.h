@@ -4,7 +4,6 @@
  *
  *	Function prototypes for util.c.
  *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- *	You should have received a copy of it with this code.
  */
 
 #ifndef SCREENFETCH_C_UTIL_H

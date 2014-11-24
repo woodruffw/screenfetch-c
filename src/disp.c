@@ -5,7 +5,6 @@
  *	Functions used by screenfetch-c for displaying version
  *	and help output to the user.
  *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- *	You should have received a copy of it with this code.
  */
 
 /* standard includes */
