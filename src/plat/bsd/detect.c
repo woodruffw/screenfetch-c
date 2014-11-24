@@ -22,7 +22,6 @@
 	#include <time.h>
 #elif defined(__NetBSD__)
 #elif defined(__OpenBSD__)
-	#define OS OPENBSD
 	#include <time.h>
 #elif defined(__DragonFly__)
 	#include <time.h>
