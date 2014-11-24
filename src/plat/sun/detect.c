@@ -358,25 +358,6 @@ void detect_de(char *str)
 */
 void detect_wm(char *str)
 {
-	FILE *wm_file;
-
-	wm_file = popen("detectwm 2> /dev/null", "r");
-	fgets(str, MAX_STRLEN, wm_file);
-	pclose(wm_file);
-
-	return;
-}
-
-/*	detect_wm_theme
-	detects the theme associated with the WM detected in detect_wm()
-	argument char *str: the char array to be filled with the WM Theme name
-	--
-	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script. 
-	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
-	--
-*/
-void detect_wm_theme(char *str)
-{
 	Display *disp;
 	Atom actual_type;
 	int actual_format;
@@ -418,6 +399,25 @@ void detect_wm_theme(char *str)
 	{
 		ERROR_OUT("Error: ", "Could not open an X display.");
 	}
+
+	return;
+}
+
+/*	detect_wm_theme
+	detects the theme associated with the WM detected in detect_wm()
+	argument char *str: the char array to be filled with the WM Theme name
+	--
+	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script. 
+	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
+	--
+*/
+void detect_wm_theme(char *str)
+{
+	FILE *wm_theme_file;
+
+	wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
+	fgets(str, MAX_STRLEN, wm_theme_file);
+	pclose(wm_theme_file);
 
 	return;
 }
