@@ -27,6 +27,7 @@
 #include "colors.h"
 #include "misc.h"
 #include "util.h"
+#include "error_flag.h"
 
 int main(int argc, char **argv)
 {
@@ -87,7 +88,7 @@ int main(int argc, char **argv)
 		"GTK: "
 	};
 
-	bool manual = false, logo = true, error = true;
+	bool manual = false, logo = true;
 	bool verbose = false, screenshot = false;
 
 	struct option options[] =

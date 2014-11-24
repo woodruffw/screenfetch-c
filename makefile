@@ -36,16 +36,15 @@ else
 	ifeq ($(UNAME_S),SunOS)
 		SOURCES += $(wildcard ./src/plat/sun/*.c)
 		LDFLAGS += -lpthread -lX11
-		SCRIPTS += ./src/scripts/detectde ./src/scripts/detectwm \
-		./src/scripts/detectwmtheme
+		SCRIPTS += ./src/scripts/detectwm ./src/scripts/detectwmtheme
 		TESTS += x11test
 	endif
 
 	ifneq (,$(filter $(UNAME_S),FreeBSD NetBSD OpenBSD DragonFly))
 		SOURCES += $(wildcard ./src/plat/bsd/*.c)
 		LDFLAGS += -lpthread
-		SCRIPTS += ./src/scripts/detectde ./src/scripts/detectwm \
-		./src/scripts/detectwmtheme ./src/scripts/detectgtk
+		SCRIPTS += ./src/scripts/detectwm ./src/scripts/detectwmtheme \
+		./src/scripts/detectgtk
 	endif
 endif
 

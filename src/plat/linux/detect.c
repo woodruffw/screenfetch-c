@@ -33,7 +33,6 @@
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
 	argument char *str: the char array to be filled with the distro name
-	argumen: true for verbose errors, false for silent errors
 */
 void detect_distro(char *str)
 {
@@ -337,7 +336,6 @@ void detect_cpu(char *str)
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
 	argument char *str: the char array to be filled with the GPU name
-	argumen: true for verbose errors, false for silent
 */
 void detect_gpu(char *str)
 {
@@ -435,7 +433,6 @@ void detect_mem(char *str)
 /*	detect_shell
 	detects the shell currently running on the computer
 	argument char *str: the char array to be filled with the shell name and version
-	argumen: true for verbose errors, false for silent
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
@@ -499,7 +496,6 @@ void detect_shell(char *str)
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
 	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
-	argumen: true for verbose errors, false for silent
 */
 void detect_res(char *str)
 {
@@ -570,7 +566,6 @@ void detect_de(char *str)
 /*	detect_wm
 	detects the window manager currently running on top of the OS
 	argument char *str: the char array to be filled with the WM name
-	argumen: true for verbose errors, false for silent
 */
 void detect_wm(char *str)
 {
