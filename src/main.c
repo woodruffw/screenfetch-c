@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 			if (STRCMP(wm_str, "*"))
 				detect_wm(wm_str);
 			if (STRCMP(wm_theme_str, "*"))
-				detect_wm_theme(wm_theme_str);
+				detect_wm_theme(wm_theme_str, wm_str);
 			if (STRCMP(gtk_str, "*"))
 				detect_gtk(gtk_str);
 		}
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 		detect_res(res_str);
 		detect_de(de_str);
 		detect_wm(wm_str);
-		detect_wm_theme(wm_theme_str);
+		detect_wm_theme(wm_theme_str, wm_str);
 		detect_gtk(gtk_str);
 	}
 

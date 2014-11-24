@@ -23,7 +23,7 @@ void detect_shell(char *str);
 void detect_res(char *str);
 void detect_de(char *str);
 void detect_wm(char *str);
-void detect_wm_theme(char *str);
+void detect_wm_theme(char *str, const char *wm_str);
 void detect_gtk(char *str);
 
 #endif /* SCREENFETCH_C_DETECT_H */

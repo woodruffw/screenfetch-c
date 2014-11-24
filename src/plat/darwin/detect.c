@@ -375,7 +375,7 @@ void detect_wm(char *str)
 	On OS X, this will always be Aqua.
 	argument char *str: the char array to be filled with the WM Theme name
 */
-void detect_wm_theme(char *str)
+void detect_wm_theme(char *str, const char *wm_str)
 {
 	safe_strncpy(str, "Aqua", MAX_STRLEN);
 

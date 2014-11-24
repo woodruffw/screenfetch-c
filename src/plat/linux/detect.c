@@ -621,11 +621,14 @@ void detect_wm(char *str)
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm_theme(char *str)
+void detect_wm_theme(char *str, const char *wm_str)
 {
+	char exec_str[MAX_STRLEN];
 	FILE *wm_theme_file;
 
-	wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
+	snprintf(exec_str, MAX_STRLEN, "detectwmtheme %s 2> /dev/null", wm_str);
+
+	wm_theme_file = popen(exec_str, "r");
 	fgets(str, MAX_STRLEN, wm_theme_file);
 	pclose(wm_theme_file);
 
