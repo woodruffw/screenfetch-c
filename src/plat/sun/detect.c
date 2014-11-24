@@ -23,6 +23,7 @@
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
 #include <X11/Xlib.h>
+#include <X11/Xatom.h>
 
 /* program includes */
 #include "../../misc.h"
@@ -376,11 +377,47 @@ void detect_wm(char *str)
 */
 void detect_wm_theme(char *str)
 {
-	FILE *wm_theme_file;
+	Display *disp;
+	Atom actual_type;
+	int actual_format;
+	unsigned long nitems;
+	unsigned long bytes;
+	char *wm_name = '\0';
+	Window *wm_check_window;
 
-	wm_theme_file = popen("detectwmtheme 2> /dev/null", "r");
-	fgets(str, MAX_STRLEN, wm_theme_file);
-	pclose(wm_theme_file);
+	if ((disp = XOpenDisplay(NULL)))
+	{
+		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),
+			XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", true),
+			0, KB, false,	XA_WINDOW, &actual_type, &actual_format, &nitems,
+			&bytes, (unsigned char **) &wm_check_window)))
+		{
+			if (!(XGetWindowProperty(disp, *wm_check_window,
+				XInternAtom(disp, "_NET_WM_NAME", true), 0, KB, false,
+				XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
+				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
+			{
+				safe_strncpy(str, wm_name, MAX_STRLEN);
+				XFree(wm_name);
+			}
+			else if (error)
+			{
+				ERROR_OUT("Error: ", "No _NET_WM_NAME property found.");
+			}
+
+			XFree(wm_check_window);
+		}
+		else if (error)
+		{
+			ERROR_OUT("Error: ", "WM cannot be detected without EWMH compliance.");
+		}
+
+		XCloseDisplay(disp);
+	}
+	else if (error)
+	{
+		ERROR_OUT("Error: ", "Could not open an X display.");
+	}
 
 	return;
 }

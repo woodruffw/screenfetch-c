@@ -111,8 +111,7 @@ void detect_distro(char *str)
 				else if (FILE_EXISTS("/etc/lsb-release"))
 				{
 					distro_file = fopen("/etc/lsb-release", "r");
-					fgets(distro_name_str, MAX_STRLEN, distro_file);
-					distro_name_str[strlen(distro_name_str) - 1] = '\0';
+					fscanf(distro_file, "%s ", distro_name_str);
 					fclose(distro_file);
 
 					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
@@ -123,7 +122,7 @@ void detect_distro(char *str)
 
 					if (error)
 					{
-						ERROR_OUT("Error: ", "Failed to detect specific Linux distro.");
+						ERROR_OUT("Error: ", "Failed to detect a Linux distro.");
 					}
 				}
 			}
