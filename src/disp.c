@@ -357,7 +357,7 @@ void main_ascii_output(char *data[], char *data_names[])
 			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, data_names[i], TWHT, data[i], TNRM);
 		}
 	}
-	else if (strstr(data[i], "OS X"))
+	else if (strstr(data[1], "OS X"))
 	{
 		for (i = 0; i < 16; i++)
 		{
