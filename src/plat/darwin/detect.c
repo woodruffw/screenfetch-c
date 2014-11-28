@@ -146,7 +146,6 @@ void detect_uptime(char *str)
 */
 void detect_pkgs(char *str, const char *distro_str)
 {
-	FILE *pkgs_file;
 	int packages = 0;
 	glob_t gl;
 

@@ -74,7 +74,7 @@ void output_logo_only(char *distro)
 			printf("%s\n", windows_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "OS X"))
+	else if (strstr(distro, "OS X"))
 	{
 		for (i = 0; i < 16; i++)
 		{
