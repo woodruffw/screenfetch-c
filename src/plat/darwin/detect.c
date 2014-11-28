@@ -15,6 +15,8 @@
 #include <getopt.h>
 
 /* OS X-specific includes */
+#include <sys/param.h>
+#include <sys/mount.h>
 #include <sys/utsname.h>
 #include <time.h>
 #include <glob.h>
@@ -206,31 +208,20 @@ void detect_gpu(char *str)
 */
 void detect_disk(char *str)
 {
-	FILE *disk_file;
+	struct statfs disk_info;
 
-	int disk_total = 0;
-	int disk_used = 0;
-	int disk_percentage = 0;
+	long disk_total = 0, disk_used = 0, disk_percentage = 0;
 
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_total);
-	pclose(disk_file);
-
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_used);
-	pclose(disk_file);
-
-	if (disk_total > disk_used)
+	if (!(statfs(getenv("HOME"), &disk_info)))
 	{
+		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
+		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
 		disk_percentage = (((float) disk_used / disk_total) * 100);
-
-		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
 	}
-	else /* when disk_used is in a smaller unit */
+	else if (error)
 	{
-		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
 
-		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
 	}
 
 	return;

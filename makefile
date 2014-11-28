@@ -31,6 +31,7 @@ else
 	ifeq ($(UNAME_S),Darwin)
 		SOURCES += $(wildcard ./src/plat/darwin/*.c)
 		LDFLAGS += -lpthread -framework CoreServices
+		CPPFLAGS += -D_DARWIN_USE_64_BIT_INODE
 	endif
 
 	ifeq ($(UNAME_S),SunOS)
