@@ -116,6 +116,15 @@ void detect_distro(char *str)
 
 					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
 				}
+				else if (FILE_EXISTS("/etc/os-release"))
+				{
+					/*
+						TODO: Parse NAME or PRETTY_NAME from os-release
+						Until then, spit out an error message.
+					*/
+					if (error)
+						ERROR_OUT("Error: ", "Failed to detect a Linux distro.");
+				}
 				else
 				{
 					safe_strncpy(str, "Linux", MAX_STRLEN);

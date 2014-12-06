@@ -14,6 +14,8 @@ OBJS = $(SOURCES:.c=.o)
 SCRIPTS =
 TESTS =
 
+OLDTARGETS = linux win bsd osx sun
+
 ifeq ($(OS),Windows_NT)
 	SOURCES += $(wildcard ./src/plat/win32/*.c)
 	CPPFLAGS += -DWIN32_LEAN_AND_MEAN
@@ -87,5 +89,7 @@ clean:
 	rm -f gltest
 	rm -f screenfetch-c
 
-.PHONY: all install clean
+$(OLDTARGETS): all
+
+.PHONY: all install uninstall clean $(OLDTARGETS)
 
