@@ -59,7 +59,9 @@ all: $(TESTS) $(OBJS)
 
 install: all
 	$(INSTALL) ./screenfetch-c $(BIN)/screenfetch-c
-	$(INSTALL) $(SCRIPTS) $(BIN)
+	if [ -n "$(SCRIPTS)" ] ; then \
+		$(INSTALL) $(SCRIPTS) $(BIN) ; \
+	fi
 	mkdir -p $(MAN)
 	$(INSTALL) ./man/screenfetch-c.1 $(MAN)/screenfetch-c.1
 
