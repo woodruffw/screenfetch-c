@@ -59,7 +59,7 @@ If you think that you can test/fix/improve one or more of them, feel free to for
 
 In particular, the following things still need to be done:
 
-- Comprehensive testing of GPU detection on Linux/BSD/Solaris
+- Improve error checking and handling.
 - Matching screencapture capabilities on Windows with OS X/Linux/BSD/Solaris
 - Improve RAM/HDD detection on BSD
 - Fix manual mode on Windows
