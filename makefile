@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -O3 -std=c99 -Wall -Wformat -Wunused-variable -pedantic
 CPPFLAGS = -D_POSIX_C_SOURCE=200112L
 LDFLAGS =
-INSTALL = /usr/bin/install -c
+INSTALL = install -c
 
 PREFIX = /usr/local
 BIN = $(PREFIX)/bin
