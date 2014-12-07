@@ -164,8 +164,9 @@ void detect_host(char *str)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
-
 	struct passwd *user_info;
+	struct utsname host_info;
+
 	if ((user_info = getpwuid(geteuid())))
 	{
 		given_user = user_info->pw_name;
@@ -174,8 +175,7 @@ void detect_host(char *str)
 	{
 		ERROR_OUT("Error: ", "Could not detetct username.");
 	}
-
-	struct utsname host_info;
+	
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
@@ -191,6 +191,7 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	struct utsname kern_info;
+
 	uname(&kern_info);
 	snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
 
@@ -203,19 +204,14 @@ void detect_kernel(char *str)
 */
 void detect_uptime(char *str)
 {
-	long uptime = 0;
-
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
 	int days = 0;
-
 	struct sysinfo si_upt;
 	sysinfo(&si_upt);
 
-	uptime = si_upt.uptime;
-
-	split_uptime(uptime, &secs, &mins, &hrs, &days);
+	split_uptime(si_upt.uptime, &secs, &mins, &hrs, &days);
 
 	if (days > 0)
 		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
@@ -232,15 +228,13 @@ void detect_uptime(char *str)
 void detect_pkgs(char *str, const char *distro_str)
 {
 	FILE *pkgs_file;
-
 	int packages = 0;
+	glob_t gl;
 
 	if (STRCMP(distro_str, "Arch Linux")
 		|| STRCMP(distro_str, "ParabolaGNU/Linux-libre")
 		|| STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
 	{
-		glob_t gl;
-
 		if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
 		{
 			packages = gl.gl_pathc;
@@ -277,8 +271,6 @@ void detect_pkgs(char *str, const char *distro_str)
 
 	else if (STRCMP(distro_str, "Slackware"))
 	{
-		glob_t gl;
-
 		if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
 		{
 			packages = gl.gl_pathc;
@@ -432,11 +424,11 @@ void detect_mem(char *str)
 	long long total_mem = 0;
 	long long free_mem = 0;
 	long long used_mem = 0;
+	struct sysinfo si_mem;
 
 	/* known problem: because linux utilizes free ram extensively in caches/buffers,
 	   the amount of memory sysinfo reports as free is very small.
 	*/
-	struct sysinfo si_mem;
 	sysinfo(&si_mem);
 
 	total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / MB;
@@ -460,7 +452,6 @@ void detect_mem(char *str)
 void detect_shell(char *str)
 {
 	FILE *shell_file;
-
 	char *shell_name;
 	char vers_str[MAX_STRLEN];
 
@@ -474,7 +465,11 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (strstr(shell_name, "bash"))
+	if (STRCMP(shell_name, "/bin/sh"))
+	{
+		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
+	}
+	else if (strstr(shell_name, "bash"))
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
@@ -519,12 +514,12 @@ void detect_res(char *str)
 {
 	int width = 0;
 	int height = 0;
-
 	Display *disp;
+	Screen *screen;
 
 	if ((disp = XOpenDisplay(NULL)))
 	{
-		Screen *screen = XDefaultScreenOfDisplay(disp);
+		screen = XDefaultScreenOfDisplay(disp);
 		width = WidthOfScreen(screen);
 		height = HeightOfScreen(screen);
 
@@ -665,7 +660,6 @@ void detect_wm_theme(char *str, const char *wm_str)
 void detect_gtk(char *str)
 {
 	FILE *gtk_file;
-
 	char gtk2_str[MAX_STRLEN] = "Unknown";
 	char gtk3_str[MAX_STRLEN] = "Unknown";
 	char gtk_icons_str[MAX_STRLEN] = "Unknown";
