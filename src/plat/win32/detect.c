@@ -276,7 +276,6 @@ void detect_mem(char *str)
 void detect_shell(char *str)
 {
 	FILE *shell_file;
-
 	char *shell_name;
 	char vers_str[MAX_STRLEN];
 
@@ -290,7 +289,11 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (strstr(shell_name, "bash"))
+	if (STRCMP(shell_name, "/bin/sh"))
+	{
+		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
+	}
+	else if (strstr(shell_name, "bash"))
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
@@ -318,8 +321,7 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
-			|| strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
