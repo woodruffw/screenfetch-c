@@ -39,26 +39,29 @@
 */
 void detect_distro(char *str)
 {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+	int ver_maj, ver_min, ver_bug;
+#else
+	FILE *distro_file;
+#endif
+
 	/*
 		Use this:
 		https://www.opensource.apple.com/source/DarwinTools/DarwinTools-1/sw_vers.c
 	*/
-	#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-		int ver_maj, ver_min, ver_bug;
-		Gestalt(gestaltSystemVersionMajor, (SInt32 *) &ver_maj);
-		Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
-		Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &ver_maj);
+	Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
+	Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
 
-		snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
-	#else
-		FILE *distro_file;
+	snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
+#else
+	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
+	fgets(distro_name_str, MAX_STRLEN, distro_file);
+	pclose(distro_file);
 
-		distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-		fgets(distro_name_str, MAX_STRLEN, distro_file);
-		pclose(distro_file);
-
-		snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
-	#endif
+	snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
+#endif
 
 	return;
 }
@@ -70,6 +73,7 @@ void detect_distro(char *str)
 void detect_arch(char *str)
 {
 	struct utsname arch_info;
+
 	uname(&arch_info);
 	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
@@ -84,10 +88,9 @@ void detect_host(char *str)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
+	struct utsname host_info;
 
 	given_user = getlogin();
-
-	struct utsname host_info;
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
@@ -103,6 +106,7 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	struct utsname kern_info;
+
 	uname(&kern_info);
 	snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
 
@@ -116,7 +120,6 @@ void detect_kernel(char *str)
 void detect_uptime(char *str)
 {
 	long long uptime = 0;
-
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
@@ -210,7 +213,6 @@ void detect_gpu(char *str)
 void detect_disk(char *str)
 {
 	struct statfs disk_info;
-
 	long disk_total = 0, disk_used = 0, disk_percentage = 0;
 
 	if (!(statfs(getenv("HOME"), &disk_info)))
@@ -235,7 +237,6 @@ void detect_disk(char *str)
 void detect_mem(char *str)
 {
 	FILE *mem_file;
-
 	long long total_mem = 0;
 	long long free_mem = 0;
 	long long used_mem = 0;

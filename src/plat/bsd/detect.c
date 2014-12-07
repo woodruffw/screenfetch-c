@@ -39,6 +39,7 @@
 void detect_distro(char *str)
 {
 	struct utsname distro_info;
+
 	uname(&distro_info);
 	snprintf(str, MAX_STRLEN, "%s", distro_info.sysname);
 
@@ -52,6 +53,7 @@ void detect_distro(char *str)
 void detect_arch(char *str)
 {
 	struct utsname arch_info;
+
 	uname(&arch_info);
 	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
@@ -66,10 +68,10 @@ void detect_host(char *str)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
+	struct utsname host_info;
 
 	given_user = getlogin();
 
-	struct utsname host_info;
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
@@ -85,6 +87,7 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	struct utsname kern_info;
+
 	uname(&kern_info);
 	snprintf(str, MAX_STRLEN, "%s", kern_info.release);
 
@@ -98,39 +101,36 @@ void detect_kernel(char *str)
 void detect_uptime(char *str)
 {
 	long uptime = 0;
-
-	#if !defined(__NetBSD__)
-		long currtime = 0, boottime = 0;
-	#endif
-
+#if !defined(__NetBSD__)
+	long currtime = 0, boottime = 0;
+#endif
 	FILE *uptime_file;
-
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
 	int days = 0;
 
-	#if defined(__NetBSD__)
-		uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
-		fscanf(uptime_file, "%ld", &uptime);
-		pclose(uptime_file);
-	#elif defined(__FreeBSD__) || defined(__DragonFly__)
-		uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
-		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
-		pclose(uptime_file);
+#if defined(__NetBSD__)
+	uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
+	fscanf(uptime_file, "%ld", &uptime);
+	pclose(uptime_file);
+#elif defined(__FreeBSD__) || defined(__DragonFly__)
+	uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
+	fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+	pclose(uptime_file);
 
-		currtime = time(NULL);
+	currtime = time(NULL);
 
-		uptime = currtime - boottime;
-	#elif defined(__OpenBSD__)
-		uptime_file = popen("sysctl -n kern.boottime", "r");
-		fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
-		pclose(uptime_file);
+	uptime = currtime - boottime;
+#elif defined(__OpenBSD__)
+	uptime_file = popen("sysctl -n kern.boottime", "r");
+	fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
+	pclose(uptime_file);
 
-		currtime = time(NULL);
+	currtime = time(NULL);
 
-		uptime = currtime - boottime;
-	#endif
+	uptime = currtime - boottime;
+#endif
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
 
@@ -149,23 +149,25 @@ void detect_uptime(char *str)
 void detect_pkgs(char *str, const char *distro_str)
 {
 	int packages = 0;
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
+	FILE *pkgs_file;
+#endif
 
-	#if defined(__FreeBSD__)
-		FILE *pkgs_file;
-		pkgs_file = popen("pkg info | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
-	#elif defined(__OpenBSD__)
-		FILE *pkgs_file;
-		pkgs_file = popen("pkg_info | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
-	#else
-		safe_strncpy(str, "Not Found", MAX_STRLEN);
 
-		if (error)
-			ERROR_OUT("Error: ", "Could not find packages on current OS.");
-	#endif
+#if defined(__FreeBSD__)
+	pkgs_file = popen("pkg info | wc -l", "r");
+	fscanf(pkgs_file, "%d", &packages);
+	pclose(pkgs_file);
+#elif defined(__OpenBSD__)
+	pkgs_file = popen("pkg_info | wc -l", "r");
+	fscanf(pkgs_file, "%d", &packages);
+	pclose(pkgs_file);
+#else
+	safe_strncpy(str, "Not Found", MAX_STRLEN);
+
+	if (error)
+		ERROR_OUT("Error: ", "Could not find packages on current OS.");
+#endif
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
 
@@ -180,15 +182,15 @@ void detect_cpu(char *str)
 {
 	FILE *cpu_file;
 
-	#if defined(__NetBSD__)
-		cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-	#else
-		cpu_file = popen("sysctl -n hw.model | tr -d '\\n'", "r");
-		fgets(str, MAX_STRLEN, cpu_file);
-		pclose(cpu_file);
-	#endif
+#if defined(__NetBSD__)
+	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
+	fgets(str, MAX_STRLEN, cpu_file);
+	pclose(cpu_file);
+#else
+	cpu_file = popen("sysctl -n hw.model | tr -d '\\n'", "r");
+	fgets(str, MAX_STRLEN, cpu_file);
+	pclose(cpu_file);
+#endif
 
 	return;
 }
@@ -239,7 +241,6 @@ void detect_disk(char *str)
 void detect_mem(char *str)
 {
 	FILE *mem_file;
-
 	long long total_mem = 0;
 
 	mem_file = popen("sysctl -n hw.physmem", "r");
@@ -433,7 +434,6 @@ void detect_wm_theme(char *str, const char *wm_str)
 void detect_gtk(char *str)
 {
 	FILE *gtk_file;
-
 	char gtk2_str[MAX_STRLEN] = "Unknown";
 	char gtk3_str[MAX_STRLEN] = "Unknown";
 	char gtk_icons_str[MAX_STRLEN] = "Unknown";

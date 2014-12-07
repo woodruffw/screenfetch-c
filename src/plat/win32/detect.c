@@ -123,6 +123,7 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	OSVERSIONINFO kern_info;
+
 	ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
 	kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx(&kern_info);
@@ -139,7 +140,6 @@ void detect_kernel(char *str)
 void detect_uptime(char *str)
 {
 	long uptime = 0;
-
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
@@ -185,6 +185,7 @@ void detect_cpu(char *str)
 {
 	HKEY hkey;
 	DWORD str_size = MAX_STRLEN;
+
 	RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
 	RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str, &str_size);
 
@@ -199,6 +200,7 @@ void detect_gpu(char *str)
 {
 	HKEY hkey;
 	DWORD str_size = MAX_STRLEN;
+
 	RegOpenKey(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
 	RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str, &str_size);
 
@@ -212,12 +214,11 @@ void detect_gpu(char *str)
 void detect_disk(char *str)
 {
 	FILE *disk_file;
-
 	int disk_total = 0;
 	int disk_used = 0;
 	int disk_percentage = 0;
 
-	/* Cygwin -- GetDiskFreeSpaceEx? */
+	/* GetDiskFreeSpaceEx? */
 
 	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 	fscanf(disk_file, "%d", &disk_total);
@@ -251,8 +252,8 @@ void detect_mem(char *str)
 {
 	long long total_mem = 0;
 	long long used_mem = 0;
-
 	MEMORYSTATUSEX mem_stat;
+
 	mem_stat.dwLength = sizeof(mem_stat);
 	GlobalMemoryStatusEx(&mem_stat);
 
@@ -355,7 +356,6 @@ void detect_res(char *str)
 void detect_de(char *str)
 {
 	FILE *de_file;
-
 	int version;
 
 	de_file = popen("wmic os get version | grep -o '^[0-9]'", "r");

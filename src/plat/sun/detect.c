@@ -37,6 +37,7 @@
 void detect_distro(char *str)
 {
 	struct utsname distro_info;
+
 	uname(&distro_info);
 	snprintf(str, MAX_STRLEN, "%s", distro_info.sysname);
 
@@ -50,6 +51,7 @@ void detect_distro(char *str)
 void detect_arch(char *str)
 {
 	struct utsname arch_info;
+
 	uname(&arch_info);
 	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
@@ -64,10 +66,9 @@ void detect_host(char *str)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
-
-	given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
-
 	struct utsname host_info;
+
+	given_user = getlogin();
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
@@ -83,6 +84,7 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	struct utsname kern_info;
+
 	uname(&kern_info);
 	snprintf(str, MAX_STRLEN, "%s", kern_info.release);
 
@@ -96,14 +98,13 @@ void detect_kernel(char *str)
 void detect_uptime(char *str)
 {
 	long uptime = 0, currtime = 0, boottime = 0;
-
 	int secs = 0;
 	int mins = 0;
 	int hrs = 0;
 	int days = 0;
+	struct utmpx *ent;
 
 	currtime = time(NULL);
-	struct utmpx *ent;
 
 	while ((ent = getutxent()))
 	{
@@ -289,12 +290,12 @@ void detect_res(char *str)
 {
 	int width = 0;
 	int height = 0;
-
 	Display *disp;
+	Screen *screen;
 
 	if ((disp = XOpenDisplay(NULL)))
 	{
-		Screen *screen = XDefaultScreenOfDisplay(disp);
+		screen = XDefaultScreenOfDisplay(disp);
 		width = WidthOfScreen(screen);
 		height = HeightOfScreen(screen);
 		snprintf(str, MAX_STRLEN, "%dx%d", width, height);
