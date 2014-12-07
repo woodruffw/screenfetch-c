@@ -11,13 +11,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <unistd.h>
 #include <getopt.h>
 
 /* linux-specific includes */
+#include <unistd.h>
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
+#include <sys/types.h>
+#include <pwd.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <GL/gl.h>
@@ -163,7 +165,15 @@ void detect_host(char *str)
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
 
-	given_user = getlogin(); /* getlogin is apparently buggy on linux, so this might be changed */
+	struct passwd *user_info;
+	if ((user_info = getpwuid(geteuid())))
+	{
+		given_user = user_info->pw_name;
+	}
+	else if (error)
+	{
+		ERROR_OUT("Error: ", "Could not detetct username.");
+	}
 
 	struct utsname host_info;
 	uname(&host_info);
