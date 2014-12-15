@@ -8,7 +8,7 @@
  *	Hopefully this rewrite will execute faster, although it's more for
  *	self education than anything else.
  *
- *	If you have any questions, please contact me via:
+ *	If you have any questions, please feel free to contact me via:
  *		- github: http://www.github.com/woodruffw/screenfetch-c
  *		- email: william @ tuffbizz.com
  */
