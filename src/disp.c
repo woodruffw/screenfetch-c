@@ -347,8 +347,8 @@ void output_logo_only(char *distro)
 }
 
 /*	main_ascii_output
-	the primary output for screenfetch-c - all info and ASCII art is printed here
-	arguments char *data[], char *data_names[]: string arrays containing the names and data acquired
+	the primary output for screenfetch-c
+	arguments char *data[], char *data_names[]:
 */
 void main_ascii_output(char *data[], char *data_names[])
 {
