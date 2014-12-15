@@ -263,11 +263,11 @@ void detect_mem(char *str)
 
 /*	detect_shell
 	detects the shell currently running on the computer
-	argument char *str: the char array to be filled with the shell name and version
+	argument char *str: the char array to be filled with the shell info
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
-	each shell. If any shell's older (or newer versions) suddenly begin to use a new
-	scheme, the version may be displayed incorrectly.
+	each shell. If any shell's older (or newer versions) suddenly begin to use a
+	new	scheme, the version may be displayed incorrectly.
 	--
 */
 void detect_shell(char *str)
@@ -329,7 +329,7 @@ void detect_shell(char *str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution
 */
 void detect_res(char *str)
 {

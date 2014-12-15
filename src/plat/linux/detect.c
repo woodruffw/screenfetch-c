@@ -38,7 +38,8 @@
 */
 void detect_distro(char *str)
 {
-	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
+	/* if distro_str was NOT set by the -D flag or manual mode */
+	if (STRCMP(str, "Unknown") || STRCMP(str, "*"))
 	{
 		FILE *distro_file;
 
@@ -52,7 +53,7 @@ void detect_distro(char *str)
 		{
 			bool detected = false;
 
-			/* Note: this is a very bad solution, as /etc/issue contains junk on some distros */
+			/* Bad solution, as /etc/issue contains junk on some distros */
 			distro_file = fopen("/etc/issue", "r");
 
 			if (distro_file != NULL)
@@ -158,7 +159,7 @@ void detect_arch(char *str)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+	argument char *str: the char array to be filled with the host info
 */
 void detect_host(char *str)
 {
@@ -200,7 +201,7 @@ void detect_kernel(char *str)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+	argument char *str: the char array to be filled with the uptime
 */
 void detect_uptime(char *str)
 {
@@ -315,7 +316,8 @@ void detect_pkgs(char *str, const char *distro_str)
 		safe_strncpy(str, "Not Found", MAX_STRLEN);
 
 		if (error)
-			ERROR_OUT("Error: ", "Packages cannot be detected on an unknown Linux distro.");
+			ERROR_OUT("Error: ", "Packages cannot be detected on an unknown "
+					"Linux distro.");
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
@@ -331,7 +333,9 @@ void detect_cpu(char *str)
 {
 	FILE *cpu_file;
 
-	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
+	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' "
+			"/proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' "
+			"| head -1 | tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 
@@ -364,7 +368,8 @@ void detect_gpu(char *str)
 			if ((context = glXCreateContext(disp, visual_info, NULL, GL_TRUE)))
 			{
 				glXMakeCurrent(disp, wind, context);
-				safe_strncpy(str, (const char *) glGetString(GL_RENDERER), MAX_STRLEN);
+				safe_strncpy(str, (const char *) glGetString(GL_RENDERER),
+						MAX_STRLEN);
 
 				glXDestroyContext(disp, context);
 			}
@@ -497,7 +502,8 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
@@ -670,9 +676,11 @@ void detect_gtk(char *str)
 	pclose(gtk_file);
 
 	if (STRCMP(gtk3_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str, gtk_icons_str);
+		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
+				gtk_icons_str);
 	else if (STRCMP(gtk2_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str, gtk_icons_str);
+		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
+				gtk_icons_str);
 	else
 		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 
