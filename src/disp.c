@@ -41,6 +41,7 @@ void display_help(void)
 	printf(" %s\n", "-n, --no-logo\t\t\t Print output without a logo.");
 	printf(" %s\n", "-D, --distro [DISTRO]\t\t Print output with DISTRO's logo.");
 	printf(" %s\n", "-E, --suppress-errors\t\t Suppress error output.");
+	printf(" %s\n", "-p, --portrait\t\t\t Print output in portrait mode.");
 	printf(" %s\n", "-V, --version\t\t\t Output screenfetch-c's version and exit.");
 	printf(" %s\n", "-h, --help\t\t\t Output this help information.");
 	printf(" %s\n", "-L, --logo-only [DISTRO]\t Output only the logo associated with DISTRO.");

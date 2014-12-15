@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 		"GTK: "
 	};
 
-	bool manual = false, logo = true;
+	bool manual = false, logo = true, portrait = false;
 	bool verbose = false, screenshot = false;
 
 	struct option options[] =
@@ -99,6 +99,7 @@ int main(int argc, char **argv)
 		{ "screenshot", no_argument, 0, 's' },
 		{ "distro", required_argument, 0, 'D' },
 		{ "suppress-errors", no_argument, 0, 'E' },
+		{ "portrait", no_argument, 0, 'p'},
 		{ "version", no_argument, 0, 'V' },
 		{ "help", no_argument, 0, 'h' },
 		{ "logo-only", required_argument, 0, 'L' },
@@ -107,7 +108,7 @@ int main(int argc, char **argv)
 
 	signed char c;
 	int index = 0;
-	while ((c = getopt_long(argc, argv, "mvnsD:EVhL:", options, &index)) != -1)
+	while ((c = getopt_long(argc, argv, "mvnsD:EpVhL:", options, &index)) != -1)
 	{
 		switch (c)
 		{
@@ -128,6 +129,9 @@ int main(int argc, char **argv)
 				break;
 			case 'E':
 				error = false;
+				break;
+			case 'p':
+				portrait = true;
 				break;
 			case 'V':
 				display_version();
@@ -208,7 +212,12 @@ int main(int argc, char **argv)
 	if (verbose)
 		display_verbose(detected_arr, detected_arr_names);
 
-	if (logo)
+	if (portrait)
+	{
+		output_logo_only(distro_str);
+		main_text_output(detected_arr, detected_arr_names);
+	}
+	else if (logo)
 		main_ascii_output(detected_arr, detected_arr_names);
 	else
 		main_text_output(detected_arr, detected_arr_names);
