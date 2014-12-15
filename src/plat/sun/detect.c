@@ -183,7 +183,7 @@ void detect_disk(char *str)
 	struct statvfs disk_info;
 	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
 
-	if (!(statvfs("/home", &disk_info)))
+	if (!(statvfs(getenv("HOME"), &disk_info)))
 	{
 		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
 		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
@@ -192,7 +192,7 @@ void detect_disk(char *str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not stat /home for filesystem statistics.");
+		ERROR_OUT("Error: ", "Could not stat $HOME for filesystem statistics.");
 	}
 
 	return;
