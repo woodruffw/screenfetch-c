@@ -32,7 +32,8 @@ extern int pclose(FILE *stream);
 */
 void detect_distro(char *str)
 {
-	if (STRCMP(str, "Unknown") || STRCMP(str, "*")) /* if distro_str was NOT set by the -D flag or manual mode */
+	/* if distro_str was NOT set by the -D flag or manual mode */
+	if (STRCMP(str, "Unknown") || STRCMP(str, "*"))
 	{
 #if defined(NTDDI_WIN7)
 			safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
@@ -91,7 +92,7 @@ void detect_arch(char *str)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+	argument char *str: the char array to be filled with the host info
 */
 void detect_host(char *str)
 {
@@ -99,12 +100,12 @@ void detect_host(char *str)
 	char given_host[MAX_STRLEN] = "Unknown";
 
 	given_user = malloc(sizeof(char) * MAX_STRLEN);
-	if (given_user == NULL)
+	if (!given_user)
 	{
-		ERROR_OUT("Error: ", "Failed to allocate sufficient memory in detect_host.");
+		ERROR_OUT("Error: ", "Memory allocation failed in detect_host.");
 		exit(1);
 	}
-	/* why does the winapi require a pointer to a long? */
+	
 	unsigned long len = MAX_STRLEN;
 	GetUserName(given_user, &len);
 	gethostname(given_host, MAX_STRLEN);
@@ -127,7 +128,9 @@ void detect_kernel(char *str)
 	ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
 	kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx(&kern_info);
-	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d", (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d",
+			(int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion,
+			(int) kern_info.dwBuildNumber);
 
 	return;
 }
@@ -135,7 +138,7 @@ void detect_kernel(char *str)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+	argument char *str: the char array to be filled with the uptime
 */
 void detect_uptime(char *str)
 {
@@ -186,8 +189,10 @@ void detect_cpu(char *str)
 	HKEY hkey;
 	DWORD str_size = MAX_STRLEN;
 
-	RegOpenKey(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
-	RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str, &str_size);
+	RegOpenKey(HKEY_LOCAL_MACHINE,
+			"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hkey);
+	RegQueryValueEx(hkey, "ProcessorNameString", 0, NULL, (BYTE *) str,
+			&str_size);
 
 	return;
 }
@@ -201,8 +206,11 @@ void detect_gpu(char *str)
 	HKEY hkey;
 	DWORD str_size = MAX_STRLEN;
 
-	RegOpenKey(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
-	RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str, &str_size);
+	RegOpenKey(HKEY_LOCAL_MACHINE,
+			"SYSTEM\\ControlSet001\\Control\\Class\\"
+			"{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\Settings", &hkey);
+	RegQueryValueEx(hkey, "Device Description", 0, NULL, (BYTE *) str,
+			&str_size);
 
 	return;
 }
@@ -220,11 +228,13 @@ void detect_disk(char *str)
 
 	/* GetDiskFreeSpaceEx? */
 
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
+	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk "
+			"'{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
 	fscanf(disk_file, "%d", &disk_total);
 	pclose(disk_file);
 
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk '{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
+	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk "
+			"'{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
 	fscanf(disk_file, "%d", &disk_used);
 	pclose(disk_file);
 
@@ -232,13 +242,15 @@ void detect_disk(char *str)
 	{
 		disk_percentage = (((float) disk_used / disk_total) * 100);
 
-		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total,
+				disk_percentage);
 	}
 	else /* when disk_used is in a smaller unit */
 	{
 		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
 
-		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total,
+				disk_percentage);
 	}
 
 	return;
@@ -246,7 +258,7 @@ void detect_disk(char *str)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+	argument char *str: the char array to be filled with the memory data
 */
 void detect_mem(char *str)
 {
@@ -322,7 +334,8 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
@@ -333,7 +346,7 @@ void detect_shell(char *str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution
 */
 void detect_res(char *str)
 {
@@ -393,7 +406,11 @@ void detect_wm_theme(char *str, const char *wm_str)
 	FILE *wm_theme_file;
 
 	/* nasty one-liner */
-	wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes' /v 'CurrentTheme' | grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'", "r");
+	wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows"
+			"\\CurrentVersion\\Themes' /v 'CurrentTheme' | "
+			"grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | "
+			"grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'",
+			"r");
 	fgets(str, MAX_STRLEN, wm_theme_file);
 	pclose(wm_theme_file);
 
@@ -409,7 +426,8 @@ void detect_gtk(char *str)
 	FILE *gtk_file;
 	char font_str[MAX_STRLEN] = "Unknown";
 
-	gtk_file = popen("grep '^Font=.*' < $HOME/.minttyrc | grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
+	gtk_file = popen("grep '^Font=.*' < $HOME/.minttyrc | "
+			"grep -o '[0-9A-z ]*$' | tr -d '\\r\\n'", "r");
 	fgets(font_str, MAX_STRLEN, gtk_file);
 	pclose(gtk_file);
 

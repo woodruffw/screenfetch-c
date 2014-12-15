@@ -60,7 +60,7 @@ void detect_arch(char *str)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+	argument char *str: the char array to be filled with the host info
 */
 void detect_host(char *str)
 {
@@ -176,7 +176,7 @@ void detect_gpu(char *str)
 
 /*	detect_disk
 	detects the computer's total disk capacity and usage
-	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+	argument char *str: the char array to be filled with the disk data
 */
 void detect_disk(char *str)
 {
@@ -200,7 +200,7 @@ void detect_disk(char *str)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+	argument char *str: the char array to be filled with the memory data
 */
 void detect_mem(char *str)
 {
@@ -284,7 +284,7 @@ void detect_shell(char *str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution
 */
 void detect_res(char *str)
 {
