@@ -93,7 +93,7 @@ void detect_kernel(char *str)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+	argument char *str: the char array to be filled with the uptime
 */
 void detect_uptime(char *str)
 {
@@ -273,7 +273,8 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);

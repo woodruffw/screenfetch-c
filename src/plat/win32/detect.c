@@ -217,7 +217,7 @@ void detect_gpu(char *str)
 
 /*	detect_disk
 	detects the computer's total disk capacity and usage
-	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+	argument char *str: the char array to be filled with the disk data
 */
 void detect_disk(char *str)
 {

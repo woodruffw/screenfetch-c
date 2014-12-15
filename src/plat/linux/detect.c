@@ -422,7 +422,7 @@ void detect_disk(char *str)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+	argument char *str: the char array to be filled with the memory data
 */
 void detect_mem(char *str)
 {
@@ -431,7 +431,7 @@ void detect_mem(char *str)
 	long long used_mem = 0;
 	struct sysinfo si_mem;
 
-	/* known problem: because linux utilizes free ram extensively in caches/buffers,
+	/* known problem: because linux utilizes free ram in caches/buffers,
 	   the amount of memory sysinfo reports as free is very small.
 	*/
 	sysinfo(&si_mem);
@@ -514,7 +514,7 @@ void detect_shell(char *str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution
 */
 void detect_res(char *str)
 {
@@ -620,7 +620,7 @@ void detect_wm(char *str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "WM cannot be detected without EWMH compliance.");
+			ERROR_OUT("Error: ", "No WM detected (non-EWMH compliant?)");
 		}
 
 		XCloseDisplay(disp);

@@ -62,7 +62,7 @@ void detect_arch(char *str)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the user and hostname in format 'user@host'
+	argument char *str: the char array to be filled with the host info
 */
 void detect_host(char *str)
 {
@@ -96,7 +96,7 @@ void detect_kernel(char *str)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char *str: the char array to be filled with the uptime in format '$d $h $m $s' where $ is a number
+	argument char *str: the char array to be filled with the uptime
 */
 void detect_uptime(char *str)
 {
@@ -115,7 +115,8 @@ void detect_uptime(char *str)
 	fscanf(uptime_file, "%ld", &uptime);
 	pclose(uptime_file);
 #elif defined(__FreeBSD__) || defined(__DragonFly__)
-	uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | cut -d ',' -f 1", "r");
+	uptime_file = popen("sysctl -n kern.boottime | cut -d '=' -f 2 | "
+			"cut -d ',' -f 1", "r");
 	fscanf(uptime_file, "%ld", &boottime); /* get boottime in secs */
 	pclose(uptime_file);
 
@@ -183,7 +184,9 @@ void detect_cpu(char *str)
 	FILE *cpu_file;
 
 #if defined(__NetBSD__)
-	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' /proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' | head -1 | tr -d '\\n'", "r");
+	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' "
+			"/proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' "
+			"| head -1 | tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 #else
@@ -212,7 +215,7 @@ void detect_gpu(char *str)
 
 /*	detect_disk
 	detects the computer's total disk capacity and usage
-	argument char *str: the char array to be filled with the disk data in format '$G / $G ($G%)', where $ is a number
+	argument char *str: the char array to be filled with the disk data
 */
 void detect_disk(char *str)
 {
@@ -236,7 +239,7 @@ void detect_disk(char *str)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data in format '$MB / $MB', where $ is a number
+	argument char *str: the char array to be filled with the memory data
 */
 void detect_mem(char *str)
 {
@@ -322,13 +325,14 @@ void detect_shell(char *str)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution in format '$x$', where $ is a number
+	argument char *str: the char array to be filled with the resolution
 */
 void detect_res(char *str)
 {
 	FILE *res_file;
 
-	res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* \\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
+	res_file = popen("xdpyinfo 2> /dev/null | sed -n 's/.*dim.* "
+			"\\([0-9]*x[0-9]*\\) .*/\\1/pg' | tr '\\n' ' '", "r");
 	fgets(str, MAX_STRLEN, res_file);
 	pclose(res_file);
 
@@ -444,9 +448,11 @@ void detect_gtk(char *str)
 	pclose(gtk_file);
 
 	if (STRCMP(gtk3_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str, gtk_icons_str);
+		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
+				gtk_icons_str);
 	else if (STRCMP(gtk2_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str, gtk_icons_str);
+		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
+				gtk_icons_str);
 	else
 		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 
