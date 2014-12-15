@@ -24,7 +24,9 @@
 */
 void display_version(void)
 {
-	printf("%s\n", "screenfetch-c - Version " SCREENFETCH_C_VERSION_MAJOR "." SCREENFETCH_C_VERSION_MINOR ", revision " SCREENFETCH_C_VERSION_RELEASE ".");
+	printf("%s\n", "screenfetch-c - Version " SCREENFETCH_C_VERSION_MAJOR "."
+			SCREENFETCH_C_VERSION_MINOR ", revision "
+			SCREENFETCH_C_VERSION_RELEASE ".");
 	return;
 }
 
@@ -110,7 +112,8 @@ void output_logo_only(char *distro)
 			printf("%s\n", lmde_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Ubuntu") || STRCMP(distro, "Lubuntu") || STRCMP(distro, "Xubuntu"))
+	else if (STRCMP(distro, "Ubuntu") || STRCMP(distro, "Lubuntu")
+			|| STRCMP(distro, "Xubuntu"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -355,14 +358,16 @@ void main_ascii_output(char *data[], char *data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, data_names[i], TWHT, data[i], TNRM);
+			printf("%s %s%s%s%s%s\n", windows_logo[i], TRED, data_names[i],
+					TWHT, data[i], TNRM);
 		}
 	}
 	else if (strstr(data[1], "OS X"))
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, data_names[i], TNRM, data[i]);
+			printf("%s %s%s%s%s\n", macosx_logo[i], TLBL, data_names[i], TNRM,
+					data[i]);
 		}
 	}
 	else if (STRCMP(data[1], "Arch Linux - Old"))
@@ -370,7 +375,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, data_names[i], TNRM, data[i], TNRM);
+				printf("%s %s%s%s%s%s\n", oldarch_logo[i], TLBL, data_names[i],
+						TNRM, data[i], TNRM);
 			else
 				printf("%s\n", oldarch_logo[i]);
 		}
@@ -380,7 +386,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s%s\n", arch_logo[i], TLCY, data_names[i], TNRM, data[i], TNRM);
+				printf("%s %s%s%s%s%s\n", arch_logo[i], TLCY, data_names[i],
+						TNRM, data[i], TNRM);
 			else
 				printf("%s\n", arch_logo[i]);
 		}
@@ -390,7 +397,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, data_names[i], TNRM, data[i], TNRM);
+				printf("%s %s%s%s%s%s\n", mint_logo[i], TLGN, data_names[i],
+						TNRM, data[i], TNRM);
 			else
 				printf("%s\n", mint_logo[i]);
 		}
@@ -400,17 +408,20 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", lmde_logo[i], TLGN, data_names[i], TNRM,
+						data[i]);
 			else
 				printf("%s\n", lmde_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Ubuntu") || STRCMP(data[1], "Lubuntu") || STRCMP(data[1], "Xubuntu"))
+	else if (STRCMP(data[1], "Ubuntu") || STRCMP(data[1], "Lubuntu")
+			|| STRCMP(data[1], "Xubuntu"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, data_names[i], TNRM, data[i], TNRM);
+				printf("%s %s%s%s%s%s\n", ubuntu_logo[i], TLRD, data_names[i],
+						TNRM, data[i], TNRM);
 			else
 				printf("%s\n", ubuntu_logo[i]);
 		}
@@ -420,7 +431,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", debian_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", debian_logo[i], TLRD, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", debian_logo[i]);
 		}
@@ -430,7 +442,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", crunchbang_logo[i], TDGY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", crunchbang_logo[i], TDGY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", crunchbang_logo[i]);
 		}
@@ -440,7 +453,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", gentoo_logo[i], TLPR, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", gentoo_logo[i]);
 		}
@@ -450,7 +464,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", funtoo_logo[i], TLPR, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", funtoo_logo[i]);
 		}
@@ -460,7 +475,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", fedora_logo[i], TLBL, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", fedora_logo[i]);
 		}
@@ -470,7 +486,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", mandriva_mandrake_logo[i], TLBL,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", mandriva_mandrake_logo[i]);
 		}
@@ -480,7 +497,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", opensuse_logo[i], TLGN, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", opensuse_logo[i]);
 		}
@@ -490,7 +508,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 21; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", slackware_logo[i], TLBL, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", slackware_logo[i]);
 		}
@@ -500,7 +519,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", redhat_logo[i], TRED, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", redhat_logo[i], TRED, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", redhat_logo[i]);
 		}
@@ -510,7 +530,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 23; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", frugalware_logo[i], TLCY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", frugalware_logo[i]);
 		}
@@ -520,7 +541,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", peppermint_logo[i], TLRD, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", peppermint_logo[i]);
 		}
@@ -530,7 +552,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", solusos_logo[i], TLGY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", solusos_logo[i]);
 		}
@@ -540,7 +563,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", mageia_logo[i], TLCY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", mageia_logo[i]);
 		}
@@ -550,7 +574,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", parabolagnu_linuxlibre_logo[i], TLPR,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", parabolagnu_linuxlibre_logo[i]);
 		}
@@ -560,7 +585,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", viperr_logo[i], TLGY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", viperr_logo[i]);
 		}
@@ -570,7 +596,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", linuxdeepin_logo[i], TLGN,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", linuxdeepin_logo[i]);
 		}
@@ -580,7 +607,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", chakra_logo[i], TLBL, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", chakra_logo[i]);
 		}
@@ -590,7 +618,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 21; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", fuduntu_logo[i], TLRD, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", fuduntu_logo[i]);
 		}
@@ -600,7 +629,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", trisquel_logo[i], TLBL, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", trisquel_logo[i]);
 		}
@@ -620,7 +650,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", elementaryos_logo[i], TLGN,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", elementaryos_logo[i]);
 		}
@@ -630,7 +661,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 20; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", scientificlinux_logo[i], TLRD,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", scientificlinux_logo[i]);
 		}
@@ -640,7 +672,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 20; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", backtracklinux_logo[i], TLRD,
+						data_names[i], TNRM, data[i]);
 			else
 				printf("%s\n", backtracklinux_logo[i]);
 		}
@@ -650,7 +683,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", sabayon_logo[i], TLBL, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", sabayon_logo[i]);
 		}
@@ -660,7 +694,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 16; i++)
 		{
 			if (i < 12)
-				printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", android_logo[i], TLGN, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", android_logo[i]);
 		}
@@ -677,7 +712,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", linux_logo[i], TLGY, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", linux_logo[i], TLGY, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", linux_logo[i]);
 		}
@@ -687,7 +723,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 18; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s%s%s\n", freebsd_logo[i], TLRD, data_names[i], TNRM, data[i]);
+				printf("%s %s%s%s%s\n", freebsd_logo[i], TLRD, data_names[i],
+						TNRM, data[i]);
 			else
 				printf("%s\n", freebsd_logo[i]);
 		}
@@ -717,7 +754,8 @@ void main_ascii_output(char *data[], char *data_names[])
 		for (i = 0; i < 23; i++)
 		{
 			if (i < 16)
-				printf("%s %s%s\n", dragonflybsd_logo[i], data_names[i], data[i]);
+				printf("%s %s%s\n", dragonflybsd_logo[i], data_names[i],
+						data[i]);
 			else
 				printf("%s\n", dragonflybsd_logo[i]);
 		}
@@ -734,15 +772,15 @@ void main_ascii_output(char *data[], char *data_names[])
 	}
 	else
 	{
-		ERROR_OUT("Error: ", "Could not find a logo corresponding to the distro.");
+		ERROR_OUT("Error: ", "Could not find a logo for the distro.");
 	}
 
 	return;
 }
 
 /*	main_text_output
-	the secondary output for screenfetch-c - all info WITHOUT ASCII art is printed here
-	arguments char *data[], char *data_names[]: string arrays containing the names and data acquired
+	the secondary output for screenfetch-c - all info WITHOUT ASCII art
+	arguments char *data[], char *data_names[]
 */
 void main_text_output(char *data[], char *data_names[])
 {
