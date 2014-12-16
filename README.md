@@ -1,7 +1,7 @@
 screenfetch-c
 =============
 
-## Current Version: 1.3 (release) [![Build Status](https://drone.io/github.com/woodruffw/screenfetch-c/status.png)](https://drone.io/github.com/woodruffw/screenfetch-c/latest)
+## Current Version: 1.3 (release)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
 script that displays system information and an ASCII logo, in the C 
