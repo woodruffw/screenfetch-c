@@ -25,27 +25,27 @@ else
 	ifeq ($(UNAME_S),Linux)
 		SOURCES += $(wildcard ./src/plat/linux/*.c)
 		CFLAGS += -Wno-unused-result
-		LDFLAGS += -lpthread -lX11 -lGL
+		LDFLAGS += -lX11 -lGL
 		SCRIPTS += ./src/scripts/detectwmtheme ./src/scripts/detectgtk
 		TESTS += x11test gltest
 	endif
 
 	ifeq ($(UNAME_S),Darwin)
 		SOURCES += $(wildcard ./src/plat/darwin/*.c)
-		LDFLAGS += -lpthread -framework CoreServices
+		LDFLAGS += -framework CoreServices
 		CPPFLAGS += -D_DARWIN_C_SOURCE -D_DARWIN_USE_64_BIT_INODE
 	endif
 
 	ifeq ($(UNAME_S),SunOS)
 		SOURCES += $(wildcard ./src/plat/sun/*.c)
-		LDFLAGS += -lpthread -lX11
+		LDFLAGS += -lX11
 		SCRIPTS += ./src/scripts/detectwm ./src/scripts/detectwmtheme
 		TESTS += x11test
 	endif
 
 	ifneq (,$(filter $(UNAME_S),FreeBSD NetBSD OpenBSD DragonFly))
 		SOURCES += $(wildcard ./src/plat/bsd/*.c)
-		LDFLAGS += -lpthread
+		LDFLAGS +=
 		SCRIPTS += ./src/scripts/detectwm ./src/scripts/detectwmtheme \
 		./src/scripts/detectgtk
 	endif
