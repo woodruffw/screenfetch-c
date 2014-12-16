@@ -23,8 +23,8 @@
 #endif
 
 /*	safe_strncpy
-	calls strncpy with the given params, then inserts a null char at the last position
-	returns a pointer to a string containing the copied data (same as destination)
+	calls strncpy with the given params, then inserts a terminating NULL
+	returns a pointer to a string containing the copied data
 */
 char *safe_strncpy(char *destination, const char *source, size_t num)
 {
@@ -36,7 +36,7 @@ char *safe_strncpy(char *destination, const char *source, size_t num)
 /*	split_uptime
 	splits param uptime into individual time-units
 	argument long uptime: the uptime, in seconds, to be split
-	arguments int *secs...*days: pointers to ints where the split uptime will be stored
+	arguments int *secs..*days: pointers to ints for storing the uptime
 	--
 	CAVEAT: uptime MUST be in seconds
 	--
@@ -52,7 +52,7 @@ void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days)
 }
 
 /*	take_screenshot
-	takes a screenshot and saves it to $HOME/screenfetch_screenshot.jpg
+	takes a screenshot and saves it to $HOME/screenfetch_screenshot.png
 */
 void take_screenshot(bool verbose)
 {
@@ -98,7 +98,6 @@ void take_screenshot(bool verbose)
 	#endif
 
 	#if !defined(__CYGWIN__)
-		/* change this to getpwuid() */
 		char file_loc[MAX_STRLEN];
 		safe_strncpy(file_loc, getenv("HOME"), MAX_STRLEN);
 		strncat(file_loc, "/screenfetch_screenshot.png", MAX_STRLEN);

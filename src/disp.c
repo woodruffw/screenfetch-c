@@ -53,7 +53,7 @@ void display_help(void)
 
 /*	display_verbose
 	called if the -v (--verbose) flag is tripped
-	arguments: char *data[], *data_names[] the system data and names being printed
+	arguments: char *data[], *data_names[] the system data and names
 */
 void display_verbose(char *data[], char *data_names[])
 {
