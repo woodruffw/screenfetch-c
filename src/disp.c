@@ -36,18 +36,18 @@ void display_version(void)
 void display_help(void)
 {
 	display_version();
-	printf("\n%s\n", "Options:");
-	printf(" %s\n", "-m, --manual\t\t\t Enter manual mode.");
-	printf(" %s\n", "-v, --verbose\t\t\t Enable verbosity during output.");
-	printf(" %s\n", "-s, --screenshot\t\t Take a screenshot.");
-	printf(" %s\n", "-n, --no-logo\t\t\t Print output without a logo.");
-	printf(" %s\n", "-D, --distro [DISTRO]\t\t Print output with DISTRO's logo.");
-	printf(" %s\n", "-E, --suppress-errors\t\t Suppress error output.");
-	printf(" %s\n", "-p, --portrait\t\t\t Print output in portrait mode.");
-	printf(" %s\n", "-V, --version\t\t\t Output screenfetch-c's version and exit.");
-	printf(" %s\n", "-h, --help\t\t\t Output this help information.");
-	printf(" %s\n", "-L, --logo-only [DISTRO]\t Output only the logo associated with DISTRO.");
-	printf("\n%s\n", "For more information, consult screenfetch-c's man page.");
+	printf("\n%s\n", "Options:\n"
+			"  -m, --manual\t\t\t Enter manual mode.\n"
+			"  -v, --verbose\t\t\t Enable verbosity during output.\n"
+			"  -s, --screenshot\t\t Take a screenshot.\n"
+			"  -n, --no-logo\t\t\t Print output without a logo.\n"
+			"  -D, --distro [DISTRO]\t\t Print output with DISTRO's logo.\n"
+			"  -E, --suppress-errors\t\t Suppress error output.\n"
+			"  -p, --portrait\t\t Print output in portrait mode.\n"
+			"  -V, --version\t\t\t Output screenfetch-c's version and exit.\n"
+			"  -h, --help\t\t\t Output this help information.\n"
+			"  -L, --logo-only [DISTRO]\t Output only DISTRO's logo.\n"
+			"For more information, consult screenfetch-c's man page.\n");
 	return;
 }
 
