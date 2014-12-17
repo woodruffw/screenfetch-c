@@ -366,7 +366,7 @@ void main_ascii_output(char *data[], char *data_names[])
 	{
 		for (i = 0; i < 16; i++)
 		{
-			printf("%s " TLBL "%s " TNRM "%s\n", macosx_logo[i], data_names[i],
+			printf("%s " TLBL "%s" TNRM "%s\n", macosx_logo[i], data_names[i],
 					data[i]);
 		}
 	}

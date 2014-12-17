@@ -31,6 +31,7 @@
 
 int main(int argc, char **argv)
 {
+	char given_distro_str[MAX_STRLEN] = "Unknown";
 	char distro_str[MAX_STRLEN] = "Unknown";
 	char arch_str[MAX_STRLEN] = "Unknown";
 	char host_str[MAX_STRLEN] = "Unknown";
@@ -125,7 +126,7 @@ int main(int argc, char **argv)
 				screenshot = true;
 				break;
 			case 'D':
-				SET_DISTRO(optarg);
+				SET_GIVEN_DISTRO(optarg);
 				break;
 			case 'E':
 				error = false;
@@ -208,6 +209,10 @@ int main(int argc, char **argv)
 		detect_wm_theme(wm_theme_str, wm_str);
 		detect_gtk(gtk_str);
 	}
+
+	/* if the user specified a different OS to display, set distro_set to it */
+	if (!STRCMP(given_distro_str, "Unknown"))
+		safe_strncpy(distro_str, given_distro_str, MAX_STRLEN);
 
 	if (verbose)
 		display_verbose(detected_arr, detected_arr_names);

@@ -12,7 +12,7 @@
 #define MB (KB * KB)
 #define GB (MB * KB)
 #define MAX_STRLEN 128
-#define SET_DISTRO(str) (safe_strncpy(distro_str, str, MAX_STRLEN))
+#define SET_GIVEN_DISTRO(str) (safe_strncpy(given_distro_str, str, MAX_STRLEN))
 #define STRCMP(x, y) (!strcmp(x, y))
 #define FILE_EXISTS(file) (!access(file, F_OK))
 
