@@ -250,7 +250,7 @@ void detect_pkgs(char *str, const char *distro_str)
 
 	else if (STRCMP(distro_str, "Frugalware"))
 	{
-		pkgs_file = popen("pacman-g2 -Q | wc -l", "r");
+		pkgs_file = popen("pacman-g2 -Q 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
@@ -287,7 +287,7 @@ void detect_pkgs(char *str, const char *distro_str)
 	else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") 
 			|| STRCMP(distro_str, "Funtoo"))
 	{
-		pkgs_file = popen("ls -d /var/db/pkg/*/* | wc -l", "r");
+		pkgs_file = popen("ls -d /var/db/pkg/*/* 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
@@ -298,14 +298,14 @@ void detect_pkgs(char *str, const char *distro_str)
 			|| STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake")
 			|| STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
 	{
-		pkgs_file = popen("rpm -qa | wc -l", "r");
+		pkgs_file = popen("rpm -qa 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
 	else if (STRCMP(distro_str, "Angstrom"))
 	{
-		pkgs_file = popen("opkg list-installed | wc -l", "r");
+		pkgs_file = popen("opkg list-installed 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
