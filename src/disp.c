@@ -48,6 +48,7 @@ void display_help(void)
 			"  -h, --help\t\t\t Output this help information.\n"
 			"  -L, --logo-only [DISTRO]\t Output only DISTRO's logo.\n"
 			"For more information, consult screenfetch-c's man page.\n");
+
 	return;
 }
 
@@ -60,6 +61,8 @@ void display_verbose(char *data[], char *data_names[])
 	int i = 0;
 	for (i = 0; i < 16; i++)
 		VERBOSE_OUT(data_names[i], data[i]);
+
+	return;
 }
 
 /*	output_logo_only
@@ -344,6 +347,8 @@ void output_logo_only(char *distro)
 			printf("%s\n", linux_logo[i]);
 		}
 	}
+
+	return;
 }
 
 /*	main_ascii_output
