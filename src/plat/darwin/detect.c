@@ -293,7 +293,7 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (STRCMP(shell_name, "/bin/sh"))
+	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
 	}

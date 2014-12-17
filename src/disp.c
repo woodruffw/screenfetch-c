@@ -73,7 +73,7 @@ void output_logo_only(char *distro)
 {
 	int i = 0;
 
-	if (STRCMP(distro, "Windows"))
+	if (STREQ(distro, "Windows"))
 	{
 		for (i = 0; i < 16; i++)
 		{
@@ -87,260 +87,260 @@ void output_logo_only(char *distro)
 			printf("%s\n", macosx_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Arch Linux - Old"))
+	else if (STREQ(distro, "Arch Linux - Old"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", oldarch_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Arch Linux"))
+	else if (STREQ(distro, "Arch Linux"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", arch_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "LinuxMint"))
+	else if (STREQ(distro, "LinuxMint"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", mint_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "LMDE"))
+	else if (STREQ(distro, "LMDE"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", lmde_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Ubuntu") || STRCMP(distro, "Lubuntu")
-			|| STRCMP(distro, "Xubuntu"))
+	else if (STREQ(distro, "Ubuntu") || STREQ(distro, "Lubuntu")
+			|| STREQ(distro, "Xubuntu"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", ubuntu_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Debian"))
+	else if (STREQ(distro, "Debian"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", debian_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "CrunchBang"))
+	else if (STREQ(distro, "CrunchBang"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", crunchbang_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Gentoo"))
+	else if (STREQ(distro, "Gentoo"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", gentoo_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Funtoo"))
+	else if (STREQ(distro, "Funtoo"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", funtoo_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Fedora"))
+	else if (STREQ(distro, "Fedora"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", fedora_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Mandriva") || STRCMP(distro, "Mandrake"))
+	else if (STREQ(distro, "Mandriva") || STREQ(distro, "Mandrake"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", mandriva_mandrake_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "OpenSUSE"))
+	else if (STREQ(distro, "OpenSUSE"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", opensuse_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Slackware"))
+	else if (STREQ(distro, "Slackware"))
 	{
 		for (i = 0; i < 21; i++)
 		{
 			printf("%s\n", slackware_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Red Hat Linux"))
+	else if (STREQ(distro, "Red Hat Linux"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", redhat_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Frugalware"))
+	else if (STREQ(distro, "Frugalware"))
 	{
 		for (i = 0; i < 23; i++)
 		{
 			printf("%s\n", frugalware_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Peppermint"))
+	else if (STREQ(distro, "Peppermint"))
 	{
 		for (i = 0; i < 19; i++)
 		{
 			printf("%s\n", peppermint_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "SolusOS"))
+	else if (STREQ(distro, "SolusOS"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", solusos_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Mageia"))
+	else if (STREQ(distro, "Mageia"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", mageia_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "ParabolaGNU/Linux-libre"))
+	else if (STREQ(distro, "ParabolaGNU/Linux-libre"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", parabolagnu_linuxlibre_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Viperr"))
+	else if (STREQ(distro, "Viperr"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", viperr_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "LinuxDeepin"))
+	else if (STREQ(distro, "LinuxDeepin"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", linuxdeepin_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Chakra"))
+	else if (STREQ(distro, "Chakra"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", chakra_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Fuduntu"))
+	else if (STREQ(distro, "Fuduntu"))
 	{
 		for (i = 0; i < 21; i++)
 		{
 			printf("%s\n", fuduntu_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Trisquel"))
+	else if (STREQ(distro, "Trisquel"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", trisquel_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Manjaro"))
+	else if (STREQ(distro, "Manjaro"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", manjaro_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "elementary OS"))
+	else if (STREQ(distro, "elementary OS"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", elementaryos_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Scientific Linux"))
+	else if (STREQ(distro, "Scientific Linux"))
 	{
 		for (i = 0; i < 20; i++)
 		{
 			printf("%s\n", scientificlinux_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Backtrack Linux"))
+	else if (STREQ(distro, "Backtrack Linux"))
 	{
 		for (i = 0; i < 21; i++)
 		{
 			printf("%s\n", backtracklinux_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Sabayon"))
+	else if (STREQ(distro, "Sabayon"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", sabayon_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "FreeBSD"))
+	else if (STREQ(distro, "FreeBSD"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", freebsd_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "OpenBSD"))
+	else if (STREQ(distro, "OpenBSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
 			printf("%s\n", openbsd_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "NetBSD"))
+	else if (STREQ(distro, "NetBSD"))
 	{
 		for (i = 0; i < 20; i++)
 		{
 			printf("%s\n", netbsd_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "DragonFly BSD"))
+	else if (STREQ(distro, "DragonFly BSD"))
 	{
 		for (i = 0; i < 18; i++)
 		{
 			printf("%s\n", dragonflybsd_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Android"))
+	else if (STREQ(distro, "Android"))
 	{
 		for (i = 0; i < 16; i++)
 		{
 			printf("%s\n", android_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Solaris"))
+	else if (STREQ(distro, "Solaris"))
 	{
 		for (i = 0; i < 17; i++)
 		{
 			printf("%s\n", solaris_logo[i]);
 		}
 	}
-	else if (STRCMP(distro, "Angstrom"))
+	else if (STREQ(distro, "Angstrom"))
 	{
 		for (i = 0; i < 16; i++)
 		{
 			printf("%s\n", angstrom_logo[i]);
 		}
 	}
-	else /* if (STRCMP(distro_str, "Linux")) */
+	else /* if (STREQ(distro_str, "Linux")) */
 	{
 		for (i = 0; i < 16; i++)
 		{
@@ -375,7 +375,7 @@ void main_ascii_output(char *data[], char *data_names[])
 					data[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Arch Linux - Old"))
+	else if (STREQ(data[1], "Arch Linux - Old"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -386,7 +386,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", oldarch_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Arch Linux"))
+	else if (STREQ(data[1], "Arch Linux"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -397,7 +397,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", arch_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "LinuxMint"))
+	else if (STREQ(data[1], "LinuxMint"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -408,7 +408,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", mint_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "LMDE"))
+	else if (STREQ(data[1], "LMDE"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -419,8 +419,8 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", lmde_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Ubuntu") || STRCMP(data[1], "Lubuntu")
-			|| STRCMP(data[1], "Xubuntu"))
+	else if (STREQ(data[1], "Ubuntu") || STREQ(data[1], "Lubuntu")
+			|| STREQ(data[1], "Xubuntu"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -431,7 +431,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", ubuntu_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Debian"))
+	else if (STREQ(data[1], "Debian"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -442,7 +442,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", debian_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "CrunchBang"))
+	else if (STREQ(data[1], "CrunchBang"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -453,7 +453,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", crunchbang_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Gentoo"))
+	else if (STREQ(data[1], "Gentoo"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -464,7 +464,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", gentoo_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Funtoo"))
+	else if (STREQ(data[1], "Funtoo"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -475,7 +475,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", funtoo_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Fedora"))
+	else if (STREQ(data[1], "Fedora"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -486,7 +486,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", fedora_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Mandriva") || STRCMP(data[1], "Mandrake"))
+	else if (STREQ(data[1], "Mandriva") || STREQ(data[1], "Mandrake"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -497,7 +497,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", mandriva_mandrake_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "OpenSUSE"))
+	else if (STREQ(data[1], "OpenSUSE"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -508,7 +508,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", opensuse_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Slackware"))
+	else if (STREQ(data[1], "Slackware"))
 	{
 		for (i = 0; i < 21; i++)
 		{
@@ -519,7 +519,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", slackware_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Red Hat Linux"))
+	else if (STREQ(data[1], "Red Hat Linux"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -530,7 +530,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", redhat_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Frugalware"))
+	else if (STREQ(data[1], "Frugalware"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -541,7 +541,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", frugalware_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Peppermint"))
+	else if (STREQ(data[1], "Peppermint"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -552,7 +552,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", peppermint_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "SolusOS"))
+	else if (STREQ(data[1], "SolusOS"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -563,7 +563,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", solusos_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Mageia"))
+	else if (STREQ(data[1], "Mageia"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -574,7 +574,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", mageia_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "ParabolaGNU/Linux-libre"))
+	else if (STREQ(data[1], "ParabolaGNU/Linux-libre"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -585,7 +585,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", parabolagnu_linuxlibre_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Viperr"))
+	else if (STREQ(data[1], "Viperr"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -596,7 +596,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", viperr_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "LinuxDeepin"))
+	else if (STREQ(data[1], "LinuxDeepin"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -607,7 +607,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", linuxdeepin_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Chakra"))
+	else if (STREQ(data[1], "Chakra"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -618,7 +618,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", chakra_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Fuduntu"))
+	else if (STREQ(data[1], "Fuduntu"))
 	{
 		for (i = 0; i < 21; i++)
 		{
@@ -629,7 +629,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", fuduntu_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Trisquel"))
+	else if (STREQ(data[1], "Trisquel"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -640,7 +640,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", trisquel_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Manjaro"))
+	else if (STREQ(data[1], "Manjaro"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -650,7 +650,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", manjaro_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "elementary OS"))
+	else if (STREQ(data[1], "elementary OS"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -661,7 +661,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", elementaryos_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Scientific Linux"))
+	else if (STREQ(data[1], "Scientific Linux"))
 	{
 		for (i = 0; i < 20; i++)
 		{
@@ -672,7 +672,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", scientificlinux_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Backtrack Linux"))
+	else if (STREQ(data[1], "Backtrack Linux"))
 	{
 		for (i = 0; i < 20; i++)
 		{
@@ -683,7 +683,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", backtracklinux_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Sabayon"))
+	else if (STREQ(data[1], "Sabayon"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -694,7 +694,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", sabayon_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Android"))
+	else if (STREQ(data[1], "Android"))
 	{
 		for (i = 0; i < 16; i++)
 		{
@@ -705,14 +705,14 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", android_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Angstrom"))
+	else if (STREQ(data[1], "Angstrom"))
 	{
 		for (i = 0; i < 16; i++)
 		{
 			printf("%s %s%s\n", angstrom_logo[i], data_names[i], data[i]);
 		}
 	}
-	else if (STRCMP(data[1], "Linux"))
+	else if (STREQ(data[1], "Linux"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -723,7 +723,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", linux_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "FreeBSD"))
+	else if (STREQ(data[1], "FreeBSD"))
 	{
 		for (i = 0; i < 18; i++)
 		{
@@ -734,7 +734,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", freebsd_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "OpenBSD"))
+	else if (STREQ(data[1], "OpenBSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -744,7 +744,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", openbsd_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "NetBSD"))
+	else if (STREQ(data[1], "NetBSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -754,7 +754,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", netbsd_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "DragonFly BSD"))
+	else if (STREQ(data[1], "DragonFly BSD"))
 	{
 		for (i = 0; i < 23; i++)
 		{
@@ -765,7 +765,7 @@ void main_ascii_output(char *data[], char *data_names[])
 				printf("%s\n", dragonflybsd_logo[i]);
 		}
 	}
-	else if (STRCMP(data[1], "SunOS"))
+	else if (STREQ(data[1], "SunOS"))
 	{
 		for (i = 0; i < 17; i++)
 		{

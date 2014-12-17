@@ -284,7 +284,7 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (STRCMP(shell_name, "/bin/sh"))
+	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
 	}
@@ -339,7 +339,7 @@ void detect_res(char *str)
 	fgets(str, MAX_STRLEN, res_file);
 	pclose(res_file);
 
-	if (STRCMP(str, "Unknown"))
+	if (STREQ(str, "Unknown"))
 	{
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 	}
@@ -450,10 +450,10 @@ void detect_gtk(char *str)
 	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
 	pclose(gtk_file);
 
-	if (STRCMP(gtk3_str, "Unknown"))
+	if (STREQ(gtk3_str, "Unknown"))
 		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
 				gtk_icons_str);
-	else if (STRCMP(gtk2_str, "Unknown"))
+	else if (STREQ(gtk2_str, "Unknown"))
 		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
 				gtk_icons_str);
 	else

@@ -161,29 +161,29 @@ int main(int argc, char **argv)
 			detect_mem(mem_str);
 
 			/* if the user specifies an asterisk, fill the data in for them */
-			if (STRCMP(distro_str, "*"))
+			if (STREQ(distro_str, "*"))
 				detect_distro(distro_str);
-			if (STRCMP(arch_str, "*"))
+			if (STREQ(arch_str, "*"))
 				detect_arch(arch_str);
-			if (STRCMP(host_str, "*"))
+			if (STREQ(host_str, "*"))
 				detect_host(host_str);
-			if (STRCMP(kernel_str, "*"))
+			if (STREQ(kernel_str, "*"))
 				detect_kernel(kernel_str);
-			if (STRCMP(cpu_str, "*"))
+			if (STREQ(cpu_str, "*"))
 				detect_cpu(cpu_str);
-			if (STRCMP(gpu_str, "*"))
+			if (STREQ(gpu_str, "*"))
 				detect_gpu(gpu_str);
-			if (STRCMP(shell_str, "*"))
+			if (STREQ(shell_str, "*"))
 				detect_shell(shell_str);
-			if (STRCMP(res_str, "*"))
+			if (STREQ(res_str, "*"))
 				detect_res(res_str);
-			if (STRCMP(de_str, "*"))
+			if (STREQ(de_str, "*"))
 				detect_de(de_str);
-			if (STRCMP(wm_str, "*"))
+			if (STREQ(wm_str, "*"))
 				detect_wm(wm_str);
-			if (STRCMP(wm_theme_str, "*"))
+			if (STREQ(wm_theme_str, "*"))
 				detect_wm_theme(wm_theme_str, wm_str);
-			if (STRCMP(gtk_str, "*"))
+			if (STREQ(gtk_str, "*"))
 				detect_gtk(gtk_str);
 		}
 
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 	}
 
 	/* if the user specified a different OS to display, set distro_set to it */
-	if (!STRCMP(given_distro_str, "Unknown"))
+	if (!STREQ(given_distro_str, "Unknown"))
 		safe_strncpy(distro_str, given_distro_str, MAX_STRLEN);
 
 	if (verbose)

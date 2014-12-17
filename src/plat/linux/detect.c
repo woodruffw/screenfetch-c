@@ -39,7 +39,7 @@
 void detect_distro(char *str)
 {
 	/* if distro_str was NOT set by the -D flag or manual mode */
-	if (STRCMP(str, "Unknown") || STRCMP(str, "*"))
+	if (STREQ(str, "Unknown") || STREQ(str, "*"))
 	{
 		FILE *distro_file;
 
@@ -62,23 +62,23 @@ void detect_distro(char *str)
 				fscanf(distro_file, "%4s", distro_name_str);
 				fclose(distro_file);
 
-				if (STRCMP(distro_name_str, "Back"))
+				if (STREQ(distro_name_str, "Back"))
 				{
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
 				}
-				else if (STRCMP(distro_name_str, "Crun"))
+				else if (STREQ(distro_name_str, "Crun"))
 				{
 					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
 					detected = true;
 				}
-				else if (STRCMP(distro_name_str, "LMDE"))
+				else if (STREQ(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(str, "LMDE", MAX_STRLEN);
 					detected = true;
 				}
-				else if (STRCMP(distro_name_str, "Debi")
-						|| STRCMP(distro_name_str, "Rasp"))
+				else if (STREQ(distro_name_str, "Debi")
+						|| STREQ(distro_name_str, "Rasp"))
 				{
 					safe_strncpy(str, "Debian", MAX_STRLEN);
 					detected = true;
@@ -232,9 +232,9 @@ void detect_pkgs(char *str, const char *distro_str)
 	int packages = 0;
 	glob_t gl;
 
-	if (STRCMP(distro_str, "Arch Linux")
-		|| STRCMP(distro_str, "ParabolaGNU/Linux-libre")
-		|| STRCMP(distro_str, "Chakra") || STRCMP(distro_str, "Manjaro"))
+	if (STREQ(distro_str, "Arch Linux")
+		|| STREQ(distro_str, "ParabolaGNU/Linux-libre")
+		|| STREQ(distro_str, "Chakra") || STREQ(distro_str, "Manjaro"))
 	{
 		if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
 		{
@@ -248,29 +248,29 @@ void detect_pkgs(char *str, const char *distro_str)
 		globfree(&gl);
 	}
 
-	else if (STRCMP(distro_str, "Frugalware"))
+	else if (STREQ(distro_str, "Frugalware"))
 	{
 		pkgs_file = popen("pacman-g2 -Q 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Ubuntu") || STRCMP(distro_str, "Lubuntu")
-			|| STRCMP(distro_str, "Xubuntu") || STRCMP(distro_str, "LinuxMint")
-			|| STRCMP(distro_str, "SolusOS") || STRCMP(distro_str, "Debian")
-			|| STRCMP(distro_str, "LMDE") || STRCMP(distro_str, "CrunchBang")
-			|| STRCMP(distro_str, "Peppermint")
-			|| STRCMP(distro_str, "LinuxDeepin")
-			|| STRCMP(distro_str, "Trisquel")
-			|| STRCMP(distro_str, "elementary OS")
-			|| STRCMP(distro_str, "Backtrack Linux"))
+	else if (STREQ(distro_str, "Ubuntu") || STREQ(distro_str, "Lubuntu")
+			|| STREQ(distro_str, "Xubuntu") || STREQ(distro_str, "LinuxMint")
+			|| STREQ(distro_str, "SolusOS") || STREQ(distro_str, "Debian")
+			|| STREQ(distro_str, "LMDE") || STREQ(distro_str, "CrunchBang")
+			|| STREQ(distro_str, "Peppermint")
+			|| STREQ(distro_str, "LinuxDeepin")
+			|| STREQ(distro_str, "Trisquel")
+			|| STREQ(distro_str, "elementary OS")
+			|| STREQ(distro_str, "Backtrack Linux"))
 	{
 		pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Slackware"))
+	else if (STREQ(distro_str, "Slackware"))
 	{
 		if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
 		{
@@ -284,26 +284,26 @@ void detect_pkgs(char *str, const char *distro_str)
 		globfree(&gl);
 	}
 
-	else if (STRCMP(distro_str, "Gentoo") || STRCMP(distro_str, "Sabayon") 
-			|| STRCMP(distro_str, "Funtoo"))
+	else if (STREQ(distro_str, "Gentoo") || STREQ(distro_str, "Sabayon") 
+			|| STREQ(distro_str, "Funtoo"))
 	{
 		pkgs_file = popen("ls -d /var/db/pkg/*/* 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Fuduntu") || STRCMP(distro_str, "Fedora")
-			|| STRCMP(distro_str, "OpenSUSE")
-			|| STRCMP(distro_str, "Red Hat Linux")
-			|| STRCMP(distro_str, "Mandriva") || STRCMP(distro_str, "Mandrake")
-			|| STRCMP(distro_str, "Mageia") || STRCMP(distro_str, "Viperr"))
+	else if (STREQ(distro_str, "Fuduntu") || STREQ(distro_str, "Fedora")
+			|| STREQ(distro_str, "OpenSUSE")
+			|| STREQ(distro_str, "Red Hat Linux")
+			|| STREQ(distro_str, "Mandriva") || STREQ(distro_str, "Mandrake")
+			|| STREQ(distro_str, "Mageia") || STREQ(distro_str, "Viperr"))
 	{
 		pkgs_file = popen("rpm -qa 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
 		pclose(pkgs_file);
 	}
 
-	else if (STRCMP(distro_str, "Angstrom"))
+	else if (STREQ(distro_str, "Angstrom"))
 	{
 		pkgs_file = popen("opkg list-installed 2> /dev/null | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
@@ -311,7 +311,7 @@ void detect_pkgs(char *str, const char *distro_str)
 	}
 
 	/* if linux disto detection failed */
-	else if (STRCMP(distro_str, "Linux"))
+	else if (STREQ(distro_str, "Linux"))
 	{
 		safe_strncpy(str, "Not Found", MAX_STRLEN);
 
@@ -339,7 +339,7 @@ void detect_cpu(char *str)
 	fgets(str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 
-	if (STRCMP(str, "ARMv6-compatible processor rev 7 (v6l)"))
+	if (STREQ(str, "ARMv6-compatible processor rev 7 (v6l)"))
 	{
 		safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
 	}
@@ -470,7 +470,7 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (STRCMP(shell_name, "/bin/sh"))
+	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
 	}
@@ -675,10 +675,10 @@ void detect_gtk(char *str)
 	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
 	pclose(gtk_file);
 
-	if (STRCMP(gtk3_str, "Unknown"))
+	if (STREQ(gtk3_str, "Unknown"))
 		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
 				gtk_icons_str);
-	else if (STRCMP(gtk2_str, "Unknown"))
+	else if (STREQ(gtk2_str, "Unknown"))
 		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
 				gtk_icons_str);
 	else

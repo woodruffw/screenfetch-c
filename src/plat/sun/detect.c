@@ -108,7 +108,7 @@ void detect_uptime(char *str)
 
 	while ((ent = getutxent()))
 	{
-		if (STRCMP("system boot", ent->ut_line))
+		if (STREQ("system boot", ent->ut_line))
 		{
 			boottime = ent->ut_tv.tv_sec;
 		}
@@ -241,7 +241,7 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (STRCMP(shell_name, "/bin/sh"))
+	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
 	}

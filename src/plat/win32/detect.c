@@ -33,7 +33,7 @@ extern int pclose(FILE *stream);
 void detect_distro(char *str)
 {
 	/* if distro_str was NOT set by the -D flag or manual mode */
-	if (STRCMP(str, "Unknown") || STRCMP(str, "*"))
+	if (STREQ(str, "Unknown") || STREQ(str, "*"))
 	{
 #if defined(NTDDI_WIN7)
 			safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
@@ -302,7 +302,7 @@ void detect_shell(char *str)
 		return;
 	}
 
-	if (STRCMP(shell_name, "/bin/sh"))
+	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
 	}
