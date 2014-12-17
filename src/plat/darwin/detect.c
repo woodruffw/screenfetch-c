@@ -133,7 +133,8 @@ void detect_uptime(char *str)
 		(void) mach_timebase_info(&timebase_info);
 	}
 
-	uptime = (long long)((mach_absolute_time() * timebase_info.numer) / (1000* 1000 * timebase_info.denom));
+	uptime = (long long)((mach_absolute_time() * timebase_info.numer) /
+				(1000* 1000 * timebase_info.denom));
 	uptime /= 1000;
 
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
@@ -184,7 +185,9 @@ void detect_cpu(char *str)
 		int len = MAX_STRLEN;
 		sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
 	*/
-	cpu_file = popen("sysctl -n machdep.cpu.brand_string | sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | tr -d '\\n' | tr -s ' '", "r");
+	cpu_file = popen("sysctl -n machdep.cpu.brand_string | "
+				"sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | "
+				"tr -d '\\n' | tr -s ' '", "r");
 	fgets(str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 
@@ -199,7 +202,9 @@ void detect_gpu(char *str)
 {
 	FILE *gpu_file;
 
-	gpu_file = popen("system_profiler SPDisplaysDataType | awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | tr -d '\\n'", "r");
+	gpu_file = popen("system_profiler SPDisplaysDataType | "
+				"awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | "
+				"tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, gpu_file);
 	pclose(gpu_file);
 
@@ -218,9 +223,11 @@ void detect_disk(char *str)
 	if (!(statfs(getenv("HOME"), &disk_info)))
 	{
 		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
-		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
+		disk_used = (((disk_info.f_blocks - disk_info.f_bfree)
+					* disk_info.f_bsize) / GB);
 		disk_percentage = (((float) disk_used / disk_total) * 100);
-		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total,
+				disk_percentage);
 	}
 	else if (error)
 	{
@@ -318,7 +325,8 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
@@ -335,7 +343,8 @@ void detect_res(char *str)
 {
 	FILE *res_file;
 
-	res_file = popen("system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
+	res_file = popen("system_profiler SPDisplaysDataType | "
+				"awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
 	fgets(str, MAX_STRLEN, res_file);
 	pclose(res_file);
 

@@ -225,9 +225,11 @@ void detect_disk(char *str)
 	if (!(statvfs(getenv("HOME"), &disk_info)))
 	{
 		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
-		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
+		disk_used = (((disk_info.f_blocks - disk_info.f_bfree)
+					* disk_info.f_bsize) / GB);
 		disk_percentage = (((float) disk_used / disk_total) * 100);
-		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
+		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total,
+				disk_percentage);
 	}
 	else if (error)
 	{
@@ -314,7 +316,8 @@ void detect_shell(char *str)
 		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
-	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash") || strstr(shell_name, "ksh"))
+	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
+			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(str, shell_name, MAX_STRLEN);
