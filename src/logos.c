@@ -813,6 +813,32 @@ char *backtracklinux_logo[] =
 	""TWHT"                                             .  " TNRM
 };
 
+/* 20 */
+char *kalilinux_logo[] =
+{
+	""TLBL"..............					" TNRM,
+	""TLBL"            ..,;:ccc,.                          " TNRM,
+	""TLBL"          ......''';lxO.                        " TNRM,
+	""TLBL".....''''..........,:ld;                        " TNRM,
+	""TLBL"           .';;;:::;,,.x,                       " TNRM,
+	""TLBL"      ..'''.            0Xxoc:,.  ...           " TNRM,
+	""TLBL"  ....                ,ONkc;,;cokOdc',.         " TNRM,
+	""TLBL" .                   OMo           ':"TBLK"dd"TLBL"o.       " TNRM,
+	""TLBL"                    dMc               :OO;      " TNRM,
+	""TLBL"                    0M.                 .:o.    " TNRM,
+	""TLBL"                    ;Wd                         " TNRM,
+	""TLBL"                     ;XO,                       " TNRM,
+	""TLBL"                       ,d0Odlc;,..              " TNRM,
+	""TLBL"                           ..',;:cdOOd::,.      " TNRM,
+	""TLBL"                                    .:d;.':;.   " TNRM,
+	""TLBL"                                       'd,  .'  " TNRM,
+	""TLBL"                                         ;l   .." TNRM,
+	""TLBL"                                          .o    " TNRM,
+	""TLBL"                                            c   " TNRM,
+	""TLBL"                                            .'  " TNRM,
+	""TLBL"                                             .  " TNRM
+};
+
 /* 18 */
 char *sabayon_logo[] =
 {

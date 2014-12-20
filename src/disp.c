@@ -284,6 +284,13 @@ void output_logo_only(char *distro)
 			printf("%s\n", backtracklinux_logo[i]);
 		}
 	}
+	else if (STREQ(distro, "Kali Linux"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			printf("%s\n", kalilinux_logo[i]);
+		}
+	}
 	else if (STREQ(distro, "Sabayon"))
 	{
 		for (i = 0; i < 18; i++)
@@ -674,10 +681,21 @@ void main_ascii_output(char *data[], char *data_names[])
 	}
 	else if (STREQ(data[1], "Backtrack Linux"))
 	{
-		for (i = 0; i < 20; i++)
+		for (i = 0; i < 21; i++)
 		{
 			if (i < 16)
 				printf("%s " TLRD "%s" TNRM "%s\n", backtracklinux_logo[i],
+						data_names[i], data[i]);
+			else
+				printf("%s\n", backtracklinux_logo[i]);
+		}
+	}
+	else if (STREQ(data[1], "Kali Linux"))
+	{
+		for (i = 0; i < 21; i++)
+		{
+			if (i < 16)
+				printf("%s " TLBL "%s" TNRM "%s\n", kalilinux_logo[i],
 						data_names[i], data[i]);
 			else
 				printf("%s\n", backtracklinux_logo[i]);

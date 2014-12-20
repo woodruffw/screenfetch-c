@@ -43,6 +43,7 @@ extern char *manjaro_logo[];
 extern char *elementaryos_logo[];
 extern char *scientificlinux_logo[];
 extern char *backtracklinux_logo[];
+extern char *kalilinux_logo[];
 extern char *sabayon_logo[];
 extern char *android_logo[];
 extern char *linux_logo[];

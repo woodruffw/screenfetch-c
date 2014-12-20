@@ -265,10 +265,10 @@ void detect_pkgs(char *str, const char *distro_str)
 			|| STREQ(distro_str, "SolusOS") || STREQ(distro_str, "Debian")
 			|| STREQ(distro_str, "LMDE") || STREQ(distro_str, "CrunchBang")
 			|| STREQ(distro_str, "Peppermint")
-			|| STREQ(distro_str, "LinuxDeepin")
-			|| STREQ(distro_str, "Trisquel")
+			|| STREQ(distro_str, "LinuxDeepin")	|| STREQ(distro_str, "Trisquel")
 			|| STREQ(distro_str, "elementary OS")
-			|| STREQ(distro_str, "Backtrack Linux"))
+			|| STREQ(distro_str, "Backtrack Linux")
+			|| STREQ(distro_str, "Kali Linux"))
 	{
 		pkgs_file = popen("dpkg --get-selections | wc -l", "r");
 		fscanf(pkgs_file, "%d", &packages);
