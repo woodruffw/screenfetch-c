@@ -62,7 +62,12 @@ void detect_distro(char *str)
 				fscanf(distro_file, "%4s", distro_name_str);
 				fclose(distro_file);
 
-				if (STREQ(distro_name_str, "Back"))
+				if (STREQ(distro_name_str, "Kali"))
+				{
+					safe_strncpy(str, "Kali Linux", MAX_STRLEN);
+					detected = true;
+				}
+				else if (STREQ(distro_name_str, "Back"))
 				{
 					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
