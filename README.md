@@ -104,6 +104,7 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [x] ElementaryOS (styled as 'elementary OS')
 - [ ] Scientific Linux
 - [x] Backtrack Linux
+- [x] Kali Linux
 - [ ] Sabayon
 - [x] Android (requires -D "Android" flag)
 - [x] Linux (upon failure to detect a specific distro)
