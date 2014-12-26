@@ -168,14 +168,14 @@ void detect_arch(char *str)
 */
 void detect_host(char *str)
 {
-	char *given_user = "Unknown";
+	char given_user[MAX_STRLEN] = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
 	struct passwd *user_info;
 	struct utsname host_info;
 
 	if ((user_info = getpwuid(geteuid())))
 	{
-		given_user = user_info->pw_name;
+		safe_strncpy(given_user, user_info->pw_name, MAX_STRLEN);
 	}
 	else if (error)
 	{
