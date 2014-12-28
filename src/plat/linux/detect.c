@@ -131,7 +131,7 @@ void detect_distro(char *str)
 						Until then, spit out an error message.
 					*/
 					if (error)
-						ERR_REPORT("Failed to detect a Linux distro.");
+						ERR_REPORT("Failed to detect a Linux distro (1).");
 				}
 				else
 				{
@@ -139,7 +139,7 @@ void detect_distro(char *str)
 
 					if (error)
 					{
-						ERR_REPORT("Failed to detect a Linux distro.");
+						ERR_REPORT("Failed to detect a Linux distro (2).");
 					}
 				}
 			}
@@ -179,11 +179,17 @@ void detect_host(char *str)
 	}
 	else if (error)
 	{
-		ERR_REPORT("Could not detetct username.");
+		ERR_REPORT("Could not detect username.");
 	}
 	
-	uname(&host_info);
-	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
+	if (!(uname(&host_info)))
+	{
+		safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
+	}
+	else if (error)
+	{
+		ERR_REPORT("Could not detect hostname.");
+	}
 
 	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
@@ -198,8 +204,15 @@ void detect_kernel(char *str)
 {
 	struct utsname kern_info;
 
-	uname(&kern_info);
-	snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+	if (!(uname(&kern_info)))
+	{
+		snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+	}
+	else if (error)
+	{
+		ERR_REPORT("Could not detect kernel information.");
+		safe_strncpy(str, "Linux", MAX_STRLEN);
+	}
 
 	return;
 }
@@ -215,14 +228,20 @@ void detect_uptime(char *str)
 	int hrs = 0;
 	int days = 0;
 	struct sysinfo si_upt;
-	sysinfo(&si_upt);
 
-	split_uptime(si_upt.uptime, &secs, &mins, &hrs, &days);
+	if (!(sysinfo(&si_upt)))
+	{
+		split_uptime(si_upt.uptime, &secs, &mins, &hrs, &days);
 
-	if (days > 0)
-		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+		if (days > 0)
+			snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+		else
+			snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+	}
 	else
-		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+	{
+		ERR_REPORT("Could not detect system uptime.");
+	}
 
 	return;
 }
@@ -241,7 +260,7 @@ void detect_pkgs(char *str, const char *distro_str)
 		|| STREQ(distro_str, "ParabolaGNU/Linux-libre")
 		|| STREQ(distro_str, "Chakra") || STREQ(distro_str, "Manjaro"))
 	{
-		if (glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl) == 0)
+		if (!(glob("/var/lib/pacman/local/*", GLOB_NOSORT, NULL, &gl)))
 		{
 			packages = gl.gl_pathc;
 		}
@@ -277,7 +296,7 @@ void detect_pkgs(char *str, const char *distro_str)
 
 	else if (STREQ(distro_str, "Slackware"))
 	{
-		if (glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl) == 0)
+		if (!(glob("/var/log/packages/*", GLOB_NOSORT, NULL, &gl)))
 		{
 			packages = gl.gl_pathc;
 		}
@@ -395,7 +414,7 @@ void detect_gpu(char *str)
 	else if (error)
 	{
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
-		ERR_REPORT("Could not open an X display.");
+		ERR_REPORT("Could not open an X display (detect_gpu).");
 	}
 
 	return;
@@ -465,12 +484,10 @@ void detect_shell(char *str)
 	char *shell_name;
 	char vers_str[MAX_STRLEN];
 
-	shell_name = getenv("SHELL");
-
-	if (shell_name == NULL)
+	if (!(shell_name = getenv("SHELL")))
 	{
 		if (error)
-			ERR_REPORT("Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell - $SHELL not defined.");
 
 		return;
 	}
@@ -543,7 +560,7 @@ void detect_res(char *str)
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 
 		if (error)
-			ERR_REPORT("Problem detecting X display resolution.");
+			ERR_REPORT("Could not open an X display (detect_res)");
 	}
 
 	return;
@@ -632,7 +649,7 @@ void detect_wm(char *str)
 	}
 	else if (error)
 	{
-		ERR_REPORT("Could not open an X display.");
+		ERR_REPORT("Could not open an X display. (detect_wm)");
 	}
 
 	return;
