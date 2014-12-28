@@ -795,7 +795,7 @@ void main_ascii_output(char *data[], char *data_names[])
 	}
 	else
 	{
-		ERROR_OUT("Error: ", "Could not find a logo for the distro.");
+		ERR_REPORT("Could not find a logo for the distro.");
 	}
 
 	return;

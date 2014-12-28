@@ -19,7 +19,7 @@ void output_logo_only(char *distro);
 void main_ascii_output(char *data[], char *data_names[]);
 void main_text_output(char *data[], char *data_names[]);
 
-#define ERROR_OUT(str1, str2) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "%s%s\n", str1, str2))
+#define ERR_REPORT(str) (fprintf(stderr, TWHT "[[ " TLRD "!" TWHT " ]] " TNRM "Error: %s\n", str))
 #define VERBOSE_OUT(str1, str2) (fprintf(stdout, TLRD ":: " TNRM "%s%s\n", str1, str2))
 
 #endif /* SCREENFETCH_C_DISP_H */

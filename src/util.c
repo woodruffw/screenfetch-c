@@ -111,7 +111,7 @@ void take_screenshot(bool verbose)
 	}
 	else if (call_status && error)
 	{
-		ERROR_OUT("Error: ", "Problem saving screenshot.");
+		ERR_REPORT("Problem saving screenshot.");
 	}
 #endif
 

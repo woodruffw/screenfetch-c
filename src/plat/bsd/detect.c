@@ -167,7 +167,7 @@ void detect_pkgs(char *str, const char *distro_str)
 	safe_strncpy(str, "Not Found", MAX_STRLEN);
 
 	if (error)
-		ERROR_OUT("Error: ", "Could not find packages on current OS.");
+		ERR_REPORT("Could not find packages on current OS.");
 #endif
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
@@ -233,7 +233,7 @@ void detect_disk(char *str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not stat $HOME for filesystem statistics.");
+		ERR_REPORT("Could not stat $HOME for filesystem statistics.");
 	}
 
 	return;
@@ -279,7 +279,7 @@ void detect_shell(char *str)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell.");
 
 		return;
 	}
@@ -382,7 +382,7 @@ void detect_de(char *str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "No desktop environment found.");
+			ERR_REPORT("No desktop environment found.");
 		}
 	}
 

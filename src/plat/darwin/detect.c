@@ -162,7 +162,7 @@ void detect_pkgs(char *str, const char *distro_str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Failure while globbing packages.");
+		ERR_REPORT("Failure while globbing packages.");
 	}
 
 	globfree(&gl);
@@ -231,7 +231,7 @@ void detect_disk(char *str)
 	}
 	else if (error)
 	{
-
+		ERR_REPORT("Could not stat $HOME for filesystem statistics.");
 	}
 
 	return;
@@ -288,7 +288,7 @@ void detect_shell(char *str)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell.");
 
 		return;
 	}

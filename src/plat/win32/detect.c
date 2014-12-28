@@ -102,7 +102,7 @@ void detect_host(char *str)
 	given_user = malloc(sizeof(char) * MAX_STRLEN);
 	if (!given_user)
 	{
-		ERROR_OUT("Error: ", "Memory allocation failed in detect_host.");
+		ERR_REPORT("Memory allocation failed in detect_host.");
 		exit(1);
 	}
 	
@@ -297,7 +297,7 @@ void detect_shell(char *str)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell.");
 
 		return;
 	}

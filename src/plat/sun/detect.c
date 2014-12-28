@@ -192,7 +192,7 @@ void detect_disk(char *str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not stat $HOME for filesystem statistics.");
+		ERR_REPORT("Could not stat $HOME for filesystem statistics.");
 	}
 
 	return;
@@ -236,7 +236,7 @@ void detect_shell(char *str)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell.");
 
 		return;
 	}
@@ -306,7 +306,7 @@ void detect_res(char *str)
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 
 		if (error)
-			ERROR_OUT("Error: ", "Problem detecting X display resolution.");
+			ERR_REPORT("Problem detecting X display resolution.");
 	}
 
 	XCloseDisplay(disp);
@@ -345,7 +345,7 @@ void detect_de(char *str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "No desktop environment found.");
+			ERR_REPORT("No desktop environment found.");
 		}
 	}
 
@@ -387,21 +387,21 @@ void detect_wm(char *str)
 			}
 			else if (error)
 			{
-				ERROR_OUT("Error: ", "No _NET_WM_NAME property found.");
+				ERR_REPORT("No _NET_WM_NAME property found.");
 			}
 
 			XFree(wm_check_window);
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "WM cannot be detected without EWMH compliance.");
+			ERR_REPORT("WM cannot be detected without EWMH compliance.");
 		}
 
 		XCloseDisplay(disp);
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not open an X display.");
+		ERR_REPORT("Could not open an X display.");
 	}
 
 	return;

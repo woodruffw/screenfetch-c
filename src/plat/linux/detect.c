@@ -131,7 +131,7 @@ void detect_distro(char *str)
 						Until then, spit out an error message.
 					*/
 					if (error)
-						ERROR_OUT("Error: ", "Failed to detect a Linux distro.");
+						ERR_REPORT("Failed to detect a Linux distro.");
 				}
 				else
 				{
@@ -139,7 +139,7 @@ void detect_distro(char *str)
 
 					if (error)
 					{
-						ERROR_OUT("Error: ", "Failed to detect a Linux distro.");
+						ERR_REPORT("Failed to detect a Linux distro.");
 					}
 				}
 			}
@@ -179,7 +179,7 @@ void detect_host(char *str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not detetct username.");
+		ERR_REPORT("Could not detetct username.");
 	}
 	
 	uname(&host_info);
@@ -247,7 +247,7 @@ void detect_pkgs(char *str, const char *distro_str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "Failure while globbing packages.");
+			ERR_REPORT("Failure while globbing packages.");
 		}
 
 		globfree(&gl);
@@ -283,7 +283,7 @@ void detect_pkgs(char *str, const char *distro_str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "Failure while globbing packages.");
+			ERR_REPORT("Failure while globbing packages.");
 		}
 
 		globfree(&gl);
@@ -321,8 +321,8 @@ void detect_pkgs(char *str, const char *distro_str)
 		safe_strncpy(str, "Not Found", MAX_STRLEN);
 
 		if (error)
-			ERROR_OUT("Error: ", "Packages cannot be detected on an unknown "
-					"Linux distro.");
+			ERR_REPORT("Packages cannot be detected on an unknown "
+						"Linux distro.");
 	}
 
 	snprintf(str, MAX_STRLEN, "%d", packages);
@@ -380,14 +380,14 @@ void detect_gpu(char *str)
 			}
 			else if (error)
 			{
-				ERROR_OUT("Error: ", "Failed to create OpenGL context.");
+				ERR_REPORT("Failed to create OpenGL context.");
 			}
 
 			XFree((void *) visual_info);
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "Failed to select a proper X visual.");
+			ERR_REPORT("Failed to select a proper X visual.");
 		}
 
 		XCloseDisplay(disp);
@@ -395,7 +395,7 @@ void detect_gpu(char *str)
 	else if (error)
 	{
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
-		ERROR_OUT("Error: ", "Could not open an X display.");
+		ERR_REPORT("Could not open an X display.");
 	}
 
 	return;
@@ -419,7 +419,7 @@ void detect_disk(char *str)
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not stat $HOME for filesystem statistics.");
+		ERR_REPORT("Could not stat $HOME for filesystem statistics.");
 	}
 
 	return;
@@ -470,7 +470,7 @@ void detect_shell(char *str)
 	if (shell_name == NULL)
 	{
 		if (error)
-			ERROR_OUT("Error: ", "Could not detect a shell.");
+			ERR_REPORT("Could not detect a shell.");
 
 		return;
 	}
@@ -543,7 +543,7 @@ void detect_res(char *str)
 		safe_strncpy(str, "No X Server", MAX_STRLEN);
 
 		if (error)
-			ERROR_OUT("Error: ", "Problem detecting X display resolution.");
+			ERR_REPORT("Problem detecting X display resolution.");
 	}
 
 	return;
@@ -580,7 +580,7 @@ void detect_de(char *str)
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "No desktop environment found.");
+			ERR_REPORT("No desktop environment found.");
 		}
 	}
 
@@ -618,21 +618,21 @@ void detect_wm(char *str)
 			}
 			else if (error)
 			{
-				ERROR_OUT("Error: ", "No _NET_WM_NAME property found.");
+				ERR_REPORT("No _NET_WM_NAME property found.");
 			}
 
 			XFree(wm_check_window);
 		}
 		else if (error)
 		{
-			ERROR_OUT("Error: ", "No WM detected (non-EWMH compliant?)");
+			ERR_REPORT("No WM detected (non-EWMH compliant?)");
 		}
 
 		XCloseDisplay(disp);
 	}
 	else if (error)
 	{
-		ERROR_OUT("Error: ", "Could not open an X display.");
+		ERR_REPORT("Could not open an X display.");
 	}
 
 	return;
