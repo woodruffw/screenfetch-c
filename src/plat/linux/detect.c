@@ -356,16 +356,47 @@ void detect_pkgs(char *str, const char *distro_str)
 void detect_cpu(char *str)
 {
 	FILE *cpu_file;
+	char cpuinfo_buf[MAX_STRLEN] = {0};
+	char *cpuinfo_str;
+	int end;
 
-	cpu_file = popen("awk 'BEGIN{FS=\":\"} /model name/ { print $2; exit }' "
-			"/proc/cpuinfo | sed -e 's/ @/\\n/' -e 's/^ *//g' -e 's/ *$//g' "
-			"| head -1 | tr -d '\\n'", "r");
-	fgets(str, MAX_STRLEN, cpu_file);
-	pclose(cpu_file);
-
-	if (STREQ(str, "ARMv6-compatible processor rev 7 (v6l)"))
+	if ((cpu_file = fopen("/proc/cpuinfo", "r")))
 	{
-		safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
+		/* read past the first 4 lines (#5 is model name) */
+		for (int i = 0; i < 5; i++)
+		{
+			if (!(fgets(cpuinfo_buf, MAX_STRLEN, cpu_file)))
+			{
+				ERR_REPORT("Fatal error while reading /proc/cpuinfo");
+				return;
+			}
+		}
+
+		/* fail to match a colon. this should never happen, but check anyways */
+		if (!(cpuinfo_str = strchr(cpuinfo_buf, ':')))
+		{
+			ERR_REPORT("Fatal error matching in /proc/cpuinfo");
+			return;
+		}
+
+		cpuinfo_str += 2;
+		end = strlen(cpuinfo_str);
+
+		if (cpuinfo_str[end - 1] == '\n')
+			cpuinfo_str[end - 1] = '\0';
+
+		if (STREQ(cpuinfo_str, "ARMv6-compatible processor rev 7 (v6l)"))
+		{
+			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
+		}
+		else
+		{
+			safe_strncpy(str, cpuinfo_str, MAX_STRLEN);
+		}
+	}
+	else if (error)
+	{
+		ERR_REPORT("Failed to open /proc/cpuinfo. Ancient Linux kernel?");
 	}
 
 	return;
