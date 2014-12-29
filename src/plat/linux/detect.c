@@ -289,9 +289,16 @@ void detect_pkgs(char *str, const char *distro_str)
 			|| STREQ(distro_str, "Backtrack Linux")
 			|| STREQ(distro_str, "Kali Linux"))
 	{
-		pkgs_file = popen("dpkg --get-selections | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
+		if (!(glob("/var/lib/dpkg/info/*.list", GLOB_NOSORT, NULL, &gl)))
+		{
+			packages = gl.gl_pathc;
+		}
+		else if (error)
+		{
+			ERR_REPORT("Failure while globbing packages.");
+		}
+
+		globfree(&gl);
 	}
 
 	else if (STREQ(distro_str, "Slackware"))
@@ -311,9 +318,16 @@ void detect_pkgs(char *str, const char *distro_str)
 	else if (STREQ(distro_str, "Gentoo") || STREQ(distro_str, "Sabayon") 
 			|| STREQ(distro_str, "Funtoo"))
 	{
-		pkgs_file = popen("ls -d /var/db/pkg/*/* 2> /dev/null | wc -l", "r");
-		fscanf(pkgs_file, "%d", &packages);
-		pclose(pkgs_file);
+		if (!(glob("/var/db/pkg/*/*", GLOB_NOSORT, NULL, &gl)))
+		{
+			packages = gl.gl_pathc;
+		}
+		else if (error)
+		{
+			ERR_REPORT("Failure while globbing packages.");
+		}
+
+		globfree(&gl);
 	}
 
 	else if (STREQ(distro_str, "Fuduntu") || STREQ(distro_str, "Fedora")
