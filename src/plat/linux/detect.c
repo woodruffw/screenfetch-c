@@ -356,7 +356,7 @@ void detect_pkgs(char *str, const char *distro_str)
 void detect_cpu(char *str)
 {
 	FILE *cpu_file;
-	char cpuinfo_buf[MAX_STRLEN] = {0};
+	char cpuinfo_buf[MAX_STRLEN];
 	char *cpuinfo_str;
 	int end;
 
