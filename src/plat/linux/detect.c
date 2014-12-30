@@ -364,7 +364,7 @@ void detect_cpu(char *str)
 {
 	FILE *cpu_file;
 	char cpuinfo_buf[MAX_STRLEN];
-	char *cpuinfo_str;
+	char *cpuinfo_line;
 	int end;
 
 	if ((cpu_file = fopen("/proc/cpuinfo", "r")))
@@ -380,25 +380,25 @@ void detect_cpu(char *str)
 		}
 
 		/* fail to match a colon. this should never happen, but check anyways */
-		if (!(cpuinfo_str = strchr(cpuinfo_buf, ':')))
+		if (!(cpuinfo_line = strchr(cpuinfo_buf, ':')))
 		{
 			ERR_REPORT("Fatal error matching in /proc/cpuinfo");
 			return;
 		}
 
-		cpuinfo_str += 2;
-		end = strlen(cpuinfo_str);
+		cpuinfo_line += 2;
+		end = strlen(cpuinfo_line);
 
-		if (cpuinfo_str[end - 1] == '\n')
-			cpuinfo_str[end - 1] = '\0';
+		if (cpuinfo_line[end - 1] == '\n')
+			cpuinfo_line[end - 1] = '\0';
 
-		if (STREQ(cpuinfo_str, "ARMv6-compatible processor rev 7 (v6l)"))
+		if (STREQ(cpuinfo_line, "ARMv6-compatible processor rev 7 (v6l)"))
 		{
 			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
 		}
 		else
 		{
-			safe_strncpy(str, cpuinfo_str, MAX_STRLEN);
+			safe_strncpy(str, cpuinfo_line, MAX_STRLEN);
 		}
 	}
 	else if (error)
@@ -488,9 +488,7 @@ void detect_disk(char *str)
 */
 void detect_mem(char *str)
 {
-	long long total_mem = 0;
-	long long free_mem = 0;
-	long long used_mem = 0;
+	long long total_mem = 0, free_mem = 0, used_mem = 0;
 	struct sysinfo si_mem;
 
 	/* known problem: because linux utilizes free ram in caches/buffers,
@@ -578,8 +576,7 @@ void detect_shell(char *str)
 */
 void detect_res(char *str)
 {
-	int width = 0;
-	int height = 0;
+	int width = 0, height = 0;
 	Display *disp;
 	Screen *screen;
 
