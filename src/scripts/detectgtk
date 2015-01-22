@@ -11,7 +11,15 @@ gtk3Theme="Unknown"
 gtkIcons="Unknown"
 gtkFont="Unknown"
 
-DE=`detectde`
+# Where is `detectde' located ?
+# Until then it will be comment in
+
+#DE=`detectde`
+DE="Unknown"
+
+home_gtkrc_two="$HOME/.gtkrc-2.0"
+usr_gtkrc_two='/usr/share/gtk-2.0/gtkrc'
+home_gtkrc_mine="$HOME/.gtkrc.mine"
 
 case $DE in
 	'KDE'*) # Desktop Environment found as "KDE"
@@ -39,27 +47,27 @@ case $DE in
 		fi
 		if [[ -n ${KDE_CONFIG_FILE} ]]; then
 			if grep -q "widgetStyle=" "${KDE_CONFIG_FILE}"; then
-				gtk2Theme=$(awk -F"=" '/widgetStyle=/ {print $2}' "${KDE_CONFIG_FILE}")
+				gtk2Theme=$(awk -F "=" '/widgetStyle=/ {print $2}' "${KDE_CONFIG_FILE}")
 			elif grep -q "colorScheme=" "${KDE_CONFIG_FILE}"; then
-				gtk2Theme=$(awk -F"=" '/colorScheme=/ {print $2}' "${KDE_CONFIG_FILE}")
+				gtk2Theme=$(awk -F "=" '/colorScheme=/ {print $2}' "${KDE_CONFIG_FILE}")
 			fi
 			if grep -q "Theme=" "${KDE_CONFIG_FILE}"; then
-				gtkIcons=$(awk -F"=" '/Theme=/ {print $2}' "${KDE_CONFIG_FILE}")
+				gtkIcons=$(awk -F "=" '/Theme=/ {print $2}' "${KDE_CONFIG_FILE}")
 			fi
 			if grep -q "Font=" "${KDE_CONFIG_FILE}"; then
-				gtkFont=$(awk -F"=" '/font=/ {print $2}' "${KDE_CONFIG_FILE}")
+				gtkFont=$(awk -F "=" '/font=/ {print $2}' "${KDE_CONFIG_FILE}")
 			fi
 		fi
-		if [[ -f $HOME/.gtkrc-2.0 ]]; then
-			gtk2Theme=$(grep '^gtk-theme-name' $HOME/.gtkrc-2.0 | awk -F'=' '{print $2}')
+		if [[ -f ${home_gtkrc_two} ]]; then
+			gtk2Theme=$(grep '^gtk-theme-name' ${home_gtkrc_two} | awk -F '=' '{print $2}')
 			gtk2Theme=${gtk2Theme//\"/}
-			gtkIcons=$(grep '^gtk-icon-theme-name' $HOME/.gtkrc-2.0 | awk -F'=' '{print $2}')
+			gtkIcons=$(grep '^gtk-icon-theme-name' ${home_gtkrc_two} | awk -F '=' '{print $2}')
 			gtkIcons=${gtkIcons//\"/}
-			gtkFont=$(grep 'font_name' $HOME/.gtkrc-2.0 | awk -F'=' '{print $2}')
+			gtkFont=$(grep 'font_name' ${home_gtkrc_two} | awk -F '=' '{print $2}')
 			gtkFont=${gtkFont//\"/}
 		fi
 		if [[ -f $HOME/.config/gtk-3.0/settings.ini ]]; then
-			gtk3Theme=$(grep '^gtk-theme-name=' $HOME/.config/gtk-3.0/settings.ini | awk -F'=' '{print $2}')
+			gtk3Theme=$(grep '^gtk-theme-name=' $HOME/.config/gtk-3.0/settings.ini | awk -F '=' '{print $2}')
 		fi
 	;;
 	'Cinnamon'*) # Desktop Environment found as "Cinnamon"
@@ -90,7 +98,7 @@ case $DE in
 			gtkFont=$(gconftool-2 -g /desktop/gnome/interface/font_name)
 			if [ "$background_detect" == "1" ]; then
 				gtkBackgroundFull=$(gconftool-2 -g /desktop/gnome/background/picture_filename)
-				gtkBackground=$(echo "$gtkBackgroundFull" | awk -F"/" '{print $NF}')
+				gtkBackground=$(echo "$gtkBackgroundFull" | awk -F "/" '{print $NF}')
 			fi
 		fi
 	;;
@@ -128,72 +136,87 @@ case $DE in
 		fi
 		# TODO: Clean me.
 		if grep -q "sNet\/ThemeName" ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf 2>/dev/null; then
-			gtk2Theme=$(awk -F'=' '/sNet\/ThemeName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
+			gtk2Theme=$(awk -F '=' '/sNet\/ThemeName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
 		fi
 		if grep -q IconThemeName ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf 2>/dev/null; then
-			gtkIcons=$(awk -F'=' '/sNet\/IconThemeName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
+			gtkIcons=$(awk -F '=' '/sNet\/IconThemeName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
 		fi
 		if grep -q FontName ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf 2>/dev/null; then
-			gtkFont=$(awk -F'=' '/sGtk\/FontName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
+			gtkFont=$(awk -F '=' '/sGtk\/FontName/ {print $2}' ${XDG_CONFIG_HOME:-${HOME}/.config}$lxdeconf)
 		fi
 	;;
 	# /home/me/.config/rox.sourceforge.net/ROX-Session/Settings.xml
 	*)	# Lightweight or No DE Found
-		if [ -f $HOME/.gtkrc-2.0 ]; then
-			if grep -q gtk-theme $HOME/.gtkrc-2.0; then
-				gtk2Theme=$(awk -F'"' '/^gtk-theme/ {print $2}' $HOME/.gtkrc-2.0)
+		if [ -f ${home_gtkrc_two} ]; then
+			if grep -q gtk-theme ${home_gtkrc_two}; then
+				gtk2Theme=$(awk -F '"' '/^gtk-theme/ {print $2}' ${home_gtkrc_two})
 			fi
-			if grep -q icon-theme $HOME/.gtkrc-2.0; then
-				gtkIcons=$(awk -F'"' '/^gtk-icon-theme/ {print $2}' $HOME/.gtkrc-2.0)
+			if grep -q icon-theme ${home_gtkrc_two}; then
+				gtkIcons=$(awk -F '"' '/^gtk-icon-theme/ {print $2}' ${home_gtkrc_two})
 			fi
-			if grep -q font $HOME/.gtkrc-2.0; then
-				gtkFont=$(awk -F'"' '/^gtk-font-name/ {print $2}' $HOME/.gtkrc-2.0)
+			if grep -q font ${home_gtkrc_two}; then
+				gtkFont=$(awk -F '"' '/^gtk-font-name/ {print $2}' ${home_gtkrc_two})
 			fi
 		fi
 		# $HOME/.gtkrc.mine theme detect only
-		if [ -f $HOME/.gtkrc.mine ]; then
-			if grep -q "^include" $HOME/.gtkrc.mine; then
-				gtk2Theme=$(grep '^include.*gtkrc' $HOME/.gtkrc.mine | awk -F "/" '{ print $5 }')
+		if [[ -f ${home_gtkrc_mine} && ! -f ${home_gtkrc_two} ]]; then
+			if grep -q "^include" ${home_gtkrc_mine}; then
+				gtk2Theme=$(grep '^include.*gtkrc' ${home_gtkrc_mine} | awk -F "/" '{ print $5 }')
 			fi
-			if grep -q "^gtk-icon-theme-name" $HOME/.gtkrc.mine; then
-				gtkIcons=$(grep '^gtk-icon-theme-name' $HOME/.gtkrc.mine | awk -F '"' '{print $2}')
+			if grep -q "^gtk-icon-theme-name" ${home_gtkrc_mine}; then
+				gtkIcons=$(grep '^gtk-icon-theme-name' ${home_gtkrc_mine} | awk -F '"' '{print $2}')
+			fi
+		fi
+		# /usr/share/gtk-2.0/gtkrc
+		if [[ -f ${usr_gtkrc_two} && ! -f ${home_gtkrc_mine} && ! -f ${home_gtkrc_two} ]]; then
+			if grep -q gtk-theme ${usr_gtkrc_two}; then
+				gtk2Theme=$(awk -F '"' '/^gtk-theme/ {print $2}' ${usr_gtkrc_two})
+			fi
+			if grep -q icon-theme ${usr_gtkrc_two}; then
+				gtkIcons=$(awk -F '"' '/^gtk-icon-theme/ {print $2}' ${usr_gtkrc_two})
+			fi
+			if grep -q font ${usr_gtkrc_two}; then
+				gtkFont=$(awk -F '"' '/^gtk-font-name/ {print $2}' ${usr_gtkrc_two})
 			fi
 		fi
 		# /etc/gtk-2.0/gtkrc compatability
-		if [[ -f /etc/gtk-2.0/gtkrc && ! -f $HOME/.gtkrc-2.0 && ! -f $HOME/.gtkrc.mine ]]; then
-			if grep -q gtk-theme-name /etc/gtk-2.0/gtkrc; then
-				gtk2Theme=$(awk -F'"' '/^gtk-theme-name/ {print $2}' /etc/gtk-2.0/gtkrc)
+		etc_gtkrc_two='/etc/gtk-2.0/gtkrc'
+		if [[ -f ${etc_gtkrc_two} && ! -f ${home_gtkrc_two} && ! -f ${home_gtkrc_mine} && ! -f ${usr_gtkrc_two} ]]; then
+			if grep -q gtk-theme-name ${etc_gtkrc_two}; then
+				gtk2Theme=$(awk -F '"' '/^gtk-theme-name/ {print $2}' ${etc_gtkrc_two})
 			fi
-			if grep -q gtk-fallback-theme-name /etc/gtk-2.0/gtkrc  && ! [ "x$gtk2Theme" = "x" ]; then
-				gtk2Theme=$(awk -F'"' '/^gtk-fallback-theme-name/ {print $2}' /etc/gtk-2.0/gtkrc)
+			if grep -q gtk-fallback-theme-name ${etc_gtkrc_two}  && ! [ "x$gtk2Theme" = "x" ]; then
+				gtk2Theme=$(awk -F '"' '/^gtk-fallback-theme-name/ {print $2}' ${etc_gtkrc_two})
 			fi
-			if grep -q icon-theme /etc/gtk-2.0/gtkrc; then
-				gtkIcons=$(awk -F'"' '/^icon-theme/ {print $2}' /etc/gtk-2.0/gtkrc)
+			if grep -q icon-theme ${etc_gtkrc_two}; then
+				gtkIcons=$(awk -F '"' '/^icon-theme/ {print $2}' ${etc_gtkrc_two})
 			fi
-			if  grep -q gtk-fallback-icon-theme /etc/gtk-2.0/gtkrc  && ! [ "x$gtkIcons" = "x" ]; then
-				gtkIcons=$(awk -F'"' '/^gtk-fallback-icon-theme/ {print $2}' /etc/gtk-2.0/gtkrc)
+			if  grep -q gtk-fallback-icon-theme ${etc_gtkrc_two}  && ! [ "x$gtkIcons" = "x" ]; then
+				gtkIcons=$(awk -F '"' '/^gtk-fallback-icon-theme/ {print $2}' ${etc_gtkrc_two})
 			fi
-			if grep -q font /etc/gtk-2.0/gtkrc; then
-				gtkFont=$(awk -F'"' '/^gtk-font-name/ {print $2}' /etc/gtk-2.0/gtkrc)
+			if grep -q font ${etc_gtkrc_two}; then
+				gtkFont=$(awk -F '"' '/^gtk-font-name/ {print $2}' ${etc_gtkrc_two})
 			fi
 		fi
 		# EXPERIMENTAL gtk3 Theme detection
-		if [ -f $HOME/.config/gtk-3.0/settings.ini ]; then
-			if grep -q gtk-theme-name $HOME/.config/gtk-3.0/settings.ini; then
-				gtk3Theme=$(awk -F'=' '/^gtk-theme-name/ {print $2}' $HOME/.config/gtk-3.0/settings.ini)
+		home_conf_gtk_three="$HOME/.config/gtk-3.0/settings.ini"
+		if [ -f ${home_conf_gtk_three} ]; then
+			if grep -q gtk-theme-name ${home_conf_gtk_three}; then
+				gtk3Theme=$(awk -F '=' '/^gtk-theme-name/ {print $2}' ${home_conf_gtk_three})
 			fi
 		fi
 		# Proper gtk3 Theme detection
 		#if [ $(which gsettings) ] && [ "$distro" != "Mac OS X" ]; then
 		#	gtk3Theme="$(gsettings get org.gnome.desktop.interface gtk-theme | tr -d \"\'\")"
 		#fi
-		if type -p gsettings >/dev/null 2>&1; then
-			gtk3Theme=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)
-			gtk3Theme=${gtk3Theme//"'"}
-		fi
+		# gsettings and xfconf-query should only be used in their desktop environments
+		#if type -p gsettings >/dev/null 2>&1; then
+		#	gtk3Theme=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)
+		#	gtk3Theme=${gtk3Theme//"'"}
+		#fi
 		# ROX-Filer icon detect only
 		if [ -a ${XDG_CONFIG_HOME:-${HOME}/.config}/rox.sourceforge.net/ROX-Filer/Options ]; then
-			gtkIcons=$(awk -F'[>,<]' '/^icon_theme/ {print $3}' ${XDG_CONFIG_HOME:-${HOME}/.config}/rox.sourceforge.net/ROX-Filer/Options)
+			gtkIcons=$(awk -F '[>,<]' '/^icon_theme/ {print $3}' ${XDG_CONFIG_HOME:-${HOME}/.config}/rox.sourceforge.net/ROX-Filer/Options)
 		fi
 		# E17 detection
 		if [ $E_ICON_THEME ]; then
@@ -204,10 +227,10 @@ case $DE in
 		# Background Detection (feh, nitrogen)
 		if [ "$background_detect" == "1" ]; then
 			if [ -a $HOME/.fehbg ]; then
-				gtkBackgroundFull=$(awk -F"'" '/feh --bg/{print $2}' $HOME/.fehbg 2>/dev/null)
-				gtkBackground=$(echo "$gtkBackgroundFull" | awk -F"/" '{print $NF}')
+				gtkBackgroundFull=$(awk -F "'" '/feh --bg/{print $2}' $HOME/.fehbg 2>/dev/null)
+				gtkBackground=$(echo "$gtkBackgroundFull" | awk -F "/" '{print $NF}')
 			elif [ -a ${XDG_CONFIG_HOME:-${HOME}/.config}/nitrogen/bg-saved.cfg ]; then
-				gtkBackground=$(awk -F"/" '/file=/ {print $NF}' ${XDG_CONFIG_HOME:-${HOME}/.config}/nitrogen/bg-saved.cfg)
+				gtkBackground=$(awk -F "/" '/file=/ {print $NF}' ${XDG_CONFIG_HOME:-${HOME}/.config}/nitrogen/bg-saved.cfg)
 			fi
 		fi
 	;;

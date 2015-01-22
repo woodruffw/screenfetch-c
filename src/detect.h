@@ -9,9 +9,9 @@
 #ifndef SCREENFETCH_C_DETECT_H
 #define SCREENFETCH_C_DETECT_H
 
-void detect_distro(char *str);
-void detect_arch(char *str);
-void detect_host(char *str);
+void detect_distro(char *str1, char *str2);
+/*void detect_arch(char *str);*/
+void detect_host(char *str1, char *str2);
 void detect_kernel(char *str);
 void detect_uptime(char *str);
 void detect_pkgs(char *str, const char *distro_str);
@@ -24,6 +24,6 @@ void detect_res(char *str);
 void detect_de(char *str);
 void detect_wm(char *str);
 void detect_wm_theme(char *str, const char *wm_str);
-void detect_gtk(char *str);
+void detect_gtk(char *str1, char *str2, char *str3);
 
 #endif /* SCREENFETCH_C_DETECT_H */

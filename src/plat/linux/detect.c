@@ -34,12 +34,14 @@
 
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
-	argument char *str: the char array to be filled with the distro name
+	argument char *str1: the char array to be filled with the distro name
+	argument char *str2: the char array to be filled with the distro colour
+	so we can print "user@hostname" with the same colour as the detected distro one
 */
-void detect_distro(char *str)
+void detect_distro(char *str1, char *str2)
 {
 	/* if distro_str was NOT set by the -D flag or manual mode */
-	if (STREQ(str, "Unknown") || STREQ(str, "*"))
+	if (STREQ(str1, "Unknown") || STREQ(str1, "*"))
 	{
 		FILE *distro_file;
 
@@ -47,7 +49,8 @@ void detect_distro(char *str)
 
 		if (FILE_EXISTS("/system/bin/getprop"))
 		{
-			safe_strncpy(str, "Android", MAX_STRLEN);
+			safe_strncpy(str1, "Android", MAX_STRLEN);
+			sprintf(str2, "%s", TLGN);
 		}
 		else
 		{
@@ -64,29 +67,34 @@ void detect_distro(char *str)
 
 				if (STREQ(distro_name_str, "Kali"))
 				{
-					safe_strncpy(str, "Kali Linux", MAX_STRLEN);
+					safe_strncpy(str1, "Kali Linux", MAX_STRLEN);
 					detected = true;
+					sprintf(str2, "%s", TLBL);
 				}
 				else if (STREQ(distro_name_str, "Back"))
 				{
-					safe_strncpy(str, "Backtrack Linux", MAX_STRLEN);
+					safe_strncpy(str1, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
+					sprintf(str2, "%s", TLRD);
 				}
 				else if (STREQ(distro_name_str, "Crun"))
 				{
-					safe_strncpy(str, "CrunchBang", MAX_STRLEN);
+					safe_strncpy(str1, "CrunchBang", MAX_STRLEN);
 					detected = true;
+					sprintf(str2, "%s", TDGY);
 				}
 				else if (STREQ(distro_name_str, "LMDE"))
 				{
-					safe_strncpy(str, "LMDE", MAX_STRLEN);
+					safe_strncpy(str1, "LMDE", MAX_STRLEN);
 					detected = true;
+					sprintf(str2, "%s", TLGN);
 				}
 				else if (STREQ(distro_name_str, "Debi")
 						|| STREQ(distro_name_str, "Rasp"))
 				{
-					safe_strncpy(str, "Debian", MAX_STRLEN);
+					safe_strncpy(str1, "Debian", MAX_STRLEN);
 					detected = true;
+					sprintf(str2, "%s", TLRD);
 				}
 			}
 
@@ -94,27 +102,33 @@ void detect_distro(char *str)
 			{
 				if (FILE_EXISTS("/etc/fedora-release"))
 				{
-					safe_strncpy(str, "Fedora", MAX_STRLEN);
+					safe_strncpy(str1, "Fedora", MAX_STRLEN);
+					sprintf(str2, "%s", TLBL);
 				}
 				else if (FILE_EXISTS("/etc/SuSE-release"))
 				{
-					safe_strncpy(str, "OpenSUSE", MAX_STRLEN);
+					safe_strncpy(str1, "OpenSUSE", MAX_STRLEN);
+					sprintf(str2, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/arch-release"))
 				{
-					safe_strncpy(str, "Arch Linux", MAX_STRLEN);
+					safe_strncpy(str1, "Arch Linux", MAX_STRLEN);
+					sprintf(str2, "%s", TLCY);
 				}
 				else if (FILE_EXISTS("/etc/gentoo-release"))
 				{
-					safe_strncpy(str, "Gentoo", MAX_STRLEN);
+					safe_strncpy(str1, "Gentoo", MAX_STRLEN);
+					sprintf(str2, "%s", TLPR);
 				}
 				else if (FILE_EXISTS("/etc/angstrom-version"))
 				{
-					safe_strncpy(str, "Angstrom", MAX_STRLEN);
+					safe_strncpy(str1, "Angstrom", MAX_STRLEN);
+					sprintf(str2, "%s", TNRM);
 				}
 				else if (FILE_EXISTS("/etc/manjaro-release"))
 				{
-					safe_strncpy(str, "Manjaro", MAX_STRLEN);
+					safe_strncpy(str1, "Manjaro", MAX_STRLEN);
+					sprintf(str2, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/lsb-release"))
 				{
@@ -122,7 +136,8 @@ void detect_distro(char *str)
 					fscanf(distro_file, "%s ", distro_name_str);
 					fclose(distro_file);
 
-					snprintf(str, MAX_STRLEN, "%s", distro_name_str + 11);
+					snprintf(str1, MAX_STRLEN, "%s", distro_name_str + 11);
+					sprintf(str2, "%s", TLRD);
 				}
 				else if (FILE_EXISTS("/etc/os-release"))
 				{
@@ -135,7 +150,8 @@ void detect_distro(char *str)
 				}
 				else
 				{
-					safe_strncpy(str, "Linux", MAX_STRLEN);
+					safe_strncpy(str1, "Linux", MAX_STRLEN);
+					sprintf(str2, "%s", TLGY);
 
 					if (error)
 					{
@@ -153,20 +169,21 @@ void detect_distro(char *str)
 	detects the computer's architecture
 	argument char *str: the char array to be filled with the architecture
 */
-void detect_arch(char *str)
+/*void detect_arch(char *str)
 {
 	struct utsname arch_info;
 	uname(&arch_info);
 	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
 
 	return;
-}
+}*/
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the host info
+	argument char *str1: the char array to be filled with the host info
+	argument char *str2: the passed distro colour for "user@hostname"
 */
-void detect_host(char *str)
+void detect_host(char *str1, char *str2)
 {
 	char given_user[MAX_STRLEN] = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
@@ -191,7 +208,8 @@ void detect_host(char *str)
 		ERR_REPORT("Could not detect hostname.");
 	}
 
-	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(str1, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
+		str2, given_user, TNRM, TWHT, TNRM, str2, given_host, TNRM);
 
 	return;
 }
@@ -206,7 +224,7 @@ void detect_kernel(char *str)
 
 	if (!(uname(&kern_info)))
 	{
-		snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+		snprintf(str, MAX_STRLEN, "%s %s %s", kern_info.sysname, kern_info.release, kern_info.machine);
 	}
 	else if (error)
 	{
@@ -714,13 +732,15 @@ void detect_wm_theme(char *str, const char *wm_str)
 
 /*	detect_gtk
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char *str: the char array to be filled with the GTK info
+	argument char *str1: the char array to be filled with the GTK info
+	argument char *str2: the char array to be filled with GTK icons
+	argument char *str3: the char array to be filled with Font
 	--
 	CAVEAT: This function relies on the presence of 'detectgtk', a shell script.
 	If it isn't present somewhere in the PATH, the GTK will be set as 'Unknown'
 	--
 */
-void detect_gtk(char *str)
+void detect_gtk(char *str1, char *str2, char *str3)
 {
 	FILE *gtk_file;
 	char gtk2_str[MAX_STRLEN] = "Unknown";
@@ -733,13 +753,17 @@ void detect_gtk(char *str)
 	pclose(gtk_file);
 
 	if (STREQ(gtk3_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
+		snprintf(str1, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
 				gtk_icons_str);
 	else if (STREQ(gtk2_str, "Unknown"))
-		snprintf(str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
+		snprintf(str1, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
 				gtk_icons_str);
 	else
-		snprintf(str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
+		snprintf(str1, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
+
+	snprintf(str2, MAX_STRLEN, "%s", gtk_icons_str);
+
+	snprintf(str3, MAX_STRLEN, "%s", font_str);
 
 	return;
 }
