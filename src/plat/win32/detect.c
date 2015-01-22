@@ -32,8 +32,8 @@ extern int pclose(FILE *stream);
 */
 void detect_distro(char *str)
 {
-	/* if distro_str was NOT set by the -D flag or manual mode */
-	if (STREQ(str, "Unknown") || STREQ(str, "*"))
+	/* if distro_str was NOT set by the -D flag */
+	if (STREQ(str, "Unknown"))
 	{
 #if defined(NTDDI_WIN7)
 			safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);

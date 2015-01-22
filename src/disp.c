@@ -37,7 +37,6 @@ void display_help(void)
 {
 	display_version();
 	printf("\n%s\n", "Options:\n"
-			"  -m, --manual\t\t\t Enter manual mode.\n"
 			"  -v, --verbose\t\t\t Enable verbosity during output.\n"
 			"  -s, --screenshot\t\t Take a screenshot.\n"
 			"  -n, --no-logo\t\t\t Print output without a logo.\n"
@@ -286,7 +285,6 @@ void process_data(char *data[], char *data_names[], char *logo[], unsigned short
 			}
 		}
 	}
-		
 
 	return;
 }

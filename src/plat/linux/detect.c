@@ -40,8 +40,8 @@
 */
 void detect_distro(char *str1, char *str2)
 {
-	/* if distro_str was NOT set by the -D flag or manual mode */
-	if (STREQ(str1, "Unknown") || STREQ(str1, "*"))
+	/* if distro_str was NOT set by the -D flag */
+	if (STREQ(str1, "Unknown"))
 	{
 		FILE *distro_file;
 

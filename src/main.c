@@ -94,12 +94,11 @@ int main(int argc, char **argv)
 		"Font: "
 	};
 
-	bool manual = false, logo = true, portrait = false;
+	bool logo = true, portrait = false;
 	bool verbose = false, screenshot = false;
 
 	struct option options[] =
 	{
-		{ "manual", no_argument, 0, 'm' },
 		{ "verbose", no_argument, 0, 'v' },
 		{ "no-logo", no_argument, 0, 'n' },
 		{ "screenshot", no_argument, 0, 's' },
@@ -114,13 +113,10 @@ int main(int argc, char **argv)
 
 	signed char c;
 	int index = 0;
-	while ((c = getopt_long(argc, argv, "mvnsD:EpVhL:", options, &index)) != -1)
+	while ((c = getopt_long(argc, argv, "vnsD:EpVhL:", options, &index)) != -1)
 	{
 		switch (c)
 		{
-			case 'm':
-				manual = true;
-				break;
 			case 'v':
 				verbose = true;
 				break;
@@ -153,64 +149,21 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (manual) /* triggered by -m (--manual) flag */
-	{
-		int stat = manual_input(detected_arr, verbose);
-
-		if (stat == EXIT_SUCCESS)
-		{
-			/* these sections are ALWAYS detected */
-			detect_uptime(uptime_str);
-			detect_pkgs(pkgs_str, distro_str);
-			detect_disk(disk_str);
-			detect_mem(mem_str);
-
-			/* if the user specifies an asterisk, fill the data in for them */
-			if (STREQ(distro_str, "*"))
-				detect_distro(distro_str, host_colour);
-			if (STREQ(host_str, "*"))
-				detect_host(host_str, host_colour);
-			if (STREQ(kernel_str, "*"))
-				detect_kernel(kernel_str);
-			if (STREQ(cpu_str, "*"))
-				detect_cpu(cpu_str);
-			if (STREQ(gpu_str, "*"))
-				detect_gpu(gpu_str);
-			if (STREQ(shell_str, "*"))
-				detect_shell(shell_str);
-			if (STREQ(res_str, "*"))
-				detect_res(res_str);
-			if (STREQ(de_str, "*"))
-				detect_de(de_str);
-			if (STREQ(wm_str, "*"))
-				detect_wm(wm_str);
-			if (STREQ(wm_theme_str, "*"))
-				detect_wm_theme(wm_theme_str, wm_str);
-			if (STREQ(gtk_str, "*"))
-				detect_gtk(gtk_str, icon_str, font_str);
-		}
-
-		else /* if the user decided to leave manual mode without input */
-			return EXIT_SUCCESS;
-	}
-	else /* each string is filled by its respective function */
-	{
-		detect_distro(distro_str, host_colour);
-		detect_host(host_str, host_colour);
-		detect_kernel(kernel_str);
-		detect_uptime(uptime_str);
-		detect_pkgs(pkgs_str, distro_str);
-		detect_cpu(cpu_str);
-		detect_gpu(gpu_str);
-		detect_disk(disk_str);
-		detect_mem(mem_str);
-		detect_shell(shell_str);
-		detect_res(res_str);
-		detect_de(de_str);
-		detect_wm(wm_str);
-		detect_wm_theme(wm_theme_str, wm_str);
-		detect_gtk(gtk_str, icon_str, font_str);
-	}
+	detect_distro(distro_str, host_colour);
+	detect_host(host_str, host_colour);
+	detect_kernel(kernel_str);
+	detect_uptime(uptime_str);
+	detect_pkgs(pkgs_str, distro_str);
+	detect_cpu(cpu_str);
+	detect_gpu(gpu_str);
+	detect_disk(disk_str);
+	detect_mem(mem_str);
+	detect_shell(shell_str);
+	detect_res(res_str);
+	detect_de(de_str);
+	detect_wm(wm_str);
+	detect_wm_theme(wm_theme_str, wm_str);
+	detect_gtk(gtk_str, icon_str, font_str);
 
 	/* if the user specified a different OS to display, set distro_set to it */
 	if (!STREQ(given_distro_str, "Unknown"))
