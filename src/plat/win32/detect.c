@@ -57,39 +57,6 @@ void detect_distro(char *str)
 	return;
 }
 
-/*	detect_arch
-	detects the computer's architecture
-	argument char *str: the char array to be filled with the architecture
-*/
-void detect_arch(char *str)
-{
-	SYSTEM_INFO arch_info;
-	GetNativeSystemInfo(&arch_info);
-
-	if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
-	{
-		safe_strncpy(str, "AMD64", MAX_STRLEN);
-	}
-	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
-	{
-		safe_strncpy(str, "ARM", MAX_STRLEN);
-	}
-	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
-	{
-		safe_strncpy(str, "IA64", MAX_STRLEN);
-	}
-	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
-	{
-		safe_strncpy(str, "x86", MAX_STRLEN);
-	}
-	else
-	{
-		safe_strncpy(str, "Unknown", MAX_STRLEN);
-	}
-
-	return;
-}
-
 /*	detect_host
 	detects the computer's hostname and active user and formats them
 	argument char *str: the char array to be filled with the host info
@@ -124,13 +91,39 @@ void detect_host(char *str)
 void detect_kernel(char *str)
 {
 	OSVERSIONINFO kern_info;
+	SYSTEM_INFO arch_info;
+	char arch_str[MAX_STRLEN];
 
 	ZeroMemory(&kern_info, sizeof(OSVERSIONINFO));
 	kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx(&kern_info);
-	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d",
+
+	GetNativeSystemInfo(&arch_info);
+
+	if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	{
+		safe_strncpy(arch_str, "AMD64", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
+	{
+		safe_strncpy(arch_str, "ARM", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+	{
+		safe_strncpy(arch_str, "IA64", MAX_STRLEN);
+	}
+	else if (arch_info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
+	{
+		safe_strncpy(arch_str, "x86", MAX_STRLEN);
+	}
+	else
+	{
+		safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
+	}
+
+	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d (%s)",
 			(int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion,
-			(int) kern_info.dwBuildNumber);
+			(int) kern_info.dwBuildNumber, arch_str);
 
 	return;
 }
