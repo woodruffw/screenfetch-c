@@ -224,7 +224,8 @@ void detect_kernel(char *str)
 
 	if (!(uname(&kern_info)))
 	{
-		snprintf(str, MAX_STRLEN, "%s %s %s", kern_info.sysname, kern_info.release, kern_info.machine);
+		snprintf(str, MAX_STRLEN, "%s %s %s", kern_info.sysname,
+				kern_info.release, kern_info.machine);
 	}
 	else if (error)
 	{

@@ -108,7 +108,8 @@ void detect_kernel(char *str)
 	struct utsname kern_info;
 
 	uname(&kern_info);
-	snprintf(str, MAX_STRLEN, "%s %s", kern_info.sysname, kern_info.release);
+	snprintf(str, MAX_STRLEN, "%s %s %s", kern_info.sysname,
+			kern_info.release, kern_info.machine);
 
 	return;
 }
