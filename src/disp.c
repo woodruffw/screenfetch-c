@@ -65,7 +65,11 @@ void display_verbose(char *data[], char *data_names[])
 	return;
 }
 
-
+/*	process_logo_only
+	output handling for output_logo_only
+	argument char *distro: the output logo
+	argument unsigned short int num: the length of the logo in lines
+*/
 void process_logo_only(char *distro[], unsigned short int num)
 {
 	unsigned short int x = 0;
@@ -78,7 +82,7 @@ void process_logo_only(char *distro[], unsigned short int num)
 
 /*	output_logo_only
 	outputs an ASCII logo based upon the distro name passed to it
-	argument char *distro the name of the distro to output
+	argument char *distro: the name of the distro to output
 */
 void output_logo_only(char *distro)
 {
@@ -248,23 +252,41 @@ void output_logo_only(char *distro)
 }
 
 /* process_data
-   handle the detected distro arguments
+   output handling main_ascii_output
+   argument char *data[]: the data being output
+   argument char *data_names[]: the name associated with each datum
+   argument char *logo[]: the logo associated with the distro
+   argument unsigned short int num1, num2: indices for the data
+   argument char *col1..3: colors for the output
 */
 void process_data(char *data[], char *data_names[], char *logo[], unsigned short int num1, unsigned short int num2, char *col1, char *col2, char *col3)
 {
 	unsigned short int x = 0;
 
 	if (0 == num2)
+	{
 		for (x = 0; x < num1; x++)
+		{
 			printf("%s %s%s%s%s%s%s\n", logo[x], col1, col2, col3,
-				data_names[x], TNRM, data[x]);
+						data_names[x], TNRM, data[x]);
+		}
+	}
 	else
+	{
 		for (x = 0; x < num1; x++)
+		{
 			if (x < num2)
+			{
 				printf("%s %s%s%s%s%s%s\n", logo[x], col1, col2, col3,
-                    data_names[x], TNRM, data[x]);
+						data_names[x], TNRM, data[x]);
+			}
 			else
+			{
 				printf("%s\n", logo[x]);
+			}
+		}
+	}
+		
 
 	return;
 }
