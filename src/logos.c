@@ -31,10 +31,10 @@ char *oldarch_logo[] =
 	"                                     " TNRM
 };
 
-/* 18 */
+/* 19 */
 char *arch_logo[] =
 {
-	""TLCY"                   -`                 ",
+	""TLCY"                   -`                 " TNRM,
 	""TLCY"                  .o+`                " TNRM,
 	""TLCY"                 `ooo/                " TNRM,
 	""TLCY"                `+oooo:               " TNRM,

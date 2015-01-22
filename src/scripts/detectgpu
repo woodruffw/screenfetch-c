@@ -6,9 +6,19 @@
 #  Modified to stand alone by William Woodruff (woodruffw) in screenfetch-c
 
 if [ -n "$(type -p lspci)" ]; then
-	gpu_info=$(lspci 2> /dev/null | grep VGA)
-	gpu=$(echo "$gpu_info" | grep -oE '\[.*\]' | sed 's/\[//;s/\]//')
-	gpu=$(echo "${gpu}" | sed -n '1h;2,$H;${g;s/\n/, /g;p}')
+	# gpu_info=$(lspci 2> /dev/null | grep VGA)
+	# gpu=$(echo "$gpu_info" | grep -oE '\[.*\]' | sed 's/\[//;s/\]//')
+	# gpu=$(echo "${gpu}" | sed -n '1h;2,$H;${g;s/\n/, /g;p}')
+
+	# better gpu detection with g/awk than sed
+	# sed requires '[manufactor] dummy info [model name]'
+	# here 'manufactor' and 'model name' have to be in '[]',
+	# otherwise the output will be awkward. g/awk seperates
+	# the output from the first '[' onwards. Try to parse this with sed and g/awk:
+	# 01:05.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] RS780L Radeon 3000
+
+	gpu=$(lspci | awk -F '[' '/VGA/ {gsub("]","");OFS="";print $2,$3}')
+
 elif [[ -n "$(type -p glxinfo)" && -z "$gpu" ]]; then
 	gpu_info=$(glxinfo 2>/dev/null)
 	gpu=$(echo "$gpu_info" | grep "OpenGL renderer string")
@@ -35,4 +45,4 @@ else
 	gpu="Unknown"
 fi
 
-printf $gpu
+echo ${gpu}

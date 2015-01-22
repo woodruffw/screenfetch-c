@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 {
 	char given_distro_str[MAX_STRLEN] = "Unknown";
 	char distro_str[MAX_STRLEN] = "Unknown";
-	char arch_str[MAX_STRLEN] = "Unknown";
+	/*char arch_str[MAX_STRLEN] = "Unknown";*/
 	char host_str[MAX_STRLEN] = "Unknown";
 	char kernel_str[MAX_STRLEN] = "Unknown";
 	char uptime_str[MAX_STRLEN] = "Unknown";
@@ -48,13 +48,16 @@ int main(int argc, char **argv)
 	char wm_str[MAX_STRLEN] = "Unknown";
 	char wm_theme_str[MAX_STRLEN] = "Unknown";
 	char gtk_str[MAX_STRLEN] = "Unknown";
+	char icon_str[MAX_STRLEN] = "Unknown";
+	char font_str[MAX_STRLEN] = "Unknown";
 
-	char *detected_arr[16] =
+	char host_colour[10];
+
+	char *detected_arr[17] =
 	{
 		host_str,
 		distro_str,
 		kernel_str,
-		arch_str,
 		cpu_str,
 		gpu_str,
 		shell_str,
@@ -66,15 +69,16 @@ int main(int argc, char **argv)
 		de_str,
 		wm_str,
 		wm_theme_str,
-		gtk_str
+		gtk_str,
+		icon_str,
+		font_str
 	};
 
-	char *detected_arr_names[16] =
+	char *detected_arr_names[17] =
 	{
 		"",
 		"OS: ",
 		"Kernel: ",
-		"Arch: ",
 		"CPU: ",
 		"GPU: ",
 		"Shell: ",
@@ -86,7 +90,9 @@ int main(int argc, char **argv)
 		"DE: ",
 		"WM: ",
 		"WM Theme: ",
-		"GTK: "
+		"GTK: ",
+		"Icon Theme: ",
+		"Font: "
 	};
 
 	bool manual = false, logo = true, portrait = false;
@@ -162,11 +168,11 @@ int main(int argc, char **argv)
 
 			/* if the user specifies an asterisk, fill the data in for them */
 			if (STREQ(distro_str, "*"))
-				detect_distro(distro_str);
-			if (STREQ(arch_str, "*"))
-				detect_arch(arch_str);
+				detect_distro(distro_str, host_colour);
+			/*if (STREQ(arch_str, "*"))
+				detect_arch(arch_str);*/
 			if (STREQ(host_str, "*"))
-				detect_host(host_str);
+				detect_host(host_str, host_colour);
 			if (STREQ(kernel_str, "*"))
 				detect_kernel(kernel_str);
 			if (STREQ(cpu_str, "*"))
@@ -184,7 +190,7 @@ int main(int argc, char **argv)
 			if (STREQ(wm_theme_str, "*"))
 				detect_wm_theme(wm_theme_str, wm_str);
 			if (STREQ(gtk_str, "*"))
-				detect_gtk(gtk_str);
+				detect_gtk(gtk_str, icon_str, font_str);
 		}
 
 		else /* if the user decided to leave manual mode without input */
@@ -192,9 +198,9 @@ int main(int argc, char **argv)
 	}
 	else /* each string is filled by its respective function */
 	{
-		detect_distro(distro_str);
-		detect_arch(arch_str);
-		detect_host(host_str);
+		detect_distro(distro_str, host_colour);
+		/*detect_arch(arch_str);*/
+		detect_host(host_str, host_colour);
 		detect_kernel(kernel_str);
 		detect_uptime(uptime_str);
 		detect_pkgs(pkgs_str, distro_str);
@@ -207,7 +213,7 @@ int main(int argc, char **argv)
 		detect_de(de_str);
 		detect_wm(wm_str);
 		detect_wm_theme(wm_theme_str, wm_str);
-		detect_gtk(gtk_str);
+		detect_gtk(gtk_str, icon_str, font_str);
 	}
 
 	/* if the user specified a different OS to display, set distro_set to it */
