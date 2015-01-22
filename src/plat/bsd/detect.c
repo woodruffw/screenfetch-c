@@ -57,7 +57,6 @@ void detect_host(char *str)
 	struct utsname host_info;
 
 	given_user = getlogin();
-
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 

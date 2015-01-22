@@ -33,7 +33,6 @@ int main(int argc, char **argv)
 {
 	char given_distro_str[MAX_STRLEN] = "Unknown";
 	char distro_str[MAX_STRLEN] = "Unknown";
-	/*char arch_str[MAX_STRLEN] = "Unknown";*/
 	char host_str[MAX_STRLEN] = "Unknown";
 	char kernel_str[MAX_STRLEN] = "Unknown";
 	char uptime_str[MAX_STRLEN] = "Unknown";
@@ -169,8 +168,6 @@ int main(int argc, char **argv)
 			/* if the user specifies an asterisk, fill the data in for them */
 			if (STREQ(distro_str, "*"))
 				detect_distro(distro_str, host_colour);
-			/*if (STREQ(arch_str, "*"))
-				detect_arch(arch_str);*/
 			if (STREQ(host_str, "*"))
 				detect_host(host_str, host_colour);
 			if (STREQ(kernel_str, "*"))
@@ -199,7 +196,6 @@ int main(int argc, char **argv)
 	else /* each string is filled by its respective function */
 	{
 		detect_distro(distro_str, host_colour);
-		/*detect_arch(arch_str);*/
 		detect_host(host_str, host_colour);
 		detect_kernel(kernel_str);
 		detect_uptime(uptime_str);
