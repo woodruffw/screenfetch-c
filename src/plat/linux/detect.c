@@ -1,10 +1,10 @@
 /*	detect.c
- *	Author: William Woodruff
- *	-------------
- *
- *	The detection functions used by screenfetch-c on Linux are implemented here.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	The detection functions used by screenfetch-c on Linux are implemented here.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 /* standard includes */
 #include <stdio.h>
@@ -27,6 +27,7 @@
 #include <glob.h>
 
 /* program includes */
+#include "../../arrays.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -34,14 +35,11 @@
 
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
-	argument char *str1: the char array to be filled with the distro name
-	argument char *str2: the char array to be filled with the distro colour
-	so we can print "user@hostname" with the same colour as the detected distro one
 */
-void detect_distro(char *str1, char *str2)
+void detect_distro(void)
 {
 	/* if distro_str was NOT set by the -D flag */
-	if (STREQ(str1, "Unknown"))
+	if (STREQ(distro_str, "Unknown"))
 	{
 		FILE *distro_file;
 
@@ -49,8 +47,8 @@ void detect_distro(char *str1, char *str2)
 
 		if (FILE_EXISTS("/system/bin/getprop"))
 		{
-			safe_strncpy(str1, "Android", MAX_STRLEN);
-			sprintf(str2, "%s", TLGN);
+			safe_strncpy(distro_str, "Android", MAX_STRLEN);
+			sprintf(host_colour, "%s", TLGN);
 		}
 		else
 		{
@@ -67,34 +65,34 @@ void detect_distro(char *str1, char *str2)
 
 				if (STREQ(distro_name_str, "Kali"))
 				{
-					safe_strncpy(str1, "Kali Linux", MAX_STRLEN);
+					safe_strncpy(distro_str, "Kali Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(str2, "%s", TLBL);
+					sprintf(host_colour, "%s", TLBL);
 				}
 				else if (STREQ(distro_name_str, "Back"))
 				{
-					safe_strncpy(str1, "Backtrack Linux", MAX_STRLEN);
+					safe_strncpy(distro_str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(str2, "%s", TLRD);
+					sprintf(host_colour, "%s", TLRD);
 				}
 				else if (STREQ(distro_name_str, "Crun"))
 				{
-					safe_strncpy(str1, "CrunchBang", MAX_STRLEN);
+					safe_strncpy(distro_str, "CrunchBang", MAX_STRLEN);
 					detected = true;
-					sprintf(str2, "%s", TDGY);
+					sprintf(host_colour, "%s", TDGY);
 				}
 				else if (STREQ(distro_name_str, "LMDE"))
 				{
-					safe_strncpy(str1, "LMDE", MAX_STRLEN);
+					safe_strncpy(distro_str, "LMDE", MAX_STRLEN);
 					detected = true;
-					sprintf(str2, "%s", TLGN);
+					sprintf(host_colour, "%s", TLGN);
 				}
 				else if (STREQ(distro_name_str, "Debi")
 						|| STREQ(distro_name_str, "Rasp"))
 				{
-					safe_strncpy(str1, "Debian", MAX_STRLEN);
+					safe_strncpy(distro_str, "Debian", MAX_STRLEN);
 					detected = true;
-					sprintf(str2, "%s", TLRD);
+					sprintf(host_colour, "%s", TLRD);
 				}
 			}
 
@@ -102,33 +100,33 @@ void detect_distro(char *str1, char *str2)
 			{
 				if (FILE_EXISTS("/etc/fedora-release"))
 				{
-					safe_strncpy(str1, "Fedora", MAX_STRLEN);
-					sprintf(str2, "%s", TLBL);
+					safe_strncpy(distro_str, "Fedora", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLBL);
 				}
 				else if (FILE_EXISTS("/etc/SuSE-release"))
 				{
-					safe_strncpy(str1, "OpenSUSE", MAX_STRLEN);
-					sprintf(str2, "%s", TLGN);
+					safe_strncpy(distro_str, "OpenSUSE", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/arch-release"))
 				{
-					safe_strncpy(str1, "Arch Linux", MAX_STRLEN);
-					sprintf(str2, "%s", TLCY);
+					safe_strncpy(distro_str, "Arch Linux", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLCY);
 				}
 				else if (FILE_EXISTS("/etc/gentoo-release"))
 				{
-					safe_strncpy(str1, "Gentoo", MAX_STRLEN);
-					sprintf(str2, "%s", TLPR);
+					safe_strncpy(distro_str, "Gentoo", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLPR);
 				}
 				else if (FILE_EXISTS("/etc/angstrom-version"))
 				{
-					safe_strncpy(str1, "Angstrom", MAX_STRLEN);
-					sprintf(str2, "%s", TNRM);
+					safe_strncpy(distro_str, "Angstrom", MAX_STRLEN);
+					sprintf(host_colour, "%s", TNRM);
 				}
 				else if (FILE_EXISTS("/etc/manjaro-release"))
 				{
-					safe_strncpy(str1, "Manjaro", MAX_STRLEN);
-					sprintf(str2, "%s", TLGN);
+					safe_strncpy(distro_str, "Manjaro", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/lsb-release"))
 				{
@@ -136,8 +134,8 @@ void detect_distro(char *str1, char *str2)
 					fscanf(distro_file, "%s ", distro_name_str);
 					fclose(distro_file);
 
-					snprintf(str1, MAX_STRLEN, "%s", distro_name_str + 11);
-					sprintf(str2, "%s", TLRD);
+					snprintf(distro_str, MAX_STRLEN, "%s", distro_name_str + 11);
+					sprintf(host_colour, "%s", TLRD);
 				}
 				else if (FILE_EXISTS("/etc/os-release"))
 				{
@@ -150,8 +148,8 @@ void detect_distro(char *str1, char *str2)
 				}
 				else
 				{
-					safe_strncpy(str1, "Linux", MAX_STRLEN);
-					sprintf(str2, "%s", TLGY);
+					safe_strncpy(distro_str, "Linux", MAX_STRLEN);
+					sprintf(host_colour, "%s", TLGY);
 
 					if (error)
 					{
@@ -164,19 +162,6 @@ void detect_distro(char *str1, char *str2)
 
 	return;
 }
-
-/*	detect_arch
-	detects the computer's architecture
-	argument char *str: the char array to be filled with the architecture
-*/
-/*void detect_arch(char *str)
-{
-	struct utsname arch_info;
-	uname(&arch_info);
-	safe_strncpy(str, arch_info.machine, MAX_STRLEN);
-
-	return;
-}*/
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them

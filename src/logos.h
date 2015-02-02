@@ -1,10 +1,10 @@
 /*  logos.h
- *	Author: William Woodruff
- *	-------------
- *	
- *	The ASCII logos used by screenfetch-c are externalized in this file.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**	
+**	The ASCII logos used by screenfetch-c are externalized in this file.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #ifndef SCREENFETCH_C_LOGOS_H
 #define SCREENFETCH_C_LOGOS_H

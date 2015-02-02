@@ -27,6 +27,7 @@
 #endif
 
 /* program includes */
+#include "../../arrays.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -34,14 +35,13 @@
 
 /*	detect_distro
 	detects the computer's distribution
-	argument char *str: the char array to be filled with the distro name
 */
-void detect_distro(char *str)
+void detect_distro(void)
 {
 	struct utsname distro_info;
 
 	uname(&distro_info);
-	snprintf(str, MAX_STRLEN, "%s", distro_info.sysname);
+	snprintf(distro_str, MAX_STRLEN, "%s", distro_info.sysname);
 
 	return;
 }

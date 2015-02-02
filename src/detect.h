@@ -1,15 +1,15 @@
 /*	detect.h
- *	Author: William Woodruff
- *	-------------
- *
- *	The detection functions used by screenfetch-c are prototyped here.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	The detection functions used by screenfetch-c are prototyped here.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #ifndef SCREENFETCH_C_DETECT_H
 #define SCREENFETCH_C_DETECT_H
 
-void detect_distro(char *str1, char *str2);
+void detect_distro(void);
 void detect_host(char *str1, char *str2);
 void detect_kernel(char *str);
 void detect_uptime(char *str);

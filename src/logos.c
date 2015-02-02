@@ -1,10 +1,10 @@
 /*  logos.c
- *	Author: William Woodruff
- *	-------------
- *	
- *	The ASCII logos used by screenfetch-c are initialized in this file.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**	
+**	The ASCII logos used by screenfetch-c are initialized in this file.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #include "colors.h"
 

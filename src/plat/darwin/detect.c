@@ -1,10 +1,10 @@
 /*	detect.c
- *	Author: William Woodruff
- *	-------------
- *
- *	The detection functions used by screenfetch-c on OS X (Darwin) are implemented here.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	The detection functions used by screenfetch-c on OS X (Darwin) are implemented here.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 /* standard includes */
 #include <stdio.h>
@@ -28,6 +28,7 @@
 #endif
 
 /* program includes */
+#include "../../arrays.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -35,9 +36,8 @@
 
 /*	detect_distro
 	detects the computer's distribution (OS X release)
-	argument char *str: the char array to be filled with the distro name
 */
-void detect_distro(char *str, char *str2)
+void detect_distro(void)
 {
 #if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 	int ver_maj, ver_min, ver_bug;
@@ -54,16 +54,16 @@ void detect_distro(char *str, char *str2)
 	Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
 	Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
 
-	snprintf(str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
+	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
 #else
 	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-	fgets(distro_name_str, MAX_STRLEN, distro_file);
+	fgets(distro_name_distro_str, MAX_STRLEN, distro_file);
 	pclose(distro_file);
 
-	snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
+	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
 #endif
 
-	safe_strncpy(str2, TLBL, MAX_STRLEN);
+	safe_strncpy(host_colour, TLBL, MAX_STRLEN);
 
 	return;
 }

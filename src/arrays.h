@@ -1,9 +1,9 @@
 /*	arrays.h
-	Authors: Aaron Caffrey, William Woodruff
-	-------------
-
-	The strings used by screenfetch-c to store system information are
-	externalized in this file.
+**	Authors: Aaron Caffrey, William Woodruff
+**	-------------
+**
+**	The strings used by screenfetch-c to store system information are
+**	externalized in this file.
 */
 
 #ifndef SCREENFETCH_C_ARRAYS_H

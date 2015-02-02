@@ -30,27 +30,27 @@ extern int pclose(FILE *stream);
 	detects the computer's distribution (Windows version)
 	argument char *str: the char array to be filled with the distro name
 */
-void detect_distro(char *str)
+void detect_distro(void)
 {
 	/* if distro_str was NOT set by the -D flag */
-	if (STREQ(str, "Unknown"))
+	if (STREQ(distro_str, "Unknown"))
 	{
 #if defined(NTDDI_WIN7)
-			safe_strncpy(str, "Microsoft Windows 7", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows 7", MAX_STRLEN);
 #elif defined(NTDDI_WIN8)
-			safe_strncpy(str, "Microsoft Windows 8", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows 8", MAX_STRLEN);
 #elif defined(NTDDI_WINBLUE)
-			safe_strncpy(str, "Microsoft Windows 8.1", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows 8.1", MAX_STRLEN);
 #elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
-			safe_strncpy(str, "Microsoft Windows Vista", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows Vista", MAX_STRLEN);
 #elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
-			safe_strncpy(str, "Microsoft Windows XP", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows XP", MAX_STRLEN);
 #elif defined(_WIN32_WINNT_WS03)
-			safe_strncpy(str, "Microsoft Windows Server 2003", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows Server 2003", MAX_STRLEN);
 #elif defined(_WIN32_WINNT_WS08)
-			safe_strncpy(str, "Microsoft Windows Server 2008", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows Server 2008", MAX_STRLEN);
 #else
-			safe_strncpy(str, "Microsoft Windows", MAX_STRLEN);
+			safe_strncpy(distro_str, "Microsoft Windows", MAX_STRLEN);
 #endif
 	}
 

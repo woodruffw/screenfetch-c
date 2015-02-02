@@ -1,17 +1,17 @@
 /*	main.c
- *	Author: William Woodruff
- *	-------------
- *
- *	screenfetch-c is a rewrite of screenFetch.sh in C.
- *	This is primarily an experiment borne out of an awareness of the
- *	slow execution time on the screenfetch-dev.sh script. 
- *	Hopefully this rewrite will execute faster, although it's more for
- *	self education than anything else.
- *
- *	If you have any questions, please feel free to contact me via:
- *		- github: http://www.github.com/woodruffw/screenfetch-c
- *		- email: william @ tuffbizz.com
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	screenfetch-c is a rewrite of screenFetch.sh in C.
+**	This is primarily an experiment borne out of an awareness of the
+**	slow execution time on the screenfetch-dev.sh script. 
+**	Hopefully this rewrite will execute faster, although it's more for
+**	self education than anything else.
+**
+**	If you have any questions, please feel free to contact me via:
+**		- github: http://www.github.com/woodruffw/screenfetch-c
+**		- email: william @ tuffbizz.com
+*/
 
 /* standard includes */
 #include <stdio.h>
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	detect_distro(distro_str, host_colour);
+	detect_distro();
 	detect_host(host_str, host_colour);
 	detect_kernel(kernel_str);
 	detect_uptime(uptime_str);

@@ -1,10 +1,10 @@
 /*	colors.h
- *	Author: William Woodruff
- *	-------------
- *
- *	Macros for colorified terminal output.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	Macros for colorified terminal output.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #ifndef SCREENFETCH_C_COLORS_H
 #define SCREENFETCH_C_COLORS_H

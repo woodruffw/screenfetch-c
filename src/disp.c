@@ -1,11 +1,11 @@
 /*	disp.c
- *	Author: William Woodruff
- *	-------------
- *
- *	Functions used by screenfetch-c for displaying version
- *	and help output to the user.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	Functions used by screenfetch-c for displaying version
+**	and help output to the user.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 /* standard includes */
 #include <stdio.h>
