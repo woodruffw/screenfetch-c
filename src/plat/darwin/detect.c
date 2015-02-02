@@ -37,7 +37,7 @@
 	detects the computer's distribution (OS X release)
 	argument char *str: the char array to be filled with the distro name
 */
-void detect_distro(char *str)
+void detect_distro(char *str, char *str2)
 {
 #if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 	int ver_maj, ver_min, ver_bug;
@@ -62,6 +62,8 @@ void detect_distro(char *str)
 
 	snprintf(str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
 #endif
+
+	safe_strncpy(str2, TLBL, MAX_STRLEN);
 
 	return;
 }
