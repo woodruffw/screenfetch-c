@@ -86,9 +86,8 @@ void detect_host(void)
 
 /*	detect_kernel
 	detects the computer's kernel
-	argument char *str: the char array to be filled with the kernel name
 */
-void detect_kernel(char *str)
+void detect_kernel(void)
 {
 	OSVERSIONINFO kern_info;
 	SYSTEM_INFO arch_info;
@@ -121,7 +120,7 @@ void detect_kernel(char *str)
 		safe_strncpy(arch_str, "Unknown", MAX_STRLEN);
 	}
 
-	snprintf(str, MAX_STRLEN, "Windows NT %d.%d build %d (%s)",
+	snprintf(kernel_str, MAX_STRLEN, "Windows NT %d.%d build %d (%s)",
 			(int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion,
 			(int) kern_info.dwBuildNumber, arch_str);
 

@@ -199,21 +199,20 @@ void detect_host(void)
 
 /*	detect_kernel
 	detects the computer's kernel
-	argument char *str: the char array to be filled with the kernel name
 */
-void detect_kernel(char *str)
+void detect_kernel(void)
 {
 	struct utsname kern_info;
 
 	if (!(uname(&kern_info)))
 	{
-		snprintf(str, MAX_STRLEN, "%s %s %s", kern_info.sysname,
+		snprintf(kernel_str, MAX_STRLEN, "%s %s %s", kern_info.sysname,
 				kern_info.release, kern_info.machine);
 	}
 	else if (error)
 	{
 		ERR_REPORT("Could not detect kernel information.");
-		safe_strncpy(str, "Linux", MAX_STRLEN);
+		safe_strncpy(kernel_str, "Linux", MAX_STRLEN);
 	}
 
 	return;

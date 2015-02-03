@@ -66,14 +66,13 @@ void detect_host(void)
 
 /*	detect_kernel
 	detects the computer's kernel
-	argument char *str: the char array to be filled with the kernel name
 */
-void detect_kernel(char *str)
+void detect_kernel(void)
 {
 	struct utsname kern_info;
 
 	uname(&kern_info);
-	snprintf(str, MAX_STRLEN, "%s", kern_info.release);
+	snprintf(kernel_str, MAX_STRLEN, "%s", kern_info.release);
 
 	return;
 }

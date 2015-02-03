@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
 	detect_distro();
 	detect_host();
-	detect_kernel(kernel_str);
+	detect_kernel();
 	detect_uptime(uptime_str);
 	detect_pkgs(pkgs_str, distro_str);
 	detect_cpu(cpu_str);
