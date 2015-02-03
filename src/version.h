@@ -1,10 +1,10 @@
 /*	version.h
- *	Author: William Woodruff
- *	-------------
- *
- *	Macros for screenfetch-c's macjor, minor, and release numbers.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	Macros for screenfetch-c's macjor, minor, and release numbers.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #ifndef SCREENFETCH_C_VERSION_H
 #define SCREENFETCH_C_VERSION_H

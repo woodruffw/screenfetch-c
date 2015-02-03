@@ -1,10 +1,10 @@
 /*	detect.c
- *	Author: William Woodruff
- *	-------------
- *
- *	The detection functions used by screenfetch-c on Windows (Cygwin) are implemented here.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**	-------------
+**
+**	The detection functions used by screenfetch-c on Windows (Cygwin) are implemented here.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 /* standard includes */
 #include <stdio.h>

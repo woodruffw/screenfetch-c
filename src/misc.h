@@ -1,9 +1,9 @@
 /*	misc.h
- *	Author: William Woodruff
- *
- *	Miscellaneous macros used in screenfetch-c.
- *	Like the rest of screenfetch-c, this file is licensed under the MIT license.
- */
+**	Author: William Woodruff
+**
+**	Miscellaneous macros used in screenfetch-c.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
+*/
 
 #ifndef SCREENFETCH_C_MISC_H
 #define SCREENFETCH_C_MISC_H
