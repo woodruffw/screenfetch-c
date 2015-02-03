@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 	detect_de();
 	detect_wm();
 	detect_wm_theme();
-	detect_gtk(gtk_str, icon_str, font_str);
+	detect_gtk();
 
 	/* if the user specified a different OS to display, set distro_set to it */
 	if (!STREQ(given_distro_str, "Unknown"))

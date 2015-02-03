@@ -704,15 +704,12 @@ void detect_wm_theme(void)
 
 /*	detect_gtk
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char *str1: the char array to be filled with the GTK info
-	argument char *str2: the char array to be filled with GTK icons
-	argument char *str3: the char array to be filled with Font
 	--
 	CAVEAT: This function relies on the presence of 'detectgtk', a shell script.
 	If it isn't present somewhere in the PATH, the GTK will be set as 'Unknown'
 	--
 */
-void detect_gtk(char *str1, char *str2, char *str3)
+void detect_gtk(void)
 {
 	FILE *gtk_file;
 	char gtk2_str[MAX_STRLEN] = "Unknown";
@@ -725,17 +722,17 @@ void detect_gtk(char *str1, char *str2, char *str3)
 	pclose(gtk_file);
 
 	if (STREQ(gtk3_str, "Unknown"))
-		snprintf(str1, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
 				gtk_icons_str);
 	else if (STREQ(gtk2_str, "Unknown"))
-		snprintf(str1, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
 				gtk_icons_str);
 	else
-		snprintf(str1, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 
-	snprintf(str2, MAX_STRLEN, "%s", gtk_icons_str);
+	snprintf(icon_str, MAX_STRLEN, "%s", gtk_icons_str);
 
-	snprintf(str3, MAX_STRLEN, "%s", font_str);
+	snprintf(font_str, MAX_STRLEN, "%s", font_str);
 
 	return;
 }

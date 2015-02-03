@@ -382,7 +382,7 @@ void detect_wm(void)
 /*	detect_wm_theme
 	On Windows, detects the current theme running on DWM.
 */
-void detect_wm_theme(char *str, const char *wm_str)
+void detect_wm_theme(void)
 {
 	FILE *wm_theme_file;
 
@@ -400,9 +400,8 @@ void detect_wm_theme(char *str, const char *wm_str)
 
 /*	detect_gtk
 	On Windows, detects the font associated with Cygwin's terminal (mintty)
-	argument char *str: the char array to be filled with the GTK info
 */
-void detect_gtk(char *str)
+void detect_gtk(void)
 {
 	FILE *gtk_file;
 	char font_str[MAX_STRLEN] = "Unknown";
@@ -412,7 +411,7 @@ void detect_gtk(char *str)
 	fgets(font_str, MAX_STRLEN, gtk_file);
 	pclose(gtk_file);
 
-	snprintf(str, MAX_STRLEN, "%s (Font)", font_str);
+	snprintf(gtk_str, MAX_STRLEN, "%s (Font)", font_str);
 
 	return;
 }

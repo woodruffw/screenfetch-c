@@ -404,15 +404,14 @@ void detect_wm_theme(void)
 
 /*	detect_gtk
 	detects the theme, icon(s), and font(s) associated with a GTK DE (if present)
-	argument char *str: the char array to be filled with the GTK info
 	--
 	CAVEAT: This function relies on the presence of 'detectgtk', a shell script. 
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_gtk(char *str)
+void detect_gtk(void)
 {
-	safe_strncpy(str, "Not implemented", MAX_STRLEN);
+	safe_strncpy(gtk_str, "Not implemented", MAX_STRLEN);
 
 	return;
 }

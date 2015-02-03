@@ -365,11 +365,10 @@ void detect_wm_theme(void)
 
 /*	detect_gtk
 	OS X doesn't use GTK, so this function fills str with "Not Applicable"
-	argument char *str: the char array to be filled with any GTK info
 */
-void detect_gtk(char *str)
+void detect_gtk(void)
 {
-	safe_strncpy(str, "Not Applicable", MAX_STRLEN);
+	safe_strncpy(gtk_str, "Not Applicable", MAX_STRLEN);
 
 	return;
 }

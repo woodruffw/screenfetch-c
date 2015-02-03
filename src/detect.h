@@ -23,6 +23,6 @@ void detect_res(void);
 void detect_de(void);
 void detect_wm(void);
 void detect_wm_theme(void);
-void detect_gtk(char *str1, char *str2, char *str3);
+void detect_gtk(void);
 
 #endif /* SCREENFETCH_C_DETECT_H */
