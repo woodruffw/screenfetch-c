@@ -142,14 +142,13 @@ void detect_cpu(void)
 
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
-	argument char *str: the char array to be filled with the GPU name
 */
-void detect_gpu(char *str)
+void detect_gpu(void)
 {
 	FILE *gpu_file;
 
 	gpu_file = popen("detectgpu 2>/dev/null", "r");
-	fgets(str, MAX_STRLEN, gpu_file);
+	fgets(gpu_str, MAX_STRLEN, gpu_file);
 	pclose(gpu_file);
 
 	return;

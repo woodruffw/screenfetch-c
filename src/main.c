@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 	detect_uptime();
 	detect_pkgs();
 	detect_cpu();
-	detect_gpu(gpu_str);
+	detect_gpu();
 	detect_disk(disk_str);
 	detect_mem(mem_str);
 	detect_shell(shell_str);

@@ -409,9 +409,8 @@ void detect_cpu(void)
 
 /*	detect_gpu
 	detects the computer's GPU brand/name-string
-	argument char *str: the char array to be filled with the GPU name
 */
-void detect_gpu(char *str)
+void detect_gpu(void)
 {
 	Display *disp = NULL;
 	Window wind;
@@ -428,7 +427,7 @@ void detect_gpu(char *str)
 			if ((context = glXCreateContext(disp, visual_info, NULL, GL_TRUE)))
 			{
 				glXMakeCurrent(disp, wind, context);
-				safe_strncpy(str, (const char *) glGetString(GL_RENDERER),
+				safe_strncpy(gpu_str, (const char *) glGetString(GL_RENDERER),
 						MAX_STRLEN);
 
 				glXDestroyContext(disp, context);
@@ -449,7 +448,7 @@ void detect_gpu(char *str)
 	}
 	else if (error)
 	{
-		safe_strncpy(str, "No X Server", MAX_STRLEN);
+		safe_strncpy(gpu_str, "No X Server", MAX_STRLEN);
 		ERR_REPORT("Could not open an X display (detect_gpu).");
 	}
 
