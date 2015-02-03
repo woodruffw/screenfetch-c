@@ -21,7 +21,7 @@ void detect_mem(void);
 void detect_shell(void);
 void detect_res(void);
 void detect_de(void);
-void detect_wm(char *str);
+void detect_wm(void);
 void detect_wm_theme(char *str, const char *wm_str);
 void detect_gtk(char *str1, char *str2, char *str3);
 

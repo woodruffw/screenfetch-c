@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 	detect_shell();
 	detect_res();
 	detect_de();
-	detect_wm(wm_str);
+	detect_wm();
 	detect_wm_theme(wm_theme_str, wm_str);
 	detect_gtk(gtk_str, icon_str, font_str);
 

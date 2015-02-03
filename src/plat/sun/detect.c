@@ -329,13 +329,12 @@ void detect_de(void)
 
 /*	detect_wm
 	detects the window manager currently running on top of the OS
-	argument char *str: the char array to be filled with the WM name
 	--
 	CAVEAT: This function relies on the presence of 'detectwm', a shell script. 
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm(char *str)
+void detect_wm(void)
 {
 	Display *disp;
 	Atom actual_type;
@@ -357,7 +356,7 @@ void detect_wm(char *str)
 				XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
 			{
-				safe_strncpy(str, wm_name, MAX_STRLEN);
+				safe_strncpy(wm_str, wm_name, MAX_STRLEN);
 				XFree(wm_name);
 			}
 			else if (error)

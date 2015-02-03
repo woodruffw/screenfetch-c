@@ -364,18 +364,17 @@ void detect_de(void)
 
 /*	detect_wm
 	detects the window manager currently running on top of the OS
-	argument char *str: the char array to be filled with the WM name
 	--
 	CAVEAT: This function relies on the presence of 'detectwm', a shell script. 
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm(char *str)
+void detect_wm(void)
 {
 	FILE *wm_file;
 
 	wm_file = popen("detectwm 2> /dev/null", "r");
-	fgets(str, MAX_STRLEN, wm_file);
+	fgets(wm_str, MAX_STRLEN, wm_file);
 	pclose(wm_file);
 
 	return;

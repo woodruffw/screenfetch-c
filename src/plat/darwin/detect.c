@@ -344,11 +344,10 @@ void detect_de(void)
 /*	detect_wm
 	detects the window manager currently running on top of the OS.
 	On OS X, this will always be the Quartz Compositor.
-	argument char *str: the char array to be filled with the WM name
 */
-void detect_wm(char *str)
+void detect_wm(void)
 {
-	safe_strncpy(str, "Quartz Compositor", MAX_STRLEN);
+	safe_strncpy(wm_str, "Quartz Compositor", MAX_STRLEN);
 
 	return;
 }

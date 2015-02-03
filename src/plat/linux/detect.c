@@ -633,9 +633,8 @@ void detect_de(void)
 
 /*	detect_wm
 	detects the window manager currently running on top of the OS
-	argument char *str: the char array to be filled with the WM name
 */
-void detect_wm(char *str)
+void detect_wm(void)
 {
 	Display *disp;
 	Atom actual_type;
@@ -657,7 +656,7 @@ void detect_wm(char *str)
 				XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
 			{
-				safe_strncpy(str, wm_name, MAX_STRLEN);
+				safe_strncpy(wm_str, wm_name, MAX_STRLEN);
 				XFree(wm_name);
 			}
 			else if (error)

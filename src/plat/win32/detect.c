@@ -371,11 +371,10 @@ void detect_de(void)
 /*	detect_wm
 	detects the window manager currently running on top of the OS.
 	On Windows, this will always be DWM/Explorer.
-	argument char *str: the char array to be filled with the WM name
 */
-void detect_wm(char *str)
+void detect_wm(void)
 {
-	safe_strncpy(str, "DWM/Explorer", MAX_STRLEN);
+	safe_strncpy(wm_str, "DWM/Explorer", MAX_STRLEN);
 
 	return;
 }
