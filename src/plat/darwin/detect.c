@@ -159,9 +159,8 @@ void detect_pkgs(void)
 
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
-	argument char *str: the char array to be filled with the CPU name
 */
-void detect_cpu(char *str)
+void detect_cpu(void)
 {
 	FILE *cpu_file;
 
@@ -173,7 +172,7 @@ void detect_cpu(char *str)
 	cpu_file = popen("sysctl -n machdep.cpu.brand_string | "
 				"sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | "
 				"tr -d '\\n' | tr -s ' '", "r");
-	fgets(str, MAX_STRLEN, cpu_file);
+	fgets(cpu_str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 
 	return;

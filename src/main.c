@@ -91,8 +91,8 @@ int main(int argc, char **argv)
 	detect_host();
 	detect_kernel();
 	detect_uptime();
-	detect_pkgs(pkgs_str, distro_str);
-	detect_cpu(cpu_str);
+	detect_pkgs();
+	detect_cpu();
 	detect_gpu(gpu_str);
 	detect_disk(disk_str);
 	detect_mem(mem_str);

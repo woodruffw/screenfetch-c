@@ -128,14 +128,13 @@ void detect_pkgs(void)
 
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
-	argument char *str: the char array to be filled with the CPU name
 */
-void detect_cpu(char *str)
+void detect_cpu(void)
 {
 	FILE *cpu_file;
 
 	cpu_file = popen("psrinfo -pv | tail -1 | tr -d '\\t\\n'", "r");
-	fgets(str, MAX_STRLEN, cpu_file);
+	fgets(cpu_str, MAX_STRLEN, cpu_file);
 	pclose(cpu_file);
 
 	return;

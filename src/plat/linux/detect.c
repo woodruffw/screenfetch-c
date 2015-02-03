@@ -357,9 +357,8 @@ void detect_pkgs(void)
 
 /*	detect_cpu
 	detects the computer's CPU brand/name-string
-	argument char *str: the char array to be filled with the CPU name
 */
-void detect_cpu(char *str)
+void detect_cpu(void)
 {
 	FILE *cpu_file;
 	char cpuinfo_buf[MAX_STRLEN];
@@ -393,11 +392,11 @@ void detect_cpu(char *str)
 
 		if (STREQ(cpuinfo_line, "ARMv6-compatible processor rev 7 (v6l)"))
 		{
-			safe_strncpy(str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
+			safe_strncpy(cpu_str, "BCM2708 (Raspberry Pi)", MAX_STRLEN);
 		}
 		else
 		{
-			safe_strncpy(str, cpuinfo_line, MAX_STRLEN);
+			safe_strncpy(cpu_str, cpuinfo_line, MAX_STRLEN);
 		}
 	}
 	else if (error)
