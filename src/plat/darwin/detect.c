@@ -333,11 +333,10 @@ void detect_res(void)
 /*	detect_de
 	detects the desktop environment currently running on top of the OS.
 	On OS X, this will always be Aqua.
-	argument char *str: the char array to be filled with the DE name
 */
-void detect_de(char *str)
+void detect_de(void)
 {
-	safe_strncpy(str, "Aqua", MAX_STRLEN);
+	safe_strncpy(de_str, "Aqua", MAX_STRLEN);
 
 	return;
 }

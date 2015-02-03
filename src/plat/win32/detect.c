@@ -348,9 +348,8 @@ void detect_res(void)
 /*	detect_de
 	detects the desktop environment currently running on top of the OS.
 	On Windows, this will always be either Luna, Aero, or Metro.
-	argument char *str: the char array to be filled with the DE name
 */
-void detect_de(char *str)
+void detect_de(void)
 {
 	FILE *de_file;
 	int version;
@@ -360,11 +359,11 @@ void detect_de(char *str)
 	pclose(de_file);
 
 	if (version == 6 || version == 7)
-		safe_strncpy(str, "Aero", MAX_STRLEN);
+		safe_strncpy(de_str, "Aero", MAX_STRLEN);
 	else if (version == 8)
-		safe_strncpy(str, "Metro", MAX_STRLEN);
+		safe_strncpy(de_str, "Metro", MAX_STRLEN);
 	else
-		safe_strncpy(str, "Luna", MAX_STRLEN);
+		safe_strncpy(de_str, "Luna", MAX_STRLEN);
 
 	return;
 }

@@ -323,36 +323,35 @@ void detect_res(void)
 
 /*	detect_de
 	detects the desktop environment currently running on top of the OS
-	argument char *str: the char array to be filled with the DE name
 	--
 	CAVEAT: This function relies on the presence of 'detectde', a shell script. 
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_de(char *str)
+void detect_de(void)
 {
 	char *curr_de;
 
 	if ((curr_de = getenv("XDG_CURRENT_DESKTOP")))
 	{
-		safe_strncpy(str, curr_de, MAX_STRLEN);
+		safe_strncpy(de_str, curr_de, MAX_STRLEN);
 	}
 	else
 	{
 		if (getenv("GNOME_DESKTOP_SESSION_ID"))
 		{
-			safe_strncpy(str, "Gnome", MAX_STRLEN);
+			safe_strncpy(de_str, "Gnome", MAX_STRLEN);
 		}
 		else if (getenv("MATE_DESKTOP_SESSION_ID"))
 		{
-			safe_strncpy(str, "MATE", MAX_STRLEN);
+			safe_strncpy(de_str, "MATE", MAX_STRLEN);
 		}
 		else if (getenv("KDE_FULL_SESSION"))
 		{
 			/*	KDE_SESSION_VERSION only exists on KDE4+, so 
 				getenv will return NULL on KDE <= 3.
 			 */
-			snprintf(str, MAX_STRLEN, "KDE%s", getenv("KDE_SESSION_VERSION"));
+			snprintf(de_str, MAX_STRLEN, "KDE%s", getenv("KDE_SESSION_VERSION"));
 		}
 		else if (error)
 		{

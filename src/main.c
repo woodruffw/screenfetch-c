@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 	detect_mem();
 	detect_shell();
 	detect_res();
-	detect_de(de_str);
+	detect_de();
 	detect_wm(wm_str);
 	detect_wm_theme(wm_theme_str, wm_str);
 	detect_gtk(gtk_str, icon_str, font_str);
