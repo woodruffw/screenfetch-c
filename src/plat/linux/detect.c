@@ -48,7 +48,7 @@ void detect_distro(void)
 		if (FILE_EXISTS("/system/bin/getprop"))
 		{
 			safe_strncpy(distro_str, "Android", MAX_STRLEN);
-			sprintf(host_color, "%s", TLGN);
+			safe_strncpy(host_color, TLGN, MAX_STRLEN);
 		}
 		else
 		{
@@ -67,32 +67,32 @@ void detect_distro(void)
 				{
 					safe_strncpy(distro_str, "Kali Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(host_color, "%s", TLBL);
+					safe_strncpy(host_color, TLBL, MAX_STRLEN);
 				}
 				else if (STREQ(distro_name_str, "Back"))
 				{
 					safe_strncpy(distro_str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(host_color, "%s", TLRD);
+					safe_strncpy(host_color, TLRD, MAX_STRLEN);
 				}
 				else if (STREQ(distro_name_str, "Crun"))
 				{
 					safe_strncpy(distro_str, "CrunchBang", MAX_STRLEN);
 					detected = true;
-					sprintf(host_color, "%s", TDGY);
+					safe_strncpy(host_color, TDGY, MAX_STRLEN);
 				}
 				else if (STREQ(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(distro_str, "LMDE", MAX_STRLEN);
 					detected = true;
-					sprintf(host_color, "%s", TLGN);
+					safe_strncpy(host_color, TLGN, MAX_STRLEN);
 				}
 				else if (STREQ(distro_name_str, "Debi")
 						|| STREQ(distro_name_str, "Rasp"))
 				{
 					safe_strncpy(distro_str, "Debian", MAX_STRLEN);
 					detected = true;
-					sprintf(host_color, "%s", TLRD);
+					safe_strncpy(host_color, TLRD, MAX_STRLEN);
 				}
 			}
 
@@ -101,32 +101,32 @@ void detect_distro(void)
 				if (FILE_EXISTS("/etc/fedora-release"))
 				{
 					safe_strncpy(distro_str, "Fedora", MAX_STRLEN);
-					sprintf(host_color, "%s", TLBL);
+					safe_strncpy(host_color, TLBL, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/SuSE-release"))
 				{
 					safe_strncpy(distro_str, "OpenSUSE", MAX_STRLEN);
-					sprintf(host_color, "%s", TLGN);
+					safe_strncpy(host_color, TLGN, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/arch-release"))
 				{
 					safe_strncpy(distro_str, "Arch Linux", MAX_STRLEN);
-					sprintf(host_color, "%s", TLCY);
+					safe_strncpy(host_color, TLCY, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/gentoo-release"))
 				{
 					safe_strncpy(distro_str, "Gentoo", MAX_STRLEN);
-					sprintf(host_color, "%s", TLPR);
+					safe_strncpy(host_color, TLPR, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/angstrom-version"))
 				{
 					safe_strncpy(distro_str, "Angstrom", MAX_STRLEN);
-					sprintf(host_color, "%s", TNRM);
+					safe_strncpy(host_color, TNRM, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/manjaro-release"))
 				{
 					safe_strncpy(distro_str, "Manjaro", MAX_STRLEN);
-					sprintf(host_color, "%s", TLGN);
+					safe_strncpy(host_color, TLGN, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/lsb-release"))
 				{
@@ -135,7 +135,7 @@ void detect_distro(void)
 					fclose(distro_file);
 
 					snprintf(distro_str, MAX_STRLEN, "%s", distro_name_str + 11);
-					sprintf(host_color, "%s", TLRD);
+					safe_strncpy(host_color, TLRD, MAX_STRLEN);
 				}
 				else if (FILE_EXISTS("/etc/os-release"))
 				{
@@ -149,7 +149,7 @@ void detect_distro(void)
 				else
 				{
 					safe_strncpy(distro_str, "Linux", MAX_STRLEN);
-					sprintf(host_color, "%s", TLGY);
+					safe_strncpy(host_color, TLGY, MAX_STRLEN);
 
 					if (error)
 					{
