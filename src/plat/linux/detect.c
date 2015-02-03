@@ -457,9 +457,8 @@ void detect_gpu(void)
 
 /*	detect_disk
 	detects the computer's total disk capacity and usage
-	argument char *str: the char array to be filled with the disk data
 */
-void detect_disk(char *str)
+void detect_disk(void)
 {
 	struct statvfs disk_info;
 	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
@@ -469,7 +468,7 @@ void detect_disk(char *str)
 		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
 		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
 		disk_percentage = (((float) disk_used / disk_total) * 100);
-		snprintf(str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
+		snprintf(disk_str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
 	}
 	else if (error)
 	{
