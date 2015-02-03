@@ -251,14 +251,13 @@ void detect_mem(void)
 
 /*	detect_shell
 	detects the shell currently running on the computer
-	argument char *str: the char array to be filled with the shell info
 	--
 	CAVEAT: shell version detection relies on the standard versioning format for 
 	each shell. If any shell's older (or newer versions) suddenly begin to use a
 	new	scheme, the version may be displayed incorrectly.
 	--
 */
-void detect_shell(char *str)
+void detect_shell(void)
 {
 	FILE *shell_file;
 	char *shell_name;
@@ -276,41 +275,41 @@ void detect_shell(char *str)
 
 	if (STREQ(shell_name, "/bin/sh"))
 	{
-		safe_strncpy(str, "POSIX sh", MAX_STRLEN);
+		safe_strncpy(shell_str, "POSIX sh", MAX_STRLEN);
 	}
 	else if (strstr(shell_name, "bash"))
 	{
 		shell_file = popen("bash --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		snprintf(str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
+		snprintf(shell_str, MAX_STRLEN, "bash %.*s", 17, vers_str + 10);
 		pclose(shell_file);
 	}
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);	
-		snprintf(str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
+		snprintf(shell_str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
 	else if (strstr(shell_name, "csh"))
 	{
 		shell_file = popen("csh --version | head -1", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		snprintf(str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
+		snprintf(shell_str, MAX_STRLEN, "csh %.*s", 7, vers_str + 5);
 		pclose(shell_file);
 	}
 	else if (strstr(shell_name, "fish"))
 	{
 		shell_file = popen("fish --version", "r");
 		fgets(vers_str, MAX_STRLEN, shell_file);
-		snprintf(str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
+		snprintf(shell_str, MAX_STRLEN, "fish %.*s", 13, vers_str + 6);
 		pclose(shell_file);
 	}
 	else if (strstr(shell_name, "dash") || strstr(shell_name, "ash")
 			|| strstr(shell_name, "ksh"))
 	{
 		/* i don't have a version detection system for these, yet */
-		safe_strncpy(str, shell_name, MAX_STRLEN);
+		safe_strncpy(shell_str, shell_name, MAX_STRLEN);
 	}
 
 	return;

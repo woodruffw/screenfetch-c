@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	detect_gpu();
 	detect_disk();
 	detect_mem();
-	detect_shell(shell_str);
+	detect_shell();
 	detect_res(res_str);
 	detect_de(de_str);
 	detect_wm(wm_str);
