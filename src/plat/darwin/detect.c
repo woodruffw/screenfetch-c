@@ -355,11 +355,10 @@ void detect_wm(void)
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm().
 	On OS X, this will always be Aqua.
-	argument char *str: the char array to be filled with the WM Theme name
 */
-void detect_wm_theme(char *str, const char *wm_str)
+void detect_wm_theme(void)
 {
-	safe_strncpy(str, "Aqua", MAX_STRLEN);
+	safe_strncpy(wm_theme_str, "Aqua", MAX_STRLEN);
 
 	return;
 }

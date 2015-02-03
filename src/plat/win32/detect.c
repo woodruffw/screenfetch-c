@@ -381,7 +381,6 @@ void detect_wm(void)
 
 /*	detect_wm_theme
 	On Windows, detects the current theme running on DWM.
-	argument char *str: the char array to be filled with the WM Theme name
 */
 void detect_wm_theme(char *str, const char *wm_str)
 {
@@ -393,7 +392,7 @@ void detect_wm_theme(char *str, const char *wm_str)
 			"grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | "
 			"grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'",
 			"r");
-	fgets(str, MAX_STRLEN, wm_theme_file);
+	fgets(wm_theme_str, MAX_STRLEN, wm_theme_file);
 	pclose(wm_theme_file);
 
 	return;

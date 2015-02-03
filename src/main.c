@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 	detect_res();
 	detect_de();
 	detect_wm();
-	detect_wm_theme(wm_theme_str, wm_str);
+	detect_wm_theme();
 	detect_gtk(gtk_str, icon_str, font_str);
 
 	/* if the user specified a different OS to display, set distro_set to it */

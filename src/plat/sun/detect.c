@@ -383,13 +383,12 @@ void detect_wm(void)
 
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm()
-	argument char *str: the char array to be filled with the WM Theme name
 	--
 	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script. 
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
-void detect_wm_theme(char *str, const char *wm_str)
+void detect_wm_theme(void)
 {
 	char exec_str[MAX_STRLEN];
 	FILE *wm_theme_file;
@@ -397,7 +396,7 @@ void detect_wm_theme(char *str, const char *wm_str)
 	snprintf(exec_str, MAX_STRLEN, "detectwmtheme %s 2> /dev/null", wm_str);
 
 	wm_theme_file = popen(exec_str, "r");
-	fgets(str, MAX_STRLEN, wm_theme_file);
+	fgets(wm_theme_str, MAX_STRLEN, wm_theme_file);
 	pclose(wm_theme_file);
 
 	return;
