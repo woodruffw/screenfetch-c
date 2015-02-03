@@ -221,9 +221,8 @@ void detect_disk(void)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data
 */
-void detect_mem(char *str)
+void detect_mem(void)
 {
 	FILE *mem_file;
 	long long total_mem = 0;
@@ -245,7 +244,7 @@ void detect_mem(char *str)
 
 	used_mem = total_mem - free_mem;
 
-	snprintf(str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
+	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
 
 	return;
 }

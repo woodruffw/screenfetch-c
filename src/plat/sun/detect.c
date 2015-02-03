@@ -179,9 +179,8 @@ void detect_disk(void)
 
 /*	detect_mem
 	detects the computer's total and used RAM
-	argument char *str: the char array to be filled with the memory data
 */
-void detect_mem(char *str)
+void detect_mem(void)
 {
 	long long total_mem = 0;
 
@@ -190,7 +189,7 @@ void detect_mem(char *str)
 
 	/* sar -r 1 to get free pages? */
 
-	snprintf(str, MAX_STRLEN, "%lld%s", total_mem, "MB");
+	snprintf(mem_str, MAX_STRLEN, "%lld%s", total_mem, "MB");
 
 	return;
 }

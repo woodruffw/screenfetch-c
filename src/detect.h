@@ -17,7 +17,7 @@ void detect_pkgs(void);
 void detect_cpu(void);
 void detect_gpu(void);
 void detect_disk(void);
-void detect_mem(char *str);
+void detect_mem(void);
 void detect_shell(char *str);
 void detect_res(char *str);
 void detect_de(char *str);
