@@ -22,6 +22,7 @@ extern int pclose(FILE *stream);
 
 /* program includes */
 #include "../../arrays.h"
+#include "../../colors.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -55,6 +56,8 @@ void detect_distro(void)
 #endif
 	}
 
+	safe_strncpy(host_color, TRED, MAX_STRLEN);
+
 	return;
 }
 
@@ -77,7 +80,8 @@ void detect_host(void)
 	GetUserName(given_user, &len);
 	gethostname(given_host, MAX_STRLEN);
 
-	snprintf(host_str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(host_str, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
+		host_color, given_user, TNRM, TWHT, TNRM, host_color, given_host, TNRM);
 
 	free(given_user);
 

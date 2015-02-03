@@ -28,6 +28,7 @@
 
 /* program includes */
 #include "../../arrays.h"
+#include "../../colors.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"

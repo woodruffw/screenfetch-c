@@ -26,6 +26,7 @@
 
 /* program includes */
 #include "../../arrays.h"
+#include "../../colors.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -57,7 +58,8 @@ void detect_host(void)
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
-	snprintf(host_str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(host_str, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
+		host_color, given_user, TNRM, TWHT, TNRM, host_color, given_host, TNRM);
 
 	return;
 }
