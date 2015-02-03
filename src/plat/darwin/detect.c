@@ -317,15 +317,14 @@ void detect_shell(void)
 
 /*	detect_res
 	detects the combined resolution of all monitors attached to the computer
-	argument char *str: the char array to be filled with the resolution
 */
-void detect_res(char *str)
+void detect_res(void)
 {
 	FILE *res_file;
 
 	res_file = popen("system_profiler SPDisplaysDataType | "
 				"awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
-	fgets(str, MAX_STRLEN, res_file);
+	fgets(res_str, MAX_STRLEN, res_file);
 	pclose(res_file);
 
 	return;

@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 	detect_disk();
 	detect_mem();
 	detect_shell();
-	detect_res(res_str);
+	detect_res();
 	detect_de(de_str);
 	detect_wm(wm_str);
 	detect_wm_theme(wm_theme_str, wm_str);
