@@ -138,10 +138,10 @@ void detect_kernel(void)
 void detect_uptime(void)
 {
 	long uptime = 0;
-	int secs = 0;
-	int mins = 0;
-	int hrs = 0;
-	int days = 0;
+	unsigned int secs = 0;
+	unsigned int mins = 0;
+	unsigned int hrs = 0;
+	unsigned int days = 0;
 
 	uptime = GetTickCount(); /* known problem: will rollover after 49.7 days */
 	uptime /= 1000;

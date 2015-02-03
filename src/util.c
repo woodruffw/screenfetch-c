@@ -41,12 +41,13 @@ char *safe_strncpy(char *destination, const char *source, size_t num)
 	CAVEAT: uptime MUST be in seconds
 	--
 */
-void split_uptime(long uptime, int *secs, int *mins, int *hrs, int *days)
+void split_uptime(long uptime, unsigned int *secs, unsigned int *mins,
+					unsigned int *hrs, unsigned int *days)
 {
-	*secs = (int) uptime % 60;
-	*mins = (int) (uptime / 60) % 60;
-	*hrs = (int) (uptime / 3600) % 24;
-	*days = (int) (uptime / 86400);
+	*secs = (unsigned int) uptime % 60;
+	*mins = (unsigned int) (uptime / 60) % 60;
+	*hrs = (unsigned int) (uptime / 3600) % 24;
+	*days = (unsigned int) (uptime / 86400);
 
 	return;
 }

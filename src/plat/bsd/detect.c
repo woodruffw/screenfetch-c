@@ -93,10 +93,10 @@ void detect_uptime(void)
 	long currtime = 0, boottime = 0;
 #endif
 	FILE *uptime_file;
-	int secs = 0;
-	int mins = 0;
-	int hrs = 0;
-	int days = 0;
+	unsigned int secs = 0;
+	unsigned int mins = 0;
+	unsigned int hrs = 0;
+	unsigned int days = 0;
 
 #if defined(__NetBSD__)
 	uptime_file = popen("cut -d ' ' -f 1 < /proc/uptime", "r");
