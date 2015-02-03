@@ -130,9 +130,8 @@ void detect_kernel(void)
 
 /*	detect_uptime
 	detects the computer's uptime
-	argument char *str: the char array to be filled with the uptime
 */
-void detect_uptime(char *str)
+void detect_uptime(void)
 {
 	long uptime = 0;
 	int secs = 0;
@@ -146,18 +145,17 @@ void detect_uptime(char *str)
 	split_uptime(uptime, &secs, &mins, &hrs, &days);
 
 	if (days > 0)
-		snprintf(str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
+		snprintf(uptime_str, MAX_STRLEN, "%dd %dh %dm %ds", days, hrs, mins, secs);
 	else
-		snprintf(str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
+		snprintf(uptime_str, MAX_STRLEN, "%dh %dm %ds", hrs, mins, secs);
 
 	return;
 }
 
 /*	detect_pkgs
 	detects the number of packages installed on the computer
-	argument char *str: the char array to be filled with the number of packages
 */
-void detect_pkgs(char *str, const char *distro_str)
+void detect_pkgs(void)
 {
 	FILE *pkgs_file;
 	int packages = 0;
@@ -167,7 +165,7 @@ void detect_pkgs(char *str, const char *distro_str)
 	packages -= 2;
 	pclose(pkgs_file);
 
-	snprintf(str, MAX_STRLEN, "%d", packages);
+	snprintf(pkgs_str, MAX_STRLEN, "%d", packages);
 
 	return;
 }

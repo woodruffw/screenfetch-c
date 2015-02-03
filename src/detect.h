@@ -12,7 +12,7 @@
 void detect_distro(void);
 void detect_host(void);
 void detect_kernel(void);
-void detect_uptime(char *str);
+void detect_uptime(void);
 void detect_pkgs(char *str, const char *distro_str);
 void detect_cpu(char *str);
 void detect_gpu(char *str);
