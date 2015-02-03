@@ -63,16 +63,15 @@ void detect_distro(void)
 	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
 #endif
 
-	safe_strncpy(host_colour, TLBL, MAX_STRLEN);
+	safe_strncpy(host_color, TLBL, MAX_STRLEN);
 
 	return;
 }
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the host info
 */
-void detect_host(char *str)
+void detect_host(void)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
@@ -82,7 +81,7 @@ void detect_host(char *str)
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
-	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(host_str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	return;
 }

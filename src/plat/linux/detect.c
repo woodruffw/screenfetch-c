@@ -48,7 +48,7 @@ void detect_distro(void)
 		if (FILE_EXISTS("/system/bin/getprop"))
 		{
 			safe_strncpy(distro_str, "Android", MAX_STRLEN);
-			sprintf(host_colour, "%s", TLGN);
+			sprintf(host_color, "%s", TLGN);
 		}
 		else
 		{
@@ -67,32 +67,32 @@ void detect_distro(void)
 				{
 					safe_strncpy(distro_str, "Kali Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(host_colour, "%s", TLBL);
+					sprintf(host_color, "%s", TLBL);
 				}
 				else if (STREQ(distro_name_str, "Back"))
 				{
 					safe_strncpy(distro_str, "Backtrack Linux", MAX_STRLEN);
 					detected = true;
-					sprintf(host_colour, "%s", TLRD);
+					sprintf(host_color, "%s", TLRD);
 				}
 				else if (STREQ(distro_name_str, "Crun"))
 				{
 					safe_strncpy(distro_str, "CrunchBang", MAX_STRLEN);
 					detected = true;
-					sprintf(host_colour, "%s", TDGY);
+					sprintf(host_color, "%s", TDGY);
 				}
 				else if (STREQ(distro_name_str, "LMDE"))
 				{
 					safe_strncpy(distro_str, "LMDE", MAX_STRLEN);
 					detected = true;
-					sprintf(host_colour, "%s", TLGN);
+					sprintf(host_color, "%s", TLGN);
 				}
 				else if (STREQ(distro_name_str, "Debi")
 						|| STREQ(distro_name_str, "Rasp"))
 				{
 					safe_strncpy(distro_str, "Debian", MAX_STRLEN);
 					detected = true;
-					sprintf(host_colour, "%s", TLRD);
+					sprintf(host_color, "%s", TLRD);
 				}
 			}
 
@@ -101,32 +101,32 @@ void detect_distro(void)
 				if (FILE_EXISTS("/etc/fedora-release"))
 				{
 					safe_strncpy(distro_str, "Fedora", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLBL);
+					sprintf(host_color, "%s", TLBL);
 				}
 				else if (FILE_EXISTS("/etc/SuSE-release"))
 				{
 					safe_strncpy(distro_str, "OpenSUSE", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLGN);
+					sprintf(host_color, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/arch-release"))
 				{
 					safe_strncpy(distro_str, "Arch Linux", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLCY);
+					sprintf(host_color, "%s", TLCY);
 				}
 				else if (FILE_EXISTS("/etc/gentoo-release"))
 				{
 					safe_strncpy(distro_str, "Gentoo", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLPR);
+					sprintf(host_color, "%s", TLPR);
 				}
 				else if (FILE_EXISTS("/etc/angstrom-version"))
 				{
 					safe_strncpy(distro_str, "Angstrom", MAX_STRLEN);
-					sprintf(host_colour, "%s", TNRM);
+					sprintf(host_color, "%s", TNRM);
 				}
 				else if (FILE_EXISTS("/etc/manjaro-release"))
 				{
 					safe_strncpy(distro_str, "Manjaro", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLGN);
+					sprintf(host_color, "%s", TLGN);
 				}
 				else if (FILE_EXISTS("/etc/lsb-release"))
 				{
@@ -135,7 +135,7 @@ void detect_distro(void)
 					fclose(distro_file);
 
 					snprintf(distro_str, MAX_STRLEN, "%s", distro_name_str + 11);
-					sprintf(host_colour, "%s", TLRD);
+					sprintf(host_color, "%s", TLRD);
 				}
 				else if (FILE_EXISTS("/etc/os-release"))
 				{
@@ -149,7 +149,7 @@ void detect_distro(void)
 				else
 				{
 					safe_strncpy(distro_str, "Linux", MAX_STRLEN);
-					sprintf(host_colour, "%s", TLGY);
+					sprintf(host_color, "%s", TLGY);
 
 					if (error)
 					{
@@ -165,10 +165,8 @@ void detect_distro(void)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str1: the char array to be filled with the host info
-	argument char *str2: the passed distro colour for "user@hostname"
 */
-void detect_host(char *str1, char *str2)
+void detect_host(void)
 {
 	char given_user[MAX_STRLEN] = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
@@ -193,8 +191,8 @@ void detect_host(char *str1, char *str2)
 		ERR_REPORT("Could not detect hostname.");
 	}
 
-	snprintf(str1, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
-		str2, given_user, TNRM, TWHT, TNRM, str2, given_host, TNRM);
+	snprintf(host_str, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
+		host_color, given_user, TNRM, TWHT, TNRM, host_color, given_host, TNRM);
 
 	return;
 }

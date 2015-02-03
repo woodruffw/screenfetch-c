@@ -21,6 +21,7 @@ extern FILE *popen(const char *command, const char *type);
 extern int pclose(FILE *stream);
 
 /* program includes */
+#include "../../arrays.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -59,9 +60,8 @@ void detect_distro(void)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the host info
 */
-void detect_host(char *str)
+void detect_host(void)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
@@ -77,7 +77,7 @@ void detect_host(char *str)
 	GetUserName(given_user, &len);
 	gethostname(given_host, MAX_STRLEN);
 
-	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(host_str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	free(given_user);
 

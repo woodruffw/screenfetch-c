@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	}
 
 	detect_distro();
-	detect_host(host_str, host_colour);
+	detect_host();
 	detect_kernel(kernel_str);
 	detect_uptime(uptime_str);
 	detect_pkgs(pkgs_str, distro_str);

@@ -29,7 +29,7 @@ char gtk_str[MAX_STRLEN] = "Unknown";
 char icon_str[MAX_STRLEN] = "Unknown";
 char font_str[MAX_STRLEN] = "Unknown";
 
-char host_colour[10];
+char host_color[10];
 
 char *detected_arr[17] =
 {

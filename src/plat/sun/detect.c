@@ -25,6 +25,7 @@
 #include <X11/Xatom.h>
 
 /* program includes */
+#include "../../arrays.h"
 #include "../../misc.h"
 #include "../../disp.h"
 #include "../../util.h"
@@ -45,9 +46,8 @@ void detect_distro(void)
 
 /*	detect_host
 	detects the computer's hostname and active user and formats them
-	argument char *str: the char array to be filled with the host info
 */
-void detect_host(char *str)
+void detect_host(void)
 {
 	char *given_user = "Unknown";
 	char given_host[MAX_STRLEN] = "Unknown";
@@ -57,7 +57,7 @@ void detect_host(char *str)
 	uname(&host_info);
 	safe_strncpy(given_host, host_info.nodename, MAX_STRLEN);
 
-	snprintf(str, MAX_STRLEN, "%s@%s", given_user, given_host);
+	snprintf(host_str, MAX_STRLEN, "%s@%s", given_user, given_host);
 
 	return;
 }

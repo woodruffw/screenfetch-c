@@ -30,7 +30,8 @@ extern char gtk_str[MAX_STRLEN];
 extern char icon_str[MAX_STRLEN];
 extern char font_str[MAX_STRLEN];
 
-extern char host_colour[10];
+extern char host_color[10];
+
 extern char *detected_arr[17];
 extern char *detected_arr_names[17];
 
