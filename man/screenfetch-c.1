@@ -79,35 +79,6 @@ Displays help and compatibility information.
 Output only the ASCII logo associated with that distro. Follows the general naming conventions of the
 .B \-D
 flag, but with "OS X", "Windows", and "Solaris" as possibilities as well.
-.SH CONFIGURATION
-When
-.B screenfetch-c
-is invoked with the
-.B \-m
-flag for the first time, it enters manual mode.
-Manual mode prompts the user to enter specific information about the computer, storing that information in
-.RI ~/ .screenfetchc
-for the next invocation with the
-.B \-m
-flag.
-.PP
-By default, you must enter all fields asked for in manual mode. However, if you want
-.B screenfetch-c
-to skip a particular field while reading from the file, enter an asterisk ("*") for that section.
-This will force
-.B screenfetch-c
-to attempt to detect that section, which may come in handy if you want to use manual mode for some sections but not for others.
-.PP
-To remove your existing manual configuration, simply delete the
-.I .screenfetchc
-file located in your
-.BR $HOME . 
-.PP
-Note:
-.IR .screenfetchc 's
-format isn't exactly human-friendly, so editing it manually is
-.B NOT
-recommended.
 .SH ENVIRONMENT
 .B screenfetch-c
 uses the following environment variables:
