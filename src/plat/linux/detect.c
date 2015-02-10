@@ -438,7 +438,7 @@ void detect_gpu(void)
 				ERR_REPORT("Failed to create OpenGL context.");
 			}
 
-			XFree((void *) visual_info);
+			XFree(visual_info);
 		}
 		else if (error)
 		{
