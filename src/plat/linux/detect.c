@@ -652,7 +652,7 @@ void detect_wm(void)
 			0, KB, false,	XA_WINDOW, &actual_type, &actual_format, &nitems,
 			&bytes, (unsigned char **) &wm_check_window)))
 		{
-			if (!(XGetWindowProperty(disp, *wm_check_window,
+			if (wm_check_window && !(XGetWindowProperty(disp, *wm_check_window,
 				XInternAtom(disp, "_NET_WM_NAME", true), 0, KB, false,
 				XInternAtom(disp, "UTF8_STRING", true),	&actual_type,
 				&actual_format, &nitems, &bytes, (unsigned char **) &wm_name)))
