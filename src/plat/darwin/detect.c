@@ -44,6 +44,7 @@ void detect_distro(void)
 	int ver_maj, ver_min, ver_bug;
 #else
 	FILE *distro_file;
+	char distro_vers_str[MAX_STRLEN] = {0};
 #endif
 
 	/*
@@ -58,10 +59,10 @@ void detect_distro(void)
 	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
 #else
 	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-	fgets(distro_name_distro_str, MAX_STRLEN, distro_file);
+	fgets(distro_vers_str, MAX_STRLEN, distro_file);
 	pclose(distro_file);
 
-	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_name_str);
+	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_vers_str);
 #endif
 
 	safe_strncpy(host_color, TLBL, MAX_STRLEN);
