@@ -172,7 +172,7 @@ void detect_cpu(void)
 		int len = MAX_STRLEN;
 		sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
 	*/
-	cpu_file = popen("sysctl -n machdep.cpu.brand_string | "
+	cpu_file = popen("sysctl -n machdep.cpu.brand_string 2> /dev/null | "
 				"sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | "
 				"tr -d '\\n' | tr -s ' '", "r");
 	fgets(cpu_str, MAX_STRLEN, cpu_file);
@@ -188,7 +188,7 @@ void detect_gpu(void)
 {
 	FILE *gpu_file;
 
-	gpu_file = popen("system_profiler SPDisplaysDataType | "
+	gpu_file = popen("system_profiler SPDisplaysDataType 2> /dev/null | "
 				"awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | "
 				"tr -d '\\n'", "r");
 	fgets(gpu_str, MAX_STRLEN, gpu_file);
@@ -232,7 +232,7 @@ void detect_mem(void)
 	long long free_mem = 0;
 	long long used_mem = 0;
 
-	mem_file = popen("sysctl -n hw.memsize", "r");
+	mem_file = popen("sysctl -n hw.memsize 2> /dev/null", "r");
 	fscanf(mem_file, "%lld", &total_mem);
 	pclose(mem_file);
 
@@ -325,7 +325,7 @@ void detect_res(void)
 {
 	FILE *res_file;
 
-	res_file = popen("system_profiler SPDisplaysDataType | "
+	res_file = popen("system_profiler SPDisplaysDataType 2> /dev/null | "
 				"awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
 	fgets(res_str, MAX_STRLEN, res_file);
 	pclose(res_file);
