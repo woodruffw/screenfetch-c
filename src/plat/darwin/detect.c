@@ -23,7 +23,7 @@
 #include <glob.h>
 #include <Availability.h>
 #include <mach/mach_time.h>
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1050
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 	#include <CoreServices/CoreServices.h> /* for Gestalt */
 #endif
 
@@ -40,7 +40,7 @@
 */
 void detect_distro(void)
 {
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1050
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 	int major, minor, bugfix;
 
 	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &major);
