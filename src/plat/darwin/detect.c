@@ -53,26 +53,26 @@ void detect_distro(void)
 	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", major, minor, bugfix);
 #else
 	char vers_str[MAX_STRLEN] = {0};
-	CFDictionaryRef vers_dict = NULL;
+	CFDictionaryRef vers_dict_ref = NULL;
 	CFStringRef vers_str_ref = NULL;
 
-	vers_dict = _CFCopyServerVersionDictionary();
+	vers_dict_ref = _CFCopyServerVersionDictionary();
 
-	if (!vers_dict)
+	if (!vers_dict_ref)
 	{
-		vers_dict = _CFCopySystemVersionDictionary();
+		vers_dict_ref = _CFCopySystemVersionDictionary();
 
-		if (!vers_dict)
+		if (!vers_dict_ref)
 		{
 			ERR_REPORT("Failure while detecting OS X version.");
 		}
 	}
 
-	vers_str_ref = CFDictionaryGetValue(vers_dict, CFSTR("MacOSXProductVersion"));
+	vers_str_ref = CFDictionaryGetValue(vers_dict_ref, CFSTR("MacOSXProductVersion"));
 
 	if (!vers_str_ref)
 	{
-		vers_str_ref = CFDictionaryGetValue(vers_dict,
+		vers_str_ref = CFDictionaryGetValue(vers_dict_ref,
 			_kCFSystemVersionProductVersionKey);
 	}
 
@@ -85,6 +85,9 @@ void detect_distro(void)
 	{
 		snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", vers_str);
 	}
+
+	CFRelease(vers_str_ref);
+	CFRelease(vers_dict_ref);
 #endif
 
 	safe_strncpy(host_color, TLBL, MAX_STRLEN);
