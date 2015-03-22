@@ -23,11 +23,8 @@
 #include <glob.h>
 #include <Availability.h>
 #include <mach/mach_time.h>
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1050
 	#include <CoreServices/CoreServices.h> /* for Gestalt */
-#else
-	#include <CoreFoundation/CoreFoundation.h>
-	#include <CoreFoundation/CFPriv.h>
 #endif
 
 /* program includes */
@@ -43,7 +40,7 @@
 */
 void detect_distro(void)
 {
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
+#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1050
 	int major, minor, bugfix;
 
 	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &major);
@@ -52,42 +49,14 @@ void detect_distro(void)
 
 	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", major, minor, bugfix);
 #else
-	char vers_str[MAX_STRLEN] = {0};
-	CFDictionaryRef vers_dict_ref = NULL;
-	CFStringRef vers_str_ref = NULL;
+	FILE *distro_file;
+	char distro_vers_str[MAX_STRLEN] = {0};
 
-	vers_dict_ref = _CFCopyServerVersionDictionary();
+	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
+	fgets(distro_vers_str, MAX_STRLEN, distro_file);
+	pclose(distro_file);
 
-	if (!vers_dict_ref)
-	{
-		vers_dict_ref = _CFCopySystemVersionDictionary();
-
-		if (!vers_dict_ref)
-		{
-			ERR_REPORT("Failure while detecting OS X version.");
-		}
-	}
-
-	vers_str_ref = CFDictionaryGetValue(vers_dict_ref, CFSTR("MacOSXProductVersion"));
-
-	if (!vers_str_ref)
-	{
-		vers_str_ref = CFDictionaryGetValue(vers_dict_ref,
-			_kCFSystemVersionProductVersionKey);
-	}
-
-	if (!CFStringGetCString(vers_str_ref, vers_str, MAX_STRLEN,
-		CFStringGetSystemEncoding()))
-	{
-		ERR_REPORT("Failure while converting CFStringRef to a C string.");
-	}
-	else
-	{
-		snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", vers_str);
-	}
-
-	CFRelease(vers_str_ref);
-	CFRelease(vers_dict_ref);
+	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_vers_str);
 #endif
 
 	safe_strncpy(host_color, TLBL, MAX_STRLEN);
