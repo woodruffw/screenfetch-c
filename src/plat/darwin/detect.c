@@ -25,6 +25,9 @@
 #include <mach/mach_time.h>
 #if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
 	#include <CoreServices/CoreServices.h> /* for Gestalt */
+#else
+	#include <CoreFoundation/CoreFoundation.h>
+	#include <CoreFoundation/CFPriv.h>
 #endif
 
 /* program includes */
@@ -41,28 +44,47 @@
 void detect_distro(void)
 {
 #if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-	int ver_maj, ver_min, ver_bug;
+	int major, minor, bugfix;
+
+	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &major);
+	Gestalt(gestaltSystemVersionMinor, (SInt32 *) &minor);
+	Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &bugfix);
+
+	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", major, minor, bugfix);
 #else
-	FILE *distro_file;
-	char distro_vers_str[MAX_STRLEN] = {0};
-#endif
+	char vers_str[MAX_STRLEN] = {0};
+	CFDictionaryRef vers_dict = NULL;
+	CFStringRef vers_str_ref = NULL;
 
-	/*
-		Use this:
-		https://www.opensource.apple.com/source/DarwinTools/DarwinTools-1/sw_vers.c
-	*/
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &ver_maj);
-	Gestalt(gestaltSystemVersionMinor, (SInt32 *) &ver_min);
-	Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &ver_bug);
+	vers_dict = _CFCopyServerVersionDictionary();
 
-	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", ver_maj, ver_min, ver_bug);
-#else
-	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-	fgets(distro_vers_str, MAX_STRLEN, distro_file);
-	pclose(distro_file);
+	if (!vers_dict)
+	{
+		vers_dict = _CFCopySystemVersionDictionary();
 
-	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_vers_str);
+		if (!vers_dict)
+		{
+			ERR_REPORT("Failure while detecting OS X version.");
+		}
+	}
+
+	vers_str_ref = CFDictionaryGetValue(vers_dict, CFSTR("MacOSXProductVersion"));
+
+	if (!vers_str_ref)
+	{
+		vers_str_ref = CFDictionaryGetValue(vers_dict,
+			_kCFSystemVersionProductVersionKey);
+	}
+
+	if (!CFStringGetCString(vers_str_ref, vers_str, MAX_STRLEN,
+		CFStringGetSystemEncoding()))
+	{
+		ERR_REPORT("Failure while converting CFStringRef to a C string.");
+	}
+	else
+	{
+		snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", vers_str);
+	}
 #endif
 
 	safe_strncpy(host_color, TLBL, MAX_STRLEN);
