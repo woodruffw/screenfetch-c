@@ -11,6 +11,8 @@ MAN = $(PREFIX)/share/man/man1
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
+PROG = screenfetch-c
+
 SCRIPTS =
 TESTS =
 
@@ -52,13 +54,13 @@ else
 endif
 
 all: $(TESTS) $(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o ./screenfetch-c $(LDFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(PROG) $(LDFLAGS)
 
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 install: all
-	$(INSTALL) ./screenfetch-c $(BIN)/screenfetch-c
+	$(INSTALL) $(PROG) $(BIN)/screenfetch-c
 	if [ -n "$(SCRIPTS)" ] ; then \
 		$(INSTALL) $(SCRIPTS) $(BIN) ; \
 	fi
