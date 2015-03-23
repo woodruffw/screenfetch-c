@@ -4,3 +4,8 @@ bin/
 *~
 #ignore objects
 *.o
+#ignore other binaries created by make
+screenfetch-c
+x11test
+gltest
+

@@ -5,13 +5,14 @@ LDFLAGS =
 INSTALL = install -c
 
 PREFIX = /usr/local
-BIN = $(PREFIX)/bin
-MAN = $(PREFIX)/share/man/man1
+BINDIR = $(PREFIX)/bin
+MANDIR = $(PREFIX)/share/man/man1
 
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
 PROG = screenfetch-c
+
 
 SCRIPTS =
 TESTS =
@@ -60,21 +61,21 @@ all: $(TESTS) $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 install: all
-	$(INSTALL) $(PROG) $(BIN)/screenfetch-c
+	$(INSTALL) $(PROG) $(BINDIR)/$(PROG)
 	if [ -n "$(SCRIPTS)" ] ; then \
-		$(INSTALL) $(SCRIPTS) $(BIN) ; \
+		$(INSTALL) $(SCRIPTS) $(BINDIR) ; \
 	fi
-	mkdir -p $(MAN)
-	$(INSTALL) ./man/screenfetch-c.1 $(MAN)/screenfetch-c.1
+	mkdir -p $(MANDIR)
+	$(INSTALL) ./man/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
 
 uninstall:
-	rm -rf $(BIN)/screenfetch-c
-	rm -rf $(BIN)/detectde
-	rm -rf $(BIN)/detectgtk
-	rm -rf $(BIN)/detectwm
-	rm -rf $(BIN)/detectwmtheme
-	rm -rf $(BIN)/detectgpu
-	rm -rf $(MAN)/screenfetch-c.1
+	rm -rf $(BINDIR)/screenfetch-c
+	rm -rf $(BINDIR)/detectde
+	rm -rf $(BINDIR)/detectgtk
+	rm -rf $(BINDIR)/detectwm
+	rm -rf $(BINDIR)/detectwmtheme
+	rm -rf $(BINDIR)/detectgpu
+	rm -rf $(MANDIR)/screenfetch-c.1
 
 x11test:
 	@echo "Testing for X11..."
