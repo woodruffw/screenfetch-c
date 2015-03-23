@@ -111,15 +111,13 @@ Shell version detection relies of very specific naming schemes and may appear in
 .PP
 DragonFly BSD systems with more than 4GiB of RAM may have their RAM stats displayed incorrectly, as 32-bit integers are used in sysctl.
 .PP
-Manual mode on Windows seems the result in a variety of weird bugs concerning uptime, packages, disk stats, and memory stats. For the time being, I recommend NOT using it on Windows.
-.PP
 Memory detection on Linux systems includes swap/buffer RAM in used RAM, not free RAM. While this is not a bug per se, it may contradict figures from other utilities (which factor out swap/buffer RAM).
 .PP
 Found a bug or issue? Please tell me about it:
 .I http://github.com/woodruffw/screenfetch-c
 .SH DIAGNOSTICS
 .B screenfetch-c
-has two built-in output modes: verbose (disabled by default) and error (enabled by default).
+has two built-in diagnostic output modes: verbose (disabled by default) and error (enabled by default).
 If a serious or fatal error occurs, the user will be notified via error (stderr).
 Otherwise, the user may choose to enable the verbose mode, which display real-time detection.
 .SH EXIT STATUS
@@ -146,4 +144,5 @@ For a list of contributors to
 .BR screenfetch-c ,
 please refer to the CONTRIBUTORS file.
 .SH SEE ALSO
-.BR screenFetch (1)
+.IR screenFetch (1),
+.IR archey (1)
