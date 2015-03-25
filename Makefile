@@ -79,12 +79,12 @@ uninstall:
 
 x11test:
 	@echo "Testing for X11..."
-	$(CC) $(CFLAGS) ./tests/x11test.c -o ./x11test -lX11
+	$(CC) $(CFLAGS) ./src/tests/x11test.c -o ./x11test -lX11
 	@echo "Looks good."
 
 gltest:
 	@echo "Testing for OpenGL..."
-	$(CC) $(CFLAGS) ./tests/gltest.c -o ./gltest -lGL
+	$(CC) $(CFLAGS) ./src/tests/gltest.c -o ./gltest -lGL
 	@echo "Looks good."
 
 clean:
