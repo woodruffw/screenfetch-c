@@ -493,7 +493,7 @@ void detect_mem(void)
 	sysinfo(&si_mem);
 
 	total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / MB;
-	free_mem = (long long) (si_mem.freeram * si_mem.mem_unit) / MB;
+	free_mem = (long long) ((si_mem.freeram + si_mem.bufferram) * si_mem.mem_unit) / MB;
 	used_mem = (long long) total_mem - free_mem;
 
 	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
