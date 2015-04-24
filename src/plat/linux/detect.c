@@ -25,6 +25,7 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <glob.h>
+#include <mntent.h>
 
 /* program includes */
 #include "../../arrays.h"
@@ -461,19 +462,42 @@ void detect_gpu(void)
 */
 void detect_disk(void)
 {
-	struct statvfs disk_info;
-	unsigned long disk_total = 0, disk_used = 0, disk_percentage = 0;
+	FILE *mnt_file;
+	struct mntent *ent;
+	struct statvfs fs;
+	unsigned long long disk_total = 0, disk_used = 0, disk_pct = 0;
 
-	if (!(statvfs(getenv("HOME"), &disk_info)))
+	if ((mnt_file = setmntent("/etc/mtab", "r")))
 	{
-		disk_total = ((disk_info.f_blocks * disk_info.f_bsize) / GB);
-		disk_used = (((disk_info.f_blocks - disk_info.f_bfree) * disk_info.f_bsize) / GB);
-		disk_percentage = (((float) disk_used / disk_total) * 100);
-		snprintf(disk_str, MAX_STRLEN, "%ldG / %ldG (%ld%%)", disk_used, disk_total, disk_percentage);
+		while ((ent = getmntent(mnt_file)))
+		{
+			/* we only want to get the size of "real" disks (starting with /) */
+			if (ent->mnt_dir && ent->mnt_fsname && ent->mnt_fsname[0] == '/')
+			{
+				if (!statvfs(ent->mnt_dir, &fs))
+				{
+					disk_total += (fs.f_blocks * fs.f_bsize);
+					disk_used += ((fs.f_blocks - fs.f_bfree) * fs.f_bsize);
+				}
+				else
+				{
+					ERR_REPORT("Could not stat filesystem for statistics (detect_disk).");
+				}
+			}
+		}
+
+		disk_total /= GB;
+		disk_used /= GB;
+		disk_pct = (((double) disk_used / disk_total) * 100);
+
+		snprintf(disk_str, MAX_STRLEN, "%lluG / %lluG (%llu%%)", disk_used,
+				disk_total, disk_pct);
+
+		endmntent(mnt_file);
 	}
 	else if (error)
 	{
-		ERR_REPORT("Could not stat $HOME for filesystem statistics.");
+		ERR_REPORT("Could not open /etc/mtab (detect_disk).");
 	}
 
 	return;
