@@ -488,7 +488,7 @@ void detect_disk(void)
 
 		disk_total /= GB;
 		disk_used /= GB;
-		disk_pct = (((double) disk_used / disk_total) * 100);
+		disk_pct = (disk_total > 0 ? (((double) disk_used / disk_total) * 100) : 0);
 
 		snprintf(disk_str, MAX_STRLEN, "%lluG / %lluG (%llu%%)", disk_used,
 				disk_total, disk_pct);
