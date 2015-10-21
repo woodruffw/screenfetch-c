@@ -104,7 +104,7 @@ char *lmde_logo[] =
 /* 18 */
 char *ubuntu_logo[] =
 {
-	""TLRD"                          ./+o+-       " TNRM,
+	""TLRD"                          ./+o+-      " TNRM,
 	""TWHT"                  yyyyy- "TLRD"-yyyyyy+     " TNRM,
 	""TWHT"               "TWHT"://+//////"TLRD"-yyyyyyo     " TNRM,
 	""TYLW"           .++ "TWHT".:/++++++/-"TLRD".+sss/`     " TNRM,
