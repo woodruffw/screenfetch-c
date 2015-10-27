@@ -1,6 +1,8 @@
 screenfetch-c
 =============
 
+[![Build Status](https://drone.io/github.com/woodruffw/screenfetch-c/status.png)](https://drone.io/github.com/woodruffw/screenfetch-c/latest)
+
 ## Current Version: 1.4 (release)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
