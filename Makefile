@@ -66,7 +66,7 @@ install: all
 		$(INSTALL) $(SCRIPTS) $(BINDIR) ; \
 	fi
 	mkdir -p $(MANDIR)
-	$(INSTALL) ./man/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
+	$(INSTALL) ./man/man1/screenfetch-c.1 $(MANDIR)/screenfetch-c.1
 
 uninstall:
 	rm -rf $(BINDIR)/screenfetch-c
