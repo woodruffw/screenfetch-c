@@ -5,8 +5,8 @@ screenfetch-c
 
 ## Current Version: 1.4 (release)
 
-screenfetch-c is an attempt to rewrite screenFetch, a popular shell 
-script that displays system information and an ASCII logo, in the C 
+screenfetch-c is an attempt to rewrite screenFetch, a popular shell
+script that displays system information and an ASCII logo, in the C
 language.
 Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, Solaris, GNU/Linux, OS X, and Windows (via the Cygwin environment).
 
@@ -91,7 +91,7 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [ ] OpenSUSE
 - [ ] Mandriva/Mandrake
 - [ ] Slackware
-- [ ] Red Hat (RHEL)
+- [x] Red Hat (RHEL)
 - [ ] Frugalware
 - [x] Peppermint
 - [ ] SolusOS

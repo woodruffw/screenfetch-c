@@ -244,7 +244,7 @@ void detect_mem(void)
 /*	detect_shell
 	detects the shell currently running on the computer
 	--
-	CAVEAT: shell version detection relies on the standard versioning format for 
+	CAVEAT: shell version detection relies on the standard versioning format for
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
 	scheme, the version may be displayed incorrectly.
 	--
@@ -279,7 +279,7 @@ void detect_shell(void)
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);	
+		fgets(vers_str, MAX_STRLEN, shell_file);
 		snprintf(shell_str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
@@ -330,7 +330,7 @@ void detect_res(void)
 /*	detect_de
 	detects the desktop environment currently running on top of the OS
 	--
-	CAVEAT: This function relies on the presence of 'detectde', a shell script. 
+	CAVEAT: This function relies on the presence of 'detectde', a shell script.
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
@@ -354,9 +354,9 @@ void detect_de(void)
 		}
 		else if (getenv("KDE_FULL_SESSION"))
 		{
-			/*	KDE_SESSION_VERSION only exists on KDE4+, so 
+			/*	KDE_SESSION_VERSION only exists on KDE4+, so
 				getenv will return NULL on KDE <= 3.
-			 */
+			*/
 			snprintf(de_str, MAX_STRLEN, "KDE%s", getenv("KDE_SESSION_VERSION"));
 		}
 		else if (error)
@@ -371,7 +371,7 @@ void detect_de(void)
 /*	detect_wm
 	detects the window manager currently running on top of the OS
 	--
-	CAVEAT: This function relies on the presence of 'detectwm', a shell script. 
+	CAVEAT: This function relies on the presence of 'detectwm', a shell script.
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */
@@ -389,7 +389,7 @@ void detect_wm(void)
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm()
 	--
-	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script. 
+	CAVEAT: This function relies on the presence of 'detectwmtheme', a shell script.
 	If it isn't present somewhere in the PATH, the WM Theme will be set as 'Unknown'
 	--
 */

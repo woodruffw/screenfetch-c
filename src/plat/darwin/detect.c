@@ -249,7 +249,7 @@ void detect_mem(void)
 /*	detect_shell
 	detects the shell currently running on the computer
 	--
-	CAVEAT: shell version detection relies on the standard versioning format for 
+	CAVEAT: shell version detection relies on the standard versioning format for
 	each shell. If any shell's older (or newer versions) suddenly begin to use a
 	new	scheme, the version may be displayed incorrectly.
 	--
@@ -284,7 +284,7 @@ void detect_shell(void)
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);	
+		fgets(vers_str, MAX_STRLEN, shell_file);
 		snprintf(shell_str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
