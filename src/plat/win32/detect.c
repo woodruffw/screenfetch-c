@@ -30,30 +30,57 @@ extern int pclose(FILE *stream);
 
 /*	detect_distro
 	detects the computer's distribution (Windows version)
-	argument char *str: the char array to be filled with the distro name
 */
 void detect_distro(void)
 {
+	OSVERSIONINFO vers_info;
+	int major, minor;
+
+	vers_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&vers_info);
+	major = vers_info.dwMajorVersion;
+	minor = vers_info.dwMinorVersion;
+
 	/* if distro_str was NOT set by the -D flag */
 	if (STREQ(distro_str, "Unknown"))
 	{
-#if defined(NTDDI_WIN7)
-			safe_strncpy(distro_str, "Microsoft Windows 7", MAX_STRLEN);
-#elif defined(NTDDI_WIN8)
-			safe_strncpy(distro_str, "Microsoft Windows 8", MAX_STRLEN);
-#elif defined(NTDDI_WINBLUE)
-			safe_strncpy(distro_str, "Microsoft Windows 8.1", MAX_STRLEN);
-#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
-			safe_strncpy(distro_str, "Microsoft Windows Vista", MAX_STRLEN);
-#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
-			safe_strncpy(distro_str, "Microsoft Windows XP", MAX_STRLEN);
-#elif defined(_WIN32_WINNT_WS03)
-			safe_strncpy(distro_str, "Microsoft Windows Server 2003", MAX_STRLEN);
-#elif defined(_WIN32_WINNT_WS08)
-			safe_strncpy(distro_str, "Microsoft Windows Server 2008", MAX_STRLEN);
-#else
-			safe_strncpy(distro_str, "Microsoft Windows", MAX_STRLEN);
-#endif
+		switch (major)
+		{
+			case 10:
+				safe_strncpy(distro_str, "Microsoft Windows 10", MAX_STRLEN);
+				break;
+			case 6:
+				switch (minor)
+				{
+					case 3:
+						safe_strncpy(distro_str, "Microsoft Windows 8.1", MAX_STRLEN);
+						break;
+					case 2:
+						safe_strncpy(distro_str, "Microsoft Windows 8", MAX_STRLEN);
+						break;
+					case 1:
+						safe_strncpy(distro_str, "Microsoft Windows 7", MAX_STRLEN);
+						break;
+					case 0:
+						safe_strncpy(distro_str, "Microsoft Windows Vista", MAX_STRLEN);
+						break;
+				}
+				break;
+			case 5:
+				switch (minor)
+				{
+					case 1:
+						safe_strncpy(distro_str, "Microsoft Windows XP", MAX_STRLEN);
+						break;
+					case 0:
+						safe_strncpy(distro_str, "Microsoft Windows 2000", MAX_STRLEN);
+						break;
+				}
+				break;
+			default:
+				safe_strncpy(distro_str, "Microsoft Windows", MAX_STRLEN);
+				break;
+		}
 	}
 
 	safe_strncpy(host_color, TRED, MAX_STRLEN);
@@ -75,7 +102,7 @@ void detect_host(void)
 		ERR_REPORT("Memory allocation failed in detect_host.");
 		exit(1);
 	}
-	
+
 	unsigned long len = MAX_STRLEN;
 	GetUserName(given_user, &len);
 	gethostname(given_host, MAX_STRLEN);
@@ -270,7 +297,7 @@ void detect_mem(void)
 /*	detect_shell
 	detects the shell currently running on the computer
 	--
-	CAVEAT: shell version detection relies on the standard versioning format for 
+	CAVEAT: shell version detection relies on the standard versioning format for
 	each shell. If any shell's older (or newer versions) suddenly begin to use a new
 	scheme, the version may be displayed incorrectly.
 	--
@@ -305,7 +332,7 @@ void detect_shell(void)
 	else if (strstr(shell_name, "zsh"))
 	{
 		shell_file = popen("zsh --version", "r");
-		fgets(vers_str, MAX_STRLEN, shell_file);	
+		fgets(vers_str, MAX_STRLEN, shell_file);
 		snprintf(shell_str, MAX_STRLEN, "zsh %.*s", 5, vers_str + 4);
 		pclose(shell_file);
 	}
@@ -355,18 +382,21 @@ void detect_res(void)
 */
 void detect_de(void)
 {
-	FILE *de_file;
-	int version;
+	OSVERSIONINFO vers_info;
+	int major, minor;
 
-	de_file = popen("wmic os get version | grep -o '^[0-9]'", "r");
-	fscanf(de_file, "%d", &version);
-	pclose(de_file);
+	vers_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&vers_info);
+	major = vers_info.dwMajorVersion;
+	minor = vers_info.dwMinorVersion;
 
-	if (version == 6 || version == 7)
-		safe_strncpy(de_str, "Aero", MAX_STRLEN);
-	else if (version == 8)
+	if (major == 10)
+		safe_strncpy(de_str, "Modern UI/Metro", MAX_STRLEN);
+	else if (major == 6 && minor >= 2)
 		safe_strncpy(de_str, "Metro", MAX_STRLEN);
-	else
+	else if (major == 6 && minor <= 1)
+		safe_strncpy(de_str, "Aero", MAX_STRLEN);
+	else if (major == 5)
 		safe_strncpy(de_str, "Luna", MAX_STRLEN);
 
 	return;
