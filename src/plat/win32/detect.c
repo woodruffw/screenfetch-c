@@ -13,6 +13,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <libgen.h>
 
 /* Windows-specific includes */
 #include <Windows.h>
@@ -418,22 +419,30 @@ void detect_wm(void)
 */
 void detect_wm_theme(void)
 {
-	FILE *wm_theme_file;
+	char tmp_theme[MAX_STRLEN] = "Unknown";
+	char *suffix;
+	HKEY hkey;
+	DWORD str_size = MAX_STRLEN;
 
-#if defined(__MSYS__)
-	#define REG_QUERY_V "//v"
-#else
-	#define REG_QUERY_V "/v"
-#endif
+	RegOpenKey(HKEY_CURRENT_USER,
+		"Software\\Microsoft\\Windows\\CurrentVersion\\Themes", &hkey);
+	RegQueryValueEx(hkey, "CurrentTheme", 0, NULL, (BYTE *) tmp_theme,
+		&str_size);
 
-	/* nasty one-liner */
-	wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows"
-			"\\CurrentVersion\\Themes' " REG_QUERY_V " 'CurrentTheme' | "
-			"grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | "
-			"grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'",
-			"r");
-	fgets(wm_theme_str, MAX_STRLEN, wm_theme_file);
-	pclose(wm_theme_file);
+	/* if we successfully retrieved a theme from the registry */
+	if (!STREQ(tmp_theme, "Unknown"))
+	{
+		safe_strncpy(tmp_theme, basename(tmp_theme), MAX_STRLEN);
+		suffix = tmp_theme + strlen(tmp_theme) - 6;
+
+		/* if our retrieved theme ends with .theme, truncate it */
+		if (STREQ(suffix, ".theme"))
+		{
+			tmp_theme[strlen(tmp_theme) - 6] = '\0';
+		}
+	}
+
+	safe_strncpy(wm_theme_str, tmp_theme, MAX_STRLEN);
 
 	return;
 }
