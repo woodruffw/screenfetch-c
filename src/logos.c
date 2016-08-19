@@ -675,7 +675,7 @@ char *macosx_logo[] =
 /* 16 */
 char *windows_logo[] =
 {
-	""TLRD"        ,.=:!!t3Z3z.,                 " TNRM,
+	""TLRD"        ,.=:!!t3Z3z.,                " TNRM,
 	""TLRD"       :tt:::tt333EE3                " TNRM,
 	""TLRD"       Et:::ztt33EEEL"TLGN" @Ee.,      .., " TNRM,
 	""TLRD"      ;tt:::tt333EE7"TLGN" ;EEEEEEttttt33# " TNRM,
