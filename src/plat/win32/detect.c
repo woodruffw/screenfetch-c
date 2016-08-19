@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <libgen.h>
+#include <glob.h>
 
 /* Windows-specific includes */
 #include <Windows.h>
@@ -189,15 +190,23 @@ void detect_uptime(void)
 */
 void detect_pkgs(void)
 {
-	FILE *pkgs_file;
-	int packages = 0;
+	const char *pattern;
+	glob_t globbuf;
 
-	pkgs_file = popen("cygcheck -cd | wc -l", "r");
-	fscanf(pkgs_file, "%d", &packages);
-	packages -= 2;
-	pclose(pkgs_file);
+#if defined(__MSYS__)
+	/* MSYS2 */
+	/* ignores: ALPM_DB_VERSION */
+	pattern = "/var/lib/pacman/local/*-*";
+#else
+	/* Cygwin */
+	/* ignores: installed.db setup.rc timestamp */
+	pattern = "/etc/setup/*.lst.*";
+#endif
 
-	snprintf(pkgs_str, MAX_STRLEN, "%d", packages);
+	globbuf.gl_offs = 1;
+	glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+	snprintf(pkgs_str, MAX_STRLEN, "%d", (int) globbuf.gl_pathc);
+	globfree(&globbuf);
 
 	return;
 }
