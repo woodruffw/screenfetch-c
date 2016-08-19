@@ -420,9 +420,15 @@ void detect_wm_theme(void)
 {
 	FILE *wm_theme_file;
 
+#if defined(__MSYS__)
+	#define REG_QUERY_V "//v"
+#else
+	#define REG_QUERY_V "/v"
+#endif
+
 	/* nasty one-liner */
 	wm_theme_file = popen("reg query 'HKCU\\Software\\Microsoft\\Windows"
-			"\\CurrentVersion\\Themes' /v 'CurrentTheme' | "
+			"\\CurrentVersion\\Themes' " REG_QUERY_V " 'CurrentTheme' | "
 			"grep -o '[A-Z]:\\\\.*' | awk -F\"\\\\\" '{print $NF}' | "
 			"grep -o '[0-9A-z. ]*$' | grep -o '^[0-9A-z ]*' | tr -d '\\r\\n'",
 			"r");
