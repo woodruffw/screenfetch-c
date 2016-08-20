@@ -5,6 +5,7 @@ bin/
 #ignore objects
 *.o
 #ignore other binaries created by make
+*.exe
 screenfetch-c
 x11test
 gltest
