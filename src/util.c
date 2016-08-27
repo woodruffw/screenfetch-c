@@ -87,9 +87,7 @@ void take_screenshot(bool verbose)
 	BitBlt(mem_dc, 0, 0, horiz, vert, screen_dc, 0, 0, SRCCOPY);
 	bitmap = SelectObject(mem_dc, old_bitmap);
 
-	PBITMAPINFO pBitmapInfo = createBitmapInfoStruct(bitmap);
-
-	if (createBmpFile("screenfetch_screenshot.bmp", pBitmapInfo, bitmap, mem_dc) == 0)
+	if (createBitmapFile("screenfetch_screenshot.bmp", bitmap, mem_dc) == 0)
 	{
 		VERBOSE_OUT("Screenshot successfully saved.", "");
 	}

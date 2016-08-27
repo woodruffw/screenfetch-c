@@ -1,191 +1,98 @@
-/* bitmap.c
+/*	bitmap.c
+**	Author: djcj <djcj@gmx.de>
+**	-------------
 **
-** Copyright (c) 2016 Microsoft
-** Source: https://msdn.microsoft.com/de-de/library/windows/desktop/dd145119(v=vs.85).aspx
-**
-** The bitmap saving functions used by screenfetch-c on Windows are implemented here.
-**
-** According to section 2b of the Microsoft Developer Services Agreement
-** this code is released under the Microsoft Limited Public License.
-**
-** Usage:
-**  HBITMAP hBitmap;
-**  HDC hdc;
-**  PBITMAPINFO pBitmapInfo = createBitmapInfoStruct(hBitmap);
-**  createBmpFile("picture.bmp"), pBitmapInfo, hBitmap, hdc);
+**	The screenshot functions used by screenfetch-c on Windows are implemented here.
+**	Like the rest of screenfetch-c, this file is licensed under the MIT license.
 */
 
 #include <Windows.h>
 
-PBITMAPINFO createBitmapInfoStruct(HBITMAP hBmp)
+int createBitmapFile(LPCTSTR lpszFileName, HBITMAP hBitmap, HDC hdc)
 {
-	BITMAP      bmp;
-	PBITMAPINFO pbmi;
-	WORD        cClrBits;
-	/* retrieve the bitmap color format, width, and height */
-	if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
-	{
-		return NULL;
-	}
+	BITMAP bitmap;
+	BITMAPFILEHEADER bitmapFileHeader;
 
-	/* convert the color format to a count of bits */
-	cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
-	if (cClrBits == 1)
-	{
-		cClrBits = 1;
-	}
-	else if (cClrBits <= 4)
-	{
-		cClrBits = 4;
-	}
-	else if (cClrBits <= 8)
-	{
-		cClrBits = 8;
-	}
-	else if (cClrBits <= 16)
-	{
-		cClrBits = 16;
-	}
-	else if (cClrBits <= 24)
-	{
-		cClrBits = 24;
-	}
-	else
-	{
-		cClrBits = 32;
-	}
-
-	/*	Allocate memory for the BITMAPINFO structure. (This structure 
-		contains a BITMAPINFOHEADER structure and an array of RGBQUAD 
-		data structures.)
-	*/
-	if (cClrBits != 24)
-	{
-		pbmi = (PBITMAPINFO)LocalAlloc(LPTR,
-			sizeof(BITMAPINFOHEADER) +
-			sizeof(RGBQUAD) * (1 << cClrBits));
-	}
-	else
-	{
-		/* there is no RGBQUAD array for the 24-bit-per-pixel format */
-		pbmi = (PBITMAPINFO)LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER));
-	}
-
-	/* initialize the fields in the BITMAPINFO structure */
-	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	pbmi->bmiHeader.biWidth = bmp.bmWidth;
-	pbmi->bmiHeader.biHeight = bmp.bmHeight;
-	pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
-	pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
-	if (cClrBits < 24)
-	{
-		pbmi->bmiHeader.biClrUsed = (1 << cClrBits);
-	}
-
-	/* if the bitmap is not compressed, set the BI_RGB flag */
-	pbmi->bmiHeader.biCompression = BI_RGB;
-
-	/*	Compute the number of bytes in the array of color
-		indices and store the result in biSizeImage.
-		For Windows NT, the width must be DWORD aligned unless
-		the bitmap is RLE compressed. This example shows this.
-		For Windows 95/98/Me, the width must be WORD aligned unless the
-		bitmap is RLE compressed.
-	*/
-	pbmi->bmiHeader.biSizeImage = ((pbmi->bmiHeader.biWidth * cClrBits + 31) & ~31) / 8
-		* pbmi->bmiHeader.biHeight;
-
-	/*	set biClrImportant to 0, indicating that all of the 
-		device colors are important
-	*/
-	pbmi->bmiHeader.biClrImportant = 0;
-	return pbmi;
-}
-
-int createBmpFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC)
-{
-	HANDLE hf;               /* file handle */
-	BITMAPFILEHEADER hdr;    /* bitmap file-header */
-	PBITMAPINFOHEADER pbih;  /* bitmap info-header */
-	LPBYTE lpBits;           /* memory pointer */
-	DWORD cb;                /* incremental count of bytes */
-	BYTE *hp;                /* byte pointer */
-	DWORD dwTmp;
-
-	pbih = (PBITMAPINFOHEADER)pbi;
-	lpBits = (LPBYTE)GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
-
-	if (!lpBits)
+	if (!GetObject(hBitmap, sizeof(BITMAP), &bitmap))
 	{
 		return -1;
 	}
 
-	/*	retrieve the color table (RGBQUAD array) and the bits
-		(array of palette indices) from the DIB
-	*/
-	if (!GetDIBits(hDC, hBMP, 0, (WORD)pbih->biHeight, lpBits,
-		pbi, DIB_RGB_COLORS))
+	int infoHeaderSize = sizeof(BITMAPINFOHEADER);
+	int rgbQuadSize = sizeof(RGBQUAD);
+	int bits = bitmap.bmPlanes * bitmap.bmBitsPixel;
+	int infoHeaderSizeImage = ((bitmap.bmWidth * bits + 31) &~31) / 8 *
+			bitmap.bmHeight;
+
+	PBITMAPINFO pBitmapInfo = (PBITMAPINFO) LocalAlloc(LPTR,
+			infoHeaderSize + rgbQuadSize * (1 << bits));
+
+	pBitmapInfo->bmiHeader.biSize = infoHeaderSize;
+	pBitmapInfo->bmiHeader.biBitCount = bitmap.bmBitsPixel;
+	pBitmapInfo->bmiHeader.biClrImportant = 0;
+	pBitmapInfo->bmiHeader.biClrUsed = 0;
+	pBitmapInfo->bmiHeader.biCompression = BI_RGB;
+	pBitmapInfo->bmiHeader.biHeight = bitmap.bmHeight;
+	pBitmapInfo->bmiHeader.biWidth = bitmap.bmWidth;
+	pBitmapInfo->bmiHeader.biPlanes = bitmap.bmPlanes;
+	pBitmapInfo->bmiHeader.biSizeImage = infoHeaderSizeImage;
+
+	PBITMAPINFOHEADER pBitmapInfoHeader = (PBITMAPINFOHEADER) pBitmapInfo;
+	LPBYTE mem = GlobalAlloc(GMEM_FIXED, pBitmapInfoHeader->biSizeImage);
+
+	if (!mem)
 	{
 		return -1;
 	}
 
-	/* create the .BMP file */
-	hf = CreateFile(pszFile,
-					GENERIC_READ | GENERIC_WRITE,
-					(DWORD)0,
-					NULL,
-					CREATE_ALWAYS,
-					FILE_ATTRIBUTE_NORMAL,
-					(HANDLE)NULL);
-	if (hf == INVALID_HANDLE_VALUE)
-	{
-		return -1;
-	}
-	hdr.bfType = 0x4d42;	/* 0x42 = "B" 0x4d = "M" */
-
-	/* compute the size of the entire file */
-	hdr.bfSize = (DWORD)(sizeof(BITMAPFILEHEADER) +
-		pbih->biSize + pbih->biClrUsed
-		* sizeof(RGBQUAD) + pbih->biSizeImage);
-	hdr.bfReserved1 = 0;
-	hdr.bfReserved2 = 0;
-
-	/* compute the offset to the array of color indices */
-	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
-		pbih->biSize + pbih->biClrUsed
-		* sizeof(RGBQUAD);
-
-	/* copy the BITMAPFILEHEADER into the .BMP file */
-	if (!WriteFile(hf, (LPVOID)&hdr, sizeof(BITMAPFILEHEADER),
-		(LPDWORD)&dwTmp, NULL))
+	if (!GetDIBits(hdc, hBitmap, 0, pBitmapInfoHeader->biHeight, mem, pBitmapInfo,
+			DIB_RGB_COLORS))
 	{
 		return -1;
 	}
 
-	/* copy the BITMAPINFOHEADER and RGBQUAD array into the file */
-	if (!WriteFile(hf, (LPVOID)pbih, sizeof(BITMAPINFOHEADER)
-		+ pbih->biClrUsed * sizeof(RGBQUAD),
-		(LPDWORD)&dwTmp, (NULL)))
+	int fileHeaderSize = sizeof(BITMAPFILEHEADER);
+	int fileAndInfoHeaderSize = fileHeaderSize + infoHeaderSize +
+			pBitmapInfoHeader->biClrUsed * rgbQuadSize;
+
+	bitmapFileHeader.bfType = 'B' + ('M' << 8);
+	bitmapFileHeader.bfOffBits = fileAndInfoHeaderSize;
+	bitmapFileHeader.bfSize = fileAndInfoHeaderSize + pBitmapInfoHeader->biSizeImage;
+	bitmapFileHeader.bfReserved1 = 0;
+	bitmapFileHeader.bfReserved2 = 0;
+
+	HANDLE handleFile = CreateFile(lpszFileName, GENERIC_WRITE, 0, NULL,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (handleFile == INVALID_HANDLE_VALUE)
 	{
 		return -1;
 	}
 
-	/* copy the array of color indices into the .BMP file */
-	cb = pbih->biSizeImage;
-	hp = lpBits;
-	if (!WriteFile(hf, (LPSTR)hp, (int)cb, (LPDWORD)&dwTmp, NULL))
+	long unsigned int dwWritten = 0;
+
+	if (!WriteFile(handleFile, &bitmapFileHeader, fileHeaderSize, &dwWritten, NULL))
 	{
 		return -1;
 	}
 
-	/* close the .BMP file */
-	if (!CloseHandle(hf))
+	if (!WriteFile(handleFile, pBitmapInfoHeader,
+			infoHeaderSize + pBitmapInfoHeader->biClrUsed * rgbQuadSize, &dwWritten,
+			NULL))
 	{
 		return -1;
 	}
 
-	/* free memory */
-	GlobalFree((HGLOBAL)lpBits);
+	if (!WriteFile(handleFile, mem, pBitmapInfoHeader->biSizeImage, &dwWritten, NULL))
+	{
+		return -1;
+	}
 
+	if (!CloseHandle(handleFile))
+	{
+		return -1;
+	}
+
+	GlobalFree(mem);
 	return 0;
 }
