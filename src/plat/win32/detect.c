@@ -105,7 +105,7 @@ void detect_host(void)
 		exit(1);
 	}
 
-	unsigned long len = MAX_STRLEN;
+	DWORD len = MAX_STRLEN;
 	GetUserName(given_user, &len);
 	gethostname(given_host, MAX_STRLEN);
 

@@ -69,21 +69,18 @@ int createBitmapFile(LPCTSTR lpszFileName, HBITMAP hBitmap, HDC hdc)
 		return -1;
 	}
 
-	long unsigned int dwWritten = 0;
-
-	if (!WriteFile(handleFile, &bitmapFileHeader, fileHeaderSize, &dwWritten, NULL))
+	if (!WriteFile(handleFile, &bitmapFileHeader, fileHeaderSize, NULL, NULL))
 	{
 		return -1;
 	}
 
 	if (!WriteFile(handleFile, pBitmapInfoHeader,
-			infoHeaderSize + pBitmapInfoHeader->biClrUsed * rgbQuadSize, &dwWritten,
-			NULL))
+			infoHeaderSize + pBitmapInfoHeader->biClrUsed * rgbQuadSize, NULL, NULL))
 	{
 		return -1;
 	}
 
-	if (!WriteFile(handleFile, mem, pBitmapInfoHeader->biSizeImage, &dwWritten, NULL))
+	if (!WriteFile(handleFile, mem, pBitmapInfoHeader->biSizeImage, NULL, NULL))
 	{
 		return -1;
 	}
