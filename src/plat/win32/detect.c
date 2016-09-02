@@ -250,35 +250,36 @@ void detect_gpu(void)
 void detect_disk(void)
 {
 	FILE *disk_file;
-	int disk_total = 0;
-	int disk_used = 0;
-	int disk_percentage = 0;
+	char drive[MAX_STRLEN];
+	char *disk_unit;
+	long long totalBytes, freeBytes, usedBytes, disk_used, disk_total,
+		disk_percentage;
 
-	/* GetDiskFreeSpaceEx? */
-
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk "
-			"'{ print $2 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_total);
+	disk_file = popen("cygpath -w / | head -c3", "r");
+	fscanf(disk_file, "%s", (char *)drive);
 	pclose(disk_file);
 
-	disk_file = popen("df -H 2> /dev/null | grep -vE '^[A-Z]\\:\\/|File' | awk "
-			"'{ print $3 }' | head -1 | tr -d '\\r\\n G'", "r");
-	fscanf(disk_file, "%d", &disk_used);
-	pclose(disk_file);
-
-	if (disk_total > disk_used)
+	if (GetDiskFreeSpaceEx(drive, NULL, (PULARGE_INTEGER) &totalBytes,
+			(PULARGE_INTEGER) &freeBytes))
 	{
-		disk_percentage = (((float) disk_used / disk_total) * 100);
+		usedBytes = totalBytes - freeBytes;
 
-		snprintf(disk_str, MAX_STRLEN, "%dG / %dG (%d%%)", disk_used, disk_total,
-				disk_percentage);
-	}
-	else /* when disk_used is in a smaller unit */
-	{
-		disk_percentage = ((float) disk_used / (disk_total * 1024) * 100);
+		if (usedBytes >= GB)
+		{
+			disk_used = usedBytes / GB;
+			disk_unit = "G";
+		}
+		else
+		{
+			disk_used = usedBytes / MB;
+			disk_unit = "M";
+		}
 
-		snprintf(disk_str, MAX_STRLEN, "%dM / %dG (%d%%)", disk_used, disk_total,
-				disk_percentage);
+		disk_total = totalBytes / GB;
+		disk_percentage = (usedBytes * 100) / totalBytes;
+
+		snprintf(disk_str, MAX_STRLEN, "%lld%s / %lldG (%lld%%) [%s]", disk_used,
+				disk_unit, disk_total, disk_percentage, drive);
 	}
 
 	return;
