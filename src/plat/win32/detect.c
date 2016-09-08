@@ -90,7 +90,15 @@ void detect_distro(void)
 		}
 	}
 
-	safe_strncpy(host_color, TRED, MAX_STRLEN);
+	// TODO: This should really go somewhere else.
+	if (major == 10 || (major == 6 && (minor == 3 || minor == 2)))
+	{
+		safe_strncpy(host_color, TLBL, MAX_STRLEN);
+	}
+	else
+	{
+		safe_strncpy(host_color, TRED, MAX_STRLEN);
+	}
 
 	return;
 }

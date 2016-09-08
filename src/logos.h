@@ -1,7 +1,7 @@
 /*  logos.h
 **	Author: William Woodruff
 **	-------------
-**	
+**
 **	The ASCII logos used by screenfetch-c are externalized in this file.
 **	Like the rest of screenfetch-c, this file is licensed under the MIT license.
 */
@@ -38,6 +38,7 @@ extern char *chakra_logo[];
 extern char *fuduntu_logo[];
 extern char *macosx_logo[];
 extern char *windows_logo[];
+extern char *windows_modern_logo[];
 extern char *trisquel_logo[];
 extern char *manjaro_logo[];
 extern char *elementaryos_logo[];

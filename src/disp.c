@@ -296,166 +296,212 @@ void process_data(char *data[], char *data_names[], char *logo[], unsigned short
 */
 void main_ascii_output(char *data[], char *data_names[])
 {
-	if (strstr(data[1], "Microsoft"))
+	if (strstr(data[1], "Microsoft Windows 8") ||
+		strstr(data[1], "Microsoft Windows 10"))
 	{
-		process_data(data, data_names, windows_logo, 16, 0, TRED, TWHT, TRED);
+		process_data(data, data_names, windows_modern_logo, 19,
+			DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
+	}
+	else if (strstr(data[1], "Microsoft"))
+	{
+		process_data(data, data_names, windows_logo, 16,
+			DETECTED_ARR_LEN, TRED, TWHT, TRED);
 	}
 	else if (strstr(data[1], "OS X"))
 	{
-		process_data(data, data_names, macosx_logo, 16, 0, TLBL, TNRM, TLBL);
+		process_data(data, data_names, macosx_logo, 16,
+			DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Arch Linux - Old"))
 	{
-		process_data(data, data_names, oldarch_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, oldarch_logo, 18,
+			DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Arch Linux"))
 	{
-		process_data(data, data_names, arch_logo, 19, 17, TLCY, TNRM, TLCY);
+		process_data(data, data_names, arch_logo, 19,
+			DETECTED_ARR_LEN, TLCY, TNRM, TLCY);
 	}
 	else if (STREQ(data[1], "LinuxMint"))
 	{
-		process_data(data, data_names, mint_logo, 18, 16, TLGN, TNRM, TLGN);
+		process_data(data, data_names, mint_logo, 18,
+			DETECTED_ARR_LEN, TLGN, TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "LMDE"))
 	{
-		process_data(data, data_names, lmde_logo, 18, 16, TLGN, TNRM, TLGN);
+		process_data(data, data_names, lmde_logo, 18,
+			DETECTED_ARR_LEN, TLGN, TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "Ubuntu") || STREQ(data[1], "Lubuntu")
 			|| STREQ(data[1], "Xubuntu"))
 	{
-		process_data(data, data_names, ubuntu_logo, 18, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, ubuntu_logo, 18, DETECTED_ARR_LEN, TLRD,
+			TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "Debian"))
 	{
-		process_data(data, data_names, debian_logo, 18, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, debian_logo, 18, DETECTED_ARR_LEN, TLRD,
+			TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "CrunchBang"))
 	{
-		process_data(data, data_names, crunchbang_logo, 18, 16, TDGY, TNRM, TDGY);
+		process_data(data, data_names, crunchbang_logo, 18, DETECTED_ARR_LEN,
+			TDGY, TNRM, TDGY);
 	}
 	else if (STREQ(data[1], "Gentoo"))
 	{
-		process_data(data, data_names, gentoo_logo, 18, 16, TLPR, TNRM, TLPR);
+		process_data(data, data_names, gentoo_logo, 18, DETECTED_ARR_LEN, TLPR,
+			TNRM, TLPR);
 	}
 	else if (STREQ(data[1], "Funtoo"))
 	{
-		process_data(data, data_names, funtoo_logo, 18, 16, TLPR, TNRM, TLPR);
+		process_data(data, data_names, funtoo_logo, 18, DETECTED_ARR_LEN, TLPR,
+			TNRM, TLPR);
 	}
 	else if (STREQ(data[1], "Fedora"))
 	{
-		process_data(data, data_names, fedora_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, fedora_logo, 18, DETECTED_ARR_LEN, TLBL,
+			TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Mandriva") || STREQ(data[1], "Mandrake"))
 	{
-		process_data(data, data_names, mandriva_mandrake_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, mandriva_mandrake_logo, 18,
+			DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "OpenSUSE"))
 	{
-		process_data(data, data_names, opensuse_logo, 18, 16, TLGN, TNRM, TLGN);
+		process_data(data, data_names, opensuse_logo, 18, DETECTED_ARR_LEN,
+			TLGN, TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "Slackware"))
 	{
-		process_data(data, data_names, slackware_logo, 21, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, slackware_logo, 21, DETECTED_ARR_LEN,
+			TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Red Hat Linux"))
 	{
-		process_data(data, data_names, redhat_logo, 18, 16, TRED, TNRM, TRED);
+		process_data(data, data_names, redhat_logo, 18, DETECTED_ARR_LEN, TRED,
+			TNRM, TRED);
 	}
 	else if (STREQ(data[1], "Frugalware"))
 	{
-		process_data(data, data_names, frugalware_logo, 23, 16, TLCY, TNRM, TLCY);
+		process_data(data, data_names, frugalware_logo, 23, DETECTED_ARR_LEN,
+			TLCY, TNRM, TLCY);
 	}
 	else if (STREQ(data[1], "Peppermint"))
 	{
-		process_data(data, data_names, peppermint_logo, 18, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, peppermint_logo, 18, DETECTED_ARR_LEN,
+			TLRD, TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "SolusOS"))
 	{
-		process_data(data, data_names, solusos_logo, 18, 16, TLGY, TNRM, TLGY);
+		process_data(data, data_names, solusos_logo, 18, DETECTED_ARR_LEN,
+			TLGY, TNRM, TLGY);
 	}
 	else if (STREQ(data[1], "Mageia"))
 	{
-		process_data(data, data_names, mageia_logo, 18, 16, TLGY, TNRM, TLGY);
+		process_data(data, data_names, mageia_logo, 18, DETECTED_ARR_LEN,
+			TLGY, TNRM, TLGY);
 	}
 	else if (STREQ(data[1], "ParabolaGNU/Linux-libre"))
 	{
-		process_data(data, data_names, parabolagnu_linuxlibre_logo, 18, 16, TLGY, TLPR, TLGY);
+		process_data(data, data_names, parabolagnu_linuxlibre_logo, 18,
+			DETECTED_ARR_LEN, TLGY, TLPR, TLGY);
 	}
 	else if (STREQ(data[1], "Viperr"))
 	{
-		process_data(data, data_names, viperr_logo, 18, 16, TLGY, TNRM, TLGY);
+		process_data(data, data_names, viperr_logo, 18, DETECTED_ARR_LEN, TLGY,
+			TNRM, TLGY);
 	}
 	else if (STREQ(data[1], "LinuxDeepin"))
 	{
-		process_data(data, data_names, linuxdeepin_logo, 18, 16, TLGN, TNRM, TLGN);
+		process_data(data, data_names, linuxdeepin_logo, 18, DETECTED_ARR_LEN,
+			TLGN, TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "Chakra"))
 	{
-		process_data(data, data_names, chakra_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, chakra_logo, 18, DETECTED_ARR_LEN,
+			TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Fuduntu"))
 	{
-		process_data(data, data_names, fuduntu_logo, 21, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, fuduntu_logo, 21, DETECTED_ARR_LEN,
+			TLRD, TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "Trisquel"))
 	{
-		process_data(data, data_names, trisquel_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, trisquel_logo, 18, DETECTED_ARR_LEN,
+			TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Manjaro"))
 	{
-		process_data(data, data_names, manjaro_logo, 18, 16, "", "", "");
+		process_data(data, data_names, manjaro_logo, 18,
+			DETECTED_ARR_LEN, TNRM, TNRM, TNRM);
 	}
 	else if (STREQ(data[1], "elementary OS"))
 	{
-		process_data(data, data_names, elementaryos_logo, 18, 16, TLGN, TNRM, TLGN);
+		process_data(data, data_names, elementaryos_logo, 18,
+			DETECTED_ARR_LEN, TLGN, TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "Scientific Linux"))
 	{
-		process_data(data, data_names, scientificlinux_logo, 20, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, scientificlinux_logo, 20,
+			DETECTED_ARR_LEN, TLRD, TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "Backtrack Linux"))
 	{
-		process_data(data, data_names, backtracklinux_logo, 21, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, backtracklinux_logo, 21,
+			DETECTED_ARR_LEN, TLRD, TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "Kali Linux"))
 	{
-		process_data(data, data_names, backtracklinux_logo, 21, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, backtracklinux_logo, 21,
+			DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Sabayon"))
 	{
-		process_data(data, data_names, sabayon_logo, 18, 16, TLBL, TNRM, TLBL);
+		process_data(data, data_names, sabayon_logo, 18, DETECTED_ARR_LEN, TLBL,
+			TNRM, TLBL);
 	}
 	else if (STREQ(data[1], "Android"))
 	{
-		process_data(data, data_names, android_logo, 16, 12, TLGN, TNRM, TLGN);
+		process_data(data, data_names, android_logo, 16, DETECTED_ARR_LEN, TLGN,
+			TNRM, TLGN);
 	}
 	else if (STREQ(data[1], "Angstrom"))
 	{
-		process_data(data, data_names, angstrom_logo, 16, 0, "", "", "");
+		process_data(data, data_names, angstrom_logo, 16, DETECTED_ARR_LEN,
+			TNRM, TNRM, TNRM);
 	}
 	else if (STREQ(data[1], "Linux"))
 	{
-		process_data(data, data_names, linux_logo, 18, 16, TLGY, TNRM, TLGY);
+		process_data(data, data_names, linux_logo, 18, DETECTED_ARR_LEN,
+			TLGY, TNRM, TLGY);
 	}
 	else if (STREQ(data[1], "FreeBSD"))
 	{
-		process_data(data, data_names, freebsd_logo, 18, 16, TLRD, TNRM, TLRD);
+		process_data(data, data_names, freebsd_logo, 18, DETECTED_ARR_LEN, TLRD,
+			TNRM, TLRD);
 	}
 	else if (STREQ(data[1], "OpenBSD"))
 	{
-		process_data(data, data_names, openbsd_logo, 23, 16, "", "", "");
+		process_data(data, data_names, openbsd_logo, 23, DETECTED_ARR_LEN, TNRM,
+			TNRM, TNRM);
 	}
 	else if (STREQ(data[1], "NetBSD"))
 	{
-		process_data(data, data_names, netbsd_logo, 23, 16, "", "", "");
+		process_data(data, data_names, netbsd_logo, 23, DETECTED_ARR_LEN, TNRM,
+			TNRM, TNRM);
 	}
 	else if (STREQ(data[1], "DragonFly BSD"))
 	{
-		process_data(data, data_names, dragonflybsd_logo, 23, 16, "", "", "");
+		process_data(data, data_names, dragonflybsd_logo, 23, DETECTED_ARR_LEN,
+			TNRM, TNRM, TNRM);
 	}
 	else if (STREQ(data[1], "SunOS"))
 	{
-		process_data(data, data_names, solaris_logo, 17, 16, "", "", "");
+		process_data(data, data_names, solaris_logo, 17, DETECTED_ARR_LEN, TNRM,
+			TNRM, TNRM);
 	}
 	else
 	{
