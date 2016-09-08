@@ -18,6 +18,7 @@
 #include "colors.h"
 #include "misc.h"
 #include "disp.h"
+#include "arrays.h"
 
 /*	display_version
 	called if the -V (--version) flag is tripped
@@ -58,7 +59,7 @@ void display_help(void)
 void display_verbose(char *data[], char *data_names[])
 {
 	int i = 0;
-	for (i = 0; i < 16; i++)
+	for (i = 0; i < DETECTED_ARR_LEN; i++)
 		VERBOSE_OUT(data_names[i], data[i]);
 
 	return;
@@ -472,7 +473,7 @@ void main_text_output(char *data[], char *data_names[])
 {
 	int i;
 
-	for (i = 0; i < 16; i++)
+	for (i = 0; i < DETECTED_ARR_LEN; i++)
 		printf("%s %s\n", data_names[i], data[i]);
 
 	return;

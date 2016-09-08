@@ -7,6 +7,7 @@
 */
 
 
+#include "arrays.h"
 #include "misc.h"
 #include "colors.h"
 
@@ -31,7 +32,7 @@ char font_str[MAX_STRLEN] = "Unknown";
 
 char host_color[MAX_STRLEN] = TNRM;
 
-char *detected_arr[17] =
+char *detected_arr[DETECTED_ARR_LEN] =
 {
 	host_str,
 	distro_str,
@@ -52,7 +53,7 @@ char *detected_arr[17] =
 	font_str
 };
 
-char *detected_arr_names[17] =
+char *detected_arr_names[DETECTED_ARR_LEN] =
 {
 	"",
 	"OS: ",

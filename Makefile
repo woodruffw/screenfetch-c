@@ -19,6 +19,9 @@ TESTS =
 
 OLDTARGETS = linux win bsd osx sun
 
+ifeq ($(COLORS),0)
+	CPPFLAGS += -DNO_COLORS
+endif
 ifeq ($(OS),Windows_NT)
 	SOURCES += $(wildcard ./src/plat/win32/*.c)
 	CPPFLAGS += -DWIN32_LEAN_AND_MEAN

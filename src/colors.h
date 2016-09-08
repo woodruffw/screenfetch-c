@@ -9,6 +9,28 @@
 #ifndef SCREENFETCH_C_COLORS_H
 #define SCREENFETCH_C_COLORS_H
 
+#ifdef NO_COLORS
+
+#define TNRM ""
+#define TBLK ""
+#define TRED ""
+#define TGRN ""
+#define TBRN ""
+#define TBLU ""
+#define TPUR ""
+#define TCYN ""
+#define TLGY ""
+#define TDGY ""
+#define TLRD ""
+#define TLGN ""
+#define TYLW ""
+#define TLBL ""
+#define TLPR ""
+#define TLCY ""
+#define TWHT ""
+
+#else
+
 #define TNRM "\x1B[0m" /* normal */
 #define TBLK "\x1B[0;30m" /* black */
 #define TRED "\x1B[0;31m" /* red */
@@ -26,5 +48,7 @@
 #define TLPR "\x1B[1;35m" /* light purple */
 #define TLCY "\x1B[1;36m" /* light cyan */
 #define TWHT "\x1B[1;37m" /* white */
+
+#endif
 
 #endif

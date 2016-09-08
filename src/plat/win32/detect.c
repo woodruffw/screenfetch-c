@@ -14,13 +14,18 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <libgen.h>
-#include <glob.h>
+#ifndef __MINGW32__
+#  include <glob.h>
+#endif
 
 /* Windows-specific includes */
 #include <Windows.h>
+
+#ifdef __CYGWIN__
 /* Cygwin wets itself without an explicit external linkage to popen */
 extern FILE *popen(const char *command, const char *type);
 extern int pclose(FILE *stream);
+#endif
 
 /* program includes */
 #include "../../arrays.h"
@@ -105,9 +110,14 @@ void detect_host(void)
 		exit(1);
 	}
 
-	DWORD len = MAX_STRLEN;
-	GetUserName(given_user, &len);
+	DWORD username_len = MAX_STRLEN;
+	GetUserName(given_user, &username_len);
+#ifdef __MINGW32__
+	DWORD hostname_len = MAX_STRLEN;
+	GetComputerNameEx(ComputerNameDnsHostname, given_host, &hostname_len);
+#else
 	gethostname(given_host, MAX_STRLEN);
+#endif
 
 	snprintf(host_str, MAX_STRLEN, "%s%s%s%s@%s%s%s%s",
 		host_color, given_user, TNRM, TWHT, TNRM, host_color, given_host, TNRM);
@@ -190,6 +200,7 @@ void detect_uptime(void)
 */
 void detect_pkgs(void)
 {
+#ifndef __MINGW32__  /* maybe count Chocolatey packages? */
 	const char *pattern;
 	glob_t globbuf;
 
@@ -207,6 +218,7 @@ void detect_pkgs(void)
 	glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
 	snprintf(pkgs_str, MAX_STRLEN, "%d", (int) globbuf.gl_pathc);
 	globfree(&globbuf);
+#endif  /* !__MINGW32__ */
 
 	return;
 }
@@ -249,15 +261,20 @@ void detect_gpu(void)
 */
 void detect_disk(void)
 {
-	FILE *disk_file;
-	char drive[MAX_STRLEN];
 	char *disk_unit;
 	long long totalBytes, freeBytes, usedBytes, disk_used, disk_total,
 		disk_percentage;
 
+#ifdef __MINGW32__
+	LPCTSTR drive = "C:\\";
+#else
+	FILE *disk_file;
+	char drive[MAX_STRLEN];
+
 	disk_file = popen("cygpath -w / | head -c3", "r");
 	fscanf(disk_file, "%s", (char *)drive);
 	pclose(disk_file);
+#endif
 
 	if (GetDiskFreeSpaceEx(drive, NULL, (PULARGE_INTEGER) &totalBytes,
 			(PULARGE_INTEGER) &freeBytes))
@@ -315,9 +332,11 @@ void detect_mem(void)
 */
 void detect_shell(void)
 {
-	FILE *shell_file;
 	char *shell_name;
+#ifndef __MINGW32__
+	FILE *shell_file;
 	char vers_str[MAX_STRLEN];
+#endif
 
 	shell_name = getenv("SHELL");
 
@@ -329,6 +348,7 @@ void detect_shell(void)
 		return;
 	}
 
+#ifndef __MINGW32__
 	if (STREQ(shell_name, "/bin/sh"))
 	{
 		safe_strncpy(shell_str, "POSIX sh", MAX_STRLEN);
@@ -367,6 +387,49 @@ void detect_shell(void)
 		/* i don't have a version detection system for these, yet */
 		safe_strncpy(shell_str, shell_name, MAX_STRLEN);
 	}
+#else  /* __MINGW32__ */
+	/* limited shell detection when running in Cygwin or MSYS2 */
+	if (strstr(shell_name, "cmd.exe"))
+	{
+		safe_strncpy(shell_str, "Command Prompt (cmd.exe)", MAX_STRLEN);
+	}
+	else if (strstr(shell_name, "PowerShell"))
+	{
+		safe_strncpy(shell_str, "Windows PowerShell", MAX_STRLEN);
+	}
+	else if (strstr(shell_name, "/bin/sh"))
+	{
+		safe_strncpy(shell_str, "POSIX sh", MAX_STRLEN);
+	}
+	else if (strstr(shell_name, "bash"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "bash");
+	}
+	else if (strstr(shell_name, "zsh"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "zsh");
+	}
+	else if (strstr(shell_name, "csh"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "csh");
+	}
+	else if (strstr(shell_name, "fish"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "fish");
+	}
+	else if (strstr(shell_name, "dash"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "dash");
+	}
+	else if (strstr(shell_name, "ash"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "ash");
+	}
+	else if (strstr(shell_name, "ksh"))
+	{
+		snprintf(shell_str, MAX_STRLEN, "ksh");
+	}
+#endif
 
 	return;
 }
@@ -462,6 +525,9 @@ void detect_wm_theme(void)
 */
 void detect_gtk(void)
 {
+#ifdef __MINGW32__
+	snprintf(gtk_str, MAX_STRLEN, "none");
+#else
 	FILE *gtk_file;
 	char font_str[MAX_STRLEN] = "Unknown";
 
@@ -471,6 +537,7 @@ void detect_gtk(void)
 	pclose(gtk_file);
 
 	snprintf(gtk_str, MAX_STRLEN, "%s (Font)", font_str);
+#endif
 
 	return;
 }

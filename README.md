@@ -27,6 +27,8 @@ $ cd screenfetch-c
 $ make
 ```
 
+If you want to disable colors you can run `make COLORS=0` instead.
+
 _Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`. Using regular (Sun) `make` will cause strange errors.
 
 ### OS X
@@ -73,7 +75,7 @@ In particular, the following things still need to be done:
 _Note:_ These are only the ones that have actually been tested (so far). screenfetch-c may very well work on many of the untested distros, so feel free to try it.
 
 - [x] OS X
-- [x] Windows (requires Cygwin)
+- [x] Windows (Cygwin, MSYS2, MinGW)
 - [x] Arch Linux
 - [x] Fedora
 - [x] Linux Mint

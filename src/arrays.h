@@ -30,9 +30,10 @@ extern char gtk_str[MAX_STRLEN];
 extern char icon_str[MAX_STRLEN];
 extern char font_str[MAX_STRLEN];
 
-extern char host_color[10];
+extern char host_color[MAX_STRLEN];
 
-extern char *detected_arr[17];
-extern char *detected_arr_names[17];
+#define DETECTED_ARR_LEN 17
+extern char *detected_arr[DETECTED_ARR_LEN];
+extern char *detected_arr_names[DETECTED_ARR_LEN];
 
 #endif /* SCREENFETCH_C_ARRAYS_H */

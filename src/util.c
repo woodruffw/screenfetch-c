@@ -18,7 +18,7 @@
 #include "misc.h"
 #include "error_flag.h"
 
-#if defined(__CYGWIN__) || defined(__MSYS__)
+#if defined(__CYGWIN__) || defined(__MSYS__) || defined(__MINGW32__)
 	#include <Windows.h>
 	#include "plat/win32/bitmap.h"
 #endif
@@ -58,7 +58,7 @@ void split_uptime(long uptime, unsigned int *secs, unsigned int *mins,
 */
 void take_screenshot(bool verbose)
 {
-#if !defined(__CYGWIN__) && !defined(__MSYS__)
+#if !defined(__CYGWIN__) && !defined(__MSYS__) && !defined(__MINGW32__)
 	int call_status = 1;
 	char file_loc[MAX_STRLEN];
 #endif
@@ -74,7 +74,7 @@ void take_screenshot(bool verbose)
 	sleep(1);
 	printf("%s\n", "0");
 
-#if defined(__CYGWIN__) || defined(__MSYS__)
+#if defined(__CYGWIN__) || defined(__MSYS__) || defined(__MINGW32__)
 	HDC screen_dc = GetDC(NULL);
 	HDC mem_dc = CreateCompatibleDC(screen_dc);
 
@@ -105,7 +105,7 @@ void take_screenshot(bool verbose)
 		call_status = system("scrot ~/screenfetch_screenshot.png 2> /dev/null");
 #endif
 
-#if !defined(__CYGWIN__) && !defined(__MSYS__)
+#if !defined(__CYGWIN__) && !defined(__MSYS__) && !defined(__MINGW32__)
 	safe_strncpy(file_loc, getenv("HOME"), MAX_STRLEN);
 	strncat(file_loc, "/screenfetch_screenshot.png", MAX_STRLEN);
 
