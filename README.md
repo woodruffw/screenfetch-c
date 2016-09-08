@@ -80,7 +80,7 @@ _Note:_ These are only the ones that have actually been tested (so far). screenf
 - [x] Fedora
 - [x] Linux Mint
 - [x] LMDE
-- [x] Ubuntu (tested with Lubuntu)
+- [x] Ubuntu (including derivatives)
 - [x] Fedora
 - [x] Debian
 - [x] CrunchBang
