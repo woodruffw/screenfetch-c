@@ -120,7 +120,7 @@ char *ubuntu_logo[] =
 	TYLW "         `:o+++ "TLRD"`ohhhhhhhhyo++os:     " TNRM,
 	TYLW "           .o:"TLRD"`.syhhhhhhh/"TYLW".oo++o`     " TNRM,
 	TLRD "               /osyyyyyyo"TYLW"++ooo+++/    " TNRM,
-	TLRD "                   ````` "TYLW"+oo+++o:    " TNRM,
+	TLRD "                   ````` "TYLW"+oo+++o:     " TNRM,
 	TYLW "                          `oo++.      " TNRM
 };
 

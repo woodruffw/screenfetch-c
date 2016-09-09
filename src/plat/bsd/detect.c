@@ -420,10 +420,10 @@ void detect_gtk(void)
 	char gtk2_str[MAX_STRLEN] = "Unknown";
 	char gtk3_str[MAX_STRLEN] = "Unknown";
 	char gtk_icons_str[MAX_STRLEN] = "Unknown";
-	char font_str[MAX_STRLEN] = "Unknown";
+	char gtk_font_str[MAX_STRLEN] = "Unknown";
 
 	gtk_file = popen("detectgtk 2> /dev/null", "r");
-	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, font_str);
+	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, gtk_font_str);
 	pclose(gtk_file);
 
 	if (STREQ(gtk3_str, "Unknown"))
@@ -437,7 +437,7 @@ void detect_gtk(void)
 
 	snprintf(icon_str, MAX_STRLEN, "%s", gtk_icons_str);
 
-	snprintf(font_str, MAX_STRLEN, "%s", font_str);
+	snprintf(font_str, MAX_STRLEN, "%s", gtk_font_str);
 
 	return;
 }
