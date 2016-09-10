@@ -715,7 +715,7 @@ char *windows_modern_logo[] =
 	TLBL "  `'ccllllllllll  lllllllllllllllllll " TNRM,
 	TLBL "         `'\"\"*::  :ccllllllllllllllll " TNRM,
 	TLBL "                        ````''\"*::cll " TNRM,
-	TLBL "                                    `` " TNRM
+	TLBL "                                   `` " TNRM
 };
 
 /* 18 */
