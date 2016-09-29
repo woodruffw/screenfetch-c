@@ -654,8 +654,8 @@ char *fuduntu_logo[] =
 /* 16 */
 char *macosx_logo[] =
 {
-	"",
-	TGRN "                 -/+:.          " TNRM,
+	"                               ",
+	TGRN "                 -/+:.         " TNRM,
 	TGRN "                :++++.         " TNRM,
 	TGRN "               /+++/.          " TNRM,
 	TGRN "       .:-::- .+/:-``.::-      " TNRM,
