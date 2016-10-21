@@ -8,7 +8,7 @@ screenfetch-c
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell
 script that displays system information and an ASCII logo, in the C
 language.
-Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, Solaris, GNU/Linux, OS X, and Windows (via the Cygwin environment).
+Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, Solaris, GNU/Linux, OS X, and Windows.
 
 ## Installing screenfetch-c:
 
@@ -69,6 +69,34 @@ In particular, the following things still need to be done:
 - Fix manual mode on Windows
 - Improve features on Android
 - Improve/replace configuration format and parser
+
+## Notes on MinGW
+Shell detection on the MinGW build is limited.
+You must set the `SHELL` environment variable manually if you're running screenfetch-c from command prompt or PowerShell.
+For command prompt that's `set SHELL=cmd.exe` and for PowerShell it's `$env:SHELL = "PowerShell"`.
+
+You can also run screenfetch-c from a batch script
+``` batch
+@echo off
+set SHELL=cmd.exe
+echo.
+cmd /C screenfetch-c.exe
+echo.
+pause
+```
+or a PowerShell script
+``` ps1
+$env:SHELL = "PowerShell"
+Write-Host ""
+Invoke-Expression -Command:"cmd /C screenfetch-c.exe"
+Write-Host "
+Press any key to continue ..."
+$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+```
+if you prefer to start it with a double click.
+
+Unlike PowerShell the Windows command prompt doesn't support ANSI colors by default. You can deactivate colors if you build with `make COLORS=0`.
+However there's a neat project called [ANSICON](https://github.com/adoxa/ansicon) which allows you to enable colors in command prompt by running screenfetch-c with `cmd /C ansicon.exe screenfetch-c.exe`.
 
 ## Current Known Compatibility:
 
