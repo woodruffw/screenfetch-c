@@ -683,7 +683,7 @@ void detect_wm(void)
 	{
 		if (!(XGetWindowProperty(disp, DefaultRootWindow(disp),
 			XInternAtom(disp, "_NET_SUPPORTING_WM_CHECK", true),
-			0, KB, false,	XA_WINDOW, &actual_type, &actual_format, &nitems,
+			0, KB, false, XA_WINDOW, &actual_type, &actual_format, &nitems,
 			&bytes, (unsigned char **) &wm_check_window)))
 		{
 			if (wm_check_window && !(XGetWindowProperty(disp, *wm_check_window,
