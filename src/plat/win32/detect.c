@@ -273,11 +273,27 @@ void detect_disk(void)
 	long long totalBytes, freeBytes, usedBytes, disk_used, disk_total,
 		disk_percentage;
 
+	char drive[MAX_STRLEN];
 #ifdef __MINGW32__
-	LPCTSTR drive = "C:\\";
+	char buf[MAX_STRLEN];
+
+	if (GetSystemDirectory(buf, MAX_STRLEN))
+	{
+		snprintf(drive, MAX_STRLEN, "%c:\\", buf[0]);
+	}
+	else
+	{
+		if (GetEnvironmentVariable("SystemDrive", buf, MAX_STRLEN))
+		{
+			snprintf(drive, MAX_STRLEN, "%c:\\", buf[0]);
+		}
+		else
+		{
+			snprintf(drive, MAX_STRLEN, "C:\\");
+		}
+	}
 #else
 	FILE *disk_file;
-	char drive[MAX_STRLEN];
 
 	disk_file = popen("cygpath -w / | head -c3", "r");
 	fscanf(disk_file, "%s", (char *)drive);
