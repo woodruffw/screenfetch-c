@@ -6,7 +6,7 @@
 **	Like the rest of screenfetch-c, this file is licensed under the MIT license.
 */
 
-#include <Windows.h>
+#include <windows.h>
 
 int createBitmapFile(LPCTSTR lpszFileName, HBITMAP hBitmap, HDC hdc)
 {

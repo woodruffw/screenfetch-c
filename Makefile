@@ -11,7 +11,8 @@ MANDIR = $(PREFIX)/share/man/man1
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
-PROG = screenfetch-c
+EXEEXT =
+PROG = screenfetch-c$(EXEEXT)
 
 
 SCRIPTS =
@@ -22,10 +23,14 @@ OLDTARGETS = linux win bsd osx sun
 ifeq ($(COLORS),0)
 	CPPFLAGS += -DNO_COLORS
 endif
+ifneq (,$(findstring mingw,$(shell $(CC) -dumpmachine)))
+OS = Windows_NT
+endif
 ifeq ($(OS),Windows_NT)
 	SOURCES += $(wildcard ./src/plat/win32/*.c)
 	CPPFLAGS += -DWIN32_LEAN_AND_MEAN
 	LDFLAGS += -lgdi32
+	EXEEXT = .exe
 else
 	UNAME_S := $(shell uname -s)
 
@@ -96,7 +101,7 @@ clean:
 	rm -f threadtest
 	rm -f x11test
 	rm -f gltest
-	rm -f screenfetch-c
+	rm -f screenfetch-c screenfetch-c.exe
 
 $(OLDTARGETS): all
 

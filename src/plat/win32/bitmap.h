@@ -9,7 +9,7 @@
 #ifndef SCREENFETCH_C_BITMAP_H
 #define SCREENFETCH_C_BITMAP_H
 
-#include <Windows.h>
+#include <windows.h>
 
 int createBitmapFile(LPCTSTR lpszFileName, HBITMAP hBitmap, HDC hdc);
 

@@ -19,7 +19,7 @@
 #include "error_flag.h"
 
 #if defined(__CYGWIN__) || defined(__MSYS__) || defined(__MINGW32__)
-	#include <Windows.h>
+	#include <windows.h>
 	#include "plat/win32/bitmap.h"
 #endif
 

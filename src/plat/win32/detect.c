@@ -19,7 +19,7 @@
 #endif
 
 /* Windows-specific includes */
-#include <Windows.h>
+#include <windows.h>
 
 #ifdef __CYGWIN__
 /* Cygwin wets itself without an explicit external linkage to popen */
