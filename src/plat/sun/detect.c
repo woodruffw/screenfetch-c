@@ -278,16 +278,15 @@ void detect_res(void)
 		width = WidthOfScreen(screen);
 		height = HeightOfScreen(screen);
 		snprintf(res_str, MAX_STRLEN, "%dx%d", width, height);
+		XCloseDisplay(disp);
 	}
 	else
 	{
 		safe_strncpy(res_str, "No X Server", MAX_STRLEN);
-
 		if (error)
 			ERR_REPORT("Problem detecting X display resolution.");
 	}
 
-	XCloseDisplay(disp);
 
 	return;
 }
