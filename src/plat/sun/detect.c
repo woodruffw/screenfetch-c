@@ -186,7 +186,7 @@ void detect_mem(void)
 {
 	long long total_mem = 0;
 
-	total_mem = sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
+	total_mem = (long long)sysconf(_SC_PHYS_PAGES) * (long long)sysconf(_SC_PAGE_SIZE);
 	total_mem /= MB;
 
 	/* sar -r 1 to get free pages? */
