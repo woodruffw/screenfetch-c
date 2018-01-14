@@ -426,12 +426,17 @@ void detect_gtk(void)
 	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, gtk_font_str);
 	pclose(gtk_file);
 
-	if (STREQ(gtk3_str, "Unknown"))
-		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
-				gtk_icons_str);
-	else if (STREQ(gtk2_str, "Unknown"))
-		snprintf(gtk_str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
-				gtk_icons_str);
+	if (STREQ(gtk2_str, gtk3_str))
+	{
+		if (STREQ(gtk2_str, "Unknown"))
+			safe_strncpy(gtk_str, gtk2_str, MAX_STRLEN);
+		else
+			snprintf(gtk_str, MAX_STRLEN, "%s (GTK2/3)", gtk2_str);
+	}
+	else if (STREQ(gtk2_str, "Unknown") && !STREQ(gtk3_str, "Unknown"))
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK3)", gtk3_str);
+	else if (STREQ(gtk3_str, "Unknown") && !STREQ(gtk2_str, "Unknown"))
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2)", gtk2_str);
 	else
 		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 
