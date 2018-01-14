@@ -498,10 +498,10 @@ void detect_disk(void)
 
 		disk_total /= GB;
 		disk_used /= GB;
-		disk_pct = (disk_total > 0 ? (((double) disk_used / disk_total) * 100) : 0);
+		disk_pct = disk_total > 0 ? (disk_used * 100 / disk_total) : 0;
 
-		snprintf(disk_str, MAX_STRLEN, "%lluG / %lluG (%llu%%)", disk_used,
-				disk_total, disk_pct);
+		snprintf(disk_str, MAX_STRLEN, "%llu%s / %llu%s (%llu%%)", disk_used,
+				 "GiB", disk_total, "GiB", disk_pct);
 
 		endmntent(mnt_file);
 	}
@@ -518,19 +518,47 @@ void detect_disk(void)
 */
 void detect_mem(void)
 {
-	long long total_mem = 0, free_mem = 0, used_mem = 0;
-	struct sysinfo si_mem;
+	long long memtotal = 0, shmem = 0, memavailable = 0, sunreclaim = 0;
+	long long total_mem, used_mem, mem_pct;
+	FILE *fp;
+	char line[64];
 
-	/* known problem: because linux utilizes free ram in caches/buffers,
-	   the amount of memory sysinfo reports as free is very small.
-	*/
-	sysinfo(&si_mem);
+	if ((fp = fopen("/proc/meminfo", "r")))
+	{
+		while (fgets(line, 64, fp))
+		{
+			if (strncmp(line, "MemTotal:", 9) == 0)
+			{
+				sscanf(line+9, "%lld", &memtotal);
+			}
+			else if (strncmp(line, "Shmem:", 6) == 0)
+			{
+				sscanf(line+6, "%lld", &shmem);
+			}
+			else if (strncmp(line, "MemAvailable:", 13) == 0)
+			{
+				sscanf(line+13, "%lld", &memavailable);
+			}
+			else if (strncmp(line, "SUnreclaim:", 11) == 0)
+			{
+				sscanf(line+11, "%lld", &sunreclaim);
+			}
+		}
+		fclose(fp);
+	}
+	else
+	{
+		ERR_REPORT("Failed to open /proc/meminfo. Ancient Linux kernel?");
+	}
 
-	total_mem = (long long) (si_mem.totalram * si_mem.mem_unit) / MB;
-	free_mem = (long long) ((si_mem.freeram + si_mem.bufferram) * si_mem.mem_unit) / MB;
-	used_mem = (long long) total_mem - free_mem;
+	total_mem = (memtotal + shmem) * 1000;
+	used_mem = total_mem - ((memavailable + sunreclaim) * 1000);
+	total_mem /= MB;
+	used_mem /= MB;
+	mem_pct = total_mem > 0 ? (used_mem * 100 / total_mem) : 0;
 
-	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
+	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s (%lld%%)", used_mem, "MiB",
+			 total_mem, "MiB", mem_pct);
 
 	return;
 }
