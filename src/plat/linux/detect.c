@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <strings.h>
 #include <getopt.h>
 
 /* linux-specific includes */
@@ -34,6 +35,29 @@
 #include "../../disp.h"
 #include "../../util.h"
 #include "../../error_flag.h"
+
+/*	remove preceding and trailing single quote character,
+	remove trailing newline
+*/
+static void unquote(char *s)
+{
+	int len = strlen(s);
+
+	if (s[len-1] == '\n')
+	{
+		s[len-1] = '\0';
+		len--;
+	}
+	if (s[len-1] == '\'')
+	{
+		s[len-1] = '\0';
+		len--;
+	}
+	if (s[0] == '\'')
+	{
+		memmove(s, s+1, len);
+	}
+}
 
 /*	detect_distro
 	detects the computer's distribution (really only relevant on Linux)
@@ -753,14 +777,267 @@ void detect_wm(void)
 */
 void detect_wm_theme(void)
 {
-	char exec_str[MAX_STRLEN];
+	char exec_str[MAX_STRLEN] = "false";
+	char config_file[MAX_STRLEN];
+	char *home;
 	FILE *wm_theme_file;
 
-	snprintf(exec_str, MAX_STRLEN, "detectwmtheme %s 2> /dev/null", wm_str);
+	snprintf(wm_theme_str, MAX_STRLEN, "Unknown");
+	home = getenv("HOME");
 
-	wm_theme_file = popen(exec_str, "r");
-	fgets(wm_theme_str, MAX_STRLEN, wm_theme_file);
-	pclose(wm_theme_file);
+	if (!home)
+	{
+		ERR_REPORT("Environment variable HOME not set.");
+	}
+	else
+	{
+		if (STREQ("Awesome", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.config/awesome/rc.lua", home);
+			snprintf(exec_str, MAX_STRLEN,
+					 "grep -e '^[^-].*\\(theme\\|beautiful\\).*lua' '%s' | grep '[a-zA-Z0-9]\\+/[a-zA-Z0-9]\\+.lua' -o | head -n1 | cut -d'/' -f1",
+					 config_file);
+		}
+		else if (STRCASEEQ("BlackBox", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.blackboxrc", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"/\" '/styleFile/ {print $NF}' '%s'",
+						 config_file);
+			}
+		}
+		else if (STREQ("Cinnamon", wm_str))
+		{
+			safe_strncpy(exec_str,
+						 "gsettings get org.cinnamon.theme name",
+						 MAX_STRLEN);
+		}
+		else if (STREQ("Compiz", wm_str) || BEGINS_WITH(wm_str, "Mutter") ||
+				 STREQ("GNOME Shell", wm_str))
+		{
+			if (command_in_path("gsettings"))
+			{
+				safe_strncpy(exec_str,
+							 "gsettings get org.gnome.desktop.wm.preferences theme",
+							 MAX_STRLEN);
+			}
+			else if (command_in_path("gconftool-2"))
+			{
+				safe_strncpy(exec_str,
+							 "gconftool-2 -g /apps/metacity/general/theme",
+							 MAX_STRLEN);
+			}
+		}
+		else if (STREQ("E16", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.e16/e_config--0.0.cfg", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"= \" '/theme.name/ {print $2}' '%s'",
+						 config_file);
+			}
+		}
+		else if (STREQ("E17", wm_str) || STREQ("Enlightenment", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.e/e/config/standard/e.cfg", home);
+			if (FILE_EXISTS(config_file) && command_in_path("eet"))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "cfg=\"$(eet -d '%s' config | awk '/value \"file\" string.*.edj/{ print $4 }')\"; "
+						 "cfg=\"${cfg##*/}\"; "
+						 "echo \"${cfg%%.*}\"",
+						 config_file);
+			}
+			else
+			{
+				char *tmp = getenv("E_CONF_PROFILE");
+				if (tmp)
+				{
+					safe_strncpy(wm_theme_str, tmp, MAX_STRLEN);
+				}
+			}
+		}
+		else if (STREQ("Emerald", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.emerald/theme/theme.ini", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "for a in /usr/share/emerald/themes/* \"%s/.emerald/themes\"/*; do"
+						 " cmp \"%s\" \"$a/theme.ini\" &>/dev/null && basename \"$a\"; "
+						 "done",
+						 home, config_file);
+			}
+		}
+		else if (STRCASEEQ("FluxBox", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.fluxbox/init", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"/\" '/styleFile/ {print $NF}' '%s'",
+						 config_file);
+			}
+		}
+		else if (STREQ("IceWM", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.icewm/theme", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"[\\\",/]\" '!/#/ {print $2}' '%s'",
+						 config_file);
+			}
+		}
+		else if (BEGINS_WITH(wm_str, "KWin"))
+		{
+			FILE *f = NULL;
+			char kde_config_dir[MAX_STRLEN] = "Unknown";
+			char kde_theme[MAX_STRLEN] = "Unknown";
+			char *env;
+			const char *kde_config_cmd = NULL;
+
+			env = getenv("KDE_CONFIG_DIR");
+			if (env)
+			{
+				safe_strncpy(kde_config_dir, env, MAX_STRLEN);
+			}
+			else
+			{
+				if (command_in_path("kde5-config"))
+				{
+					kde_config_cmd = "kde5-config --localprefix";
+				}
+				else if (command_in_path("kde4-config"))
+				{
+					kde_config_cmd = "kde4-config --localprefix";
+				}
+				if (command_in_path("kde-config"))
+				{
+					kde_config_cmd = "kde-config --localprefix";
+				}
+
+				if (kde_config_cmd)
+				{
+					f = popen(kde_config_cmd, "r");
+					fgets(kde_config_dir, MAX_STRLEN, f);
+					pclose(f);
+				}
+			}
+
+			if (!STREQ("Unknown", kde_config_dir))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,\"\",$0); print $0; exit}' '%s/share/config/kwinrc'",
+						 kde_config_dir);
+				f = popen(exec_str, "r");
+				fgets(kde_theme, MAX_STRLEN, f);
+				pclose(f);
+
+				if (STREQ("", kde_theme) || STREQ("\n", kde_theme))
+				{
+					snprintf(config_file, MAX_STRLEN, "%s/share/config/kdebugrc", kde_config_dir);
+					if (FILE_EXISTS(config_file))
+					{
+						snprintf(exec_str, MAX_STRLEN,
+								 "awk '/(decoration)/ {gsub(/\\[/,\"\",$1); print $1; exit}' '%s'",
+								 config_file);
+						f = popen(exec_str, "r");
+						fgets(kde_theme, MAX_STRLEN, f);
+						pclose(f);
+
+						if (STREQ("", kde_theme) || STREQ("\n", kde_theme))
+						{
+							safe_strncpy(kde_theme, "Unknown", MAX_STRLEN);
+						}
+					}
+				}
+			}
+
+			safe_strncpy(exec_str, "false", MAX_STRLEN);
+			safe_strncpy(wm_theme_str, kde_theme, MAX_STRLEN);
+		}
+		else if (STREQ("Marco", wm_str) || STREQ("Metacity (Marco)", wm_str))
+		{
+			safe_strncpy(exec_str,
+						 "gsettings get org.mate.Marco.general theme",
+						 MAX_STRLEN);
+		}
+		else if (STREQ("Metacity", wm_str))
+		{
+			safe_strncpy(exec_str, "gconftool-2 -g /apps/metacity/general/theme 2>/dev/null", MAX_STRLEN);
+		}
+		else if (STRCASEEQ("OpenBox", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.config/openbox/lxde-rc.xml", home);
+			if (!(FILE_EXISTS(config_file) && STREQ(de_str, "LXDE")))
+			{
+				config_file[0] = '\0';
+			}
+
+			if (config_file[0] == '\0')
+			{
+				snprintf(config_file, MAX_STRLEN, "%s/.config/openbox/rc.xml", home);
+				if (!FILE_EXISTS(config_file))
+				{
+					config_file[0] = '\0';
+				}
+			}
+
+			if (config_file[0] != '\0')
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"[<,>]\" '/<theme/ { getline; print $3 }' '%s'",
+						 config_file);
+			}
+		}
+		else if (STREQ("PekWM", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.pekwm/config", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\"/\" '/Theme/ {gsub(/\\\"/,\"\"); print $NF}' '%s'",
+						 config_file);
+			}
+		}
+		else if (STREQ("Sawfish", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN, "%s/.sawfish/custom", home);
+			if (FILE_EXISTS(config_file))
+			{
+				snprintf(exec_str, MAX_STRLEN,
+						 "awk -F\")\" '/\\(quote default-frame-style/{print $2}' '%s' | sed 's/ (quote //'",
+						 config_file);
+			}
+		}
+		else if (STREQ("Xfwm4", wm_str))
+		{
+			snprintf(config_file, MAX_STRLEN,
+					 "%s/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml",
+					 home);
+			if (FILE_EXISTS(config_file))
+			{
+				safe_strncpy(exec_str, "xfconf-query -c xfwm4 -p /general/theme", MAX_STRLEN);
+			}
+		}
+
+		if (!STREQ(exec_str, "false") && STREQ(wm_theme_str, "Unknown"))
+		{
+			wm_theme_file = popen(exec_str, "r");
+			fgets(wm_theme_str, MAX_STRLEN, wm_theme_file);
+			pclose(wm_theme_file);
+
+			if (STREQ("", wm_theme_str) || STREQ("\n", wm_theme_str))
+			{
+				safe_strncpy(wm_theme_str, "Unknown", MAX_STRLEN);
+			}
+			unquote(wm_theme_str);
+		}
+	}
 
 	return;
 }
@@ -775,26 +1052,28 @@ void detect_wm_theme(void)
 void detect_gtk(void)
 {
 	FILE *gtk_file;
+	char exec_str[MAX_STRLEN];
 	char gtk2_str[MAX_STRLEN] = "Unknown";
 	char gtk3_str[MAX_STRLEN] = "Unknown";
 	char gtk_icons_str[MAX_STRLEN] = "Unknown";
 	char gtk_font_str[MAX_STRLEN] = "Unknown";
 
-	gtk_file = popen("detectgtk 2> /dev/null", "r");
+	snprintf(exec_str, MAX_STRLEN, "detectgtk '%s' 2> /dev/null", de_str);
+	gtk_file = popen(exec_str, "r");
 	fscanf(gtk_file, "%s%s%s%s", gtk2_str, gtk3_str, gtk_icons_str, gtk_font_str);
 	pclose(gtk_file);
 
-	if (STREQ(gtk2_str, gtk3_str))
-	{
-		if (STREQ(gtk2_str, "Unknown"))
-			safe_strncpy(gtk_str, gtk2_str, MAX_STRLEN);
-		else
-			snprintf(gtk_str, MAX_STRLEN, "%s (GTK2/3)", gtk2_str);
-	}
-	else if (STREQ(gtk2_str, "Unknown") && !STREQ(gtk3_str, "Unknown"))
-		snprintf(gtk_str, MAX_STRLEN, "%s (GTK3)", gtk3_str);
-	else if (STREQ(gtk3_str, "Unknown") && !STREQ(gtk2_str, "Unknown"))
-		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2)", gtk2_str);
+	unquote(gtk2_str);
+	unquote(gtk3_str);
+	unquote(gtk_icons_str);
+	unquote(gtk_font_str);
+
+	if (STREQ(gtk3_str, "Unknown"))
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (Icons)", gtk2_str,
+				gtk_icons_str);
+	else if (STREQ(gtk2_str, "Unknown"))
+		snprintf(gtk_str, MAX_STRLEN, "%s (GTK3), %s (Icons)", gtk3_str,
+				gtk_icons_str);
 	else
 		snprintf(gtk_str, MAX_STRLEN, "%s (GTK2), %s (GTK3)", gtk2_str, gtk3_str);
 

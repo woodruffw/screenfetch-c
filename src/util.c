@@ -121,3 +121,52 @@ void take_screenshot(bool verbose)
 
 	return;
 }
+
+/*	returns 1 if command is in PATH, otherwise 0
+*/
+#ifdef __linux
+int command_in_path(const char *command)
+{
+	char *env, *env_copy, *str, *token;
+	char *file = NULL;
+	int j, len, rv = 0;
+
+	env = getenv("PATH");
+
+	if (!command || !env)
+	{
+		return 0;
+	}
+
+	env_copy = strdup(env);
+
+	/*	though not really needed, stop after 9999 iterations
+		to prevent any potential endless loop
+	*/
+	for (j = 0, str = env_copy; j < 9999; ++j, str = NULL)
+	{
+		len = strlen(command);
+		token = strtok(str, ":");
+
+		if (token == NULL || len == 0)
+		{
+			rv = 0;
+			break;
+		}
+
+		file = malloc(strlen(token) + len + 2);
+		sprintf(file, "%s/%s", token, command);
+
+		if (FILE_EXISTS(file))
+		{
+			rv = 1;
+			free(file);
+			break;
+		}
+		free(file);
+	}
+
+	free(env_copy);
+	return rv;
+}
+#endif	/* __linux */

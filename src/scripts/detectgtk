@@ -11,18 +11,14 @@ gtk3Theme="Unknown"
 gtkIcons="Unknown"
 gtkFont="Unknown"
 
-# Where is `detectde' located ?
-# Until then it will be comment in
-
-#DE=`detectde`
-DE="Unknown"
+DE="${1,,}"
 
 home_gtkrc_two="$HOME/.gtkrc-2.0"
 usr_gtkrc_two='/usr/share/gtk-2.0/gtkrc'
 home_gtkrc_mine="$HOME/.gtkrc.mine"
 
 case $DE in
-	'KDE'*) # Desktop Environment found as "KDE"
+	'kde'*)
 		if type - p kde4-config >/dev/null 2>&1; then
 			KDE_CONFIG_DIR=$(kde4-config --localprefix)
 			if [[ -d ${KDE_CONFIG_DIR} ]]; then
@@ -70,7 +66,7 @@ case $DE in
 			gtk3Theme=$(grep '^gtk-theme-name=' $HOME/.config/gtk-3.0/settings.ini | awk -F '=' '{print $2}')
 		fi
 	;;
-	'Cinnamon'*) # Desktop Environment found as "Cinnamon"
+	'cinnamon'*)
 		if type -p gsettings >/dev/null 2>&1; then
 			gtk3Theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
 			gtk3Theme=${gtk3Theme//"'"}
@@ -82,7 +78,7 @@ case $DE in
 			if [ "$background_detect" == "1" ]; then gtkBackground=$(gsettings get org.gnome.desktop.background picture-uri); fi
 		fi
 	;;
-	'GNOME'*|'Gnome'*|'Unity'*) # Desktop Environment found as "GNOME"
+	'gnome'*|'unity'*)
 		if type -p gsettings >/dev/null 2>&1; then
 			gtk3Theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
 			gtk3Theme=${gtk3Theme//"'"}
@@ -102,7 +98,7 @@ case $DE in
 			fi
 		fi
 	;;
-	'MATE'*) # MATE desktop environment
+	'mate'*)
 		#if type -p gsettings >/dev/null 2&>1; then
 		gtk3Theme=$(gsettings get org.mate.interface gtk-theme)
 		# gtk3Theme=${gtk3Theme//"'"}
@@ -113,7 +109,7 @@ case $DE in
 		gtkFont=${gtkFont//"'"}
 		#fi
 	;;
-	'XFCE'*) # Desktop Environment found as "XFCE"
+	'xfce'*)
 		if type -p xfconf-query >/dev/null 2>&1; then
 			gtk2Theme=$(xfconf-query -c xsettings -p /Net/ThemeName)
 		fi
@@ -124,7 +120,7 @@ case $DE in
 			gtkFont=$(xfconf-query -c xsettings -p /Gtk/FontName)
 		fi
 	;;
-	'LXDE'*)
+	'lxde'*)
 		if [ -f ${XDG_CONFIG_HOME:-${HOME}/.config}/lxde/config ]; then
 			lxdeconf="/lxde/config"
 		elif [ $distro == "Trisquel" ]; then

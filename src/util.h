@@ -13,5 +13,8 @@ char *safe_strncpy(char *destination, const char *source, size_t num);
 void split_uptime(long uptime, unsigned int *secs, unsigned int *mins,
 					unsigned int *hrs, unsigned int *days);
 void take_screenshot(bool verbose);
+#ifdef __linux
+int command_in_path(const char *command);
+#endif	/* __linux */
 
 #endif /* SCREENFETCH_C_UTIL_H */
