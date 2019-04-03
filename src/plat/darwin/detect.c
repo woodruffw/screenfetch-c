@@ -19,13 +19,18 @@
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <sys/utsname.h>
+#include <sys/sysctl.h>
 #include <time.h>
 #include <glob.h>
 #include <Availability.h>
+#include <IOKit/IOKitlib.h>
+#include <CoreFoundation/CoreFoundation.h>
+#include <ApplicationServices/ApplicationServices.h>
 #include <mach/mach_time.h>
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-	#include <CoreServices/CoreServices.h> /* for Gestalt */
-#endif
+#include <mach/vm_statistics.h>
+#include <mach/mach_types.h>
+#include <mach/mach_init.h>
+#include <mach/mach_host.h>
 
 /* program includes */
 #include "../../arrays.h"
@@ -40,24 +45,39 @@
 */
 void detect_distro(void)
 {
-#if __MAC_OS_X_VERSION_MIN_REQUIRED <= 1070
-	int major, minor, bugfix;
+	char *codenames[] = {"Cheetah", "Puma", "Jaguar", "Panther", "Tiger", "Leopard", "Snow Leopard", "Lion", "Mountain Lion", "Mavericks", "Yosemite", "El Capitan", "Sierra", "High Sierra", "Mojave"};
+	CFArrayRef split = CFStringCreateArrayBySeparatingStrings(
+		NULL,
+		CFPreferencesCopyAppValue(
+			CFSTR("ProductVersion"),
+			CFSTR("/System/Library/CoreServices/SystemVersion")
+		),
+		CFSTR(".")
+	);
+	unsigned maj = CFStringGetIntValue(CFArrayGetValueAtIndex(split, 0));
+	unsigned min = CFStringGetIntValue(CFArrayGetValueAtIndex(split, 1));
+	unsigned fix = 0;
+	if (CFArrayGetCount(split) == 3){
+		fix = CFStringGetIntValue(CFArrayGetValueAtIndex(split, 2));
+	}
 
-	Gestalt(gestaltSystemVersionMajor, (SInt32 *) &major);
-	Gestalt(gestaltSystemVersionMinor, (SInt32 *) &minor);
-	Gestalt(gestaltSystemVersionBugFix, (SInt32 *) &bugfix);
+	char build_ver[16];
+	CFStringGetCString(
+		CFPreferencesCopyAppValue(
+			CFSTR("ProductBuildVersion"),
+			CFSTR("/System/Library/CoreServices/SystemVersion")
+		),
+		build_ver,
+		16,
+		kCFStringEncodingUTF8
+	);
+	
+	char *codename = "Unknown";
+	if (min < sizeof(codenames) / sizeof(*codenames)){
+		codename = codenames[min];
+	}
 
-	snprintf(distro_str, MAX_STRLEN, "Max OS X %d.%d.%d", major, minor, bugfix);
-#else
-	FILE *distro_file;
-	char distro_vers_str[MAX_STRLEN] = {0};
-
-	distro_file = popen("sw_vers -productVersion | tr -d '\\n'", "r");
-	fgets(distro_vers_str, MAX_STRLEN, distro_file);
-	pclose(distro_file);
-
-	snprintf(distro_str, MAX_STRLEN, "Mac OS X %s", distro_vers_str);
-#endif
+	snprintf(distro_str, MAX_STRLEN, "Mac OS X %d.%d.%d (%s) \"%s\"", maj, min, fix, build_ver, codename);
 
 	safe_strncpy(host_color, TLBL, MAX_STRLEN);
 
@@ -159,19 +179,8 @@ void detect_pkgs(void)
 */
 void detect_cpu(void)
 {
-	FILE *cpu_file;
-
-	/*
-		something like:
-		int len = MAX_STRLEN;
-		sysctlbyname("machdep.cpu.brand_string", str, &len, NULL, 0);
-	*/
-	cpu_file = popen("sysctl -n machdep.cpu.brand_string 2> /dev/null | "
-				"sed 's/(\\([Tt][Mm]\\))//g;s/(\\([Rr]\\))//g;s/^//g' | "
-				"tr -d '\\n' | tr -s ' '", "r");
-	fgets(cpu_str, MAX_STRLEN, cpu_file);
-	pclose(cpu_file);
-
+	size_t size = MAX_STRLEN;
+	sysctlbyname("machdep.cpu.brand_string", cpu_str, &size, NULL, 0);
 	return;
 }
 
@@ -180,14 +189,25 @@ void detect_cpu(void)
 */
 void detect_gpu(void)
 {
-	FILE *gpu_file;
-
-	gpu_file = popen("system_profiler SPDisplaysDataType 2> /dev/null | "
-				"awk -F': ' '/^\\ *Chipset Model:/ {print $2}' | "
-				"tr -d '\\n'", "r");
-	fgets(gpu_str, MAX_STRLEN, gpu_file);
-	pclose(gpu_file);
-
+	CFMutableDictionaryRef matchDict = IOServiceMatching("IOPCIDevice");
+	io_iterator_t iterator;
+	if (IOServiceGetMatchingServices(kIOMasterPortDefault, matchDict, &iterator) == kIOReturnSuccess){
+		io_registry_entry_t regEntry;
+		while ((regEntry = IOIteratorNext(iterator))) {
+			CFMutableDictionaryRef serviceDictionary;
+			if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess){
+				IOObjectRelease(regEntry);
+				continue;
+			}
+			const void *GPUModel = CFDictionaryGetValue(serviceDictionary, CFSTR("model"));
+			if (GPUModel && CFGetTypeID(GPUModel) == CFDataGetTypeID())
+					safe_strncpy(gpu_str, (char *)CFDataGetBytePtr((CFDataRef) GPUModel), MAX_STRLEN);
+			CFRelease(serviceDictionary);
+			IOObjectRelease(regEntry);
+		}
+		IOObjectRelease(iterator);
+	}
+	
 	return;
 }
 
@@ -221,27 +241,22 @@ void detect_disk(void)
 */
 void detect_mem(void)
 {
-	FILE *mem_file;
-	long long total_mem = 0;
-	long long free_mem = 0;
-	long long used_mem = 0;
+	int64_t used_mem = 0, total_mem = 0;
+	vm_size_t page_size;
+	mach_port_t mach_port;
+	mach_msg_type_number_t count;
+	vm_statistics64_data_t vm_stats;
+	mach_port = mach_host_self();
+	count = sizeof(vm_stats) / sizeof(natural_t);
+	if (KERN_SUCCESS == host_page_size(mach_port, &page_size) &&
+	KERN_SUCCESS == host_statistics64(mach_port, HOST_VM_INFO, (host_info64_t)&vm_stats, &count)){
+		used_mem = ((int64_t)vm_stats.active_count + (int64_t)vm_stats.wire_count) * (int64_t)page_size;
+	}
 
-	mem_file = popen("sysctl -n hw.memsize 2> /dev/null", "r");
-	fscanf(mem_file, "%lld", &total_mem);
-	pclose(mem_file);
+	size_t len = sizeof(total_mem);
+	sysctlbyname("hw.memsize", &total_mem, &len, NULL, 0);
 
-	mem_file = popen("vm_stat | head -2 | tail -1 | tr -d 'Pages free: .'", "r");
-	fscanf(mem_file, "%lld", &free_mem);
-	pclose(mem_file);
-
-	total_mem /= (long) MB;
-
-	free_mem *= 4096; /* 4KiB is OS X's page size */
-	free_mem /= (long) MB;
-
-	used_mem = total_mem - free_mem;
-
-	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s", used_mem, "MB", total_mem, "MB");
+	snprintf(mem_str, MAX_STRLEN, "%lld%s / %lld%s", used_mem / MB, "MB", total_mem / MB, "MB");
 
 	return;
 }
@@ -317,13 +332,14 @@ void detect_shell(void)
 */
 void detect_res(void)
 {
-	FILE *res_file;
-
-	res_file = popen("system_profiler SPDisplaysDataType 2> /dev/null | "
-				"awk '/Resolution:/ {print $2\"x\"$4}' | tr -d '\\n'", "r");
-	fgets(res_str, MAX_STRLEN, res_file);
-	pclose(res_file);
-
+	uint32_t count = 0, chars = 0;
+	CGGetOnlineDisplayList(UINT32_MAX, NULL, &count);
+	CGDirectDisplayID displays[count];
+	CGGetOnlineDisplayList(count, displays, &count);
+	chars += snprintf(res_str, MAX_STRLEN, "%zu x %zu", CGDisplayPixelsWide(*displays), CGDisplayPixelsHigh(*displays));
+	for (int i = 1; i < count; ++i){
+		chars += snprintf(res_str + chars, MAX_STRLEN, ", %zu x %zu", CGDisplayPixelsWide(displays[i]), CGDisplayPixelsHigh(displays[i]));
+	}
 	return;
 }
 
@@ -351,12 +367,25 @@ void detect_wm(void)
 
 /*	detect_wm_theme
 	detects the theme associated with the WM detected in detect_wm().
-	On OS X, this will always be Aqua.
+	On OS X, there are dark and light theme, and various accent colours.
 */
 void detect_wm_theme(void)
 {
-	safe_strncpy(wm_theme_str, "Aqua", MAX_STRLEN);
-
+	char *accents[] = {"Graphite", "Red", "Orange", "Yellow", "Green", "", "Purple", "Pink", "Blue"};
+	char *color;
+	Boolean accentExists;
+	CFStringRef def = CFSTR(".GlobalPreferences");
+	CFIndex accentColor = CFPreferencesGetAppIntegerValue(CFSTR("AppleAccentColor"), def, &accentExists);
+	CFIndex aquaColorVariant = CFPreferencesGetAppIntegerValue(CFSTR("AppleAquaColorVariant"), def, NULL);
+	CFPropertyListRef style = CFPreferencesCopyAppValue(CFSTR("AppleInterfaceStyle"), def);
+	if (accentExists){
+		color = accents[accentColor + 1];
+	} else if (aquaColorVariant == 6){
+		color = "Graphite";
+	} else{
+		color = "Blue";
+	}
+	snprintf(wm_theme_str, MAX_STRLEN, "%s %s", style?"Dark":"Light", color);
 	return;
 }
 
