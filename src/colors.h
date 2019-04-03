@@ -31,7 +31,7 @@
 
 #else
 
-#define TNRM "\x1B[0m" /* normal */
+#define TNRM "\x1B[0m"    /* normal */
 #define TBLK "\x1B[0;30m" /* black */
 #define TRED "\x1B[0;31m" /* red */
 #define TGRN "\x1B[0;32m" /* green */

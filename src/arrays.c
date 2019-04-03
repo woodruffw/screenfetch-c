@@ -6,7 +6,6 @@
 **	initialized in this file.
 */
 
-
 #include "arrays.h"
 #include "misc.h"
 #include "colors.h"
@@ -32,44 +31,12 @@ char font_str[MAX_STRLEN] = "Unknown";
 
 char host_color[MAX_STRLEN] = TNRM;
 
-char *detected_arr[DETECTED_ARR_LEN] =
-{
-	host_str,
-	distro_str,
-	kernel_str,
-	cpu_str,
-	gpu_str,
-	shell_str,
-	pkgs_str,
-	disk_str,
-	mem_str,
-	uptime_str,
-	res_str,
-	de_str,
-	wm_str,
-	wm_theme_str,
-	gtk_str,
-	icon_str,
-	font_str
-};
+char *detected_arr[DETECTED_ARR_LEN] = {host_str,  distro_str, kernel_str, cpu_str,      gpu_str,
+                                        shell_str, pkgs_str,   disk_str,   mem_str,      uptime_str,
+                                        res_str,   de_str,     wm_str,     wm_theme_str, gtk_str,
+                                        icon_str,  font_str};
 
-char *detected_arr_names[DETECTED_ARR_LEN] =
-{
-	"",
-	"OS: ",
-	"Kernel: ",
-	"CPU: ",
-	"GPU: ",
-	"Shell: ",
-	"Packages: ",
-	"Disk: ",
-	"Memory: ",
-	"Uptime: ",
-	"Resolution: ",
-	"DE: ",
-	"WM: ",
-	"WM Theme: ",
-	"GTK: ",
-	"Icon Theme: ",
-	"Font: "
-};
+char *detected_arr_names[DETECTED_ARR_LEN] = {
+    "",           "OS: ",       "Kernel: ", "CPU: ",        "GPU: ",        "Shell: ",
+    "Packages: ", "Disk: ",     "Memory: ", "Uptime: ",     "Resolution: ", "DE: ",
+    "WM: ",       "WM Theme: ", "GTK: ",    "Icon Theme: ", "Font: "};

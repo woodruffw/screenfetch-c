@@ -8,6 +8,8 @@ PREFIX = /usr/local
 BINDIR = $(PREFIX)/bin
 MANDIR = $(PREFIX)/share/man/man1
 
+ALL_SOURCES = $(shell find . -type f \( -name '*.c' -o -name '*.h' \))
+
 SOURCES = $(wildcard ./src/*.c)
 OBJS = $(SOURCES:.c=.o)
 
@@ -103,7 +105,10 @@ clean:
 	rm -f gltest
 	rm -f screenfetch-c screenfetch-c.exe
 
+fmt:
+	clang-format -i -style=file $(ALL_SOURCES)
+
 $(OLDTARGETS): all
 
-.PHONY: all install uninstall clean $(OLDTARGETS)
+.PHONY: all install uninstall clean fmt $(OLDTARGETS)
 
