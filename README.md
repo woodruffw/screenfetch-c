@@ -1,16 +1,16 @@
 screenfetch-c
 =============
 
-[![Build Status](https://drone.io/github.com/woodruffw/screenfetch-c/status.png)](https://drone.io/github.com/woodruffw/screenfetch-c/latest)
+[![Build Status](https://img.shields.io/github/workflow/status/woodruffw/screenfetch-c/CI/master)](https://github.com/woodruffw/screenfetch-c/actions?query=workflow%3ACI)
 
 ## Current Version: 1.6 (release)
 
 screenfetch-c is an attempt to rewrite screenFetch, a popular shell
 script that displays system information and an ASCII logo, in the C
 language.
-Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including *BSD, Solaris, GNU/Linux, OS X, and Windows.
+Like the original screenFetch, screenfetch-c is meant to be compatible with a number of systems, including the BSDs, Solaris, GNU/Linux, OS X, and Windows.
 
-## Installing screenfetch-c:
+## Installing screenfetch-c
 
 ### Dependencies:
 screenfetch-c only relies on libraries that come on virtually every system.

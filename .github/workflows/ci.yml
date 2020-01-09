@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        compiler:
+          - gcc
+          - clang
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: deps
+        run: sudo apt install -y libgl-dev libx11-dev
+      - name: build
+        run: make CC=${{ matrix.compiler }}
