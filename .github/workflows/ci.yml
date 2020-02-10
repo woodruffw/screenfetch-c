@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: deps
-        run: sudo apt install -y libgl-dev libx11-dev
+        run: |
+          sudo apt update
+          sudo apt install -y libgl-dev libx11-dev
       - name: build
         run: make CC=${{ matrix.compiler }}
