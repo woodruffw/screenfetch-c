@@ -31,6 +31,10 @@ If you want to disable colors you can run `make COLORS=0` instead.
 
 _Note:_ For Solaris, `make` *must* be GNU make. If it isn't, use `gmake`. Using regular (Sun) `make` will cause strange errors.
 
+### Arch Linux
+
+screenfetch-c is availible on the [AUR](https://aur.archlinux.org/packages/screenfetch-c-git/)
+
 ### OS X
 
 screenfetch-c is also available via Homebrew!
