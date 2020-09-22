@@ -44,9 +44,10 @@
   detects the computer's distribution (OS X release)
 */
 void detect_distro(void) {
-  char *codenames[] = {"Cheetah",  "Puma",         "Jaguar", "Panther",       "Tiger",
-                       "Leopard",  "Snow Leopard", "Lion",   "Mountain Lion", "Mavericks",
-                       "Yosemite", "El Capitan",   "Sierra", "High Sierra",   "Mojave"};
+  char *codenames[] = {"Cheetah",       "Puma",        "Jaguar",       "Panther",
+                       "Tiger",         "Leopard",     "Snow Leopard", "Lion",
+                       "Mountain Lion", "Mavericks",   "Yosemite",     "El Capitan",
+                       "Sierra",        "High Sierra", "Mojave",       "Catalina"};
   CFArrayRef split = CFStringCreateArrayBySeparatingStrings(
       NULL,
       CFPreferencesCopyAppValue(CFSTR("ProductVersion"),
@@ -64,14 +65,31 @@ void detect_distro(void) {
                                                CFSTR("/System/Library/CoreServices/SystemVersion")),
                      build_ver, 16, kCFStringEncodingUTF8);
 
-  char *codename = "Unknown";
+  char *codename = "Mac OS";
+  char buf[128];
   if (min < sizeof(codenames) / sizeof(*codenames)) {
-    codename = codenames[min];
+    snprintf(buf, sizeof(buf), "%s %s", min < 8 ? "Mac OS X" : min < 12 ? "OS X" : "macOS",
+             codenames[min]);
+    codename = buf;
+  } else {
+    char *lookfor = "SOFTWARE LICENSE AGREEMENT FOR ";
+    FILE *fp = fopen("/System/Library/CoreServices/Setup "
+                     "Assistant.app/Contents/Resources/en.lproj/OSXSoftwareLicense.rtf",
+                     "r");
+    if (fp != NULL) {
+      for (int i = 0; i < 50 && fgets(buf, sizeof(buf), fp); ++i) {
+        char *p = strstr(buf, lookfor);
+        if (p) {
+          codename = p + strlen(lookfor);
+          codename[strlen(p) - strlen(lookfor) - 1] = '\0';
+          break;
+        }
+      }
+      fclose(fp);
+    }
   }
 
-  snprintf(distro_str, MAX_STRLEN, "Mac OS X %d.%d.%d (%s) \"%s\"", maj, min, fix, build_ver,
-           codename);
-
+  snprintf(distro_str, MAX_STRLEN, "%s %d.%d.%d (%s)", codename, maj, min, fix, build_ver);
   safe_strncpy(host_color, TLBL, MAX_STRLEN);
 
   return;

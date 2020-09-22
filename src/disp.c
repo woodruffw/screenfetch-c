@@ -82,7 +82,7 @@ void process_logo_only(char *distro[], unsigned short int num) {
 void output_logo_only(char *distro) {
   if (STREQ(distro, "Windows")) {
     process_logo_only(windows_logo, 16);
-  } else if (strstr(distro, "OS X")) {
+  } else if (strstr(distro, "OS X") || strstr(distro, "Mac OS") || strstr(distro, "macOS")) {
     process_logo_only(macosx_logo, 16);
   } else if (STREQ(distro, "Arch Linux - Old")) {
     process_logo_only(oldarch_logo, 18);
@@ -204,7 +204,7 @@ void main_ascii_output(char *data[], char *data_names[]) {
     process_data(data, data_names, windows_modern_logo, 19, DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
   } else if (strstr(data[1], "Microsoft")) {
     process_data(data, data_names, windows_logo, 16, DETECTED_ARR_LEN, TRED, TWHT, TRED);
-  } else if (strstr(data[1], "OS X")) {
+  } else if (strstr(data[1], "OS X") || strstr(data[1], "Mac OS") || strstr(data[1], "macOS")) {
     process_data(data, data_names, macosx_logo, 16, DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
   } else if (STREQ(data[1], "Arch Linux - Old")) {
     process_data(data, data_names, oldarch_logo, 18, DETECTED_ARR_LEN, TLBL, TNRM, TLBL);
